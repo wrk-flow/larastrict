@@ -1,5 +1,5 @@
 {
-    "name": "wrkflow/larascrict",
+    "name": "wrkflow/larastrict",
     "type": "project",
     "description": "Package to improve Laravel framework with features to support more strict typed Laravel.",
     "keywords": ["framework", "laravel", "php", "strictphp", "strict"],
@@ -10,6 +10,13 @@
     "autoload": {
         "psr-4": {
             "Larastrict\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Larastrict\\Providers\\LarastrictServiceProvider"
+            ]
         }
     },
     "config": {

@@ -12,6 +12,8 @@ class LarastrictServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        parent::register();
+
         // Add ability to "switch" the implementation.
         $this->app->singleton(ScheduleServiceContract::class, ScheduleServiceContract::class);
         $this->app->alias(ScheduleServiceService::class, ScheduleServiceContract::class);
