@@ -1,0 +1,22 @@
+{
+    "name": "wrkflow/larascrict",
+    "type": "project",
+    "description": "Package to improve Laravel framework with features to support more strict typed Laravel.",
+    "keywords": ["framework", "laravel", "php", "strictphp", "strict"],
+    "license": "MIT",
+    "require": {
+        "laravel/framework": "^8 || ^9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Larastrict\\": "src/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
