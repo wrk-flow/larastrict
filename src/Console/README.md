@@ -1,7 +1,5 @@
 # Console
 
-[Back to root](../README.md)
-
 ## Schedule
 
 Wraps a Laravel schedule to it own schedule service that will:
