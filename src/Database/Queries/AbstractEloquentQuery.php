@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Scope;
 
 /**
+ * You must implement abstract public function execute.
+ *
  * @template T of Model
  */
 abstract class AbstractEloquentQuery extends AbstractQuery
