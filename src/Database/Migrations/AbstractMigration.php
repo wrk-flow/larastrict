@@ -25,8 +25,6 @@ abstract class AbstractMigration extends Migration
 
     abstract public function down(): void;
 
-    
-
     /**
      * @param class-string<Model> $modelClass
      */

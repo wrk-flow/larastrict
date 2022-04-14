@@ -21,7 +21,7 @@ class AttributeConcept extends Model
     }
 }
 /*
- * 
+ *
 $type = new AttributeConcept();
 
 $test = $type->name()->get();
