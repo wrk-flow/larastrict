@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Providers;
+namespace LaraStrict\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Larastrict\Console\Contracts\ScheduleServiceContract;
-use Larastrict\Console\Services\ScheduleServiceService;
+use LaraStrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Console\Services\ScheduleServiceService;
 
 class LarastrictServiceProvider extends ServiceProvider
 {

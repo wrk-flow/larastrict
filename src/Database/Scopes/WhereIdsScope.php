@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Scopes;
+namespace LaraStrict\Database\Scopes;
 
 use Illuminate\Database\Eloquent\Model;
 

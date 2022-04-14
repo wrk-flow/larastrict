@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Console\Services;
+namespace LaraStrict\Console\Services;
 
 use Illuminate\Console\Application;
 use Illuminate\Console\Scheduling\CallbackEvent;
@@ -10,8 +10,8 @@ use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule as LaravelSchedule;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Larastrict\Console\Contracts\ScheduleServiceContract;
-use Larastrict\Console\Jobs\CommandInQueueJob;
+use LaraStrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Console\Jobs\CommandInQueueJob;
 
 /**
  * - Adds ability to force all commands in queue

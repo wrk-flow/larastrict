@@ -26,10 +26,11 @@ namespace App\Confirmations;
 
 use App\Confirmations\Commands\ExpireConfirmationsCommand;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Larastrict\Console\Contracts\ScheduleServiceContract;
-use Larastrict\Providers\AbstractServiceProvider;
+use LaraStrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Providers\AbstractServiceProvider;
+use LaraStrict\Providers\Contracts\HasSchedule;
 
-class ConfirmationsServiceProvider extends AbstractServiceProvider
+class ConfirmationsServiceProvider extends AbstractServiceProvider implements HasSchedule
 {
     public function register(): void
     {

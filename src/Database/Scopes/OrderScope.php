@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Scopes;
+namespace LaraStrict\Database\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
-use Larastrict\Enums\SortDirections;
+use LaraStrict\Enums\SortDirections;
 
 class OrderScope implements Scope
 {

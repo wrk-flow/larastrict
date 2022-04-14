@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Queries;
+namespace LaraStrict\Database\Queries;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Scope;
 
 abstract class AbstractQuery

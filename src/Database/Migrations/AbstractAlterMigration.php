@@ -7,21 +7,26 @@ namespace LaraStrict\Database\Migrations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;
 
-abstract class AbstractCreateMigration extends AbstractMigration
+abstract class AbstractAlterMigration extends AbstractMigration
 {
     public function up(): void
     {
-        $this->create(
+        $this->alter(
             $this->getModelClass(),
             function (Blueprint $table): void {
-                $this->schema($table);
+                $this->changeSchema($table);
             }
         );
     }
 
     public function down(): void
     {
-        $this->drop($this->getModelClass());
+        $this->alter(
+            $this->getModelClass(),
+            function (Blueprint $table): void {
+                $this->revertSchema($table);
+            }
+        );
     }
 
     /**
@@ -29,5 +34,7 @@ abstract class AbstractCreateMigration extends AbstractMigration
      */
     abstract public function getModelClass(): string;
 
-    abstract public function schema(Blueprint $table): void;
+    abstract public function changeSchema(Blueprint $table): void;
+
+    abstract public function revertSchema(Blueprint $table): void;
 }

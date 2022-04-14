@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Actions;
+namespace LaraStrict\Database\Actions;
 
 use Closure;
 use Illuminate\Database\Connection;

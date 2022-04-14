@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Migrations;
+namespace LaraStrict\Database\Migrations;
 
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Builder;
-use Larastrict\Database\Actions\RunInTransactionAction;
+use LaraStrict\Database\Actions\RunInTransactionAction;
 
 abstract class AbstractMigration extends Migration
 {

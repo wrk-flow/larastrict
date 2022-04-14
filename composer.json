@@ -4,18 +4,19 @@
     "description": "Package to improve Laravel framework with features to support more strict typed Laravel.",
     "keywords": ["framework", "laravel", "php", "strictphp", "strict"],
     "license": "MIT",
+    "homepage": "https://github.com/wrk-flow/larastrict",
     "require": {
-        "laravel/framework": "^8 || ^9"
+        "laravel/framework": "^9"
     },
     "autoload": {
         "psr-4": {
-            "Larastrict\\": "src/"
+            "LaraStrict\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Larastrict\\Providers\\LarastrictServiceProvider"
+                "LaraStrict\\Providers\\LarastrictServiceProvider"
             ]
         }
     },

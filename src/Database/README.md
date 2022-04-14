@@ -8,7 +8,6 @@
 
 - Use constants
 
-
 ## Migrations
 
 - When migration is executed on production it is recommended to purge the migration (so refactoring will not break the migrations).

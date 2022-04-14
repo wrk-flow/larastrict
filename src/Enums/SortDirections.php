@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Enums;
+namespace LaraStrict\Enums;
 
 enum SortDirections: string
 {

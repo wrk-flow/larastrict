@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Console\Contracts;
+namespace LaraStrict\Console\Contracts;
 
 use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Event;

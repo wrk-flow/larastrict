@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Console\Jobs;
+namespace LaraStrict\Console\Jobs;
 
 /**
  * There are jobs that are schedule very offten and can take some time. We need to setup correct

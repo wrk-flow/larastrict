@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Concerns;
+namespace LaraStrict\Database\Concerns;
 
 use Carbon\Carbon;
 

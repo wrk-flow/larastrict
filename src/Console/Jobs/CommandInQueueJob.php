@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Console\Jobs;
+namespace LaraStrict\Console\Jobs;
 
 use Illuminate\Contracts\Console\Kernel;
 use Psr\Log\LoggerInterface;

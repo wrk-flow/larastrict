@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Models;
+namespace LaraStrict\Database\Models;
 
-use Larastrict\Database\Concerns\HasTimestamps;
-use Larastrict\Database\Concerns\HasUuidKey;
+use LaraStrict\Database\Concerns\HasTimestamps;
+use LaraStrict\Database\Concerns\HasUuidKey;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class UuidTimestampModel extends Model

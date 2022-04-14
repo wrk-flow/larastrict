@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Queries;
+namespace LaraStrict\Database\Queries;
 
 use Closure;
 use Illuminate\Database\Eloquent\Builder;

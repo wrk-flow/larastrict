@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Console\Commands;
+namespace LaraStrict\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Larastrict\Logger\Services\LogToOutputService;
+use LaraStrict\Logger\Services\LogToOutputService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

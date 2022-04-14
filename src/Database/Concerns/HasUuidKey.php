@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Database\Concerns;
+namespace LaraStrict\Database\Concerns;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;

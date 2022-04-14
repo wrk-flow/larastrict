@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Providers;
+namespace LaraStrict\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
-use Larastrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Providers\Contracts\HasSchedule;
 
 abstract class AbstractServiceProvider extends EventServiceProvider
 {
@@ -13,16 +14,12 @@ abstract class AbstractServiceProvider extends EventServiceProvider
     {
         parent::register();
 
-        if ($this->app->runningInConsole() === true) {
+        if ($this instanceof HasSchedule && $this->app->runningInConsole() === true) {
             $this->app->booted(function (): void {
                 $schedule = $this->app->make(ScheduleServiceContract::class);
 
                 $this->schedule($schedule);
             });
         }
-    }
-
-    public function schedule(ScheduleServiceContract $schedule): void
-    {
     }
 }

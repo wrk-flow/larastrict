@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Larastrict\Logger\Services;
+namespace LaraStrict\Logger\Services;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Style\StyleInterface;
