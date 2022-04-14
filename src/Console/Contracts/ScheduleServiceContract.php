@@ -20,7 +20,7 @@ interface ScheduleServiceContract
      *
      * @throws BindingResolutionException
      */
-    public function queueCommand(string $command, array $keyedParameters = []): CallbackEvent;
+    public function queueCommand(string $command, array $keyedParameters = [], int $uniqueFor = 1800): CallbackEvent;
 
     /**
      * Add a new job callback event to the schedule. Must set $job->queue.

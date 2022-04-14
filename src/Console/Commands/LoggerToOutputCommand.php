@@ -15,14 +15,13 @@ use Symfony\Component\Console\Style\StyleInterface;
 abstract class LoggerToOutputCommand extends Command
 {
     /**
-     * Swap logger interface to ouptut all values to output.
+     * Swap logger interface to ouptut all values to output of command I've triggered.
      *
      * @throws BindingResolutionException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // TODO detect when running in queue and use logger interface.
-
+        // TODO: we need to detect using events if we are in queue or in schedule
         if (($output instanceof StyleInterface) === true) {
             $loggerBefore = $this->laravel->make(LoggerInterface::class);
             $logToOutputService = new LogToOutputService($output);

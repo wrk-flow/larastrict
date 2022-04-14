@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace LaraStrict\Console\Jobs;
 
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Throwable;
 
-class CommandInQueueJob extends AbstractUniqueLongJob
+class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
 {
-    public int $uniqueFor = 1800; // Maximum of 30 minutes to process
+    public int $uniqueFor; // Maximum of 30 minutes to process
 
     private string $command;
     private array $parameters;
@@ -20,10 +21,11 @@ class CommandInQueueJob extends AbstractUniqueLongJob
     /**
      * @param string $command Command signature or class
      */
-    public function __construct(string $command, array $parameters = [])
+    public function __construct(string $command, array $parameters = [], int $uniqueFor = 1800)
     {
         parent::__construct();
 
+        $this->uniqueFor = $uniqueFor;
         $this->command = $command;
         $this->parameters = [];
         // We need to build unique id and parameters should be used too

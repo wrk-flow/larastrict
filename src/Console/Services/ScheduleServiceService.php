@@ -44,9 +44,9 @@ class ScheduleServiceService implements ScheduleServiceContract
      *
      * @throws BindingResolutionException
      */
-    public function queueCommand(string $command, array $keyedParameters = []): CallbackEvent
+    public function queueCommand(string $command, array $keyedParameters = [], int $uniqueFor = 1800): CallbackEvent
     {
-        $job = new CommandInQueueJob($command, $keyedParameters);
+        $job = new CommandInQueueJob($command, $keyedParameters, $uniqueFor);
         $event = $this->schedule->job($job);
 
         // Ensure that php artisan schedule:list will return correct data
@@ -57,6 +57,7 @@ class ScheduleServiceService implements ScheduleServiceContract
         }
 
         $event->command = Application::formatCommandString($name);
+        $event->description = 'queued ' . $name;
 
         return $this->logEvent($event);
     }
