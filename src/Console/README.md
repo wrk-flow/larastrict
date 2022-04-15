@@ -12,7 +12,9 @@ Wraps a Laravel schedule to it own schedule service that will:
 
 ### Setup
 
-- To register schedule extend `AbstractServiceProvider` and implement `schedule` method
+- To register schedule extend `AbstractServiceProvider` and select contract to implement
+  - **HasSchedule** (registers schedule on all environments)
+  - **HasScheduleOnProduction** (registers schedule only on production environment)
 - Use `queueCommand`
 
 ### Example
