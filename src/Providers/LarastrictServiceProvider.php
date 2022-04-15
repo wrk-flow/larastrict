@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleServiceService;
 
-class LarastrictServiceProvider extends ServiceProvider
+class LaraStrictServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
