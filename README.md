@@ -2,15 +2,15 @@
 
 ## Write Laravel projects with more strict conventions for more stable code in the long run
 
-### This package is for those who likes to write little more code to enable easier debugging, managing, testing the **code**.
-
-We aim to make set of futures to allow easier coding life of developer without loosing **type safe code.**
+We aim to make set of futures to allow **easier dev life** without loosing **type safe and testable code.**
 
 ```bash
 composer require wrkflow/larastrict
 ```
 
-I've created this project as part of my mission to create `work flow` tools / libraries to make my (and yours) **dev life easier and more enjoyable**. Join my mission at [/wrk-flow.com](https://wrk-flow.com)
+I've created this project as part of my mission to create `work flow` tools / libraries to make my (and yours) **dev life easier and more enjoyable**. 
+
+Want more tools or want to help? Check [wrk-flow.com](https://wrk-flow.com) or [CONTRIBUTE](CONTRIBUTION.md) (I need help with the documentation, new features, tests).
 
 ## Main mission
 

@@ -1,5 +1,22 @@
 # LaraStrict contribution
 
+Feel free to contribute. Guide lines contributions:
+
+## Bug fixes
+
+For bug fixes create and issue and pull request if possible.
+
+## Ideas
+
+Use the discussion functionality and propose your idea:
+
+- What you want to solve?
+- Sample proof of concept code? (just how it could look)
+
+## Wait to take in account
+
+- Always design your classes with dependency injection in mind (possibly constructor).
+- Always think about tests -> how they should be written and if it is easy.
 
 ## Clone Larastrict repository in our project and use it
 
