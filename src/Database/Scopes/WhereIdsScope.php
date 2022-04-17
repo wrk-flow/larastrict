@@ -23,6 +23,6 @@ class WhereIdsScope extends AbstractInScope
 
     protected function getColumn(Model $model): string
     {
-        return $this->key ?? 'id';
+        return $this->key ?? $model->getKeyName();
     }
 }
