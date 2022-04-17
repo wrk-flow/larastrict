@@ -48,8 +48,6 @@ class ConfirmationsServiceProvider extends AbstractServiceProvider implements Ha
      */
     public function schedule(ScheduleServiceContract $schedule): void
     {
-        parent::schedule($schedule);
-
         $schedule->queueCommand(ExpireConfirmationsCommand::class);
     }
 }
