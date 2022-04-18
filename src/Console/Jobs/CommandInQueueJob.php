@@ -12,21 +12,19 @@ use Throwable;
 
 class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
 {
-    public int $uniqueFor; // Maximum of 30 minutes to process
-
-    private string $command;
     private array $parameters;
-    private string $parametersKey;
+
+    private readonly string $parametersKey;
 
     /**
      * @param string $command Command signature or class
      */
-    public function __construct(string $command, array $parameters = [], int $uniqueFor = 1800)
-    {
+    public function __construct(
+        private readonly string $command,
+        array $parameters = [],
+        public int $uniqueFor = 1800
+    ) {
         parent::__construct();
-
-        $this->uniqueFor = $uniqueFor;
-        $this->command = $command;
         $this->parameters = [];
         // We need to build unique id and parameters should be used too
         $parametersKey = '';
@@ -43,20 +41,25 @@ class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
     public function handle(Kernel $kernel, ConsoleOutput $consoleOutput, LoggerInterface $logger): void
     {
         $startTime = microtime(true);
-        $context = ['command' => $this->command, 'parameters' => $this->parameters];
+        $context = [
+            'command' => $this->command,
+            'parameters' => $this->parameters,
+        ];
 
         try {
             $logger->info('Running command', $context);
 
             $kernel->call($this->command, $this->parameters, $consoleOutput);
 
-            $logger->info('Command finished', $context + ['duration' => microtime(true) - $startTime]);
-        } catch (Throwable $exception) {
+            $logger->info('Command finished', $context + [
+                'duration' => microtime(true) - $startTime,
+            ]);
+        } catch (Throwable $throwable) {
             $logger->error('Command failed', $context + [
                 'duration' => microtime(true) - $startTime,
-                'message' => $exception->getMessage(),
+                'message' => $throwable->getMessage(),
             ]);
-            throw $exception;
+            throw $throwable;
         }
     }
 

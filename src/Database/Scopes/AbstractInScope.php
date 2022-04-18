@@ -6,34 +6,39 @@ namespace LaraStrict\Database\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 
 /**
  * Adds whereIn or where condition for given values.
  */
-abstract class AbstractInScope implements Scope
+abstract class AbstractInScope extends AbstractScope
 {
-    public const BOOLEAN_AND = 'and';
-    public const BOOLEAN_OR = 'or';
+    /**
+     * @var string
+     */
+    final public const BOOLEAN_AND = 'and';
 
-    private array $values;
+    /**
+     * @var string
+     */
+    final public const BOOLEAN_OR = 'or';
+
     private string $boolean = self::BOOLEAN_AND;
-    private bool $not;
-    private string $table;
+
+    private readonly bool $not;
+
+    private readonly string $table;
 
     /**
      * @param string|bool|null $booleanOrTableOrNot Pass false to set $not argument, pass string to set table or 'and'
      *                                              'or' value
      */
     public function __construct(
-        array $values,
+        private array $values,
         string|bool|null $booleanOrTableOrNot = null,
         string $table = '',
         bool $not = false
     ) {
-        $this->values = $values;
-
-        if (is_bool($booleanOrTableOrNot) === true) {
+        if (is_bool($booleanOrTableOrNot)) {
             $not = $booleanOrTableOrNot;
             $booleanOrTableOrNot = null;
         }
@@ -48,16 +53,14 @@ abstract class AbstractInScope implements Scope
         $this->not = $not;
     }
 
+    /**
+     * @param Builder<Model> $builder
+     */
     public function apply(Builder $builder, Model $model): void
     {
         $column = $this->table === '' ? $this->getColumn($model) : $this->table . '.' . $this->getColumn($model);
         if (count($this->values) === 1) {
-            $builder->where(
-                $column,
-                $this->not === true ? '<>' : '=',
-                reset($this->values),
-                $this->boolean
-            );
+            $builder->where($column, $this->not ? '<>' : '=', reset($this->values), $this->boolean);
 
             return;
         }

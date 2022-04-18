@@ -9,7 +9,6 @@ use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule as LaravelSchedule;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Jobs\CommandInQueueJob;
 
@@ -20,20 +19,19 @@ use LaraStrict\Console\Jobs\CommandInQueueJob;
  */
 class ScheduleServiceService implements ScheduleServiceContract
 {
-    private LaravelSchedule $schedule;
-    private Container $container;
-
-    public function __construct(LaravelSchedule $schedule, Container $container)
-    {
-        $this->schedule = $schedule;
-        $this->container = $container;
+    public function __construct(
+        private readonly LaravelSchedule $schedule,
+        private readonly Container $container
+    ) {
     }
 
     public function command(string $command, array $parameters = []): Event
     {
         $event = $this->schedule->command($command, $parameters);
 
-        return $this->logEvent($event);
+        $this->logEvent($event);
+
+        return $event;
     }
 
     /**
@@ -41,8 +39,6 @@ class ScheduleServiceService implements ScheduleServiceContract
      *
      * @param string $command         Command signature or class
      * @param array  $keyedParameters You need to key the parameters by command signature
-     *
-     * @throws BindingResolutionException
      */
     public function queueCommand(string $command, array $keyedParameters = [], int $uniqueFor = 1800): CallbackEvent
     {
@@ -50,16 +46,15 @@ class ScheduleServiceService implements ScheduleServiceContract
         $event = $this->schedule->job($job);
 
         // Ensure that php artisan schedule:list will return correct data
-        if (class_exists($command)) {
-            $name = $this->container->make($command)->getName();
-        } else {
-            $name = $event->command;
-        }
+        $name = class_exists($command) ? $this->container->make($command)
+            ->getName() : $event->command;
 
         $event->command = Application::formatCommandString($name);
         $event->description = 'queued ' . $name;
 
-        return $this->logEvent($event);
+        $this->logEvent($event);
+
+        return $event;
     }
 
     /**
@@ -74,11 +69,9 @@ class ScheduleServiceService implements ScheduleServiceContract
         return $event;
     }
 
-    private function logEvent(Event $event): Event|CallbackEvent
+    private function logEvent(Event|CallbackEvent $event): void
     {
         // Always output to docker output. Env?
         $event->appendOutputTo('/proc/1/fd/2');
-
-        return $event;
     }
 }

@@ -7,21 +7,12 @@ namespace LaraStrict\Database\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Scope;
 
-abstract class AbstractNestedRelationScope implements Scope
+abstract class AbstractNestedRelationScope extends AbstractScope
 {
-    /**
-     * @var array
-     */
-    private $relationScopes;
-
-    public function __construct(array $relationScopes = [])
+    public function __construct(private readonly array $relationScopes = [])
     {
-        $this->relationScopes = $relationScopes;
     }
-
-    abstract protected function getRelationNames(): array;
 
     public function apply(Builder $builder, Model $model): void
     {
@@ -29,12 +20,17 @@ abstract class AbstractNestedRelationScope implements Scope
 
         foreach ($this->getRelationNames() as $relationName) {
             $relations[$relationName] = function (Relation $relationQuery): void {
+                $model = $relationQuery->getRelated();
+                $baseQuery = $relationQuery->getQuery();
+
                 foreach ($this->relationScopes as $relationScope) {
-                    $relationScope->apply($relationQuery->getQuery(), $relationQuery->getModel());
+                    $relationScope->apply($baseQuery, $model);
                 }
             };
         }
 
         $builder->with($relations);
     }
+
+    abstract protected function getRelationNames(): array;
 }

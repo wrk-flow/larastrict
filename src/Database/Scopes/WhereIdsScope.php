@@ -8,16 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class WhereIdsScope extends AbstractInScope
 {
-    private string $key;
-
     public function __construct(
         array $ids,
-        ?string $key = null,
+        private readonly ?string $key = null,
         string|bool|null $booleanOrTableOrNot = null,
         string $table = '',
         bool $not = false
     ) {
-        $this->key = $key;
         parent::__construct($ids, $booleanOrTableOrNot, $table, $not);
     }
 

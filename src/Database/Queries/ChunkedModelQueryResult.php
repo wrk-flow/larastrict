@@ -5,55 +5,42 @@ declare(strict_types=1);
 namespace LaraStrict\Database\Queries;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * @template T
+ * @template TModel of \Illuminate\Database\Eloquent\Model
  */
 class ChunkedModelQueryResult
 {
-    public readonly Builder $query;
     /**
-     * @var class-string<T>
-     */
-    public readonly string $modelClass;
-
-    /**
-     * @param class-string<T> $modelClass At this moment this PHP storm does not "typehint" closure. But this should
+     * @param class-string<TModel> $modelClass At this moment this PHP storm does not "typehint" closure. But this should
      *                                    probably work. Maybe psalm in composer needs to be set.
      */
-    public function __construct(string $modelClass, Builder $builder)
-    {
-        $this->query = $builder;
-        $this->modelClass = $modelClass;
+    public function __construct(
+        public readonly string $modelClass,
+        public readonly Builder $query
+    ) {
     }
 
     /**
-     * @param Closure(Collection<T>): void $closure
+     * @param Closure(Collection<int,TModel>):void $closure
      */
-    public function onChunkById(
-        Closure $closure,
-        ?int $count = null
-    ): bool {
+    public function onChunkById(Closure $closure, ?int $count = null): bool
+    {
         $count ??= 100;
 
         return $this->query
-            ->chunkById(
-                $count,
-                $closure
-            );
+            ->chunkById($count, $closure);
     }
 
     /**
-     * @param Closure(T): void $closure
+     * @param Closure(TModel): void $closure
      *
      * @return int number of processed entries
      */
-    public function onEntryById(
-        Closure $closure,
-        ?int $count = null
-    ): int {
+    public function onEntryById(Closure $closure, ?int $count = null): int
+    {
         $processed = 0;
         $this->onChunkById(
             function (Collection $collection) use ($closure, &$processed): void {

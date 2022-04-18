@@ -45,3 +45,7 @@ customization. Always prefer to create new query that can be tested separately.
 ### Console [docs](./src/Console/README.md)
 
 Improved way how to register commands / schedules / views in more modular way (to follow DDD).
+
+### Managers
+
+Managers are mainly singleton and holds data that needs to be accessed from multiple services / actions / etc.

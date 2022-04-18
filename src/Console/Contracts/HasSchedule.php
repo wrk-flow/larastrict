@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Providers\Contracts;
-
-use LaraStrict\Console\Contracts\ScheduleServiceContract;
+namespace LaraStrict\Console\Contracts;
 
 interface HasSchedule
 {

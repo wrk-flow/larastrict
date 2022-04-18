@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Providers\Contracts;
+namespace LaraStrict\Console\Contracts;
 
 interface HasScheduleOnProduction extends HasSchedule
 {

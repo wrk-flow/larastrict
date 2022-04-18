@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaraStrict\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Container\BindingResolutionException;
 use LaraStrict\Logger\Services\LogToOutputService;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,13 +15,11 @@ abstract class LoggerToOutputCommand extends Command
 {
     /**
      * Swap logger interface to ouptut all values to output of command I've triggered.
-     *
-     * @throws BindingResolutionException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // TODO: we need to detect using events if we are in queue or in schedule
-        if (($output instanceof StyleInterface) === true) {
+        if ($output instanceof StyleInterface) {
             $loggerBefore = $this->laravel->make(LoggerInterface::class);
             $logToOutputService = new LogToOutputService($output);
             $this->laravel->instance(LoggerInterface::class, $logToOutputService);

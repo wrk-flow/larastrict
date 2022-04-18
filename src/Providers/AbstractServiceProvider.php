@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace LaraStrict\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use LaraStrict\Console\Contracts\HasSchedule;
+use LaraStrict\Console\Contracts\HasScheduleOnProduction;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Enums\EnvironmentTypes;
-use LaraStrict\Providers\Contracts\HasSchedule;
-use LaraStrict\Providers\Contracts\HasScheduleOnProduction;
 
 abstract class AbstractServiceProvider extends EventServiceProvider
 {
@@ -16,10 +16,11 @@ abstract class AbstractServiceProvider extends EventServiceProvider
     {
         parent::register();
 
-        if ($this->app->runningInConsole() === true && $this->canRegisterSchedule()) {
+        if ($this->app->runningInConsole() && $this->canRegisterSchedule()) {
             $this->app->booted(function (): void {
                 $schedule = $this->app->make(ScheduleServiceContract::class);
 
+                /** @var HasSchedule $this */
                 $this->schedule($schedule);
             });
         }
@@ -28,7 +29,7 @@ abstract class AbstractServiceProvider extends EventServiceProvider
     protected function canRegisterSchedule(): bool
     {
         if ($this instanceof HasScheduleOnProduction) {
-            return $this->app->environment([EnvironmentTypes::Production->value]);
+            return (bool) $this->app->environment([EnvironmentTypes::Production->value]);
         }
 
         return $this instanceof HasSchedule;

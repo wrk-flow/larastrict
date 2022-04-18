@@ -6,21 +6,14 @@ namespace LaraStrict\Database\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 
-class SelectScope implements Scope
+class SelectScope extends AbstractScope
 {
-    /**
-     * @var string[]
-     */
-    private $columns;
-
     /**
      * @param string[] $columns
      */
-    public function __construct(array $columns)
+    public function __construct(private readonly array $columns)
     {
-        $this->columns = $columns;
     }
 
     public function apply(Builder $builder, Model $model): void

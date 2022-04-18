@@ -4,85 +4,84 @@ declare(strict_types=1);
 
 namespace LaraStrict\Database\Queries;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Scope;
 
 /**
  * You must implement abstract public function execute.
  *
- * @template T of Model
+ * @template TModel of Model
  */
 abstract class AbstractEloquentQuery extends AbstractQuery
 {
     /**
-     * @return class-string<T>
+     * @return class-string<TModel>
      */
     abstract protected function getModelClass(): string;
 
     /**
      * @param Scope[] $scopes
+     *
+     * @return ChunkedModelQueryResult<TModel>
      */
     protected function chunk(array $scopes = []): ChunkedModelQueryResult
     {
-        return new ChunkedModelQueryResult(
-            $this->getModelClass(),
-            $this->getQuery($scopes)
-        );
+        return new ChunkedModelQueryResult($this->getModelClass(), $this->getQuery($scopes));
     }
 
     /**
      * @param Scope[] $scopes
      *
-     * @return Collection<T>
+     * @return Collection<int, Model>
      */
     protected function getAll(array $scopes = []): Collection
     {
-        return $this->getQuery($scopes)->get();
+        return $this->getQuery($scopes)
+            ->get();
     }
 
     /**
      * @param Scope[] $scopes
-     *
-     * @return T|null
      */
     protected function get(array $scopes = []): ?Model
     {
-        return $this->getQuery($scopes)->first();
+        return $this->getQuery($scopes)
+            ->first();
     }
 
     /**
      * @param Scope[] $scopes
-     *
-     * @return T
-     *
-     * @throws ModelNotFoundException
      */
     protected function getOrFail(array $scopes = []): Model
     {
-        return $this->getQuery($scopes)->firstOrFail();
+        return $this->getQuery($scopes)
+            ->firstOrFail();
     }
 
     /**
      * @param Scope[] $scopes
-     *
-     * @return T|null
      */
     protected function find(string|int $id, array $scopes = []): ?Model
     {
-        return $this->getQuery($scopes)->find($id);
+        /** @var Model|null $model */
+        $model = $this->getQuery($scopes)
+            ->find($id);
+
+        return $model;
     }
 
     /**
      * @param Scope[] $scopes
-     *
-     * @return T
      */
     protected function findOrFail(string|int $id, array $scopes = []): Model
     {
-        return $this->getQuery($scopes)->findOrFail($id);
+        /** @var Model $model */
+        $model = $this->getQuery($scopes)
+            ->findOrFail($id);
+
+        return $model;
     }
 
     /**
@@ -100,5 +99,25 @@ abstract class AbstractEloquentQuery extends AbstractQuery
         $modelClass = $this->getModelClass();
 
         return (new $modelClass())->getKeyName();
+    }
+
+    /**
+     * @param Scope[]|null[]|null $scopes
+     */
+    protected function getScopedQuery(Builder $query, ?array $scopes): Builder
+    {
+        if ($scopes === null) {
+            return $query;
+        }
+
+        foreach ($scopes as $i => $scope) {
+            if ($scope === null) {
+                continue;
+            }
+
+            $query->withGlobalScope($i, $scope);
+        }
+
+        return $query;
     }
 }

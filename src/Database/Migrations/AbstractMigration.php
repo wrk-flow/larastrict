@@ -13,6 +13,7 @@ use LaraStrict\Database\Actions\RunInTransactionAction;
 abstract class AbstractMigration extends Migration
 {
     protected Builder $schema;
+
     protected RunInTransactionAction $runInTransaction;
 
     public function __construct()

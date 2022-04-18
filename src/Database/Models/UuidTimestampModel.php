@@ -13,5 +13,8 @@ abstract class UuidTimestampModel extends Model
     use HasUuidKey;
     use HasTimestamps;
 
-    public const ATTRIBUTE_ID = 'id';
+    /**
+     * @var string
+     */
+    final public const ATTRIBUTE_ID = 'id';
 }

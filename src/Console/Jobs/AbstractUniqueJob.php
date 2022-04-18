@@ -16,7 +16,9 @@ abstract class AbstractUniqueJob implements ShouldQueue, ShouldBeUnique
     use InteractsWithQueue;
 
     public int $tries = 30;
+
     public int $uniqueFor = 10;
+
     public int $maxExceptions = 1;
 
     public function __construct()
@@ -33,9 +35,7 @@ abstract class AbstractUniqueJob implements ShouldQueue, ShouldBeUnique
      */
     public function middleware()
     {
-        return [
-            (new WithoutOverlapping($this->uniqueId()))->expireAfter($this->uniqueFor),
-        ];
+        return [(new WithoutOverlapping($this->uniqueId()))->expireAfter($this->uniqueFor)];
     }
 
     /**

@@ -11,22 +11,16 @@ abstract class AbstractAlterMigration extends AbstractMigration
 {
     public function up(): void
     {
-        $this->alter(
-            $this->getModelClass(),
-            function (Blueprint $table): void {
-                $this->changeSchema($table);
-            }
-        );
+        $this->alter($this->getModelClass(), function (Blueprint $table): void {
+            $this->changeSchema($table);
+        });
     }
 
     public function down(): void
     {
-        $this->alter(
-            $this->getModelClass(),
-            function (Blueprint $table): void {
-                $this->revertSchema($table);
-            }
-        );
+        $this->alter($this->getModelClass(), function (Blueprint $table): void {
+            $this->revertSchema($table);
+        });
     }
 
     /**

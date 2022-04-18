@@ -6,7 +6,6 @@ namespace LaraStrict\Console\Contracts;
 
 use Illuminate\Console\Scheduling\CallbackEvent;
 use Illuminate\Console\Scheduling\Event;
-use Illuminate\Contracts\Container\BindingResolutionException;
 
 interface ScheduleServiceContract
 {
@@ -17,8 +16,6 @@ interface ScheduleServiceContract
      *
      * @param string $command         Command signature or class
      * @param array  $keyedParameters You need to key the parameters by command signature
-     *
-     * @throws BindingResolutionException
      */
     public function queueCommand(string $command, array $keyedParameters = [], int $uniqueFor = 1800): CallbackEvent;
 

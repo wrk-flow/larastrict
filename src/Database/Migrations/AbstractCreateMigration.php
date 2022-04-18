@@ -11,12 +11,9 @@ abstract class AbstractCreateMigration extends AbstractMigration
 {
     public function up(): void
     {
-        $this->create(
-            $this->getModelClass(),
-            function (Blueprint $table): void {
-                $this->schema($table);
-            }
-        );
+        $this->create($this->getModelClass(), function (Blueprint $table): void {
+            $this->schema($table);
+        });
     }
 
     public function down(): void

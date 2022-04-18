@@ -11,17 +11,14 @@ use Illuminate\Database\Eloquent\Scope;
 
 abstract class AbstractScope implements Scope
 {
-    protected function applyChildScope(Scope $scope, Builder $builder, Model $model): void
-    {
-        $scope->apply($builder, $model);
-    }
+    /**
+     * @param Builder<Model> $builder
+     */
+    abstract public function apply(Builder $builder, Model $model): void;
 
-    protected function applyRelationScope(Scope $scope, Relation $relation): void
-    {
-        $builder = $relation->getQuery();
-        $scope->apply($builder, $builder->getModel());
-    }
-
+    /**
+     * @param Relation<Model> $relation
+     */
     public function applyOnRelation(Relation $relation): void
     {
         $this->applyRelationScope($this, $relation);
@@ -35,5 +32,22 @@ abstract class AbstractScope implements Scope
         $query = $model->newQueryWithoutRelationships();
         $this->apply($query, $model);
         $query->eagerLoadRelations([$model]);
+    }
+
+    /**
+     * @param Builder<Model> $builder
+     */
+    protected function applyChildScope(Scope $scope, Builder $builder, Model $model): void
+    {
+        $scope->apply($builder, $model);
+    }
+
+    /**
+     * @param Relation<Model> $relation
+     */
+    protected function applyRelationScope(Scope $scope, Relation $relation): void
+    {
+        $builder = $relation->getQuery();
+        $scope->apply($builder, $builder->getModel());
     }
 }

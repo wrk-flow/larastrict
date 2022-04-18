@@ -30,7 +30,7 @@ use App\Confirmations\Commands\ExpireConfirmationsCommand;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Providers\AbstractServiceProvider;
-use LaraStrict\Providers\Contracts\HasSchedule;
+use LaraStrict\Console\Contracts\HasSchedule;
 
 class ConfirmationsServiceProvider extends AbstractServiceProvider implements HasSchedule
 {

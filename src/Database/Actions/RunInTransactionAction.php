@@ -6,20 +6,13 @@ namespace LaraStrict\Database\Actions;
 
 use Closure;
 use Illuminate\Database\Connection;
-use Throwable;
 
 class RunInTransactionAction
 {
-    private Connection $connection;
-
-    public function __construct(Connection $connection)
+    public function __construct(private readonly Connection $connection)
     {
-        $this->connection = $connection;
     }
 
-    /**
-     * @throws Throwable
-     */
     public function execute(Closure $callback, int $attempts = 1): mixed
     {
         return $this->connection->transaction($callback, $attempts);

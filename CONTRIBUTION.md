@@ -18,6 +18,32 @@ Use the discussion functionality and propose your idea:
 - Always design your classes with dependency injection in mind (possibly constructor).
 - Always think about tests -> how they should be written and if it is easy.
 
+## Lint and tests
+
+```bash
+composer run check
+```
+
+We are using set of tools to ensure that the code is consistent. Run this before pushing your code changes.
+
+### [PHPStan](https://phpstan.org)
+
+```bash
+composer run check
+```
+
+### [Rector](https://github.com/rectorphp/rector)
+
+```bash
+composer run check
+```
+
+### [Easy coding standard](https://github.com/symplify/easy-coding-standard)
+
+```bash
+composer run check
+```
+
 ## Clone Larastrict repository in our project and use it
 
 1. `git submodule add git@github.com:wrk-flow/larastrict.git core`

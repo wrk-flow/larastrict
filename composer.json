@@ -5,12 +5,46 @@
     "keywords": ["framework", "laravel", "php", "strictphp", "strict"],
     "license": "MIT",
     "homepage": "https://github.com/wrk-flow/larastrict",
+    "authors": [
+        {
+            "name": "Martin Kluska",
+            "email": "martin@kluska.cz"
+        }
+    ],
     "require": {
         "laravel/framework": "^9"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.5",
+        "nunomaduro/larastan": "^2.1",
+        "orchestra/testbench": "^7.4",
+        "phpstan/phpstan": "^1.4.10",
+        "phpstan/phpstan-deprecation-rules": "^1.0.0",
+        "phpstan/phpstan-mockery": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0.0",
+        "phpunit/phpunit": "^9.5.20",
+        "rector/rector": "^0.12.17",
+        "symplify/easy-coding-standard": "^10.1"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ],
+        "check": "composer lint && composer test",
+        "lint:fix": "./vendor/bin/ecs --fix",
+        "lint:stan": "./vendor/bin/phpstan",
+        "lint:upgrade": "vendor/bin/rector process",
+        "lint": "composer lint:fix && composer lint:upgrade && composer lint:stan",
+        "test": "./vendor/bin/phpunit"
     },
     "autoload": {
         "psr-4": {
             "LaraStrict\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\LaraStrict\\": "tests/"
         }
     },
     "extra": {
