@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace LaraStrict\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use LaraStrict\Cache\Contracts\BootContexts;
 use LaraStrict\Console\Contracts\HasSchedule;
 use LaraStrict\Console\Contracts\HasScheduleOnProduction;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Context\Contexts\AbstractContext;
+use LaraStrict\Context\Services\ContextEventsService;
 use LaraStrict\Enums\EnvironmentTypes;
 
 abstract class AbstractServiceProvider extends EventServiceProvider
@@ -26,6 +29,13 @@ abstract class AbstractServiceProvider extends EventServiceProvider
         }
     }
 
+    public function boot(): void
+    {
+        if ($this instanceof BootContexts) {
+            $this->bootContexts($this->contexts());
+        }
+    }
+
     protected function canRegisterSchedule(): bool
     {
         if ($this instanceof HasScheduleOnProduction) {
@@ -33,5 +43,22 @@ abstract class AbstractServiceProvider extends EventServiceProvider
         }
 
         return $this instanceof HasSchedule;
+    }
+
+    /**
+     * @param array<class-string<AbstractContext>> $contextClasses
+     */
+    private function bootContexts(array $contextClasses): void
+    {
+        if ($contextClasses === []) {
+            return;
+        }
+
+        /** @var ContextEventsService $service */
+        $service = $this->app->make(ContextEventsService::class);
+
+        foreach ($contextClasses as $context) {
+            $context::boot($service);
+        }
     }
 }
