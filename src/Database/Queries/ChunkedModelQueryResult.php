@@ -14,13 +14,34 @@ use Illuminate\Database\Eloquent\Collection;
 class ChunkedModelQueryResult
 {
     /**
+     * @var Closure(TModel):mixed|null
+     */
+    protected Closure|null $onEntryTransform = null;
+
+    /**
      * @param class-string<TModel> $modelClass At this moment this PHP storm does not "typehint" closure. But this should
-     *                                    probably work. Maybe psalm in composer needs to be set.
+     *                                         probably work. Maybe psalm in composer needs to be set.
      */
     public function __construct(
         public readonly string $modelClass,
         public readonly Builder $query
     ) {
+    }
+
+    /**
+     * Sometimes you want to automatically transform model to your entity.
+     *
+     * TODO: maybe we can disable "model" transform and use this (toQuery()->...)
+     *
+     * @param Closure(TModel):mixed|null $onEntryTransform
+     *
+     * @return $this
+     */
+    public function setTransformOnEntry(Closure|null $onEntryTransform): self
+    {
+        $this->onEntryTransform = $onEntryTransform;
+
+        return $this;
     }
 
     /**
@@ -46,7 +67,11 @@ class ChunkedModelQueryResult
             function (Collection $collection) use ($closure, &$processed): void {
                 ++$processed;
                 foreach ($collection as $entry) {
-                    $closure($entry);
+                    $wrappedEntry = $this->onEntryTransform === null
+                        ? $entry
+                        : call_user_func($this->onEntryTransform, $entry);
+
+                    $closure($wrappedEntry);
                 }
             },
             $count
