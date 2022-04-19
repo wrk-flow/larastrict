@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace LaraStrict\Providers;
 
-use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use LaraStrict\Cache\CacheServiceProvider;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleServiceService;
 use LaraStrict\Context\ContextServiceProvider;
 
-class LaraStrictServiceProvider extends ServiceProvider implements DeferrableProvider
+class LaraStrictServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
