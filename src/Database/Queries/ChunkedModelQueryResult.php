@@ -24,7 +24,8 @@ class ChunkedModelQueryResult
      */
     public function __construct(
         public readonly string $modelClass,
-        public readonly Builder $query
+        public readonly Builder $query,
+        public readonly bool $chunkById = true
     ) {
     }
 
@@ -47,12 +48,17 @@ class ChunkedModelQueryResult
     /**
      * @param Closure(Collection<int,TModel>):void $closure
      */
-    public function onChunkById(Closure $closure, ?int $count = null): bool
+    public function onChunk(Closure $closure, ?int $count = null): bool
     {
         $count ??= 100;
 
-        return $this->query
-            ->chunkById($count, $closure);
+        $this->query->applyScopes();
+
+        if ($this->chunkById) {
+            return $this->query->chunkById($count, $closure);
+        }
+
+        return $this->query->chunk($count, $closure);
     }
 
     /**
@@ -60,10 +66,10 @@ class ChunkedModelQueryResult
      *
      * @return int number of processed entries
      */
-    public function onEntryById(Closure $closure, ?int $count = null): int
+    public function onEntry(Closure $closure, ?int $count = null): int
     {
         $processed = 0;
-        $this->onChunkById(
+        $this->onChunk(
             function (Collection $collection) use ($closure, &$processed): void {
                 ++$processed;
                 foreach ($collection as $entry) {

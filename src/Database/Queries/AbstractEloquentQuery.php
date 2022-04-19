@@ -8,6 +8,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Support\Arr;
 
 /**
  * You must implement abstract public function execute.
@@ -26,9 +27,45 @@ abstract class AbstractEloquentQuery extends AbstractQuery
      *
      * @return ChunkedModelQueryResult<TModel>
      */
-    protected function chunk(array $scopes = []): ChunkedModelQueryResult
+    protected function chunk(array $scopes = [], array $orderBy = []): ChunkedModelQueryResult
     {
-        return new ChunkedModelQueryResult($this->getModelClass(), $this->getQuery($scopes));
+        $modelClass = $this->getModelClass();
+        $query = $this->getQuery($scopes);
+
+        $chunkById = $orderBy === [];
+
+        if ($chunkById === false) {
+            $model = new $modelClass();
+            foreach ($orderBy as $scope) {
+                $scope->apply($query, $model);
+            }
+        }
+
+        return new ChunkedModelQueryResult($modelClass, $query, $chunkById);
+    }
+
+    /**
+     * Inserts given items in batch with automatic chunking to prevent maximum placeholder error.
+     *
+     * @param int $columnsCount Maximum placeholders / number of columns. Uses count on first item.
+     */
+    protected function chunkWrite(array $items, int $columnsCount = 0): void
+    {
+        if ($items === []) {
+            return;
+        }
+
+        if ($columnsCount === 0) {
+            $columnsCount = is_countable(Arr::first($items)) ? count(Arr::first($items)) : 0;
+        }
+
+        // We need to prevent insert max statements by limiting number of insert
+        $maxChunkSize = (int) (65536 / $columnsCount);
+        $modelClass = $this->getModelClass();
+
+        foreach (array_chunk($items, max(1, $maxChunkSize)) as $pricesInChunk) {
+            $modelClass::insert($pricesInChunk);
+        }
     }
 
     /**
