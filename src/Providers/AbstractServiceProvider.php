@@ -7,6 +7,7 @@ namespace LaraStrict\Providers;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 use LaraStrict\Cache\Contracts\BootContexts;
 use LaraStrict\Console\Contracts\HasSchedule;
+use LaraStrict\Console\Contracts\HasScheduleOnEnvironments;
 use LaraStrict\Console\Contracts\HasScheduleOnProduction;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Context\Contexts\AbstractContext;
@@ -38,6 +39,10 @@ abstract class AbstractServiceProvider extends EventServiceProvider
 
     protected function canRegisterSchedule(): bool
     {
+        if ($this instanceof HasScheduleOnEnvironments) {
+            return (bool) $this->app->environment($this->scheduleEnvironments());
+        }
+
         if ($this instanceof HasScheduleOnProduction) {
             return (bool) $this->app->environment([EnvironmentTypes::Production->value]);
         }
