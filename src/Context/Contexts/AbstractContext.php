@@ -14,11 +14,6 @@ use LaraStrict\Context\Services\ContextService;
  */
 abstract class AbstractContext
 {
-    public function useCache(): bool
-    {
-        return false;
-    }
-
     /**
      * In minutes
      */

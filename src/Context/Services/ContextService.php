@@ -9,10 +9,13 @@ use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Container\Container;
 use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
+use LaraStrict\Context\Concerns\UseCache;
+use LaraStrict\Context\Concerns\UseCacheWithTags;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Contexts\AbstractIsContext;
 use LaraStrict\Context\Contracts\ContextValueContract;
 use LaraStrict\Context\Values\BoolContextValue;
+use LaraStrict\Core\Services\ImplementsService;
 
 /**
  * Shareable context values between logic that needs same data. Stored in memory and if context supports its it will
@@ -27,7 +30,8 @@ class ContextService
 
     public function __construct(
         private readonly ContextCallService $callService,
-        private readonly CacheMeServiceContract $cacheMeManager
+        private readonly CacheMeServiceContract $cacheMeManager,
+        private readonly ImplementsService $implementsService
     ) {
     }
 
@@ -48,7 +52,7 @@ class ContextService
         $this->cacheMeManager->set(
             key: $fullCacheKey,
             value: $value,
-            tags: [self::TAG],
+            tags: $this->getTags($context),
             minutes: $context->getCacheTtl()
         );
     }
@@ -60,7 +64,7 @@ class ContextService
         $this->cacheMeManager->set(
             key: $fullCacheKey,
             value: $value,
-            tags: [self::TAG],
+            tags: $this->getTags($context),
             minutes: $context->getCacheTtl(),
             strategy: CacheMeStrategy::Memory
         );
@@ -70,6 +74,7 @@ class ContextService
      * @template T of  ContextValueContract
      *
      * @param Closure(mixed,mixed,mixed): T $createState Create the state
+     *
      * @return T
      */
     public function get(AbstractContext $context, Closure $createState): ContextValueContract
@@ -79,7 +84,7 @@ class ContextService
         return $this->cacheMeManager->get(
             key: $fullCacheKey,
             getValue: fn () => $this->callService->createState($context, $createState),
-            tags: [self::TAG],
+            tags: $this->getTags($context),
             minutes: $context->getCacheTtl(),
             strategy: $this->cacheStrategy($context)
         );
@@ -102,8 +107,20 @@ class ContextService
 
     protected function cacheStrategy(AbstractContext $context): CacheMeStrategy
     {
-        return $context->useCache()
+        return $this->implementsService->check($context, UseCache::class)
             ? CacheMeStrategy::MemoryAndRepository
             : CacheMeStrategy::Memory;
+    }
+
+    protected function getTags(AbstractContext $context): array
+    {
+        $tags = [self::TAG];
+
+        if ($this->implementsService->check($context, UseCacheWithTags::class) === false) {
+            return $tags;
+        }
+
+        /** @var UseCacheWithTags $context */
+        return array_merge($context->tags(), $tags);
     }
 }

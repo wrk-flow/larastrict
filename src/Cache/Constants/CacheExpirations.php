@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace LaraStrict\Cache\Constants;
 
 /**
- * Stores on minutes
+ * Stores on minutes.
  */
 class CacheExpirations
 {
     /**
+     * 720 minutes - 12 hours.
+     *
      * @var int
      */
     final public const HALF_DAY = 720;
 
-    // 720 minutes - 12 hours
     /**
+     * 1 days.
+     *
      * @var int
      */
     final public const Long = 44640;
-
-    // 31 days
 }

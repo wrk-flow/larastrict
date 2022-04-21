@@ -38,13 +38,32 @@ class CacheMeService implements CacheMeServiceContract
     ): mixed {
         $value = null;
         $repositories = $this->repositories($tags, $strategy);
-        foreach ($repositories as $store) {
-            $value = $store->get($key);
+        $hasMoreRepositories = count($repositories) > 1;
+
+        foreach ($repositories as $index => $repository) {
+            $value = $repository->get($key);
 
             // If we have found a value then prevent fetching the data from other repositories.
-            if ($value !== null) {
-                break;
+            if ($value === null) {
+                continue;
             }
+
+            // We need to update our previous stores to allow next "call" to use the faster
+            // store (memory).
+            if ($hasMoreRepositories && $index !== 0) {
+                $updateRepositories = [];
+                foreach ($repositories as $subIndex => $subRepository) {
+                    if ($subIndex === $index) {
+                        break;
+                    }
+
+                    $updateRepositories[] = $subRepository;
+                }
+
+                $this->store($updateRepositories, $key, $value, $tags, $minutes);
+            }
+
+            break;
         }
 
         // If the result is still null it means that the value is not in cache, build it and
@@ -112,7 +131,7 @@ class CacheMeService implements CacheMeServiceContract
      *
      * @template T of Model
      *
-     * @param array|Closure(T):void $tags       If closure, model is passed to the closure. Closure should return an array
+     * @param array|Closure(T):void $tags If closure, model is passed to the closure. Closure should return an array
      * of tags to use. If empty, no flush will be done.
      * @param class-string<T>       $modelClass
      */
@@ -139,9 +158,9 @@ class CacheMeService implements CacheMeServiceContract
     }
 
     /**
-     * Returns store for accessing data.
+     * Returns store for accessing data. Key-ed by CacheDriver.
      *
-     * @return array<int,CacheContract>
+     * @return array<CacheContract>
      */
     protected function repositories(
         array $tags = [],
@@ -189,7 +208,7 @@ class CacheMeService implements CacheMeServiceContract
         ]);
 
         foreach ($repositories as $store) {
-            $store->set($key, $value);
+            $store->set($key, $value, $minutes);
         }
     }
 
