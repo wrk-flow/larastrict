@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\System\Services;
+namespace LaraStrict\Core\Services;
 
 class SleepService
 {
