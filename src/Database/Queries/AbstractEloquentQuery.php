@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Database\Queries;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -17,6 +17,13 @@ use Illuminate\Support\Arr;
  */
 abstract class AbstractEloquentQuery extends AbstractQuery
 {
+    public function getKeyColumn(): string
+    {
+        $modelClass = $this->getModelClass();
+
+        return (new $modelClass())->getKeyName();
+    }
+
     /**
      * @return class-string<TModel>
      */
@@ -71,7 +78,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     /**
      * @param Scope[] $scopes
      *
-     * @return Collection<int, Model>
+     * @return Collection<int, TModel>
      */
     protected function getAll(array $scopes = []): Collection
     {
@@ -81,6 +88,8 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @param Scope[] $scopes
+     *
+     * @return TModel|null
      */
     protected function get(array $scopes = []): ?Model
     {
@@ -90,6 +99,8 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @param Scope[] $scopes
+     *
+     * @return TModel
      */
     protected function getOrFail(array $scopes = []): Model
     {
@@ -99,10 +110,12 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @param Scope[] $scopes
+     *
+     * @return TModel|null
      */
     protected function find(string|int $id, array $scopes = []): ?Model
     {
-        /** @var Model|null $model */
+        /** @var TModel|null $model */
         $model = $this->getQuery($scopes)
             ->find($id);
 
@@ -111,10 +124,12 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @param Scope[] $scopes
+     *
+     * @return TModel
      */
     protected function findOrFail(string|int $id, array $scopes = []): Model
     {
-        /** @var Model $model */
+        /** @var TModel $model */
         $model = $this->getQuery($scopes)
             ->findOrFail($id);
 
@@ -123,6 +138,8 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @param Scope[] $scopes
+     *
+     * @return Builder<TModel>
      */
     protected function getQuery(array $scopes = []): Builder
     {
@@ -131,15 +148,11 @@ abstract class AbstractEloquentQuery extends AbstractQuery
         return $this->getScopedQuery($class::query(), $scopes);
     }
 
-    protected function getIdColumn(): string
-    {
-        $modelClass = $this->getModelClass();
-
-        return (new $modelClass())->getKeyName();
-    }
-
     /**
+     * @param Builder<TModel>     $query
      * @param Scope[]|null[]|null $scopes
+     *
+     * @return Builder<TModel>
      */
     protected function getScopedQuery(Builder $query, ?array $scopes): Builder
     {
