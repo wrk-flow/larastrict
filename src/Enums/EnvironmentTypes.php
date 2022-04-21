@@ -8,4 +8,5 @@ enum EnvironmentTypes: string
 {
     case Production = 'production';
     case Local = 'local';
+    case Testing = 'testing';
 }
