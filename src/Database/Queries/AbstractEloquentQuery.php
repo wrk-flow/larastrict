@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Database\Queries;
 
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -106,6 +107,12 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     {
         return $this->getQuery($scopes)
             ->firstOrFail();
+    }
+
+    protected function paginate(array $scopes = [], ?int $perPage = null): LengthAwarePaginator
+    {
+        return $this->getQuery($scopes)
+            ->paginate($perPage);
     }
 
     /**
