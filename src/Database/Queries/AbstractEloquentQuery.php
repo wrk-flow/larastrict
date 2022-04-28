@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace LaraStrict\Database\Queries;
 
+use Closure;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Arr;
+use LaraStrict\Database\Scopes\OrderScope;
 
 /**
  * You must implement abstract public function execute.
@@ -31,7 +35,8 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     abstract protected function getModelClass(): string;
 
     /**
-     * @param Scope[] $scopes
+     * @param Scope[]           $scopes
+     * @param array<OrderScope> $orderBy
      *
      * @return ChunkedModelQueryResult<TModel>
      */
@@ -130,17 +135,27 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param Scope[]                            $scopes
+     * @param Closure(int|string):Exception|null $customException Creates a custom exceptions if model does not exists.
+     *                                                            Receives $id argument.
      *
      * @return TModel
      */
-    protected function findOrFail(string|int $id, array $scopes = []): Model
+    protected function findOrFail(string|int $key, array $scopes = [], Closure $customException = null): Model
     {
-        /** @var TModel $model */
-        $model = $this->getQuery($scopes)
-            ->findOrFail($id);
+        try {
+            /** @var TModel $model */
+            $model = $this->getQuery($scopes)
+                ->findOrFail($key);
 
-        return $model;
+            return $model;
+        } catch (ModelNotFoundException $modelNotFoundException) {
+            if ($customException === null) {
+                throw $modelNotFoundException;
+            }
+
+            throw $customException($key);
+        }
     }
 
     /**
