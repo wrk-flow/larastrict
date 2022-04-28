@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\Config\RectorConfig;
 use Rector\Core\Configuration\Option;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\Set\ValueObject\LevelSetList;
@@ -9,13 +10,12 @@ use Rector\Set\ValueObject\SetList;
 use Rector\Strict\Rector\BooleanNot\BooleanInBooleanNotRuleFixerRector;
 use Rector\Strict\Rector\Ternary\BooleanInTernaryOperatorRuleFixerRector;
 use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 
-return static function (ContainerConfigurator $containerConfigurator): void {
+return static function (RectorConfig $config): void {
 
     // get parameters
-    $parameters = $containerConfigurator->parameters();
+    $parameters = $config->parameters();
     $parameters->set(Option::PATHS, [
         __DIR__ . '/src',
         __DIR__ . '/tests',
@@ -24,12 +24,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $parameters->set(Option::PHP_VERSION_FEATURES, PhpVersion::PHP_81);
 
     // Define what rule sets will be applied
-    $containerConfigurator->import(LevelSetList::UP_TO_PHP_81);
+    $config->import(LevelSetList::UP_TO_PHP_81);
 
-    $containerConfigurator->import(SetList::CODE_QUALITY);
-    $containerConfigurator->import(SetList::CODING_STYLE);
+    $config->import(SetList::CODE_QUALITY);
+    $config->import(SetList::CODING_STYLE);
 
-    $services = $containerConfigurator->services();
+    $services = $config->services();
     $services->set(AddVoidReturnTypeWhereNoReturnRector::class);
     $services->set(BooleanInBooleanNotRuleFixerRector::class)->configure([
         BooleanInTernaryOperatorRuleFixerRector::TREAT_AS_NON_EMPTY => false,
