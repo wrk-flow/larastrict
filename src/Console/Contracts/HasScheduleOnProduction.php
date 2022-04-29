@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace LaraStrict\Console\Contracts;
 
-interface HasScheduleOnProduction
+interface HasScheduleOnProduction extends HasSchedule
 {
 }
