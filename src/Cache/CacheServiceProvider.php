@@ -16,6 +16,7 @@ class CacheServiceProvider extends ServiceProvider
     {
         parent::register();
 
+        $this->app->singleton(CacheMeService::class, CacheMeService::class);
         $this->app->singleton(CacheMeServiceContract::class, CacheMeService::class);
     }
 
