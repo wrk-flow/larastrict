@@ -1,14 +1,12 @@
 ![](.github/banner.png)
 
-> Current version is under development.
-
-## Write Laravel projects with more strict conventions for more manageable and testable code
+> We aim to make set of futures to allow **easier dev life** without loosing **type safe and testable code.** in Laravel ecosystem.
 
 ![img](https://img.shields.io/badge/PHPStan-8-blue)
 ![php](https://img.shields.io/badge/PHP-8.1-B0B3D6)
 ![laravel](https://img.shields.io/badge/Laravel-9-fb503b)
 
-We aim to make set of futures to allow **easier dev life** without loosing **type safe and testable code.**
+__Current version is under development.__
 
 ```bash
 composer require wrkflow/larastrict
