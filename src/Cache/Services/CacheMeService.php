@@ -33,7 +33,7 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         Closure $getValue,
         array $tags = [],
-        int $minutes = CacheExpirations::HALF_DAY,
+        int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
     ): mixed {
         $value = null;
@@ -86,7 +86,7 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HALF_DAY,
+        int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
     ): void {
         $this->store($this->repositories($tags, $strategy), $key, $value, $tags, $minutes);
@@ -199,7 +199,7 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HALF_DAY
+        int $minutes = CacheExpirations::HalfDay
     ): void {
         $this->logger->debug('Storing cache', [
             'key' => $key,

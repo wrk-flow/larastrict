@@ -14,7 +14,7 @@ class CacheExpirations
      *
      * @var int
      */
-    final public const HALF_DAY = 720;
+    final public const HalfDay = 720;
 
     /**
      * 1 days.

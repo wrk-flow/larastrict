@@ -21,7 +21,7 @@ interface CacheMeServiceContract
         string $key,
         Closure $getValue,
         array $tags = [],
-        int $minutes = CacheExpirations::HALF_DAY,
+        int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
     ): mixed;
 
@@ -32,7 +32,7 @@ interface CacheMeServiceContract
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HALF_DAY,
+        int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
     ): void;
 
