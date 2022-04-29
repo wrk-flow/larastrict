@@ -6,13 +6,13 @@ namespace LaraStrict\Database\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use LaraStrict\Enums\SortDirections;
+use LaraStrict\Enums\SortDirection;
 
 class OrderScope extends AbstractScope
 {
     public function __construct(
         private readonly string $column,
-        private readonly SortDirections $direction = SortDirections::ASC
+        private readonly SortDirection $direction = SortDirection::Asc
     ) {
     }
 
