@@ -3,9 +3,12 @@
 > Place all queries in your domain in `Queries` namespace and always use `Query` suffix.
 
 - 🛠 Wrapping your eloquent/database queries in class allows full easy re-usability and testability.
-- ✓ Test your queries using feature test that will use database connection (ensure it works)
+- ✓ Test your queries using feature test that will use database connection (ensure it works).
 - ☠️ Don't make the query universal, focus on the "business" use case that the query should do.
-
+- ⮑ Always implement `execute` method and setup exact object that will be returned.
+- 🙌 Do not provide to many "arguments". Limit it to max 3. If you need more flexibility, make more queries with "scopes".
+- 🚀 Extend `AbstractEloquentQuery` that contains basic methods for find / get / etc.
+- 🛠 Use `construct` for dependency injections.
 
 ## Chunked queries (select)
 
@@ -77,7 +80,9 @@ class SomeAction
 
 ### Get model for each chunk
 
-First argument is a `Closure` that will receive the `Model`. Second parameter is a chunk size (default 100).
+⮑ First argument is a `Closure` that will receive the `Model`. Second parameter is a chunk size (default 100).
+
+⮐ Returns number of items processed.
 
 ```php
 class SomeAction
@@ -89,10 +94,14 @@ class SomeAction
 
     public function execute(int $providerId): void
     {
-        $this->chunkedProviderObjectTypesQuery->execute($providerId)
+        $found = $this->chunkedProviderObjectTypesQuery->execute($providerId)
             ->onEntry(function (\App\Models\ObjectType $objectType)  {
             
             })
+          
+        if (0 === $found) {
+            // Nothing found
+        }
     }
 }
 ```
