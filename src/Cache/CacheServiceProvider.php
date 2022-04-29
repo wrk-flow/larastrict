@@ -6,6 +6,7 @@ namespace LaraStrict\Cache;
 
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider;
+use LaraStrict\Cache\Commands\FlushCacheCommand;
 use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
 use LaraStrict\Cache\Services\CacheMeService;
@@ -18,6 +19,10 @@ class CacheServiceProvider extends ServiceProvider
 
         $this->app->singleton(CacheMeService::class, CacheMeService::class);
         $this->app->singleton(CacheMeServiceContract::class, CacheMeService::class);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([FlushCacheCommand::class]);
+        }
     }
 
     public function boot(): void
