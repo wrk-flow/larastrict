@@ -60,7 +60,8 @@ class CacheMeService implements CacheMeServiceContract
                     $updateRepositories[] = $subRepository;
                 }
 
-                $this->store($updateRepositories, $key, $value, $tags, $minutes);
+                // Do not spam log
+                $this->store($updateRepositories, $key, $value, $tags, $minutes, false);
             }
 
             break;
@@ -101,6 +102,7 @@ class CacheMeService implements CacheMeServiceContract
     ): void {
         $this->logger->debug('Flushing cache', [
             'tags' => $tags,
+            'strategy' => $strategy->value,
         ]);
 
         foreach ($this->repositories($tags, $strategy) as $repository) {
@@ -119,6 +121,7 @@ class CacheMeService implements CacheMeServiceContract
         $this->logger->debug('Deleting cache', [
             'tags' => $tags,
             'key' => $key,
+            'strategy' => $strategy,
         ]);
 
         foreach ($this->repositories($tags, $strategy) as $store) {
@@ -199,13 +202,21 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HalfDay
+        int $minutes = CacheExpirations::HalfDay,
+        bool $log = true
     ): void {
-        $this->logger->debug('Storing cache', [
-            'key' => $key,
-            'minutes' => $minutes,
-            'tags' => $tags,
-        ]);
+        if ($repositories === []) {
+            return;
+        }
+
+        if ($log) {
+            $this->logger->debug('Storing cache', [
+                'key' => $key,
+                'minutes' => $minutes,
+                'tags' => $tags,
+                'store' => array_map(fn (CacheContract $store) => $store->getStore()::class, $repositories),
+            ]);
+        }
 
         foreach ($repositories as $store) {
             $store->set($key, $value, $minutes);

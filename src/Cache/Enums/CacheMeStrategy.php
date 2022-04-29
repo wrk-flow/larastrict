@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace LaraStrict\Cache\Enums;
 
-enum CacheMeStrategy: int
+enum CacheMeStrategy: string
 {
-    case MemoryAndRepository = 0;
-    case Memory = 1;
-    case Repository = 2;
+    case MemoryAndRepository = 'memory_repository';
+    case Memory = 'memory';
+    case Repository = 'repository';
 }
