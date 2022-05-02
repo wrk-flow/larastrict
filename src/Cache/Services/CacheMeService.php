@@ -36,6 +36,10 @@ class CacheMeService implements CacheMeServiceContract
         int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
     ): mixed {
+        if ($strategy === CacheMeStrategy::None) {
+            return $this->container->call($getValue);
+        }
+
         $value = null;
         $repositories = $this->repositories($tags, $strategy);
         $hasMoreRepositories = count($repositories) > 1;
@@ -170,6 +174,10 @@ class CacheMeService implements CacheMeServiceContract
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
     ): array {
         $stores = [];
+
+        if ($strategy === CacheMeStrategy::None) {
+            return $stores;
+        }
 
         // Memory must be first to prevent calling redis.
         if ($strategy === CacheMeStrategy::Memory
