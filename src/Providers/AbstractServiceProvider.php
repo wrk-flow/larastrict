@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use LaraStrict\Actions\BootServiceProviderAction;
 use LaraStrict\Cache\Contracts\BootContexts;
 use LaraStrict\Console\Contracts\HasSchedule;
 use LaraStrict\Console\Contracts\HasScheduleOnEnvironments;
@@ -35,6 +36,10 @@ abstract class AbstractServiceProvider extends EventServiceProvider
         if ($this instanceof BootContexts) {
             $this->bootContexts($this->contexts());
         }
+
+        /** @var BootServiceProviderAction $boot */
+        $boot = $this->app->make(BootServiceProviderAction::class);
+        $boot->execute($this->app, $this);
     }
 
     protected function canRegisterSchedule(): bool

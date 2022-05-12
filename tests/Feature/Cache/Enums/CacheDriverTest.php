@@ -9,7 +9,7 @@ use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Contracts\Cache\Repository;
 use InvalidArgumentException;
 use LaraStrict\Cache\Enums\CacheDriver;
-use Tests\LaraStrict\TestCase;
+use Tests\LaraStrict\Feature\TestCase;
 
 class CacheDriverTest extends TestCase
 {

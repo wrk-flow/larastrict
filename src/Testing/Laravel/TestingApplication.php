@@ -1,0 +1,264 @@
+<?php
+
+declare(strict_types=1);
+
+namespace LaraStrict\Testing\Laravel;
+
+use Closure;
+use Illuminate\Container\ContextualBindingBuilder;
+use Illuminate\Contracts\Foundation\Application;
+use Tests\LaraStrict\App\Providers\TestingServiceProvider;
+
+/**
+ * A testing application class that helps you to not use mocks.
+ */
+class TestingApplication implements Application
+{
+    public function __construct(
+        public string $currentEnvironment = 'testing',
+        public bool $runningInConsole = false,
+        public bool $isDownForMaintenance = false,
+        public MaintenanceMode $maintenanceMode = new MaintenanceMode()
+    ) {
+    }
+
+    public function version()
+    {
+        return 'test';
+    }
+
+    public function basePath($path = '')
+    {
+        return 'base/' . $path;
+    }
+
+    public function bootstrapPath($path = '')
+    {
+        return 'bootstrap/' . $path;
+    }
+
+    public function configPath($path = '')
+    {
+        return 'config/' . $path;
+    }
+
+    public function databasePath($path = '')
+    {
+        return 'database/' . $path;
+    }
+
+    public function resourcePath($path = '')
+    {
+        return 'resource/' . $path;
+    }
+
+    public function storagePath($path = '')
+    {
+        return 'storage/' . $path;
+    }
+
+    public function environment(...$environments)
+    {
+        return in_array($this->currentEnvironment, $environments, true);
+    }
+
+    public function runningInConsole()
+    {
+        return $this->runningInConsole;
+    }
+
+    public function runningUnitTests()
+    {
+        return true;
+    }
+
+    public function maintenanceMode()
+    {
+        return $this->maintenanceMode;
+    }
+
+    public function isDownForMaintenance()
+    {
+        return $this->isDownForMaintenance;
+    }
+
+    public function registerConfiguredProviders()
+    {
+    }
+
+    public function register($provider, $force = false)
+    {
+        return new TestingServiceProvider($this, $provider);
+    }
+
+    public function registerDeferredProvider($provider, $service = null)
+    {
+    }
+
+    public function resolveProvider($provider)
+    {
+        return new TestingServiceProvider($this, $provider);
+    }
+
+    public function boot()
+    {
+    }
+
+    public function booting($callback)
+    {
+    }
+
+    public function booted($callback)
+    {
+    }
+
+    public function bootstrapWith(array $bootstrappers)
+    {
+    }
+
+    public function getLocale()
+    {
+        return 'en';
+    }
+
+    public function getNamespace()
+    {
+        return __NAMESPACE__;
+    }
+
+    public function getProviders($provider)
+    {
+        return [];
+    }
+
+    public function hasBeenBootstrapped()
+    {
+        return false;
+    }
+
+    public function loadDeferredProviders()
+    {
+    }
+
+    public function setLocale($locale)
+    {
+    }
+
+    public function shouldSkipMiddleware()
+    {
+        return false;
+    }
+
+    public function terminating($callback)
+    {
+        return $this;
+    }
+
+    public function terminate()
+    {
+    }
+
+    public function bound($abstract)
+    {
+        return false;
+    }
+
+    public function alias($abstract, $alias)
+    {
+    }
+
+    public function tag($abstracts, $tags)
+    {
+    }
+
+    public function tagged($tag)
+    {
+        return [];
+    }
+
+    public function bind($abstract, $concrete = null, $shared = false)
+    {
+    }
+
+    public function bindIf($abstract, $concrete = null, $shared = false)
+    {
+    }
+
+    public function singleton($abstract, $concrete = null)
+    {
+    }
+
+    public function singletonIf($abstract, $concrete = null)
+    {
+    }
+
+    public function scoped($abstract, $concrete = null)
+    {
+    }
+
+    public function scopedIf($abstract, $concrete = null)
+    {
+    }
+
+    public function extend($abstract, Closure $closure)
+    {
+    }
+
+    public function instance($abstract, $instance)
+    {
+    }
+
+    public function addContextualBinding($concrete, $abstract, $implementation)
+    {
+    }
+
+    public function when($concrete)
+    {
+        return new ContextualBindingBuilder($this, $concrete);
+    }
+
+    public function factory($abstract)
+    {
+        return function () {
+        };
+    }
+
+    public function flush()
+    {
+    }
+
+    public function make($abstract, array $parameters = [])
+    {
+    }
+
+    public function call($callback, array $parameters = [], $defaultMethod = null)
+    {
+    }
+
+    public function resolved($abstract)
+    {
+        return false;
+    }
+
+    public function beforeResolving($abstract, Closure $callback = null)
+    {
+    }
+
+    public function resolving($abstract, Closure $callback = null)
+    {
+    }
+
+    public function afterResolving($abstract, Closure $callback = null)
+    {
+    }
+
+    public function get(string $id)
+    {
+        return null;
+    }
+
+    public function has(string $id): bool
+    {
+        return false;
+    }
+}

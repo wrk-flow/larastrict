@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace LaraStrict\Providers;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
+use LaraStrict\Actions\BootLaraStrictAction;
+use LaraStrict\Actions\RunAppServiceProviderPipesAction;
 use LaraStrict\Cache\CacheServiceProvider;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleServiceService;
 use LaraStrict\Context\ContextServiceProvider;
+use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 
 class LaraStrictServiceProvider extends ServiceProvider
 {
@@ -25,6 +25,8 @@ class LaraStrictServiceProvider extends ServiceProvider
         // Add ability to "switch" the implementation.
         $this->app->singleton(ScheduleServiceContract::class, ScheduleServiceContract::class);
         $this->app->alias(ScheduleServiceService::class, ScheduleServiceContract::class);
+
+        $this->app->bind(RunAppServiceProviderPipesActionContract::class, RunAppServiceProviderPipesAction::class);
     }
 
     /**
@@ -32,30 +34,9 @@ class LaraStrictServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // TODO config
-        $this->setupFactoryResolving();
+        /** @var BootLaraStrictAction $boot */
+        $boot = $this->app->make(BootLaraStrictAction::class);
 
-        // TODO config
-        // Model::preventLazyLoading(true);
-    }
-
-    /**
-     * We want to place factories in same folder as the model.
-     */
-    protected function setupFactoryResolving(): void
-    {
-        Factory::guessFactoryNamesUsing(function (string $class) {
-            /** @var class-string<Factory<Model>> $factoryClass */
-            $factoryClass = $class . 'Factory';
-
-            return $factoryClass;
-        });
-
-        Factory::guessModelNamesUsing(function (Factory $factory) {
-            /** @var class-string<Model> $class */
-            $class = Str::replaceLast('Factory', '', $factory::class);
-
-            return $class;
-        });
+        $boot->execute($this->app, $this);
     }
 }
