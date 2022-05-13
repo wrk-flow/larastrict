@@ -24,10 +24,12 @@ abstract class AbstractTranslations
      */
     abstract public function getLocalizationKey(): string;
 
-    /**
-     * @return string|array<string>
-     */
-    protected function get(string $key, array $replace = [], ?string $locale = null): string|array
+    protected function get(string $key, array $replace = [], ?string $locale = null): string
+    {
+        return $this->translator->get($this->getKey($key), $replace, $locale);
+    }
+
+    protected function getArray(string $key, array $replace = [], ?string $locale = null): array
     {
         return $this->translator->get($this->getKey($key), $replace, $locale);
     }
