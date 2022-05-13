@@ -30,6 +30,16 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
+     * @return TModel
+     */
+    public function make(array $attributes = []): Model
+    {
+        $modelClass = $this->getModelClass();
+
+        return new $modelClass($attributes);
+    }
+
+    /**
      * @return class-string<TModel>
      */
     abstract protected function getModelClass(): string;
