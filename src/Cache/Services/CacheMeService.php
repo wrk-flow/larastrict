@@ -6,6 +6,7 @@ namespace LaraStrict\Cache\Services;
 
 use Closure;
 use Illuminate\Cache\Repository;
+use Illuminate\Cache\TaggedCache;
 use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Contracts\Cache\Repository as CacheContract;
 use Illuminate\Contracts\Container\Container;
@@ -15,6 +16,7 @@ use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheDriver;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
+use LaraStrict\Cache\Exceptions\CacheTagsNotSupportedException;
 use Psr\Log\LoggerInterface;
 
 class CacheMeService implements CacheMeServiceContract
@@ -99,6 +101,8 @@ class CacheMeService implements CacheMeServiceContract
 
     /**
      * Flush cache for given tags (optional).
+     *
+     * Beware that this will cause queue flush too if using redis!
      */
     public function flush(
         array $tags = [],
@@ -110,7 +114,11 @@ class CacheMeService implements CacheMeServiceContract
         ]);
 
         foreach ($this->repositories($tags, $strategy) as $repository) {
-            $repository->clear();
+            if ($repository instanceof TaggedCache) {
+                $repository->flush();
+            } else {
+                $repository->clear();
+            }
         }
     }
 
@@ -138,7 +146,7 @@ class CacheMeService implements CacheMeServiceContract
      *
      * @template T of Model
      *
-     * @param array|Closure(T):void $tags If closure, model is passed to the closure. Closure should return an array
+     * @param array|Closure(T):void $tags       If closure, model is passed to the closure. Closure should return an array
      * of tags to use. If empty, no flush will be done.
      * @param class-string<T>       $modelClass
      */
@@ -192,7 +200,11 @@ class CacheMeService implements CacheMeServiceContract
 
             if ($repository instanceof Repository === false) {
                 $this->logger->warning('Un-supported repository storage');
-            } elseif ($tags !== [] && $repository->supportsTags()) {
+            } elseif ($tags !== []) {
+                if ($repository->supportsTags() === false) {
+                    throw new CacheTagsNotSupportedException();
+                }
+
                 $stores[] = $repository->tags($tags);
             } else {
                 $stores[] = $repository;
