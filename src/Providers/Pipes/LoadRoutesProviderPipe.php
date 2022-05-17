@@ -10,6 +10,7 @@ use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Str;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
 use LaraStrict\Contracts\HasRoutes;
+use LaraStrict\Contracts\HasVersionedApiRoutes;
 use LaraStrict\Entities\AppServiceProviderEntity;
 
 class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
@@ -32,13 +33,13 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
 
             $urlPrefix = Str::plural($serviceName);
 
-            $api = $dir . sprintf('/Http/routes/%s_api.php', $serviceName);
-
-            if (file_exists($api)) {
-                $this->router
-                    ->prefix(sprintf('api/%s', $urlPrefix))
-                    ->middleware('api')
-                    ->group($api);
+            // Force the user to use versioned api or un-versioned api routes
+            if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes) {
+                foreach ($appServiceProvider->serviceProvider->apiVersions() as $version) {
+                    $this->loadApiRoute($dir, $serviceName, $urlPrefix, $version);
+                }
+            } else {
+                $this->loadApiRoute($dir, $serviceName, $urlPrefix);
             }
 
             $web = $dir . sprintf('/Http/routes/%s_web.php', $serviceName);
@@ -52,5 +53,20 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
         }
 
         $next($appServiceProvider);
+    }
+
+    protected function loadApiRoute(string $dir, string $serviceName, string $urlPrefix, ?int $version = null): void
+    {
+        $versionFileSuffix = $version === null ? '' : '_v' . $version;
+        $versionRoutePrefix = $version === null ? '' : 'v' . $version . '/';
+
+        $api = $dir . sprintf('/Http/routes/%s_api%s.php', $serviceName, $versionFileSuffix);
+
+        if (file_exists($api)) {
+            $this->router
+                ->prefix(sprintf('api/%s%s', $versionRoutePrefix, $urlPrefix))
+                ->middleware('api')
+                ->group($api);
+        }
     }
 }
