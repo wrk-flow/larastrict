@@ -9,6 +9,7 @@ use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Str;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
+use LaraStrict\Contracts\HasCustomPrefixRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\HasVersionedApiRoutes;
 use LaraStrict\Entities\AppServiceProviderEntity;
@@ -31,7 +32,10 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
             $dir = $appServiceProvider->serviceRootDir;
             $serviceName = $appServiceProvider->serviceName;
 
-            $urlPrefix = Str::plural($serviceName);
+            $prefix = Str::plural($serviceName);
+            $urlPrefix = $appServiceProvider->serviceProvider instanceof HasCustomPrefixRoutes
+                ? $appServiceProvider->serviceProvider->getRoutePrefix($prefix)
+                : $prefix;
 
             // Force the user to use versioned api or un-versioned api routes
             if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes) {
