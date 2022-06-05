@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Filesystem;
 
+use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
 
-class Filesystem implements FilesystemContract
+class Filesystem implements FilesystemContract, Cloud
 {
-    public array $exists;
-
     /**
      * A map of paths with boolean state if it exists.
      *
      * @var array<bool>
      */
-    public array $existsMap = [];
+    public array $exists = [];
 
     public function __construct(public readonly string $diskName = 'default')
     {
@@ -119,5 +118,10 @@ class Filesystem implements FilesystemContract
     public function deleteDirectory($directory): bool
     {
         return false;
+    }
+
+    public function url($path)
+    {
+        return 'http://localhost/' . $path;
     }
 }
