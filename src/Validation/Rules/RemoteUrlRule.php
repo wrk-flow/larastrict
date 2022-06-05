@@ -33,6 +33,7 @@ class RemoteUrlRule implements Rule
 
             return $notReservedIp !== false;
         }
+
         // Must contain top level domain
         return preg_match('#^[\w\d\-.]{1,63}\.[a-z]{2,6}$#', $host) !== 0;
     }
