@@ -34,7 +34,7 @@ abstract class AbstractTranslations
         return $this->translator->get($this->getKey($key), $replace, $locale);
     }
 
-    protected function choice(
+    protected function getChoice(
         string $key,
         int|array|Countable $number,
         array $replace = [],
