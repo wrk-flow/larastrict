@@ -13,6 +13,12 @@ class RunInTransactionAction
     {
     }
 
+    /**
+     * @template T
+     * @param Closure():T $callback
+     *
+     * @return T
+     */
     public function execute(Closure $callback, int $attempts = 1): mixed
     {
         return $this->connection->transaction($callback, $attempts);
