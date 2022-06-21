@@ -23,9 +23,6 @@ use LaraStrict\Core\Services\ImplementsService;
  */
 class ContextService
 {
-    /**
-     * @var string
-     */
     protected const TAG = 'context';
 
     public function __construct(

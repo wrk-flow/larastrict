@@ -12,14 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 abstract class AbstractInScope extends AbstractScope
 {
-    /**
-     * @var string
-     */
     final public const BOOLEAN_AND = 'and';
 
-    /**
-     * @var string
-     */
     final public const BOOLEAN_OR = 'or';
 
     private string $boolean = self::BOOLEAN_AND;

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodingStyle\Rector\ClassConst\VarConstantCommentRector;
 use Rector\CodingStyle\Rector\ClassMethod\UnSpreadOperatorRector;
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
@@ -30,5 +31,6 @@ return static function (RectorConfig $config): void {
     // SKIP laravel
     $config->skip([
         UnSpreadOperatorRector::class => [__DIR__ . '/src/Testing/Laravel/TestingApplication.php'],
+        VarConstantCommentRector::class,
     ]);
 };

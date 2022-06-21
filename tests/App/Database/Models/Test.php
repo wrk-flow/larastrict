@@ -14,9 +14,6 @@ class Test extends Model
 {
     use HasFactory;
 
-    /**
-     * @var string
-     */
     final public const ATTRIBUTE_TEST = 'test';
 
     protected $fillable = [self::ATTRIBUTE_TEST];

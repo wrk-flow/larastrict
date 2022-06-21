@@ -10,9 +10,6 @@ use Illuminate\Database\QueryException;
 
 class SafeUniqueSaveAction
 {
-    /**
-     * @var int
-     */
     protected const DUPLICATION_ERROR_CODE = 1062;
 
     /**
