@@ -7,6 +7,7 @@ namespace LaraStrict\Actions;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use LaraStrict\Contracts\HasCustomServiceName;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Entities\AppServiceProviderEntity;
 use LaraStrict\Providers\Pipes\LoadRoutesProviderPipe;
@@ -25,7 +26,7 @@ class BootServiceProviderAction
         $reflection = new ReflectionClass($provider);
 
         $dir = $this->getRootDirectory($reflection);
-        $serviceName = $this->getServiceName($reflection);
+        $serviceName = $this->getServiceName($reflection, $provider);
         $pipes = [LoadRoutesProviderPipe::class];
 
         $app = new AppServiceProviderEntity($application, $provider, $serviceName, $dir);
@@ -49,8 +50,12 @@ class BootServiceProviderAction
     /**
      * @param ReflectionClass<ServiceProvider> $reflection
      */
-    protected function getServiceName(ReflectionClass $reflection): string
+    protected function getServiceName(ReflectionClass $reflection, ServiceProvider $provider): string
     {
+        if ($provider instanceof HasCustomServiceName) {
+            return $provider->getServiceName();
+        }
+
         $parts = explode('\\', $reflection->getNamespaceName());
         return Str::snake(end($parts));
     }

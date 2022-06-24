@@ -29,34 +29,36 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
                 return;
             }
 
-            $dir = $appServiceProvider->serviceRootDir;
-            $serviceName = $appServiceProvider->serviceName;
-
-            $prefix = Str::plural($serviceName);
-            $urlPrefix = $appServiceProvider->serviceProvider instanceof HasCustomPrefixRoutes
-                ? $appServiceProvider->serviceProvider->getRoutePrefix($prefix)
-                : $prefix;
-
-            // Force the user to use versioned api or un-versioned api routes
-            if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes) {
-                foreach ($appServiceProvider->serviceProvider->apiVersions() as $version) {
-                    $this->loadApiRoute($dir, $serviceName, $urlPrefix, $version);
-                }
-            } else {
-                $this->loadApiRoute($dir, $serviceName, $urlPrefix);
-            }
-
-            $web = $dir . sprintf('/Http/routes/%s_web.php', $serviceName);
-
-            if (file_exists($web)) {
-                $this->router
-                    ->prefix($urlPrefix)
-                    ->middleware('web')
-                    ->group($web);
-            }
+            $this->loadRoutes($appServiceProvider);
         }
 
         $next($appServiceProvider);
+    }
+
+    protected function loadRoutes(AppServiceProviderEntity $appServiceProvider): void
+    {
+        $dir = $appServiceProvider->serviceRootDir;
+        $serviceName = $appServiceProvider->serviceName;
+
+        $urlPrefix = $this->getUrlPrefix($serviceName, $appServiceProvider);
+
+        // Force the user to use versioned api or un-versioned api routes
+        if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes) {
+            foreach ($appServiceProvider->serviceProvider->apiVersions() as $version) {
+                $this->loadApiRoute($dir, $serviceName, $urlPrefix, $version);
+            }
+        } else {
+            $this->loadApiRoute($dir, $serviceName, $urlPrefix);
+        }
+
+        $web = $dir . sprintf('/Http/routes/%s_web.php', $serviceName);
+
+        if (file_exists($web)) {
+            $this->router
+                ->prefix($urlPrefix)
+                ->middleware('web')
+                ->group($web);
+        }
     }
 
     protected function loadApiRoute(string $dir, string $serviceName, string $urlPrefix, ?int $version = null): void
@@ -72,5 +74,13 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
                 ->middleware('api')
                 ->group($api);
         }
+    }
+
+    private function getUrlPrefix(string $serviceName, AppServiceProviderEntity $appServiceProvider): string
+    {
+        $prefix = Str::plural($serviceName);
+        return $appServiceProvider->serviceProvider instanceof HasCustomPrefixRoutes
+            ? $appServiceProvider->serviceProvider->getRoutePrefix($prefix)
+            : $prefix;
     }
 }
