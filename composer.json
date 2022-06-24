@@ -47,6 +47,9 @@
             "Tests\\LaraStrict\\": "tests/"
         }
     },
+    "suggest": {
+        "php-http/mock-client": "Use this package for testing HTTP/s clients."
+    },
     "extra": {
         "laravel": {
             "providers": [

@@ -6,6 +6,7 @@ namespace LaraStrict\Testing\Laravel;
 
 use Closure;
 use Illuminate\Container\ContextualBindingBuilder;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use Tests\LaraStrict\App\Providers\TestingServiceProvider;
 
@@ -14,6 +15,13 @@ use Tests\LaraStrict\App\Providers\TestingServiceProvider;
  */
 class TestingApplication implements Application
 {
+    /**
+     * A map of closures that will create
+     *
+     * @var array<string, Closure(array):?object>
+     */
+    private array $makeBindings = [];
+
     public function __construct(
         public string $currentEnvironment = 'testing',
         public bool $runningInConsole = false,
@@ -229,6 +237,27 @@ class TestingApplication implements Application
 
     public function make($abstract, array $parameters = [])
     {
+        $make = $this->makeBindings[$abstract] ?? null;
+
+        if ($make === null) {
+            throw new BindingResolutionException('Binding not set ' . $abstract);
+        }
+
+        $result = $make($parameters);
+
+        if ($result === null) {
+            throw new BindingResolutionException('Failed to resolve ' . $abstract);
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Closure(array):?object $make Closure that will receive make parameters and should return an object.
+     */
+    public function makeReturns(string $abstract, Closure $make): void
+    {
+        $this->makeBindings[$abstract] = $make;
     }
 
     public function call($callback, array $parameters = [], $defaultMethod = null)
