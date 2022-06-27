@@ -16,17 +16,21 @@ use Tests\LaraStrict\App\Providers\TestingServiceProvider;
 class TestingApplication implements Application
 {
     /**
-     * A map of closures that will create
-     *
-     * @var array<string, Closure(array):?object>
+     * @param string          $currentEnvironment
+     * @param bool            $runningInConsole
+     * @param bool            $isDownForMaintenance
+     * @param MaintenanceMode $maintenanceMode
+     * @param array<string, Closure(array):?object>           $makeBindings A map of closures that will create
+     * @param Closure(array):(object|null)|null $makeAlwaysBinding If makeBindings has no entry, it will call make on this
+     *                                                          closure.
      */
-    private array $makeBindings = [];
-
     public function __construct(
         public string $currentEnvironment = 'testing',
         public bool $runningInConsole = false,
         public bool $isDownForMaintenance = false,
-        public MaintenanceMode $maintenanceMode = new MaintenanceMode()
+        public MaintenanceMode $maintenanceMode = new MaintenanceMode(),
+        private array $makeBindings = [],
+        private Closure|null $makeAlwaysBinding = null,
     ) {
     }
 
@@ -239,6 +243,10 @@ class TestingApplication implements Application
     {
         $make = $this->makeBindings[$abstract] ?? null;
 
+        if ($make === null && $this->makeAlwaysBinding !== null) {
+            $make = $this->makeAlwaysBinding;
+        }
+
         if ($make === null) {
             throw new BindingResolutionException('Binding not set ' . $abstract);
         }
@@ -258,6 +266,11 @@ class TestingApplication implements Application
     public function makeReturns(string $abstract, Closure $make): void
     {
         $this->makeBindings[$abstract] = $make;
+    }
+
+    public function makeAlwaysReturn(Closure $make): void
+    {
+        $this->makeAlwaysBinding = $make;
     }
 
     public function call($callback, array $parameters = [], $defaultMethod = null)
