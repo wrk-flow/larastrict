@@ -16,13 +16,16 @@ use Tests\LaraStrict\App\Providers\TestingServiceProvider;
 class TestingApplication implements Application
 {
     /**
-     * @param string          $currentEnvironment
-     * @param bool            $runningInConsole
-     * @param bool            $isDownForMaintenance
-     * @param MaintenanceMode $maintenanceMode
-     * @param array<string, Closure(array):?object>           $makeBindings A map of closures that will create
-     * @param Closure(array):(object|null)|null $makeAlwaysBinding If makeBindings has no entry, it will call make on this
-     *                                                          closure.
+     * @param string                                      $currentEnvironment
+     * @param bool                                        $runningInConsole
+     * @param bool                                        $isDownForMaintenance
+     * @param MaintenanceMode                             $maintenanceMode
+     * @param array<string, Closure(array):(object|null)> $makeBindings      A map of closures that will create.
+     *                                                                       Receives make $parameters and $abstract
+     *                                                                       string
+     * @param Closure(array,string):(object|null)|null    $makeAlwaysBinding If makeBindings has no entry, it will call
+     *                                                                       make on this closure. Receives make
+     *                                                                       $parameters and $abstract string
      */
     public function __construct(
         public string $currentEnvironment = 'testing',
@@ -251,7 +254,7 @@ class TestingApplication implements Application
             throw new BindingResolutionException('Binding not set ' . $abstract);
         }
 
-        $result = $make($parameters);
+        $result = $make($parameters, $abstract);
 
         if ($result === null) {
             throw new BindingResolutionException('Failed to resolve ' . $abstract);
