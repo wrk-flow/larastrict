@@ -1,0 +1,10 @@
+{
+  "name": "php-api-sdk-builder",
+  "short_name": "php-api-sdk-builder",
+  "icons": [],
+  "start_url": "/?standalone=true",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#F9322C",
+  "lang": "en"
+}
