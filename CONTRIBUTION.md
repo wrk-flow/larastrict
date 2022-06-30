@@ -56,3 +56,8 @@ composer run check
 ```
 2. `composer require wrkflow/larastrict:*`
 4. (optional, IDEA) Mark `core/src` directory as `Sources root` and set `Larastrict` as the namespace.
+
+
+## Fixes
+
+- `nikic/php-parser` - on `v4.13.0` enum with value named Array fails to be parsed, `v4.14.0` works
