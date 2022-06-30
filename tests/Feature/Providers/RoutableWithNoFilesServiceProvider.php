@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\App\Providers;
+namespace Tests\LaraStrict\Feature\Providers;
 
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Providers\AbstractServiceProvider;

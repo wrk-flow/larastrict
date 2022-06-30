@@ -15,27 +15,30 @@
         "laravel/framework": "^9"
     },
     "require-dev": {
-        "mockery/mockery": "^1.5",
-        "nunomaduro/larastan": "^2.1",
-        "orchestra/testbench": "^7.4",
-        "phpstan/phpstan": "^1.4.10",
+        "mockery/mockery": "^1.5.0",
+        "nunomaduro/larastan": "^2.1.11",
+        "orchestra/testbench": "^v7.5.0",
+        "phpstan/phpstan": "^1.8.0",
         "phpstan/phpstan-deprecation-rules": "^1.0.0",
-        "phpstan/phpstan-mockery": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0.0",
-        "phpunit/phpunit": "^9.5.20",
-        "rector/rector": "^0.12.17",
-        "symplify/easy-coding-standard": "^10.1"
+        "phpstan/phpstan-mockery": "^1.1.0",
+        "phpstan/phpstan-phpunit": "^1.1.1",
+        "phpunit/phpunit": "^9.5.21",
+        "rector/rector": "^0.13.7",
+        "symplify/easy-coding-standard": "^11.0.6"
     },
     "scripts": {
         "post-autoload-dump": [
             "@php ./vendor/bin/testbench package:discover --ansi"
         ],
         "check": "composer lint && composer test",
+        "lint:check": "./vendor/bin/ecs",
         "lint:fix": "./vendor/bin/ecs --fix",
         "lint:stan": "./vendor/bin/phpstan",
+        "lint:upgrade:check": "vendor/bin/rector process --dry-run",
         "lint:upgrade": "vendor/bin/rector process",
         "lint": "composer lint:upgrade && composer lint:fix && composer lint:stan",
-        "test": "./vendor/bin/phpunit"
+        "test": "./vendor/bin/phpunit",
+        "test:coverage": "./vendor/bin/phpunit --coverage-text"
     },
     "autoload": {
         "psr-4": {
@@ -44,11 +47,14 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\LaraStrict\\": "tests/"
+            "Tests\\LaraStrict\\Feature\\": "tests/Feature/",
+            "Tests\\LaraStrict\\Unit\\": "tests/Unit/"
         }
     },
     "suggest": {
-        "php-http/mock-client": "Use this package for testing HTTP/s clients."
+        "php-http/mock-client": "Use this package for testing HTTP/s clients.",
+        "wrk-flow/php-api-sdk-builder": "Wrap external APIs with type safe API client",
+        "wrk-flow/php-get-type-value": "Get values from array/xml in type safe maner"
     },
     "extra": {
         "laravel": {

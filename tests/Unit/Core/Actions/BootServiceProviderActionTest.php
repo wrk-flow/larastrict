@@ -8,8 +8,8 @@ use LaraStrict\Actions\BootServiceProviderAction;
 use LaraStrict\Providers\Pipes\LoadRoutesProviderPipe;
 use LaraStrict\Testing\Actions\TestRunAppServiceProviderAction;
 use LaraStrict\Testing\Laravel\TestingApplication;
+use LaraStrict\Testing\Laravel\TestingServiceProvider;
 use PHPUnit\Framework\TestCase;
-use Tests\LaraStrict\App\Providers\TestingServiceProvider;
 
 class BootServiceProviderActionTest extends TestCase
 {

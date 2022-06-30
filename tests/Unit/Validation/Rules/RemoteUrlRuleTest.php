@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Validation\Rules;
+namespace Tests\LaraStrict\Unit\Validation\Rules;
 
 use LaraStrict\Validation\Rules\RemoteUrlRule;
 use PHPUnit\Framework\TestCase;

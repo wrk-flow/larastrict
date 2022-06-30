@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Container\ContextualBindingBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
-use Tests\LaraStrict\App\Providers\TestingServiceProvider;
 
 /**
  * A testing application class that helps you to not use mocks.

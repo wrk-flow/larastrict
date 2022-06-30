@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Providers;
 
+use LaraStrict\Testing\Laravel\TestingServiceProvider;
 use LaraStrict\Testing\Providers\Concerns\AssertProviderRegistersRoutes;
-use Tests\LaraStrict\App\Providers\RoutableWithNoFilesServiceProvider;
-use Tests\LaraStrict\App\Providers\TestingServiceProvider;
-use Tests\LaraStrict\App\Providers\WithApi\WithApiServiceProvider;
-use Tests\LaraStrict\App\Providers\WithBoth\WithBothServiceProvider;
-use Tests\LaraStrict\App\Providers\WithWeb\WithWebServiceProvider;
+use Tests\LaraStrict\Feature\Providers\WithApi\WithApiServiceProvider;
+use Tests\LaraStrict\Feature\Providers\WithBoth\WithBothServiceProvider;
+use Tests\LaraStrict\Feature\Providers\WithWeb\WithWebServiceProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 /**
