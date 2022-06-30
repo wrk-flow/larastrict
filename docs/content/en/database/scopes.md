@@ -1,4 +1,7 @@
-# Scopes
+---
+title: Scopes
+category: Database
+---
 
 > Place all scopes in your domain in `Models\Scopes` namespace and always use `Scope` suffix.
 

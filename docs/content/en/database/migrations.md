@@ -1,4 +1,7 @@
-## Migrations
+---
+title: Migrations
+category: Database
+---
 
 - When migration is executed on production it is recommended to purge the migration (so refactoring will not break the migrations).
 - Use constants for attributes / length in your model.

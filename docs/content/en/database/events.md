@@ -1,4 +1,7 @@
-# Events
+---
+title: Events
+category: Database
+---
 
 > For this example we are working in ObjectProvider domain.
 

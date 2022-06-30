@@ -1,4 +1,7 @@
-# Database query
+---
+title: Queries
+category: Database
+---
 
 > Place all queries in your domain in `Queries` namespace and always use `Query` suffix.
 

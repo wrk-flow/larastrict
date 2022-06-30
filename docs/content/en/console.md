@@ -1,4 +1,6 @@
-# Console
+---
+title: Console
+---
 
 ## Schedule
 

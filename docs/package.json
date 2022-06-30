@@ -1,0 +1,31 @@
+{
+  "name": "php-api-sdk-builder",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PHP SDK builder documentation.",
+  "main": "nuxt.config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wrk-flow/php-api-sdk-builder.git"
+  },
+  "author": "Martin Kluska <martin@kluska.cz>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wrk-flow/php-api-sdk-builder/issues"
+  },
+  "homepage": "https://github.com/wrk-flow/php-api-sdk-builder#readme",
+  "dependencies": {
+    "@nuxt/content-theme-docs": "^0.11.1",
+    "nuxt": "^2.15.8"
+  }
+}

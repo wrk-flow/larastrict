@@ -1,0 +1,12 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v**
+jobs:
+  run:
+    uses: wrk-flow/reusable-workflows/.github/workflows/deploy-docs.yml@main
+    secrets: inherit

@@ -1,4 +1,6 @@
-# Testing
+---
+title: Testing
+---
 
 The main goal is to prevent using Mockery and implement real mocks that conforms interface of your actions / queries / etc.
 
