@@ -17,8 +17,8 @@ class BootServiceProviderActionTest extends TestCase
     {
         $runAction = new TestRunAppServiceProviderAction(
             expectedPipes: [LoadRoutesProviderPipe::class],
-            expectedServiceName: 'providers', // taken from App\Testing namespace
-            expectServiceRootDirToEndWith: 'tests/App/Providers',
+            expectedServiceName: 'laravel', // taken from App\Testing\Laravel namespace
+            expectServiceRootDirToEndWith: 'src/Testing/Laravel',
         );
 
         $bootAction = new BootServiceProviderAction($runAction);

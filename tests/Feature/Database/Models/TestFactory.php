@@ -14,7 +14,8 @@ class TestFactory extends Factory
     public function definition()
     {
         return [
-            Test::ATTRIBUTE_TEST => 1,
+            Test::AttributeTest => 1,
+            Test::AttributeDeletedAt => null,
         ];
     }
 }

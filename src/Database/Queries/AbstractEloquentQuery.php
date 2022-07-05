@@ -203,25 +203,26 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Builder<TModel>     $query
+     * @param Builder<TModel>     $builder
      * @param Scope[]|null[]|null $scopes
      *
      * @return Builder<TModel>
      */
-    protected function getScopedQuery(Builder $query, ?array $scopes): Builder
+    protected function getScopedQuery(Builder $builder, ?array $scopes): Builder
     {
         if ($scopes === null) {
-            return $query;
+            return $builder;
         }
 
-        foreach ($scopes as $i => $scope) {
+        foreach ($scopes as $scope) {
             if ($scope === null) {
                 continue;
             }
 
-            $query->withGlobalScope($i, $scope);
+            // We are unable to reuse applyScope logic due protected methods (our scopes can contain withoutGlobalScope)
+            $scope->apply($builder, $builder->getModel());
         }
 
-        return $query;
+        return $builder;
     }
 }

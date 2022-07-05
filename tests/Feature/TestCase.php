@@ -13,4 +13,9 @@ abstract class TestCase extends BaseTestCase
     {
         return [LaraStrictServiceProvider::class];
     }
+
+    protected function defineDatabaseMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/Database/Migrations');
+    }
 }
