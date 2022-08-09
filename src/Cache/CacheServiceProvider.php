@@ -36,7 +36,7 @@ class CacheServiceProvider extends ServiceProvider
         $cacheMe = $this->app->make(CacheMeServiceContract::class);
 
         // After each job reset memory cache to prevent in-consistent data.
-        $callback = function () use ($cacheMe): void {
+        $callback = static function () use ($cacheMe): void {
             $cacheMe->flush(strategy: CacheMeStrategy::Memory);
         };
 

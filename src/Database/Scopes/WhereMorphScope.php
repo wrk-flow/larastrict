@@ -11,8 +11,6 @@ class WhereMorphScope extends AbstractScope
 {
     /**
      * @param class-string<Model> $morphedTo
-     * @param int|string          $morphId
-     * @param string              $relationName
      */
     public function __construct(
         private readonly string $morphedTo,

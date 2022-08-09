@@ -94,7 +94,10 @@ class ContextService
      */
     public function is(AbstractIsContext $context, Closure $is): BoolContextValue
     {
-        return $this->get($context, fn (Container $container) => new BoolContextValue((bool) $container->call($is)));
+        return $this->get(
+            $context,
+            static fn (Container $container) => new BoolContextValue((bool) $container->call($is))
+        );
     }
 
     public function getCacheKey(AbstractContext $context): string

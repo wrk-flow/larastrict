@@ -23,7 +23,7 @@ class RunAppServiceProviderPipesAction implements RunAppServiceProviderPipesActi
         $pipeline
             ->send($app)
             ->through($pipes)
-            ->then(function () {
+            ->then(static function () {
             });
     }
 }

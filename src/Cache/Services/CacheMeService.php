@@ -234,7 +234,7 @@ class CacheMeService implements CacheMeServiceContract
                 'key' => $key,
                 'minutes' => $minutes,
                 'tags' => $tags,
-                'store' => array_map(fn (CacheContract $store) => $store->getStore()::class, $repositories),
+                'store' => array_map(static fn (CacheContract $store) => $store->getStore()::class, $repositories),
             ]);
         }
 

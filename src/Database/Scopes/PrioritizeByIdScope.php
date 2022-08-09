@@ -20,7 +20,7 @@ class PrioritizeByIdScope extends AbstractScope
 
     public function apply(Builder $builder, Model $model): void
     {
-        $placeholders = array_map(fn () => '?', $this->ids);
+        $placeholders = array_map(static fn () => '?', $this->ids);
 
         $idColumn = $this->idColumn ?? $model->getKeyName();
 

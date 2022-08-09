@@ -22,7 +22,7 @@ trait HasUuidKey
 
     public static function bootHasUuidKey(): void
     {
-        static::creating(function (Model $model): void {
+        static::creating(static function (Model $model): void {
             /** @var HasUuidKey|Model $model */
             /** @phpstan-ignore-next-line */
             if ($model->id === null) {

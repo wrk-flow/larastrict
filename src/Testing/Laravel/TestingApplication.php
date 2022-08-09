@@ -15,10 +15,6 @@ use Illuminate\Contracts\Foundation\Application;
 class TestingApplication implements Application
 {
     /**
-     * @param string                                      $currentEnvironment
-     * @param bool                                        $runningInConsole
-     * @param bool                                        $isDownForMaintenance
-     * @param MaintenanceMode                             $maintenanceMode
      * @param array<string, Closure(array):(object|null)> $makeBindings      A map of closures that will create.
      *                                                                       Receives make $parameters and $abstract
      *                                                                       string
@@ -233,7 +229,7 @@ class TestingApplication implements Application
 
     public function factory($abstract)
     {
-        return function () {
+        return static function () {
         };
     }
 

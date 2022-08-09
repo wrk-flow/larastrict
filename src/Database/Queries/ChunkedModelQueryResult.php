@@ -72,13 +72,12 @@ class ChunkedModelQueryResult
     public function onKeys(Closure $closure, ?int $count = null): bool
     {
         return $this->onChunk(
-            closure: function (Collection $collection) use ($closure): void {
+            closure: static function (Collection $collection) use ($closure): void {
                 $keys = [];
                 /** @var Model $model */
                 foreach ($collection as $model) {
                     $keys[] = $model->getKey();
                 }
-
                 $closure($keys);
             },
             count: $count

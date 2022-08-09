@@ -12,7 +12,7 @@ use Throwable;
 
 class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
 {
-    private array $parameters;
+    private array $parameters = [];
 
     private readonly string $parametersKey;
 
@@ -25,7 +25,6 @@ class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
         public int $uniqueFor = 1800
     ) {
         parent::__construct();
-        $this->parameters = [];
         // We need to build unique id and parameters should be used too
         $parametersKey = '';
 
