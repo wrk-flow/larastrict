@@ -78,6 +78,7 @@ class ChunkedModelQueryResult
                 foreach ($collection as $model) {
                     $keys[] = $model->getKey();
                 }
+
                 $closure($keys);
             },
             count: $count
