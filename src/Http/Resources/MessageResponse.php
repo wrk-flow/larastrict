@@ -8,13 +8,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Http\Enums\HttpMessage;
 
 /**
- * @property HttpMessage $resource
+ * @property HttpMessage|string $resource
  */
 class MessageResponse extends JsonResource
 {
     public static $wrap = null;
 
-    public function __construct(HttpMessage|null $resource)
+    public function __construct(HttpMessage|string|null $resource)
     {
         parent::__construct($resource);
     }
@@ -25,7 +25,7 @@ class MessageResponse extends JsonResource
     public function toArray($request)
     {
         return [
-            'message' => $this->resource->value,
+            'message' => is_string($this->resource) ? $this->resource : $this->resource->value,
         ];
     }
 }
