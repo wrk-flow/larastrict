@@ -21,8 +21,8 @@ class PipeActionTest extends TestCase
     {
         $this->assertNull(
             $this->action->execute([
-                fn () => null,
-                fn () => null,
+                static fn () => null,
+                static fn () => null,
             ]),
             'Should receive null when default closure is not set'
         );
@@ -30,9 +30,9 @@ class PipeActionTest extends TestCase
         $this->assertEquals(
             'test',
             $this->action->execute([
-                fn () => null,
-                fn () => null,
-            ], fn () => 'test'),
+                static fn () => null,
+                static fn () => null,
+            ], static fn () => 'test'),
             'Should receive test from default closure'
         );
     }
@@ -42,8 +42,8 @@ class PipeActionTest extends TestCase
         $this->assertEquals(
             'marco',
             $this->action->execute([
-                fn () => 'marco',
-                fn () => null,
+                static fn () => 'marco',
+                static fn () => null,
             ]),
             'Should receive null when default closure is not set'
         );
@@ -51,9 +51,9 @@ class PipeActionTest extends TestCase
         $this->assertEquals(
             'polo',
             $this->action->execute([
-                fn () => null,
-                fn () => 'polo',
-            ], fn () => 'test'),
+                static fn () => null,
+                static fn () => 'polo',
+            ], static fn () => 'test'),
             'Should receive test from default closure'
         );
     }
