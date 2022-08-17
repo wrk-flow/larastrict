@@ -6,7 +6,7 @@ namespace LaraStrict\Http\Resources;
 
 use LaraStrict\Http\Enums\HttpMessage;
 
-class CreatedResponse extends MessageResponse
+class CreatedResource extends MessageResource
 {
     public function __construct(private readonly ?int $id)
     {

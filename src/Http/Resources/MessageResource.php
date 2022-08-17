@@ -10,7 +10,7 @@ use LaraStrict\Http\Enums\HttpMessage;
 /**
  * @property HttpMessage|string $resource
  */
-class MessageResponse extends JsonResource
+class MessageResource extends JsonResource
 {
     public static $wrap = null;
 

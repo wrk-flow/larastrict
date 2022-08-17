@@ -6,7 +6,7 @@ namespace LaraStrict\Http\Resources;
 
 use LaraStrict\Http\Enums\HttpMessage;
 
-class DeletedResponse extends MessageResponse
+class DeletedResource extends MessageResource
 {
     public function __construct()
     {
