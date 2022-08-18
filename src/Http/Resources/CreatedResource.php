@@ -8,7 +8,7 @@ use LaraStrict\Http\Enums\HttpMessage;
 
 class CreatedResource extends MessageResource
 {
-    public function __construct(private readonly ?int $id)
+    public function __construct(private readonly int|string|null $id)
     {
         parent::__construct(HttpMessage::Created);
     }
