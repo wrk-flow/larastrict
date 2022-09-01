@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Enums;
 
-enum EnvironmentTypes: string
+enum EnvironmentType: string
 {
     case Production = 'production';
     case Local = 'local';

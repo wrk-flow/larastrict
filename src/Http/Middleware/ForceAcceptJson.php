@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
-use LaraStrict\Enums\EnvironmentTypes;
+use LaraStrict\Enums\EnvironmentType;
 
 class ForceAcceptJson
 {
@@ -21,7 +21,7 @@ class ForceAcceptJson
     public function handle(Request $request, Closure $next): mixed
     {
         if ($this->configRepository->get('app.debug') === false
-            || $this->application->environment([EnvironmentTypes::Testing->value]) === true) {
+            || $this->application->environment([EnvironmentType::Testing->value]) === true) {
             $request->headers->set('Accept', 'application/json');
         }
 

@@ -13,7 +13,7 @@ use LaraStrict\Console\Contracts\HasScheduleOnProduction;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Services\ContextEventsService;
-use LaraStrict\Enums\EnvironmentTypes;
+use LaraStrict\Enums\EnvironmentType;
 
 abstract class AbstractServiceProvider extends EventServiceProvider
 {
@@ -49,7 +49,7 @@ abstract class AbstractServiceProvider extends EventServiceProvider
         }
 
         if ($this instanceof HasScheduleOnProduction) {
-            return (bool) $this->app->environment([EnvironmentTypes::Production->value]);
+            return (bool) $this->app->environment([EnvironmentType::Production->value]);
         }
 
         return $this instanceof HasSchedule;
