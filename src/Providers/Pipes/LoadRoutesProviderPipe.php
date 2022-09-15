@@ -5,19 +5,25 @@ declare(strict_types=1);
 namespace LaraStrict\Providers\Pipes;
 
 use Closure;
+use Illuminate\Container\Container;
 use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Str;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
 use LaraStrict\Contracts\HasCustomPrefixRoutes;
+use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\HasVersionedApiRoutes;
 use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Entities\CustomRouteEntity;
+use LogicException;
+use Psr\Log\LoggerInterface;
 
 class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
-        private readonly RouteRegistrar $router
+        private readonly Container $container,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -42,38 +48,131 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
 
         $urlPrefix = $this->getUrlPrefix($serviceName, $appServiceProvider);
 
-        // Force the user to use versioned api or un-versioned api routes
-        if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes) {
-            foreach ($appServiceProvider->serviceProvider->apiVersions() as $version) {
-                $this->loadApiRoute($dir, $serviceName, $urlPrefix, $version);
-            }
-        } else {
-            $this->loadApiRoute($dir, $serviceName, $urlPrefix);
-        }
+        $routesLoaded = [
+            $this->tryToLoadApiRoutes($appServiceProvider, $dir, $serviceName, $urlPrefix),
+            $this->registerRoute($dir, 'web', $serviceName, $urlPrefix),
+            $this->tryToLoadCustomRoutes($appServiceProvider, $dir, $serviceName, $urlPrefix),
+        ];
 
-        $web = $dir . sprintf('/Http/routes/%s_web.php', $serviceName);
-
-        if (file_exists($web)) {
-            $this->router
-                ->prefix($urlPrefix)
-                ->middleware('web')
-                ->group($web);
+        if (array_filter($routesLoaded) === []) {
+            $this->logger->warning(sprintf('No routes have been loaded for <%s> service', $serviceName), [
+                'dir' => $dir,
+                'service' => $appServiceProvider->serviceProvider::class,
+            ]);
         }
     }
 
-    protected function loadApiRoute(string $dir, string $serviceName, string $urlPrefix, ?int $version = null): void
+    protected function loadApiRoute(string $dir, string $serviceName, string $urlPrefix, ?int $version = null): bool
     {
         $versionFileSuffix = $version === null ? '' : '_v' . $version;
         $versionRoutePrefix = $version === null ? '' : 'v' . $version . '/';
 
-        $api = $dir . sprintf('/Http/routes/%s_api%s.php', $serviceName, $versionFileSuffix);
+        return $this->registerRoute(
+            $dir,
+            'api' . $versionFileSuffix,
+            $serviceName,
+            sprintf('api/%s%s', $versionRoutePrefix, $urlPrefix),
+            'api'
+        );
+    }
 
-        if (file_exists($api)) {
-            $this->router
-                ->prefix(sprintf('api/%s%s', $versionRoutePrefix, $urlPrefix))
-                ->middleware('api')
-                ->group($api);
+    protected function registerRoute(
+        string $dir,
+        string $fileSuffix,
+        string $serviceName,
+        string $urlPrefix,
+        ?string $middleware = null
+    ): bool {
+        $path = $this->getRouteFilePath($dir, $serviceName, $fileSuffix);
+
+        if (file_exists($path) === false) {
+            return false;
         }
+
+        $this->makeRoute()
+            ->prefix($urlPrefix)
+            ->middleware($middleware ?? $fileSuffix)
+            ->group($path);
+
+        return true;
+    }
+
+    protected function getRouteFilePath(string $dir, string $serviceName, string $fileSuffix): string
+    {
+        return $dir . sprintf('/Http/routes/%s_%s.php', $serviceName, $fileSuffix);
+    }
+
+    protected function tryToLoadCustomRoutes(
+        AppServiceProviderEntity $appServiceProvider,
+        string $dir,
+        string $serviceName,
+        string $urlPrefix,
+    ): bool {
+        if ($appServiceProvider->serviceProvider instanceof HasCustomRoutes === false) {
+            return false;
+        }
+
+        $didLoadRoutes = false;
+
+        foreach ($appServiceProvider->serviceProvider->getCustomRoutes() as $key => $value) {
+            if (is_numeric($key)) {
+                if (is_string($value) === false) {
+                    throw new LogicException(
+                        'Custom route with numeric key expects file suffix name (value as string)'
+                    );
+                }
+
+                if ($this->registerRoute($dir, $value, $serviceName, $urlPrefix)) {
+                    $didLoadRoutes = true;
+                }
+            } else {
+                if (is_callable($value) === false) {
+                    throw new LogicException(
+                        'Custom route with file suffix name as key expects closure to build the route'
+                    );
+                }
+
+                $routeEntity = new CustomRouteEntity(
+                    path: $this->getRouteFilePath($dir, $serviceName, $key),
+                    serviceName: $serviceName,
+                    urlPrefix: $urlPrefix
+                );
+
+                $result = $value($routeEntity, $this->makeRoute());
+
+                if ($result) {
+                    $didLoadRoutes = true;
+                }
+            }
+        }
+
+        return $didLoadRoutes;
+    }
+
+    protected function tryToLoadApiRoutes(
+        AppServiceProviderEntity $appServiceProvider,
+        string $dir,
+        string $serviceName,
+        string $urlPrefix
+    ): bool {
+        // Force the user to use versioned api or un-versioned api routes
+        if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes === false) {
+            return $this->loadApiRoute($dir, $serviceName, $urlPrefix);
+        }
+
+        $didLoadRoutes = false;
+        foreach ($appServiceProvider->serviceProvider->apiVersions() as $version) {
+            if ($this->loadApiRoute($dir, $serviceName, $urlPrefix, $version)) {
+                $didLoadRoutes = true;
+            }
+        }
+
+        return $didLoadRoutes;
+    }
+
+    protected function makeRoute(): RouteRegistrar
+    {
+        return $this->container->make(RouteRegistrar::class);
     }
 
     private function getUrlPrefix(string $serviceName, AppServiceProviderEntity $appServiceProvider): string

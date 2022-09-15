@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Providers\Concerns;
 
+use Closure;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use LaraStrict\Providers\AbstractServiceProvider;
 use PHPUnit\Framework\Assert;
@@ -14,13 +16,14 @@ trait AssertProviderRegistersRoutes
     /**
      * Asserts correct that routes are correctly registered in correct prefix (pluralized)
      *
-     * @param class-string<AbstractServiceProvider> $registerServiceProvider
-     * @param array<string, array<string>>          $expectUrlsByMethod ['GET'=>['web/tests/my-api']]
+     * @param class-string<AbstractServiceProvider>                         $registerServiceProvider
+     * @param array<string, array<string>|array<int, Closure(Route):void>> $expectUrlsByMethod
+     * ['GET'=>['web/tests/my-api']]
      */
     public function assertRoutes(
         Application $application,
         string $registerServiceProvider,
-        array $expectUrlsByMethod
+        array $expectUrlsByMethod,
     ): void {
         $application->register($registerServiceProvider, true);
 
@@ -38,8 +41,14 @@ trait AssertProviderRegistersRoutes
 
             $errorMessage = 'Not found in: ' . implode(', ', array_keys($registeredUrls));
 
-            foreach ($urls as $url) {
+            foreach ($urls as $index => $value) {
+                $url = is_callable($value) ? $index : $value;
+
                 Assert::assertArrayHasKey($url, $registeredUrls, $errorMessage);
+
+                if (is_callable($value)) {
+                    $value($registeredUrls[$url]);
+                }
             }
         }
     }
