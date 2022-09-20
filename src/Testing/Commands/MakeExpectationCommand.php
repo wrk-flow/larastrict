@@ -42,7 +42,7 @@ class MakeExpectationCommand extends Command
 
             $this->writeError($message);
 
-            $this->line('       composer require nette/php-generator --dev');
+            $this->line('       composer require nette/php-generator "^v4.0.1" --dev');
             $this->newLine();
             return 1;
         }
