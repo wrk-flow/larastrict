@@ -37,7 +37,14 @@ class MakeExpectationCommand extends Command
     public function handle(Application $application, Filesystem $filesystem): void
     {
         if (class_exists(ClassType::class) === false) {
-            $this->components->error('First install package that is required:');
+            $message = 'First install package that is required:';
+
+            if (property_exists($this, 'components')) {
+                $this->components->error($message);
+            } else {
+                $this->error($message);
+            }
+
             $this->line('composer require nette/php-generator --dev');
             return;
         }
@@ -91,7 +98,12 @@ class MakeExpectationCommand extends Command
         $filePath = $directory . DIRECTORY_SEPARATOR . $className . '.php';
         $filesystem->put($filePath, $fileContents);
 
-        $this->components->info('Expectation generated [' . $filePath . ']');
+        $successMessage = 'Expectation generated [' . $filePath . ']';
+        if (property_exists($this, 'components')) {
+            $this->components->info($successMessage);
+        } else {
+            $this->info($successMessage);
+        }
     }
 
     /**
