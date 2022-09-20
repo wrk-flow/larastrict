@@ -7,6 +7,7 @@ namespace LaraStrict\Testing\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
+use Nette\PhpGenerator\ClassLike;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\PhpFile;
@@ -30,38 +31,40 @@ class MakeExpectationCommand extends Command
     final public const ComposerPsr4 = 'psr-4';
 
     protected $signature = 'make:expectation 
-        {class} 
+        {class : Class name of path to class using PSR-4 specs} 
         {method?} 
     ';
 
-    public function handle(Application $application, Filesystem $filesystem): void
+    public function handle(Application $application, Filesystem $filesystem): int
     {
         if (class_exists(ClassType::class) === false) {
             $message = 'First install package that is required:';
 
-            if (property_exists($this, 'components')) {
-                $this->components->error($message);
-            } else {
-                $this->error($message);
-            }
+            $this->writeError($message);
 
-            $this->line('composer require nette/php-generator --dev');
-            return;
+            $this->line('       composer require nette/php-generator --dev');
+            $this->newLine();
+            return 1;
         }
 
         $basePath = $application->basePath();
-        $composer = json_decode($filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
 
         $methodName = (string) ($this->input->getArgument('method') ?? 'execute');
-        /** @phpstan-var class-string $desiredClass */
-        $desiredClass = (string) $this->input->getArgument('class');
-        $class = new ReflectionClass($desiredClass);
+
+        $inputClass = $this->getInputClass($basePath, $filesystem);
+
+        if ($inputClass === null) {
+            return 1;
+        }
+
+        $class = new ReflectionClass($inputClass);
 
         $className = $class->getShortName() . 'Expectation';
         $parameters = $class->getMethod($methodName)
             ->getParameters();
 
         // Ask for which namespace which to use for "tests"
+        $composer = $this->getComposerJsonData($filesystem, $basePath);
         $autoLoad = $this->getComposerDevAutoLoad($composer);
         if ($autoLoad !== []) {
             if (count($autoLoad) === 1) {
@@ -104,6 +107,8 @@ class MakeExpectationCommand extends Command
         } else {
             $this->info($successMessage);
         }
+
+        return 0;
     }
 
     /**
@@ -226,6 +231,20 @@ class MakeExpectationCommand extends Command
         }
     }
 
+    protected function writeError(string $message): void
+    {
+        if (property_exists($this, 'components')) {
+            $this->components->error($message);
+        } else {
+            $this->error($message);
+        }
+    }
+
+    protected function getComposerJsonData(Filesystem $filesystem, string $basePath): mixed
+    {
+        return json_decode($filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
+    }
+
     private function getComposerDevAutoLoad(array $composer): array
     {
         if (isset($composer[self::ComposerAutoLoadDev])
@@ -234,5 +253,41 @@ class MakeExpectationCommand extends Command
         }
 
         return [];
+    }
+
+    /**
+     * @return class-string|null
+     */
+    private function getInputClass(string $basePath, Filesystem $filesystem): ?string
+    {
+        /** @phpstan-var class-string|string $class */
+        $class = (string) $this->input->getArgument('class');
+
+        if (str_ends_with($class, '.php')) {
+            $fullPath = $basePath . '/' . $class;
+
+            if ($filesystem->exists($fullPath) === false) {
+                $this->writeError(sprintf('File does not exists at [%s]', $fullPath));
+                return null;
+            }
+
+            $file = PhpFile::fromCode($filesystem->get($fullPath));
+
+            /** @phpstan-var array<class-string, ClassLike> $classes */
+            $classes = $file->getClasses();
+            if ($classes === []) {
+                $this->writeError(sprintf('Provided file does not contain any class [%s]', $fullPath));
+                return null;
+            }
+
+            $class = array_keys($classes)[0];
+        }
+
+        if (class_exists($class) === false) {
+            $this->writeError(sprintf('Provided class does not exists [%s]', $class));
+            return null;
+        }
+
+        return $class;
     }
 }
