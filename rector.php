@@ -34,5 +34,6 @@ return static function (RectorConfig $config): void {
         VarConstantCommentRector::class,
         // We want to leave the relative constant path usage
         __DIR__ . '/tests/Feature/Testing/Actions/TestAction.php',
+        __DIR__ . '/tests/Feature/Testing/Actions/TestActionContract.php',
     ]);
 };

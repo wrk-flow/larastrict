@@ -12,7 +12,7 @@ use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Laravel\TestingApplication;
 
-class TestAction implements TestActionContract
+interface TestActionContract
 {
     public function execute(
         int $int,
@@ -32,6 +32,5 @@ class TestAction implements TestActionContract
         string $customConstants = Constants\CustomConstants::TEST,
         TestingApplication $object = new TestingApplication(),
         ArrayAccess&Enumerable $intersectionType = new Collection()
-    ): void {
-    }
+    ): void;
 }

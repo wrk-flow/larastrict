@@ -101,12 +101,14 @@ class MakeExpectationCommand extends Command
         $filePath = $directory . DIRECTORY_SEPARATOR . $className . '.php';
         $filesystem->put($filePath, $fileContents);
 
-        $successMessage = 'Expectation generated [' . $filePath . ']';
+        $successMessage = 'Expectation generated [' . $className . ']';
         if (property_exists($this, 'components')) {
             $this->components->info($successMessage);
         } else {
             $this->info($successMessage);
         }
+
+        $this->line(sprintf('  <fg=gray>File writen to [%s]</>', $filePath));
 
         return 0;
     }
@@ -236,7 +238,8 @@ class MakeExpectationCommand extends Command
         if (property_exists($this, 'components')) {
             $this->components->error($message);
         } else {
-            $this->error($message);
+            $this->error('ERROR:');
+            $this->line($message);
         }
     }
 
@@ -267,7 +270,7 @@ class MakeExpectationCommand extends Command
             $fullPath = $basePath . '/' . $class;
 
             if ($filesystem->exists($fullPath) === false) {
-                $this->writeError(sprintf('File does not exists at [%s]', $fullPath));
+                $this->writeError(sprintf('File does not exists at [%s]', $class));
                 return null;
             }
 
@@ -276,14 +279,14 @@ class MakeExpectationCommand extends Command
             /** @phpstan-var array<class-string, ClassLike> $classes */
             $classes = $file->getClasses();
             if ($classes === []) {
-                $this->writeError(sprintf('Provided file does not contain any class [%s]', $fullPath));
+                $this->writeError(sprintf('Provided file does not contain any class [%s]', $class));
                 return null;
             }
 
             $class = array_keys($classes)[0];
         }
 
-        if (class_exists($class) === false) {
+        if (class_exists($class) === false && interface_exists($class) === false) {
             $this->writeError(sprintf('Provided class does not exists [%s]', $class));
             return null;
         }

@@ -12,6 +12,7 @@ use LogicException;
 use Mockery\MockInterface;
 use Tests\LaraStrict\Feature\TestCase;
 use Tests\LaraStrict\Feature\Testing\Actions\TestAction;
+use Tests\LaraStrict\Feature\Testing\Actions\TestActionContract;
 
 class MakeExpectationCommandTest extends TestCase
 {
@@ -26,7 +27,7 @@ class MakeExpectationCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider data
+     * @dataProvider dataForClass
      */
     public function testWithoutAutoloadDev(string $classOrFilePath, bool $useFile): void
     {
@@ -39,7 +40,20 @@ class MakeExpectationCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider data
+     * @dataProvider dataForInterface
+     */
+    public function testWithoutAutoloadDevInterface(string $classOrFilePath, bool $useFile): void
+    {
+        $this->expectClass($useFile, 'TestActionContract');
+
+        $expectedPath = ['tests', 'LaraStrict', 'Feature', 'Testing', 'Actions'];
+        $this->expectResultFile($expectedPath, 'TestActionContractExpectation');
+
+        $this->assertCommand(0, $classOrFilePath);
+    }
+
+    /**
+     * @dataProvider dataForClass
      */
     public function testWithAutoloadDevButOnlyOneEntry(string $classOrFilePath, bool $useFile): void
     {
@@ -53,7 +67,7 @@ class MakeExpectationCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider data
+     * @dataProvider dataForClass
      */
     public function testWithAutoloadDevTwoEntrySelectionSecond(string $classOrFilePath, bool $useFile): void
     {
@@ -116,12 +130,12 @@ class MakeExpectationCommandTest extends TestCase
         );
     }
 
-    protected function expectClass(bool $useFile): void
+    protected function expectClass(bool $useFile, string $fileName = 'TestAction'): void
     {
         if ($useFile) {
             $this->expectClassFileExists(true);
 
-            $realPath = realpath(__DIR__ . '/../Actions/TestAction.php');
+            $realPath = realpath(__DIR__ . '/../Actions/' . $fileName . '.php');
 
             if ($realPath === false) {
                 throw new LogicException('Could not resolve path to TestAction.php');
@@ -231,10 +245,18 @@ class MakeExpectationCommandTest extends TestCase
             });
     }
 
-    private function data(): array
+    private function dataForClass(): array
     {
         return [
             'with class' => [TestAction::class, false],
+            'with file' => [self::TestFileName, true],
+        ];
+    }
+
+    private function dataForInterface(): array
+    {
+        return [
+            'with interface' => [TestActionContract::class, false],
             'with file' => [self::TestFileName, true],
         ];
     }
