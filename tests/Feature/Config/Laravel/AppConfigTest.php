@@ -125,7 +125,7 @@ class AppConfigTest extends AbstractConfigTestCase
     /**
      * @dataProvider environmentTypeData
      */
-    public function testGetEnvironmentType(string $value, string|EnvironmentType $expectedValue): void
+    public function testGetEnvironmentType(string|EnvironmentType $value, string|EnvironmentType $expectedValue): void
     {
         $this->setEnv($value);
 
@@ -141,6 +141,7 @@ class AppConfigTest extends AbstractConfigTestCase
     {
         return [
             ['production', EnvironmentType::Production],
+            [EnvironmentType::Production, EnvironmentType::Production],
             ['testing', EnvironmentType::Testing],
             ['local', EnvironmentType::Local],
             ['test', 'test'],

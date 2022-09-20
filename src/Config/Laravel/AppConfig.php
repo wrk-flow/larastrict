@@ -62,6 +62,10 @@ class AppConfig extends AbstractConfig
     {
         $env = $this->get(self::KeyEnv, 'production', true);
 
+        if ($env instanceof EnvironmentType) {
+            return $env;
+        }
+
         if (is_int($env)) {
             $env = 'production';
         }

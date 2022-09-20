@@ -1,0 +1,8 @@
+{
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "App\\Integration\\": "src/tests/Integration/"
+        }
+    }
+}

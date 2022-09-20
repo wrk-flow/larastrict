@@ -32,5 +32,7 @@ return static function (RectorConfig $config): void {
     $config->skip([
         UnSpreadOperatorRector::class => [__DIR__ . '/src/Testing/Laravel/TestingApplication.php'],
         VarConstantCommentRector::class,
+        // We want to leave the relative constant path usage
+        __DIR__ . '/tests/Feature/Testing/Actions/TestAction.php',
     ]);
 };
