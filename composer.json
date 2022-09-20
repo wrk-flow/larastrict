@@ -18,7 +18,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.5.0",
-        "nette/php-generator": "^v4.0.1",
+        "nette/php-generator": "^v4.0.3",
         "nikic/php-parser": "v4.14.0",
         "nunomaduro/larastan": "^2.1.11",
         "orchestra/testbench": "^v7.5.0",

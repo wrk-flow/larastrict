@@ -33,7 +33,6 @@ return static function (RectorConfig $config): void {
         UnSpreadOperatorRector::class => [__DIR__ . '/src/Testing/Laravel/TestingApplication.php'],
         VarConstantCommentRector::class,
         // We want to leave the relative constant path usage
-        __DIR__ . '/tests/Feature/Testing/Actions/TestAction.php',
-        __DIR__ . '/tests/Feature/Testing/Actions/TestActionContract.php',
+        __DIR__ . '/tests/Feature/Testing/Commands/MakeExpectationCommand/*.php',
     ]);
 };

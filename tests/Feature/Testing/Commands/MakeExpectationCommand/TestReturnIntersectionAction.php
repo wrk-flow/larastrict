@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Testing\Actions;
+namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 use ArrayAccess;
 use const DIRECTORY_SEPARATOR;
@@ -12,7 +12,7 @@ use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Laravel\TestingApplication;
 
-class TestAction implements TestActionContract
+class TestReturnIntersectionAction
 {
     public function execute(
         int $int,
@@ -32,6 +32,7 @@ class TestAction implements TestActionContract
         string $customConstants = Constants\CustomConstants::TEST,
         TestingApplication $object = new TestingApplication(),
         ArrayAccess&Enumerable $intersectionType = new Collection()
-    ): void {
+    ): ArrayAccess&Enumerable {
+        return new Collection();
     }
 }

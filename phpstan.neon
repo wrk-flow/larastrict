@@ -21,3 +21,6 @@ parameters:
     # it is impossible to map toArray()
     checkMissingIterableValueType: false
 
+    excludePaths:
+            - 'tests/Feature/Testing/Commands/MakeExpectationCommand/*.php'
+

@@ -7,14 +7,19 @@ namespace LaraStrict\Testing\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
+use LaraStrict\Testing\AbstractExpectationCallMap;
+use LogicException;
 use Nette\PhpGenerator\ClassLike;
 use Nette\PhpGenerator\ClassType;
+use Nette\PhpGenerator\Factory;
 use Nette\PhpGenerator\Literal;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PromotedParameter;
 use Nette\PhpGenerator\PsrPrinter;
+use PHPUnit\Framework\Assert;
 use ReflectionClass;
 use ReflectionIntersectionType;
+use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionType;
@@ -42,7 +47,7 @@ class MakeExpectationCommand extends Command
 
             $this->writeError($message);
 
-            $this->line('       composer require nette/php-generator "^v4.0.1" --dev');
+            $this->line('       composer require nette/php-generator "^v4.0.3" --dev');
             $this->newLine();
             return 1;
         }
@@ -59,9 +64,7 @@ class MakeExpectationCommand extends Command
 
         $class = new ReflectionClass($inputClass);
 
-        $className = $class->getShortName() . 'Expectation';
-        $parameters = $class->getMethod($methodName)
-            ->getParameters();
+        $method = $class->getMethod($methodName);
 
         // Ask for which namespace which to use for "tests"
         $composer = $this->getComposerJsonData($filesystem, $basePath);
@@ -73,6 +76,10 @@ class MakeExpectationCommand extends Command
                 $baseNamespace = (string) $this->choice('What namespace to use?', array_keys($autoLoad),);
             }
 
+            if (array_key_exists($baseNamespace, $autoLoad) === false) {
+                throw new LogicException('Invalid namespace returned');
+            }
+
             $folder = $autoLoad[$baseNamespace];
         } else {
             // autoload-dev already contains directory / namespace separator - ensure that it contains too
@@ -80,12 +87,19 @@ class MakeExpectationCommand extends Command
             $baseNamespace = 'Tests' . self::NameSpaceSeparator;
         }
 
-        // The first part of namespace should is in 99% App => app. We need to create a valid
+        // 1. The first part of namespace should is in 99% App => app. We need to create a valid
         // namespace in tests folder, lets remove the first namespace and rebuild the correct
-        // namespace and file path from it
-        $namespaceParts = explode(self::NameSpaceSeparator, $class->getNamespaceName());
-        array_shift($namespaceParts);
-        $fileNamespace = implode(self::NameSpaceSeparator, $namespaceParts);
+        // namespace and file path from it.
+        // 2. We can get a class within same namespace as a "tests" namespace, just remove the base namespace
+        // to rebuild it later on
+        $classNamespace = $class->getNamespaceName();
+        if (str_starts_with($classNamespace, $baseNamespace) === false) {
+            $namespaceParts = explode(self::NameSpaceSeparator, $classNamespace);
+            array_shift($namespaceParts);
+            $fileNamespace = implode(self::NameSpaceSeparator, $namespaceParts);
+        } else {
+            $fileNamespace = str_replace($baseNamespace, '', $classNamespace);
+        }
 
         // Base namespace can contain
         $directory = $basePath . DIRECTORY_SEPARATOR . $folder . strtr(
@@ -97,110 +111,172 @@ class MakeExpectationCommand extends Command
 
         $filesystem->ensureDirectoryExists($directory);
 
-        $fileContents = $this->getGeneratedFileContents($fullNamespace, $className, $parameters);
-        $filePath = $directory . DIRECTORY_SEPARATOR . $className . '.php';
-        $filesystem->put($filePath, $fileContents);
+        $expectationClassName = $class->getShortName() . 'Expectation';
 
-        $successMessage = 'Expectation generated [' . $className . ']';
-        if (property_exists($this, 'components')) {
-            $this->components->info($successMessage);
-        } else {
-            $this->info($successMessage);
+        $printer = new PsrPrinter();
+
+        $this->writeFile(
+            $directory,
+            $expectationClassName,
+            $filesystem,
+            $this->getExpectationFileContents($printer, $fullNamespace, $expectationClassName, $method)
+        );
+
+        if ($class->isInterface()) {
+            $assertClassName = $class->getShortName() . 'Assert';
+
+            $this->writeFile(
+                $directory,
+                $assertClassName,
+                $filesystem,
+                $this->getAssertFileContents(
+                    $printer,
+                    $class,
+                    $fullNamespace,
+                    $assertClassName,
+                    $method,
+                    $expectationClassName
+                )
+            );
         }
-
-        $this->line(sprintf('  <fg=gray>File writen to [%s]</>', $filePath));
 
         return 0;
     }
 
     /**
-     * @param array<ReflectionParameter> $parameters
+     * @param ReflectionClass<object> $interface
      */
-    protected function getGeneratedFileContents(string $namespace, string $className, array $parameters): string
-    {
+    protected function getAssertFileContents(
+        PsrPrinter $printer,
+        ReflectionClass $interface,
+        string $namespace,
+        string $className,
+        ReflectionMethod $method,
+        string $expectationClassName,
+    ): string {
+        $parameters = $method->getParameters();
+
         $file = new PhpFile();
         $file->setStrictTypes();
 
-        $namespace = $file->addNamespace($namespace);
-        $class = $namespace->addClass($className);
+        $assertNamespace = $file->addNamespace($namespace);
+        $assertNamespace->addUse(Assert::class);
+
+        $assertClass = $assertNamespace->addClass($className);
+
+        $assertClass->setExtends(AbstractExpectationCallMap::class);
+        $assertClass->addImplement($interface->getName());
+        $assertClass->addComment(sprintf(
+            '@extends %s<%s>',
+            self::NameSpaceSeparator . AbstractExpectationCallMap::class,
+            self::NameSpaceSeparator . $namespace . self::NameSpaceSeparator . $expectationClassName
+        ));
+
+        // TODO at this moment there is a bug https://github.com/nette/php-generator/pull/117/files
+        // TODO it will incorrectly generate new statements
+        $assertMethod = (new Factory())->fromMethodReflection($method);
+        $assertClass->addMember($assertMethod);
+
+        $assertMethod->addBody('$expectation = $this->getExpectation();');
+        $assertMethod->addBody('$message = $this->getDebugMessage();');
+        $assertMethod->addBody('');
+
+        foreach ($parameters as $parameter) {
+            $assertMethod->addBody(sprintf(
+                'Assert::assertEquals($expectation->%s, $%s, $message);',
+                $parameter->name,
+                $parameter->name
+            ));
+        }
+
+        $returnType = $method->getReturnType();
+        if ($returnType !== null && ($returnType instanceof ReflectionNamedType === false || $returnType->getName() !== 'void')) {
+            $assertMethod->addBody('');
+            $assertMethod->addBody('return $expectation->return;');
+        }
+
+        return $printer->printFile($file);
+    }
+
+    protected function getExpectationFileContents(
+        PsrPrinter $printer,
+        string $namespace,
+        string $className,
+        ReflectionMethod $method,
+    ): string {
+        $parameters = $method->getParameters();
+
+        $file = new PhpFile();
+        $file->setStrictTypes();
+
+        $class = $file
+            ->addNamespace($namespace)
+            ->addClass($className);
 
         $constructor = $class
             ->setFinal()
             ->addMethod('__construct');
+
+        $returnType = $method->getReturnType();
+        if ($returnType !== null && ($returnType instanceof ReflectionNamedType === false || $returnType->getName() !== 'void')) {
+            $constructorParameter = $constructor
+                ->addPromotedParameter('return')
+                ->setReadOnly();
+
+            $this->setParameterType($returnType, $constructorParameter);
+        }
 
         foreach ($parameters as $parameter) {
             $constructorParameter = $constructor
                 ->addPromotedParameter($parameter->name)
                 ->setReadOnly();
 
-            $this->setParameterType($parameter, $constructorParameter);
+            $this->setParameterType($parameter->getType(), $constructorParameter);
             $this->setParameterDefaultValue($parameter, $constructorParameter);
         }
-
-        $printer = new PsrPrinter();
 
         return $printer->printFile($file);
     }
 
     protected function setParameterType(
-        ReflectionParameter $parameter,
+        ReflectionType|ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
         PromotedParameter $constructorParameter
     ): void {
-        $type = $parameter->getType();
+        $proposedType = '';
 
-        $proposedType = 'mixed';
+        $allowNull = false;
+        $mapToName = static function (ReflectionType $type) use (&$allowNull): ?string {
+            if ($type instanceof ReflectionNamedType) {
+                $name = $type->getName();
+                if ($name === 'null') {
+                    $allowNull = false;
+                }
+
+                return $name;
+            }
+
+            return null;
+        };
 
         // TODO move to separate action and test with unit test
         if ($type instanceof ReflectionNamedType) {
+            $allowNull = $type->allowsNull();
             $proposedType = $type->getName();
             $constructorParameter->setNullable($type->allowsNull());
         } elseif ($type instanceof ReflectionUnionType) {
-            $setNullable = true;
-            $proposedType = implode(
-                '|',
-                array_map(
-                    static function (ReflectionNamedType $type) use (&$setNullable): string {
-                        $name = $type->getName();
-                        if ($name === 'null') {
-                            $setNullable = false;
-                        }
-
-                        return $name;
-                    },
-                    $type->getTypes()
-                )
-            );
-            if ($setNullable) {
-                $constructorParameter->setNullable($type->allowsNull());
-            }
+            $allowNull = $type->allowsNull();
+            $proposedType = implode('|', array_filter(array_map($mapToName, $type->getTypes())));
         } elseif ($type instanceof ReflectionIntersectionType) {
-            $setNullable = true;
-            $proposedType = implode(
-                '&',
-                array_map(
-                    static function (ReflectionType $type) use (&$setNullable): ?string {
-                        if ($type instanceof ReflectionNamedType) {
-                            $name = $type->getName();
-                            if ($name === 'null') {
-                                $setNullable = false;
-                            }
+            $allowNull = $type->allowsNull();
+            $proposedType = implode('&', array_filter(array_map($mapToName, $type->getTypes())));
+        }
 
-                            return $name;
-                        }
+        if ($proposedType === '') {
+            $proposedType = 'mixed';
+        }
 
-                        return null;
-                    },
-                    array_filter($type->getTypes())
-                )
-            );
-
-            if ($proposedType === '') {
-                $proposedType = 'mixed';
-            }
-
-            if ($setNullable) {
-                $constructorParameter->setNullable($type->allowsNull());
-            }
+        if ($allowNull) {
+            $constructorParameter->setNullable($allowNull);
         }
 
         $constructorParameter->setType($proposedType);
@@ -246,6 +322,26 @@ class MakeExpectationCommand extends Command
     protected function getComposerJsonData(Filesystem $filesystem, string $basePath): mixed
     {
         return json_decode($filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
+    }
+
+    protected function writeFile(
+        string $directory,
+        string $className,
+        Filesystem $filesystem,
+        string $fileContents
+    ): void {
+        $filePath = $directory . DIRECTORY_SEPARATOR . $className . '.php';
+        $filesystem->put($filePath, $fileContents);
+
+        $successMessage = 'File generated [' . $className . ']';
+        if (property_exists($this, 'components')) {
+            $this->components->info($successMessage);
+        } else {
+            $this->info($successMessage);
+        }
+
+        $this->line(sprintf('  <fg=gray>File writen to [%s]</>', $filePath));
+        $this->newLine();
     }
 
     private function getComposerDevAutoLoad(array $composer): array

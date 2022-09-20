@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Testing\Actions\Constants;
+namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants;
 
 class CustomConstants
 {
