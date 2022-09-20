@@ -11,8 +11,13 @@ use LaraStrict\Testing\LaraStrictTestServiceProvider;
 use LogicException;
 use Mockery\MockInterface;
 use Tests\LaraStrict\Feature\TestCase;
-use Tests\LaraStrict\Feature\Testing\Actions\TestAction;
-use Tests\LaraStrict\Feature\Testing\Actions\TestActionContract;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestAction;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestActionContract;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnAction;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnActionContract;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnIntersectionAction;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnRequiredAction;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionAction;
 
 class MakeExpectationCommandTest extends TestCase
 {
@@ -23,59 +28,70 @@ class MakeExpectationCommandTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
         $this->fileSystem = $this->mock(Filesystem::class);
+        $this->app->register(LaraStrictTestServiceProvider::class);
+    }
+
+    public function getExpectedPath(string $expectedPath, string $expectedFileName): string
+    {
+        return $expectedPath . DIRECTORY_SEPARATOR . $expectedFileName . '.php';
+    }
+
+    public function getStubFilePath(?string $variantPrefix, string $expectedFileName): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.php.stub';
     }
 
     /**
-     * @dataProvider dataForClass
+     * @dataProvider data
      */
-    public function testWithoutAutoloadDev(string $classOrFilePath, bool $useFile): void
-    {
-        $this->expectClass($useFile);
+    public function testWithoutAutoloadDev(
+        string $classOrFilePath,
+        bool $useClass,
+        string $fileName,
+        bool $checkAssert = false
+    ): void {
+        $this->expectClass($useClass, $fileName);
 
-        $expectedPath = ['tests', 'LaraStrict', 'Feature', 'Testing', 'Actions'];
-        $this->expectResultFile($expectedPath, 'TestActionExpectation');
+        $expectedPath = ['tests'];
+        $this->expectResultFile($expectedPath, $fileName, checkAssert: $checkAssert);
 
         $this->assertCommand(0, $classOrFilePath);
     }
 
     /**
-     * @dataProvider dataForInterface
+     * @dataProvider data
      */
-    public function testWithoutAutoloadDevInterface(string $classOrFilePath, bool $useFile): void
-    {
-        $this->expectClass($useFile, 'TestActionContract');
+    public function testWithAutoloadDevButOnlyOneEntry(
+        string $classOrFilePath,
+        bool $useClass,
+        string $fileName,
+        bool $checkAssert = false
+    ): void {
+        $this->expectClass($useClass, $fileName);
 
-        $expectedPath = ['tests', 'LaraStrict', 'Feature', 'Testing', 'Actions'];
-        $this->expectResultFile($expectedPath, 'TestActionContractExpectation');
+        $expectedPath = ['app', 'tests'];
 
-        $this->assertCommand(0, $classOrFilePath);
-    }
-
-    /**
-     * @dataProvider dataForClass
-     */
-    public function testWithAutoloadDevButOnlyOneEntry(string $classOrFilePath, bool $useFile): void
-    {
-        $this->expectClass($useFile);
-
-        $expectedPath = ['app', 'tests', 'LaraStrict', 'Feature', 'Testing', 'Actions'];
-
-        $this->expectResultFile($expectedPath, 'TestActionExpectation', 'one');
+        $this->expectResultFile($expectedPath, $fileName, 'one', checkAssert: $checkAssert);
 
         $this->assertCommand(0, $classOrFilePath, 'one');
     }
 
     /**
-     * @dataProvider dataForClass
+     * @dataProvider data
      */
-    public function testWithAutoloadDevTwoEntrySelectionSecond(string $classOrFilePath, bool $useFile): void
-    {
-        $this->expectClass($useFile);
+    public function testWithAutoloadDevTwoEntrySelectionSecond(
+        string $classOrFilePath,
+        bool $useClass,
+        string $fileName,
+        bool $checkAssert = false
+    ): void {
+        $this->expectClass($useClass, $fileName);
 
-        $expectedPath = ['src', 'tests', 'Integration', 'LaraStrict', 'Feature', 'Testing', 'Actions'];
+        $expectedPath = ['src', 'tests', 'Integration'];
 
-        $this->expectResultFile($expectedPath, 'TestActionExpectation', 'two');
+        $this->expectResultFile($expectedPath, $fileName, 'two', checkAssert: $checkAssert);
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
     }
@@ -114,6 +130,30 @@ class MakeExpectationCommandTest extends TestCase
         );
     }
 
+    public function data(): array
+    {
+        return [
+            'with class 1' => [TestAction::class, true, 'TestAction'],
+            'with contract' => [TestActionContract::class, true, 'TestActionContract', true],
+            'with contract return' => [TestReturnActionContract::class, true, 'TestReturnActionContract', true],
+            'with class return 1' => [TestReturnAction::class, true, 'TestReturnAction'],
+            'with class return union' => [TestReturnUnionAction::class, true, 'TestReturnUnionAction'],
+            'with class return intersection' => [
+                TestReturnIntersectionAction::class,
+                true,
+                'TestReturnIntersectionAction',
+            ],
+            'with class return non nullable' => [TestReturnRequiredAction::class, true, 'TestReturnRequiredAction'],
+            'with file' => [self::TestFileName, false, 'TestAction'],
+            'with file contract' => [self::TestFileName, false, 'TestActionContract', true],
+            'with file contract return' => [self::TestFileName, false, 'TestReturnActionContract', true],
+            'with file class return 1' => [self::TestFileName, false, 'TestReturnAction'],
+            'with file return union' => [self::TestFileName, false, 'TestReturnUnionAction'],
+            'with file return intersection' => [self::TestFileName, false, 'TestReturnIntersectionAction'],
+            'with file return non nullable' => [self::TestFileName, false, 'TestReturnRequiredAction'],
+        ];
+    }
+
     protected function expectClassFileExists(bool $return): void
     {
         $this->fileSystem->shouldReceive('exists')
@@ -130,12 +170,12 @@ class MakeExpectationCommandTest extends TestCase
         );
     }
 
-    protected function expectClass(bool $useFile, string $fileName = 'TestAction'): void
+    protected function expectClass(bool $useClass, string $fileName = 'TestAction'): void
     {
-        if ($useFile) {
+        if ($useClass === false) {
             $this->expectClassFileExists(true);
 
-            $realPath = realpath(__DIR__ . '/../Actions/' . $fileName . '.php');
+            $realPath = realpath(__DIR__ . '/MakeExpectationCommand/' . $fileName . '.php');
 
             if ($realPath === false) {
                 throw new LogicException('Could not resolve path to TestAction.php');
@@ -148,18 +188,13 @@ class MakeExpectationCommandTest extends TestCase
         }
     }
 
-    protected function getPackageProviders($app)
-    {
-        return [...parent::getPackageProviders($app), ...[LaraStrictTestServiceProvider::class]];
-    }
-
     protected function assertCommand(
         int $expectedResult,
         ?string $class,
         ?string $variantPrefix = null,
         bool $askWhichNamespace = false,
         ?string $expectedMessage = null,
-        bool $expectComposerJson = true
+        bool $expectComposerJson = true,
     ): void {
         if ($expectComposerJson) {
             $this->fileSystem->shouldReceive('get')
@@ -172,7 +207,7 @@ class MakeExpectationCommandTest extends TestCase
                 )
                 ->andReturnUsing(static function (string $path) use ($variantPrefix): string {
                     if ($variantPrefix !== null) {
-                        $variantPrefix = __DIR__ . DIRECTORY_SEPARATOR . $variantPrefix . '.composer.json';
+                        $variantPrefix = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . $variantPrefix . '.composer.json';
                     }
 
                     $filePath = $variantPrefix ?? $path;
@@ -200,7 +235,7 @@ class MakeExpectationCommandTest extends TestCase
         }
 
         if ($expectedResult === 0 && $expectedMessage === null) {
-            $expectedMessage = 'Expectation generated [';
+            $expectedMessage = 'File generated [';
         }
 
         if ($expectedMessage !== null) {
@@ -214,7 +249,8 @@ class MakeExpectationCommandTest extends TestCase
     protected function expectResultFile(
         array $expectedBasePathParts,
         string $expectedFileName,
-        ?string $variantPrefix = null
+        ?string $variantPrefix = null,
+        bool $checkAssert = false,
     ): void {
         $expectedPath = implode(DIRECTORY_SEPARATOR, [
             'vendor',
@@ -222,6 +258,11 @@ class MakeExpectationCommandTest extends TestCase
             'testbench-core',
             'laravel',
             ...$expectedBasePathParts,
+            'LaraStrict',
+            'Feature',
+            'Testing',
+            'Commands',
+            'MakeExpectationCommand',
         ]);
 
         $this->fileSystem->shouldReceive('ensureDirectoryExists')
@@ -235,29 +276,31 @@ class MakeExpectationCommandTest extends TestCase
                 $expectedFileName,
                 $variantPrefix
             ): bool {
-                $filePath = $expectedPath . DIRECTORY_SEPARATOR . $expectedFileName . '.php';
+                $filePath = $this->getExpectedPath($expectedPath, $expectedFileName . 'Expectation');
                 $this->assertStringContainsString($filePath, $path);
 
-                $stubFile = __DIR__ . DIRECTORY_SEPARATOR . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.php.stub';
+                $stubFile = $this->getStubFilePath($variantPrefix, $expectedFileName . 'Expectation');
                 $expectedResult = file_get_contents($stubFile);
                 $this->assertEquals($expectedResult, $contents);
                 return true;
             });
-    }
 
-    private function dataForClass(): array
-    {
-        return [
-            'with class' => [TestAction::class, false],
-            'with file' => [self::TestFileName, true],
-        ];
-    }
+        if ($checkAssert) {
+            $this->fileSystem->shouldReceive('put')
+                ->once()
+                ->withArgs(function (string $path, string $contents) use (
+                    $expectedPath,
+                    $expectedFileName,
+                    $variantPrefix
+                ): bool {
+                    $filePath = $this->getExpectedPath($expectedPath, $expectedFileName . 'Assert');
+                    $this->assertStringContainsString($filePath, $path);
 
-    private function dataForInterface(): array
-    {
-        return [
-            'with interface' => [TestActionContract::class, false],
-            'with file' => [self::TestFileName, true],
-        ];
+                    $stubFile = $this->getStubFilePath($variantPrefix, $expectedFileName . 'Assert');
+                    $expectedResult = file_get_contents($stubFile);
+                    $this->assertEquals($expectedResult, $contents);
+                    return true;
+                });
+        }
     }
 }

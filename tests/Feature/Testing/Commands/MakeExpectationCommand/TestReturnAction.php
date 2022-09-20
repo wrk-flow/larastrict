@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Testing\Actions;
+namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 use ArrayAccess;
 use const DIRECTORY_SEPARATOR;
@@ -11,8 +11,9 @@ use Illuminate\Support\Enumerable;
 use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Laravel\TestingApplication;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants\CustomConstants;
 
-interface TestActionContract
+class TestReturnAction
 {
     public function execute(
         int $int,
@@ -29,8 +30,10 @@ interface TestActionContract
         int $constantClass = CacheExpirations::HalfDay,
         EnvironmentType $enumDefault = EnvironmentType::Testing,
         $noTypeHintDefault = null,
-        string $customConstants = Constants\CustomConstants::TEST,
+        string $customConstants = CustomConstants::TEST,
         TestingApplication $object = new TestingApplication(),
         ArrayAccess&Enumerable $intersectionType = new Collection()
-    ): void;
+    ): ?int {
+        return 1;
+    }
 }

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
+
+final class TestActionExpectation
+{
+    public function __construct(
+        public readonly int $int,
+        public readonly string $string,
+        public readonly mixed $noTypeHint,
+        public readonly \LaraStrict\Enums\EnvironmentType $type,
+        public readonly \LaraStrict\Testing\Laravel\TestingApplication $testingApplication,
+        public readonly string|int $multi,
+        public readonly string|int|null $multiNull,
+        public readonly string|int|null $multiNullDefault = 'test',
+        public readonly ?string $optional = null,
+        public readonly string $optionalString = 'test',
+        public readonly string $constant = \DIRECTORY_SEPARATOR,
+        public readonly int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::HalfDay,
+        public readonly \LaraStrict\Enums\EnvironmentType $enumDefault = \LaraStrict\Enums\EnvironmentType::Testing,
+        public readonly mixed $noTypeHintDefault = null,
+        public readonly string $customConstants = \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants\CustomConstants::TEST,
+        public readonly \LaraStrict\Testing\Laravel\TestingApplication $object = new \LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
+        public readonly \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new \Illuminate\Support\Collection(/* unknown */),
+    ) {
+    }
+}

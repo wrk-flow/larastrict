@@ -5,44 +5,4 @@ parameters:
 			count: 1
 			path: src/Testing/Commands/MakeExpectationCommand.php
 
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestAction\\:\\:execute\\(\\) has parameter \\$intersectionType with generic interface ArrayAccess but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestAction.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestAction\\:\\:execute\\(\\) has parameter \\$intersectionType with generic interface Illuminate\\\\Support\\\\Enumerable but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestAction.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestAction\\:\\:execute\\(\\) has parameter \\$noTypeHint with no type specified\\.$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestAction.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestAction\\:\\:execute\\(\\) has parameter \\$noTypeHintDefault with no type specified\\.$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestAction.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestActionContract\\:\\:execute\\(\\) has parameter \\$intersectionType with generic interface ArrayAccess but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestActionContract.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestActionContract\\:\\:execute\\(\\) has parameter \\$intersectionType with generic interface Illuminate\\\\Support\\\\Enumerable but does not specify its types\\: TKey, TValue$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestActionContract.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestActionContract\\:\\:execute\\(\\) has parameter \\$noTypeHint with no type specified\\.$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestActionContract.php
-
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Testing\\\\Actions\\\\TestActionContract\\:\\:execute\\(\\) has parameter \\$noTypeHintDefault with no type specified\\.$#"
-			count: 1
-			path: tests/Feature/Testing/Actions/TestActionContract.php
-
 
