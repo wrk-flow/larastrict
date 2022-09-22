@@ -19,7 +19,7 @@ use LaraStrict\Entities\CustomRouteEntity;
 use LogicException;
 use Psr\Log\LoggerInterface;
 
-class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
+class LoadProviderRoutesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
         private readonly Container $container,
@@ -177,7 +177,7 @@ class LoadRoutesProviderPipe implements AppServiceProviderPipeContract
 
     private function getUrlPrefix(string $serviceName, AppServiceProviderEntity $appServiceProvider): string
     {
-        $prefix = Str::plural($serviceName);
+        $prefix = str_replace('_', '-', Str::plural($serviceName));
         return $appServiceProvider->serviceProvider instanceof HasCustomPrefixRoutes
             ? $appServiceProvider->serviceProvider->getRoutePrefix($prefix)
             : $prefix;

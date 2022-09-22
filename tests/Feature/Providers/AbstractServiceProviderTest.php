@@ -36,7 +36,7 @@ class AbstractServiceProviderTest extends TestCase
     public function testBootWithWebOnly(): void
     {
         $this->assertRoutes($this->app, WithWebServiceProvider::class, [
-            'GET' => ['with_webs/3_url_web'],
+            'GET' => ['with-webs/3-url-web'],
         ]);
     }
 
@@ -64,21 +64,21 @@ class AbstractServiceProviderTest extends TestCase
     public function testWithApiAndWeb(): void
     {
         $this->assertRoutes($this->app, WithBothServiceProvider::class, [
-            'GET' => ['api/with_boths/2_url_api', 'with_boths/2_url_web'],
+            'GET' => ['api/with-boths/2-url-api', 'with-boths/2-url-web'],
         ]);
     }
 
     public function testWithApiOnly(): void
     {
         $this->assertRoutes($this->app, WithApiServiceProvider::class, [
-            'GET' => ['api/with_apis/1_api'],
+            'GET' => ['api/with-apis/1-api'],
         ]);
     }
 
     public function testWithVersionedApiOnly(): void
     {
         $this->assertRoutes($this->app, WithVersionedApiServiceProvider::class, [
-            'GET' => ['api/v1/test/1_api', 'api/v2/test/2_api'],
+            'GET' => ['api/v1/test/1-api', 'api/v2/test/2-api'],
         ]);
     }
 
@@ -86,10 +86,10 @@ class AbstractServiceProviderTest extends TestCase
     {
         $this->assertRoutes($this->app, WithCustomServiceProvider::class, [
             'GET' => [
-                'with_customs/1_admin' => function (Route $route) {
+                'with-customs/1-admin' => function (Route $route) {
                     $this->assertEquals(['admin'], $route->gatherMiddleware());
                 },
-                'dev/with_customs/1_dev' => function (Route $route) {
+                'dev/with-customs/1-dev' => function (Route $route) {
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],
@@ -100,16 +100,16 @@ class AbstractServiceProviderTest extends TestCase
     {
         $this->assertRoutes($this->app, WithAllServiceProvider::class, [
             'GET' => [
-                'api/with_alls/2_url_api' => function (Route $route) {
+                'api/with-alls/2-url-api' => function (Route $route) {
                     $this->assertEquals(['api'], $route->gatherMiddleware());
                 },
-                'with_alls/2_url_web' => function (Route $route) {
+                'with-alls/2-url-web' => function (Route $route) {
                     $this->assertEquals(['web'], $route->gatherMiddleware());
                 },
-                'with_alls/1_admin' => function (Route $route) {
+                'with-alls/1-admin' => function (Route $route) {
                     $this->assertEquals(['admin'], $route->gatherMiddleware());
                 },
-                'dev/with_alls/1_dev' => function (Route $route) {
+                'dev/with-alls/1-dev' => function (Route $route) {
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],
