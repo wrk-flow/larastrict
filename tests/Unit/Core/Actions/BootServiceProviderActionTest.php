@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Unit\Core\Actions;
 
 use LaraStrict\Actions\BootServiceProviderAction;
-use LaraStrict\Providers\Pipes\LoadRoutesProviderPipe;
+use LaraStrict\Providers\Pipes\LoadProviderRoutesPipe;
 use LaraStrict\Testing\Actions\TestRunAppServiceProviderAction;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingServiceProvider;
@@ -16,7 +16,7 @@ class BootServiceProviderActionTest extends TestCase
     public function testExecute(): void
     {
         $runAction = new TestRunAppServiceProviderAction(
-            expectedPipes: [LoadRoutesProviderPipe::class],
+            expectedPipes: [LoadProviderRoutesPipe::class],
             expectedServiceName: 'laravel', // taken from App\Testing\Laravel namespace
             expectServiceRootDirToEndWith: 'src/Testing/Laravel',
         );
