@@ -15,28 +15,13 @@ jobs:
   deploy:
     needs:
       - check
-    name: Create release
+    name: Create release if changelog has changes
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
         with:
           fetch-depth: '0'
-
-      - name: Create local tag for building changelog
-        run: |
-          git tag -f main-latest
-          git push  --follow-tags
-
-      - name: Try to update CHANGELOG
-        id: changelog
-        uses: Requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          tag: main-latest
-
-      - name: Remove tag
-        run: git tag -d main-latest
 
       - name: Bump version and push tag
         if: steps.changelog.outputs.changes != ''
@@ -48,6 +33,13 @@ jobs:
           WITH_V: true
           INITIAL_VERSION: 0.0.1
           TAG_CONTEXT: branch
+
+      - name: Try to update CHANGELOG
+        id: changelog
+        uses: Requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: ${{ steps.version.outputs.new_tag }}
 
       - name: Create Release
         if: steps.changelog.outputs.changes != ''
@@ -67,6 +59,10 @@ jobs:
           branch: main
           commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
           file_pattern: CHANGELOG.md
+
+      - name: Remove tag
+        if: steps.changelog.outputs.changes == ''
+        run: git tag -d ${{ steps.version.outputs.new_tag }}
 
   documentation:
     name: Deploy documentation
