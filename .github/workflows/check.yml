@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - "*"
-      - ""main"
+      - "!main"
       - "!gh-pages"
 
 jobs:
