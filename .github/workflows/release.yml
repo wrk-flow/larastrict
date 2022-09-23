@@ -37,7 +37,7 @@ jobs:
         run: git tag -d new-version
 
       - name: Bump version and push tag
-        if: teps.changelog.outputs.changes != ''
+        if: steps.changelog.outputs.changes != ''
         uses: anothrNick/github-tag-action@1.40.0
         id: version
         env:
@@ -48,7 +48,7 @@ jobs:
           TAG_CONTEXT: branch
 
       - name: Create Release
-        if: teps.changelog.outputs.changes != ''
+        if: steps.changelog.outputs.changes != ''
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
@@ -59,7 +59,7 @@ jobs:
           tag: ${{ steps.version.outputs.new_tag }}
 
       - name: Commit CHANGELOG.md
-        if: teps.changelog.outputs.changes != ''
+        if: steps.changelog.outputs.changes != ''
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: main
@@ -67,6 +67,7 @@ jobs:
           file_pattern: CHANGELOG.md
 
   documentation:
+    name: Deploy documentation
     needs:
       - deploy
     uses: wrk-flow/reusable-workflows/.github/workflows/deploy-docs.yml@main
