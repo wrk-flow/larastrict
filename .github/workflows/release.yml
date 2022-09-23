@@ -61,7 +61,9 @@ jobs:
 
       - name: Remove tag
         if: steps.changelog.outputs.changes == ''
-        run: git tag -d ${{ steps.version.outputs.new_tag }}
+        run: |
+          git tag -d ${{ steps.version.outputs.new_tag }}
+          git push --delete origin ${{ steps.version.outputs.new_tag }}
 
   documentation:
     name: Deploy documentation
