@@ -24,17 +24,19 @@ jobs:
           fetch-depth: '0'
 
       - name: Create local tag for building changelog
-        run: git tag new-version
+        run: |
+          git tag -f main-latest
+          git push  --follow-tags
 
       - name: Try to update CHANGELOG
         id: changelog
         uses: Requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          tag: new-version
+          tag: main-latest
 
       - name: Remove tag
-        run: git tag -d new-version
+        run: git tag -d main-latest
 
       - name: Bump version and push tag
         if: steps.changelog.outputs.changes != ''
