@@ -13,8 +13,6 @@ jobs:
     name: "Check code"
     uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@main
     secrets: inherit
-    with:
-      gistID: 8eeaf1185a65b196e8bbb06c1b103154
 
   commits:
     name: 👮‍Confronts to conventional commits

@@ -7,7 +7,16 @@ on:
       - completed
 
 jobs:
+  check:
+    name: "Check code"
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@main
+    secrets: inherit
+    with:
+      gistID: 8eeaf1185a65b196e8bbb06c1b103154
+
   deploy:
+    needs:
+      - check
     name: Create release
     runs-on: ubuntu-latest
     steps:
@@ -60,6 +69,7 @@ jobs:
           file_pattern: CHANGELOG.md
 
   documentation:
-    needs: deploy
+    needs:
+      - deploy
     uses: wrk-flow/reusable-workflows/.github/workflows/deploy-docs.yml@main
     secrets: inherit
