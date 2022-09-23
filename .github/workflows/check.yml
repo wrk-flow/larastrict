@@ -1,4 +1,4 @@
-name: "Check"
+name: "Check code"
 
 on:
   pull_request:
