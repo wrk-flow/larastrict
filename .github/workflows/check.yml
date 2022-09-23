@@ -1,15 +1,25 @@
-name: "Check code"
+name: "Check"
 
 on:
   pull_request:
   push:
     branches:
       - "*"
+      - ""main"
       - "!gh-pages"
 
 jobs:
-  run:
+  code:
+    name: "Check code"
     uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@main
     secrets: inherit
     with:
       gistID: 8eeaf1185a65b196e8bbb06c1b103154
+
+  commits:
+    name: 👮‍Confronts to conventional commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: webiny/action-conventional-commits@v1.0.5
+

@@ -16,7 +16,21 @@ jobs:
         with:
           fetch-depth: '0'
 
+      - name: Create local tag for building changelog
+        run: git tag new-version
+
+      - name: Try to update CHANGELOG
+        id: changelog
+        uses: Requarks/changelog-action@v1
+        with:
+          token: ${{ github.token }}
+          tag: new-version
+
+      - name: Remove tag
+        run: git tag -d new-version
+
       - name: Bump version and push tag
+        if: teps.changelog.outputs.changes != ''
         uses: anothrNick/github-tag-action@1.40.0
         id: version
         env:
@@ -26,26 +40,26 @@ jobs:
           INITIAL_VERSION: 0.0.1
           TAG_CONTEXT: branch
 
-      - name: Update CHANGELOG
-        id: changelog
-        uses: Requarks/changelog-action@v1
-        with:
-          token: ${{ github.token }}
-          tag: ${{ steps.version.outputs.new_tag }}
-
       - name: Create Release
+        if: teps.changelog.outputs.changes != ''
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           draft: false
-          name: ${{ github.ref_name }}
           body: ${{ steps.changelog.outputs.changes }}
           token: ${{ github.token }}
+          name: ${{ steps.version.outputs.new_tag }}
           tag: ${{ steps.version.outputs.new_tag }}
 
       - name: Commit CHANGELOG.md
+        if: teps.changelog.outputs.changes != ''
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: main
           commit_message: 'docs: update CHANGELOG.md for ${{ github.ref_name }} [skip ci]'
           file_pattern: CHANGELOG.md
+
+  documentation:
+    needs: deploy
+    uses: wrk-flow/reusable-workflows/.github/workflows/deploy-docs.yml@main
+    secrets: inherit
