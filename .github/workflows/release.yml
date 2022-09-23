@@ -8,6 +8,7 @@ on:
 
 jobs:
   deploy:
+    name: Create release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -17,16 +18,20 @@ jobs:
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.40.0
+        id: version
         env:
+          DEFAULT_BUMP: patch
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
+          INITIAL_VERSION: 0.0.1
+          TAG_CONTEXT: branch
 
       - name: Update CHANGELOG
         id: changelog
         uses: Requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          tag: ${{ github.ref_name }}
+          tag: ${{ steps.version.outputs.new_tag }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1
