@@ -13,6 +13,12 @@ Use the discussion functionality and propose your idea:
 - What you want to solve?
 - Sample proof of concept code? (just how it could look)
 
+## Commit messages
+
+- We are using (conventionalcommits)[https://www.conventionalcommits.org/en/v1.0.0/]
+- CHANGELOG.md is generated from given commits using this [action](https://github.com/requarks/changelog-action).
+- These keywords will ignore changelog change `build,docs,other,style`
+
 ## Wait to take in account
 
 - Always design your classes with dependency injection in mind (possibly constructor).
