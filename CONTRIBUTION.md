@@ -15,7 +15,7 @@ Use the discussion functionality and propose your idea:
 
 ## Commit messages
 
-- We are using (conventionalcommits)[https://www.conventionalcommits.org/en/v1.0.0/]
+- We are using [conventionalcommits](https://www.conventionalcommits.org/en/v1.0.0/)
 - CHANGELOG.md is generated from given commits using this [action](https://github.com/requarks/changelog-action).
 - These keywords will ignore changelog change `build,docs,other,style`
 

@@ -11,7 +11,7 @@ use LaraStrict\Entities\CustomRouteEntity;
 interface HasCustomRoutes
 {
     /**
-     * @return array<string|int, Closure(CustomRouteEntity,RouteRegistrar):bool|string>
+     * @return array<string|int, class-string<CreateCustomRouteActionContract>|string|Closure(CustomRouteEntity,RouteRegistrar):bool>
      */
     public function getCustomRoutes(): array;
 }
