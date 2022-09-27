@@ -29,5 +29,7 @@ class SetFactoryResolvingProviderPipe implements AppServiceProviderPipeContract
             $class = Str::replaceLast('Factory', '', $factory::class);
             return $class;
         });
+
+        $next($appServiceProvider);
     }
 }
