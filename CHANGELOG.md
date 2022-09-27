@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.5] - 2022-09-27
+### :sparkles: New Features
+- [`763b570`](https://github.com/wrk-flow/larastrict/commit/763b570e6df7b88dc151d30dc6a86aaec4a94da2) - **testing**: Improve ability to assert registered routes with only allowed routes *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.4] - 2022-09-27
 ### :sparkles: New Features
 - [`ab61bcb`](https://github.com/wrk-flow/larastrict/commit/ab61bcb867a9eac653b64b030e168640f545f333) - **provider**: Add ability to provide custom route action with reusable file suffix *(commit by [@pionl](https://github.com/pionl))*
@@ -27,3 +32,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.2]: https://github.com/wrk-flow/larastrict/compare/v0.0.1...v0.0.2
 [v0.0.3]: https://github.com/wrk-flow/larastrict/compare/v0.0.2...v0.0.3
 [v0.0.4]: https://github.com/wrk-flow/larastrict/compare/v0.0.3...v0.0.4
+[v0.0.5]: https://github.com/wrk-flow/larastrict/compare/v0.0.4...v0.0.5
