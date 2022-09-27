@@ -23,7 +23,7 @@ class WithCustomServiceProvider extends AbstractServiceProvider implements HasRo
                 return true;
             },
             'testing' => static fn (): bool => false,
-            'custom' => CreateCustomRouteAction::class,
+            'custom' => RegisterCustomRouteAction::class,
         ];
     }
 }

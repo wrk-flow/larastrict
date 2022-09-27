@@ -7,7 +7,7 @@ namespace LaraStrict\Contracts;
 use Illuminate\Routing\RouteRegistrar;
 use LaraStrict\Entities\CustomRouteEntity;
 
-interface CreateCustomRouteActionContract
+interface RegisterCustomRouteActionContract
 {
     /**
      * Registers custom route. Returns false if no registration has been made.

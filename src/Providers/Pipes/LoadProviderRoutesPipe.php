@@ -10,11 +10,11 @@ use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Str;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
-use LaraStrict\Contracts\CreateCustomRouteActionContract;
 use LaraStrict\Contracts\HasCustomPrefixRoutes;
 use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\HasVersionedApiRoutes;
+use LaraStrict\Contracts\RegisterCustomRouteActionContract;
 use LaraStrict\Entities\AppServiceProviderEntity;
 use LaraStrict\Entities\CustomRouteEntity;
 use LogicException;
@@ -137,16 +137,16 @@ class LoadProviderRoutesPipe implements AppServiceProviderPipeContract
                     $result = $value($routeEntity, $this->makeRoute());
                 } elseif (is_string($value) && class_exists($value)) {
                     $class = $this->container->make($value);
-                    if ($class instanceof CreateCustomRouteActionContract === false) {
+                    if ($class instanceof RegisterCustomRouteActionContract === false) {
                         throw new LogicException(
-                            'To build custom route with class you need to implement ' . CreateCustomRouteActionContract::class
+                            'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class
                         );
                     }
 
                     $result = $class->execute($routeEntity, $this->makeRoute());
                 } else {
                     throw new LogicException(
-                        'To build the custom route with file suffix name as key expects closure or class that implements ' . CreateCustomRouteActionContract::class
+                        'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class
                     );
                 }
 
