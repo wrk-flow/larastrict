@@ -19,11 +19,14 @@ trait AssertProviderRegistersRoutes
      * @param class-string<AbstractServiceProvider>                        $registerServiceProvider
      * @param array<string, array<string>|array<int, Closure(Route):void>> $expectUrlsByMethod
      * ['GET'=>['web/tests/my-api']]
+     * @param bool                                                         $onlyGiven Check if only given routes can be
+     * registered
      */
     public function assertRoutes(
         Application $application,
         string $registerServiceProvider,
         array $expectUrlsByMethod,
+        bool $onlyGiven = false
     ): void {
         $application->register($registerServiceProvider, true);
 
@@ -45,10 +48,18 @@ trait AssertProviderRegistersRoutes
                 $currentUrls[] = $url;
             }
 
-            Assert::assertEquals(array_keys($registeredUrls), $currentUrls);
+            if ($onlyGiven) {
+                Assert::assertEquals(array_keys($registeredUrls), $currentUrls);
+            }
+
+            $errorMessage = 'Not found in: ' . implode(', ', array_keys($registeredUrls));
 
             foreach ($urls as $index => $value) {
                 $url = is_callable($value) ? $index : $value;
+
+                if ($onlyGiven === false) {
+                    Assert::assertArrayHasKey($url, $registeredUrls, $errorMessage);
+                }
 
                 if (is_callable($value)) {
                     $value($registeredUrls[$url]);

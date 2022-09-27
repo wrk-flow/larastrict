@@ -37,12 +37,12 @@ class AbstractServiceProviderTest extends TestCase
     {
         $this->assertRoutes($this->app, WithWebServiceProvider::class, [
             'GET' => ['with-webs/3-url-web'],
-        ]);
+        ], true);
     }
 
     public function testWithoutInterface(): void
     {
-        $this->assertRoutes($this->app, TestingServiceProvider::class, []);
+        $this->assertRoutes($this->app, TestingServiceProvider::class, [], true);
     }
 
     public function testWithoutAnyUrl(): void
@@ -58,28 +58,28 @@ class AbstractServiceProviderTest extends TestCase
 
                 return true;
             });
-        $this->assertRoutes($this->app, RoutableWithNoFilesServiceProvider::class, []);
+        $this->assertRoutes($this->app, RoutableWithNoFilesServiceProvider::class, [], true);
     }
 
     public function testWithApiAndWeb(): void
     {
         $this->assertRoutes($this->app, WithBothServiceProvider::class, [
             'GET' => ['api/with-boths/2-url-api', 'with-boths/2-url-web'],
-        ]);
+        ], true);
     }
 
     public function testWithApiOnly(): void
     {
         $this->assertRoutes($this->app, WithApiServiceProvider::class, [
             'GET' => ['api/with-apis/1-api'],
-        ]);
+        ], true);
     }
 
     public function testWithVersionedApiOnly(): void
     {
         $this->assertRoutes($this->app, WithVersionedApiServiceProvider::class, [
             'GET' => ['api/v1/test/1-api', 'api/v2/test/2-api'],
-        ]);
+        ], true);
     }
 
     public function testWithCustomOnly(): void
@@ -99,7 +99,7 @@ class AbstractServiceProviderTest extends TestCase
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],
-        ]);
+        ], true);
     }
 
     public function testWithAll(): void
@@ -125,6 +125,6 @@ class AbstractServiceProviderTest extends TestCase
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],
-        ]);
+        ], true);
     }
 }
