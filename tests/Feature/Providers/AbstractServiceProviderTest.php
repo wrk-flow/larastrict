@@ -92,6 +92,9 @@ class AbstractServiceProviderTest extends TestCase
                 'dev/with-customs/1-dev' => function (Route $route) {
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
+                'custom-route/with-customs/1-custom' => function (Route $route) {
+                    $this->assertEquals([], $route->gatherMiddleware());
+                },
             ],
         ]);
     }
@@ -110,6 +113,9 @@ class AbstractServiceProviderTest extends TestCase
                     $this->assertEquals(['admin'], $route->gatherMiddleware());
                 },
                 'dev/with-alls/1-dev' => function (Route $route) {
+                    $this->assertEquals([], $route->gatherMiddleware());
+                },
+                'custom-route/with-alls/2-custom' => function (Route $route) {
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],

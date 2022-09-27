@@ -10,6 +10,7 @@ use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Str;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
+use LaraStrict\Contracts\CreateCustomRouteActionContract;
 use LaraStrict\Contracts\HasCustomPrefixRoutes;
 use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
@@ -126,19 +127,28 @@ class LoadProviderRoutesPipe implements AppServiceProviderPipeContract
                     $didLoadRoutes = true;
                 }
             } else {
-                if (is_callable($value) === false) {
-                    throw new LogicException(
-                        'Custom route with file suffix name as key expects closure to build the route'
-                    );
-                }
-
                 $routeEntity = new CustomRouteEntity(
                     path: $this->getRouteFilePath($dir, $serviceName, $key),
                     serviceName: $serviceName,
                     urlPrefix: $urlPrefix
                 );
 
-                $result = $value($routeEntity, $this->makeRoute());
+                if (is_callable($value)) {
+                    $result = $value($routeEntity, $this->makeRoute());
+                } elseif (is_string($value) && class_exists($value)) {
+                    $class = $this->container->make($value);
+                    if ($class instanceof CreateCustomRouteActionContract === false) {
+                        throw new LogicException(
+                            'To build custom route with class you need to implement ' . CreateCustomRouteActionContract::class
+                        );
+                    }
+
+                    $result = $class->execute($routeEntity, $this->makeRoute());
+                } else {
+                    throw new LogicException(
+                        'To build the custom route with file suffix name as key expects closure or class that implements ' . CreateCustomRouteActionContract::class
+                    );
+                }
 
                 if ($result) {
                     $didLoadRoutes = true;

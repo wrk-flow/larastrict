@@ -16,7 +16,7 @@ trait AssertProviderRegistersRoutes
     /**
      * Asserts correct that routes are correctly registered in correct prefix (pluralized)
      *
-     * @param class-string<AbstractServiceProvider>                         $registerServiceProvider
+     * @param class-string<AbstractServiceProvider>                        $registerServiceProvider
      * @param array<string, array<string>|array<int, Closure(Route):void>> $expectUrlsByMethod
      * ['GET'=>['web/tests/my-api']]
      */
@@ -39,12 +39,16 @@ trait AssertProviderRegistersRoutes
         foreach ($expectUrlsByMethod as $method => $urls) {
             $registeredUrls = $routes->get($method);
 
-            $errorMessage = 'Not found in: ' . implode(', ', array_keys($registeredUrls));
+            $currentUrls = [];
+            foreach ($urls as $index => $value) {
+                $url = is_callable($value) ? $index : $value;
+                $currentUrls[] = $url;
+            }
+
+            Assert::assertEquals(array_keys($registeredUrls), $currentUrls);
 
             foreach ($urls as $index => $value) {
                 $url = is_callable($value) ? $index : $value;
-
-                Assert::assertArrayHasKey($url, $registeredUrls, $errorMessage);
 
                 if (is_callable($value)) {
                     $value($registeredUrls[$url]);
