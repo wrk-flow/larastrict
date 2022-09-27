@@ -34,6 +34,7 @@ class LoadProviderRoutesPipe implements AppServiceProviderPipeContract
         if (($appServiceProvider->application instanceof CachesRoutes &&
                 $appServiceProvider->application->routesAreCached()) === false) {
             if ($appServiceProvider->serviceProvider instanceof HasRoutes === false) {
+                $next($appServiceProvider);
                 return;
             }
 
