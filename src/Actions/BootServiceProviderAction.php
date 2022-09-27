@@ -11,6 +11,7 @@ use LaraStrict\Contracts\HasCustomServiceName;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Entities\AppServiceProviderEntity;
 use LaraStrict\Providers\Pipes\LoadProviderRoutesPipe;
+use LaraStrict\Providers\Pipes\RegisterProviderPoliciesPipe;
 use LogicException;
 use ReflectionClass;
 
@@ -27,7 +28,7 @@ class BootServiceProviderAction
 
         $dir = $this->getRootDirectory($reflection);
         $serviceName = $this->getServiceName($reflection, $provider);
-        $pipes = [LoadProviderRoutesPipe::class];
+        $pipes = [LoadProviderRoutesPipe::class, RegisterProviderPoliciesPipe::class];
 
         $app = new AppServiceProviderEntity($application, $provider, $serviceName, $dir);
 

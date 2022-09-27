@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Providers\WithVersionedApi;
+namespace Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithVersionedApi;
 
 use LaraStrict\Contracts\HasCustomPrefixRoutes;
 use LaraStrict\Contracts\HasRoutes;

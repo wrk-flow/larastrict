@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Providers;
+namespace Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe;
 
 use Illuminate\Routing\Route;
 use LaraStrict\Testing\Laravel\TestingServiceProvider;
 use LaraStrict\Testing\Providers\Concerns\AssertProviderRegistersRoutes;
 use Mockery\MockInterface;
 use Psr\Log\LoggerInterface;
-use Tests\LaraStrict\Feature\Providers\WithAll\WithAllServiceProvider;
-use Tests\LaraStrict\Feature\Providers\WithApi\WithApiServiceProvider;
-use Tests\LaraStrict\Feature\Providers\WithBoth\WithBothServiceProvider;
-use Tests\LaraStrict\Feature\Providers\WithCustom\WithCustomServiceProvider;
-use Tests\LaraStrict\Feature\Providers\WithVersionedApi\WithVersionedApiServiceProvider;
-use Tests\LaraStrict\Feature\Providers\WithWeb\WithWebServiceProvider;
+use Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithAll\WithAllServiceProvider;
+use Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithApi\WithApiServiceProvider;
+use Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithBoth\WithBothServiceProvider;
+use Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithCustom\WithCustomServiceProvider;
+use Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithVersionedApi\WithVersionedApiServiceProvider;
+use Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithWeb\WithWebServiceProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 /**
  * Expects that name of folder is used as prefix and directory prefixs.
  */
-class AbstractServiceProviderTest extends TestCase
+class LoadProviderRoutesPipeTest extends TestCase
 {
     use AssertProviderRegistersRoutes;
 
@@ -50,10 +50,13 @@ class AbstractServiceProviderTest extends TestCase
         $this->loggerMock->shouldReceive('warning')
             ->once()
             ->withArgs(function (string $message, array $context) {
-                $this->assertEquals('No routes have been loaded for <providers> service', $message);
+                $this->assertEquals('No routes have been loaded for <load_provider_routes_pipe> service', $message);
                 $this->assertArrayHasKey('dir', $context);
                 $this->assertArrayHasKey('service', $context);
-                $this->assertStringContainsString('tests/Feature/Providers', $context['dir']);
+                $this->assertStringContainsString(
+                    'tests/Feature/Providers/Pipes/LoadProviderRoutesPipe',
+                    $context['dir']
+                );
                 $this->assertEquals(RoutableWithNoFilesServiceProvider::class, $context['service']);
 
                 return true;

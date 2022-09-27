@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Providers\WithBoth;
+namespace Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithBoth;
 
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Providers\AbstractServiceProvider;

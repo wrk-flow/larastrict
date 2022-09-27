@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\LaraStrict\Feature\Providers\WithCustom;
+namespace Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithCustom;
 
 use Illuminate\Routing\RouteRegistrar;
 use LaraStrict\Contracts\RegisterCustomRouteActionContract;
