@@ -15,6 +15,7 @@ use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\HasVersionedApiRoutes;
 use LaraStrict\Contracts\RegisterCustomRouteActionContract;
+use LaraStrict\Contracts\RegisterNamedCustomRouteActionContract;
 use LaraStrict\Entities\AppServiceProviderEntity;
 use LaraStrict\Entities\CustomRouteEntity;
 use LogicException;
@@ -123,36 +124,55 @@ class LoadProviderRoutesPipe implements AppServiceProviderPipeContract
                     );
                 }
 
-                if ($this->registerRoute($dir, $value, $serviceName, $urlPrefix)) {
-                    $didLoadRoutes = true;
-                }
-            } else {
-                $routeEntity = new CustomRouteEntity(
-                    path: $this->getRouteFilePath($dir, $serviceName, $key),
-                    serviceName: $serviceName,
-                    urlPrefix: $urlPrefix
-                );
-
-                if (is_callable($value)) {
-                    $result = $value($routeEntity, $this->makeRoute());
-                } elseif (is_string($value) && class_exists($value)) {
+                if (class_exists($value)) {
                     $class = $this->container->make($value);
-                    if ($class instanceof RegisterCustomRouteActionContract === false) {
+                    if ($class instanceof RegisterNamedCustomRouteActionContract === false) {
                         throw new LogicException(
-                            'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class
+                            'To build custom route with class you need to implement ' . RegisterNamedCustomRouteActionContract::class
                         );
                     }
 
-                    $result = $class->execute($routeEntity, $this->makeRoute());
-                } else {
+                    $routeEntity = new CustomRouteEntity(
+                        path: $this->getRouteFilePath($dir, $serviceName, $class->getFileSuffix()),
+                        serviceName: $serviceName,
+                        urlPrefix: $urlPrefix
+                    );
+
+                    if ($class->execute($routeEntity, $this->makeRoute())) {
+                        $didLoadRoutes = true;
+                    }
+                } elseif ($this->registerRoute($dir, $value, $serviceName, $urlPrefix)) {
+                    $didLoadRoutes = true;
+                }
+
+                continue;
+            }
+
+            $routeEntity = new CustomRouteEntity(
+                path: $this->getRouteFilePath($dir, $serviceName, $key),
+                serviceName: $serviceName,
+                urlPrefix: $urlPrefix
+            );
+
+            if (is_callable($value)) {
+                $result = $value($routeEntity, $this->makeRoute());
+            } elseif (is_string($value) && class_exists($value)) {
+                $class = $this->container->make($value);
+                if ($class instanceof RegisterCustomRouteActionContract === false) {
                     throw new LogicException(
-                        'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class
+                        'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class
                     );
                 }
 
-                if ($result) {
-                    $didLoadRoutes = true;
-                }
+                $result = $class->execute($routeEntity, $this->makeRoute());
+            } else {
+                throw new LogicException(
+                    'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class
+                );
+            }
+
+            if ($result) {
+                $didLoadRoutes = true;
             }
         }
 
