@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Providers\Pipes;
 
 use Closure;
-use Illuminate\Container\Container;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Foundation\CachesRoutes;
 use Illuminate\Routing\RouteRegistrar;
 use Illuminate\Support\Str;
