@@ -7,7 +7,7 @@ position: 1
 <img src="https://img.shields.io/badge/PHP-8.1-B0B3D6"  class="inline-flex" style="margin: 0;" />
 <img src="https://img.shields.io/badge/Laravel-9-fb503b"  class="inline-flex" style="margin: 0;" />
 <img src="https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/pionl/8eeaf1185a65b196e8bbb06c1b103154/raw/coverage.json"  class="inline-flex" style="margin: 0;" />
-
+<img src="https://github.com/wrk-flow/larastrict/actions/workflows/release.yml/badge.svg"  class="inline-flex" style="margin: 0;" />
 
 **DOCUMENTATION in progress** 
 

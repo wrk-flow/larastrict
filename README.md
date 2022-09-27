@@ -6,6 +6,7 @@
 ![php](https://img.shields.io/badge/PHP-8.1-B0B3D6)
 ![laravel](https://img.shields.io/badge/Laravel-9-fb503b)
 ![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/pionl/8eeaf1185a65b196e8bbb06c1b103154/raw/coverage.json)
+[![CI](https://github.com/wrk-flow/larastrict/actions/workflows/release.yml/badge.svg)](https://github.com/wrk-flow/larastrict/actions/workflows/release.yml)
 
 __Current version is under development.__
 
