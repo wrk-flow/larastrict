@@ -16,5 +16,9 @@ return static function (ECSConfig $containerConfigurator): void {
     $containerConfigurator->paths(
         [__DIR__ . '/src', __DIR__ . '/tests', __DIR__ . '/ecs.php', __DIR__ . '/rector.php']
     );
-    $containerConfigurator->skip([YodaStyleFixer::class]);
+    $containerConfigurator->skip([
+        YodaStyleFixer::class,
+        // We want to leave the relative constant path usage
+        __DIR__ . '/tests/Feature/Testing/Commands/MakeExpectationCommand/*.php',
+    ]);
 };
