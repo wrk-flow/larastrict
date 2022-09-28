@@ -16,16 +16,17 @@ use Illuminate\Contracts\Foundation\Application;
 class TestingContainer implements Container
 {
     /**
-     * @param array<string, object|Closure(array):(object|null)> $makeBindings      A map of closures that will create.
-     *                                                                       Receives make $parameters and $abstract
-     *                                                                       string
-     * @param Closure(array,string):(object|null)|null    $makeAlwaysBinding If makeBindings has no entry, it will call
-     *                                                                       make on this closure. Receives make
-     *                                                                       $parameters and $abstract string
+     * @param array<string, object|Closure(array):(object|null)|null> $makeBindings      A map of closures that will create.
+     *                                                                              Receives make $parameters and
+     *                                                                              $abstract string
+     * @param Closure(array,string):(object|null)|object|null    $makeAlwaysBinding If makeBindings has no entry, it
+     *                                                                              will call make on this closure or
+     *                                                                              given object. Receives make
+     *                                                                              $parameters and $abstract string
      */
     public function __construct(
         private array $makeBindings = [],
-        private Closure|null $makeAlwaysBinding = null,
+        private object|null $makeAlwaysBinding = null,
     ) {
     }
 
@@ -102,12 +103,12 @@ class TestingContainer implements Container
     {
         $make = $this->makeBindings[$abstract] ?? null;
 
-        if (is_object($make)) {
-            return $make;
-        }
-
         if ($make === null && $this->makeAlwaysBinding !== null) {
             $make = $this->makeAlwaysBinding;
+        }
+
+        if (is_object($make) && is_callable($make) === false) {
+            return $make;
         }
 
         if ($make === null) {
@@ -124,16 +125,26 @@ class TestingContainer implements Container
     }
 
     /**
-     * @param Closure(array):?object $make Closure that will receive make parameters and should return an object.
+     * @param Closure(array):(object|null)|object|null $make Closure that will receive make parameters and should return an object.
      */
-    public function makeReturns(string $abstract, Closure $make): void
+    public function makeReturns(string $abstract, ?object $make): self
     {
         $this->makeBindings[$abstract] = $make;
+
+        return $this;
     }
 
-    public function makeAlwaysReturn(Closure $make): void
+    /**
+     * @param Closure(array,string):(object|null)|object|null $make If makeBindings has no entry, it
+     *                                                                              will call make on this closure or
+     *                                                                              given object. Receives make
+     *                                                                              $parameters and $abstract string
+     */
+    public function makeAlwaysReturn(object|null $make): self
     {
         $this->makeAlwaysBinding = $make;
+
+        return $this;
     }
 
     public function call($callback, array $parameters = [], $defaultMethod = null)
