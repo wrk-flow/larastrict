@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.8] - 2022-09-28
+### :sparkles: New Features
+- [`9733d67`](https://github.com/wrk-flow/larastrict/commit/9733d6769ea16f66c0f0531c16defcdfe2638c47) - **testing**: Add AssertProviderBindings for testing service provider bindings *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.7] - 2022-09-28
 ### :sparkles: New Features
 - [`8f6ad8a`](https://github.com/wrk-flow/larastrict/commit/8f6ad8a0c05a48524d04faa296583c24d5590eba) - **testing**: Allow dynamically changing expectation call map *(commit by [@pionl](https://github.com/pionl))*
@@ -56,3 +61,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.5]: https://github.com/wrk-flow/larastrict/compare/v0.0.4...v0.0.5
 [v0.0.6]: https://github.com/wrk-flow/larastrict/compare/v0.0.5...v0.0.6
 [v0.0.7]: https://github.com/wrk-flow/larastrict/compare/v0.0.6...v0.0.7
+[v0.0.8]: https://github.com/wrk-flow/larastrict/compare/v0.0.7...v0.0.8
