@@ -7,17 +7,17 @@ namespace LaraStrict\Testing;
 use LogicException;
 
 /**
- * @template T of object
+ * @template TExpectation of object
  */
 abstract class AbstractExpectationCallMap
 {
     /**
-     * @var array<T>
+     * @var array<TExpectation>
      */
     private array $expectationMap = [];
 
     /**
-     * @param array<T|null> $expectationMap
+     * @param array<TExpectation|null> $expectationMap
      */
     public function __construct(
         array $expectationMap,
@@ -28,7 +28,7 @@ abstract class AbstractExpectationCallMap
     }
 
     /**
-     * @param T $expectation
+     * @param TExpectation $expectation
      *
      * @return $this
      */
@@ -42,9 +42,9 @@ abstract class AbstractExpectationCallMap
     /**
      * Resets the current expectation map
      *
-     * @param array<T> $expectationMap
+     * @param array<TExpectation> $expectationMap
      *
-     * @return static<T>
+     * @return static<TExpectation>
      */
     public function setExpectationMap(array $expectationMap): self
     {
@@ -55,7 +55,7 @@ abstract class AbstractExpectationCallMap
     }
 
     /**
-     * @return T
+     * @return TExpectation
      */
     protected function getExpectation(): object
     {
