@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.7] - 2022-09-28
+### :sparkles: New Features
+- [`8f6ad8a`](https://github.com/wrk-flow/larastrict/commit/8f6ad8a0c05a48524d04faa296583c24d5590eba) - **testing**: Allow dynamically changing expectation call map *(commit by [@pionl](https://github.com/pionl))*
+
+### :bug: Bug Fixes
+- [`bcf775d`](https://github.com/wrk-flow/larastrict/commit/bcf775d2c847561260495f3f3717f153d0f2aaa5) - **testing**: Fix container->make with a closure *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.6] - 2022-09-27
 ### :sparkles: New Features
 - [`d9a6287`](https://github.com/wrk-flow/larastrict/commit/d9a6287b69df4c757d4c64cb100caaece7ec42d6) - **provider**: Add ability to register Gate policies using contract *(commit by [@pionl](https://github.com/pionl))*
@@ -47,3 +55,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.4]: https://github.com/wrk-flow/larastrict/compare/v0.0.3...v0.0.4
 [v0.0.5]: https://github.com/wrk-flow/larastrict/compare/v0.0.4...v0.0.5
 [v0.0.6]: https://github.com/wrk-flow/larastrict/compare/v0.0.5...v0.0.6
+[v0.0.7]: https://github.com/wrk-flow/larastrict/compare/v0.0.6...v0.0.7
