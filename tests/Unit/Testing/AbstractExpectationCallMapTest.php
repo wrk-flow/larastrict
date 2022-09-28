@@ -26,4 +26,29 @@ class AbstractExpectationCallMapTest extends TestCase
         $map->execute($testExpectation2);
         $map->execute($testExpectation2);
     }
+
+    public function testSupportsReset(): void
+    {
+        $testExpectation1 = new TestExpectation(0);
+        $testExpectation2 = new TestExpectation(1);
+        $map = new TestExpectationCallMap([$testExpectation1, $testExpectation2]);
+
+        $map->execute($testExpectation1);
+        $map->execute($testExpectation2);
+
+        $map->setExpectationMap([$testExpectation2]);
+        $map->execute($testExpectation2);
+    }
+
+    public function testAddExpectation(): void
+    {
+        $testExpectation1 = new TestExpectation(0);
+        $testExpectation2 = new TestExpectation(1);
+        $map = new TestExpectationCallMap([]);
+
+        $map->addExpectation($testExpectation1);
+        $map->execute($testExpectation1);
+        $map->addExpectation($testExpectation2);
+        $map->execute($testExpectation2);
+    }
 }

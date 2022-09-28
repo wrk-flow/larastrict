@@ -14,7 +14,7 @@ abstract class AbstractExpectationCallMap
     /**
      * @var array<T>
      */
-    private readonly array $expectationMap;
+    private array $expectationMap = [];
 
     /**
      * @param array<T|null> $expectationMap
@@ -25,6 +25,33 @@ abstract class AbstractExpectationCallMap
     ) {
         // Support passing "built" array of calls and ensure it is correctly key-ed
         $this->expectationMap = array_values(array_filter($expectationMap));
+    }
+
+    /**
+     * @param T $expectation
+     *
+     * @return $this
+     */
+    public function addExpectation(object $expectation): self
+    {
+        $this->expectationMap[] = $expectation;
+
+        return $this;
+    }
+
+    /**
+     * Resets the current expectation map
+     *
+     * @param array<T> $expectationMap
+     *
+     * @return static<T>
+     */
+    public function setExpectationMap(array $expectationMap): self
+    {
+        $this->expectationMap = $expectationMap;
+        $this->callStep = 0;
+
+        return $this;
     }
 
     /**
