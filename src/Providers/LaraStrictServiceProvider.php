@@ -12,6 +12,8 @@ use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleServiceService;
 use LaraStrict\Context\ContextServiceProvider;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
+use LaraStrict\Database\DatabaseServiceProvider;
+use LaraStrict\Testing\TestServiceProvider;
 
 class LaraStrictServiceProvider extends ServiceProvider
 {
@@ -19,14 +21,17 @@ class LaraStrictServiceProvider extends ServiceProvider
     {
         parent::register();
 
-        $this->app->register(ContextServiceProvider::class);
-        $this->app->register(CacheServiceProvider::class);
-
-        // Add ability to "switch" the implementation.
+        // Add ability to "switch" the implementation - it is important to run it now.
         $this->app->singleton(ScheduleServiceContract::class, ScheduleServiceContract::class);
         $this->app->alias(ScheduleServiceService::class, ScheduleServiceContract::class);
 
         $this->app->bind(RunAppServiceProviderPipesActionContract::class, RunAppServiceProviderPipesAction::class);
+
+        // Register our service providers
+        $this->app->register(ContextServiceProvider::class);
+        $this->app->register(CacheServiceProvider::class);
+        $this->app->register(DatabaseServiceProvider::class);
+        $this->app->register(TestServiceProvider::class);
     }
 
     /**

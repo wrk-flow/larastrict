@@ -4,13 +4,22 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing;
 
+use Illuminate\Support\ServiceProvider;
 use LaraStrict\Config\Laravel\AppConfig;
 use LaraStrict\Enums\EnvironmentType;
-use LaraStrict\Providers\AbstractServiceProvider;
+use LaraStrict\Testing\Actions\GetBasePathForStubsAction;
+use LaraStrict\Testing\Actions\GetNamespaceForStubsAction;
 use LaraStrict\Testing\Commands\MakeExpectationCommand;
+use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
+use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 
-class LaraStrictTestServiceProvider extends AbstractServiceProvider
+class TestServiceProvider extends ServiceProvider
 {
+    public array $bindings = [
+        GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
+        GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
+    ];
+
     public function register(): void
     {
         parent::register();

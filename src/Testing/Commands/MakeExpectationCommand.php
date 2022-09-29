@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
 use LaraStrict\Testing\AbstractExpectationCallMap;
-use LogicException;
+use LaraStrict\Testing\Constants\StubConstants;
+use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
+use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use Nette\PhpGenerator\ClassLike;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Factory;
@@ -29,19 +30,16 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'make:expectation', description: 'Make expectation class for given class')]
 class MakeExpectationCommand extends Command
 {
-    final public const NameSpaceSeparator = '\\';
-
-    final public const ComposerAutoLoadDev = 'autoload-dev';
-
-    final public const ComposerPsr4 = 'psr-4';
-
     protected $signature = 'make:expectation 
         {class : Class name of path to class using PSR-4 specs} 
         {method?} 
     ';
 
-    public function handle(Application $application, Filesystem $filesystem): int
-    {
+    public function handle(
+        Filesystem $filesystem,
+        GetBasePathForStubsActionContract $getBasePathAction,
+        GetNamespaceForStubsActionContract $getFolderAndNamespaceForStubsAction,
+    ): int {
         if (class_exists(ClassType::class) === false) {
             $message = 'First install package that is required:';
 
@@ -52,7 +50,7 @@ class MakeExpectationCommand extends Command
             return 1;
         }
 
-        $basePath = $application->basePath();
+        $basePath = $getBasePathAction->execute();
 
         $methodName = (string) ($this->input->getArgument('method') ?? 'execute');
 
@@ -67,47 +65,29 @@ class MakeExpectationCommand extends Command
         $method = $class->getMethod($methodName);
 
         // Ask for which namespace which to use for "tests"
-        $composer = $this->getComposerJsonData($filesystem, $basePath);
-        $autoLoad = $this->getComposerDevAutoLoad($composer);
-        if ($autoLoad !== []) {
-            if (count($autoLoad) === 1) {
-                $baseNamespace = array_keys($autoLoad)[0];
-            } else {
-                $baseNamespace = (string) $this->choice('What namespace to use?', array_keys($autoLoad),);
-            }
-
-            if (array_key_exists($baseNamespace, $autoLoad) === false) {
-                throw new LogicException('Invalid namespace returned');
-            }
-
-            $folder = $autoLoad[$baseNamespace];
-        } else {
-            // autoload-dev already contains directory / namespace separator - ensure that it contains too
-            $folder = 'tests' . DIRECTORY_SEPARATOR;
-            $baseNamespace = 'Tests' . self::NameSpaceSeparator;
-        }
+        $namespace = $getFolderAndNamespaceForStubsAction->execute($this, $basePath);
 
         // 1. The first part of namespace should is in 99% App => app. We need to create a valid
         // namespace in tests folder, lets remove the first namespace and rebuild the correct
         // namespace and file path from it.
-        // 2. We can get a class within same namespace as a "tests" namespace, just remove the base namespace
+        // 2. We can get a class within same namespace as a "tests/app" namespace, just remove the base namespace
         // to rebuild it later on
         $classNamespace = $class->getNamespaceName();
-        if (str_starts_with($classNamespace, $baseNamespace) === false) {
-            $namespaceParts = explode(self::NameSpaceSeparator, $classNamespace);
+        if (str_starts_with($classNamespace, $namespace->baseNamespace) === false) {
+            $namespaceParts = explode(StubConstants::NameSpaceSeparator, $classNamespace);
             array_shift($namespaceParts);
-            $fileNamespace = implode(self::NameSpaceSeparator, $namespaceParts);
+            $fileNamespace = implode(StubConstants::NameSpaceSeparator, $namespaceParts);
         } else {
-            $fileNamespace = str_replace($baseNamespace, '', $classNamespace);
+            $fileNamespace = str_replace($namespace->baseNamespace, '', $classNamespace);
         }
 
         // Base namespace can contain
-        $directory = $basePath . DIRECTORY_SEPARATOR . $folder . strtr(
+        $directory = $basePath . DIRECTORY_SEPARATOR . $namespace->folder . strtr(
             $fileNamespace,
-            self::NameSpaceSeparator,
+            StubConstants::NameSpaceSeparator,
             DIRECTORY_SEPARATOR
         );
-        $fullNamespace = $baseNamespace . $fileNamespace;
+        $fullNamespace = $namespace->baseNamespace . $fileNamespace;
 
         $filesystem->ensureDirectoryExists($directory);
 
@@ -168,8 +148,8 @@ class MakeExpectationCommand extends Command
         $assertClass->addImplement($interface->getName());
         $assertClass->addComment(sprintf(
             '@extends %s<%s>',
-            self::NameSpaceSeparator . AbstractExpectationCallMap::class,
-            self::NameSpaceSeparator . $namespace . self::NameSpaceSeparator . $expectationClassName
+            StubConstants::NameSpaceSeparator . AbstractExpectationCallMap::class,
+            StubConstants::NameSpaceSeparator . $namespace . StubConstants::NameSpaceSeparator . $expectationClassName
         ));
 
         // TODO at this moment there is a bug https://github.com/nette/php-generator/pull/117/files
@@ -293,7 +273,7 @@ class MakeExpectationCommand extends Command
         if ($parameter->isDefaultValueConstant()) {
             $constant = $parameter->getDefaultValueConstantName();
             // Ensure that constants are from global scope
-            $constantLiteral = new Literal(self::NameSpaceSeparator . $constant);
+            $constantLiteral = new Literal(StubConstants::NameSpaceSeparator . $constant);
             $constructorParameter->setDefaultValue($constantLiteral);
 
             return;
@@ -302,7 +282,9 @@ class MakeExpectationCommand extends Command
         $defaultValue = $parameter->getDefaultValue();
 
         if (is_object($defaultValue)) {
-            $objectLiteral = new Literal('new ' . self::NameSpaceSeparator . $defaultValue::class . '(/* unknown */)');
+            $objectLiteral = new Literal(
+                'new ' . StubConstants::NameSpaceSeparator . $defaultValue::class . '(/* unknown */)'
+            );
             $constructorParameter->setDefaultValue($objectLiteral);
         } else {
             $constructorParameter->setDefaultValue($defaultValue);
@@ -317,11 +299,6 @@ class MakeExpectationCommand extends Command
             $this->error('ERROR:');
             $this->line($message);
         }
-    }
-
-    protected function getComposerJsonData(Filesystem $filesystem, string $basePath): mixed
-    {
-        return json_decode($filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
     }
 
     protected function writeFile(
@@ -342,16 +319,6 @@ class MakeExpectationCommand extends Command
 
         $this->line(sprintf('  <fg=gray>File writen to [%s]</>', $filePath));
         $this->newLine();
-    }
-
-    private function getComposerDevAutoLoad(array $composer): array
-    {
-        if (isset($composer[self::ComposerAutoLoadDev])
-            && isset($composer[self::ComposerAutoLoadDev][self::ComposerPsr4])) {
-            return $composer[self::ComposerAutoLoadDev][self::ComposerPsr4];
-        }
-
-        return [];
     }
 
     /**

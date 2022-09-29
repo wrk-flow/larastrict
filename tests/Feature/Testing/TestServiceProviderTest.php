@@ -7,23 +7,23 @@ namespace Tests\LaraStrict\Feature\Testing;
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Console\Kernel;
 use LaraStrict\Enums\EnvironmentType;
-use LaraStrict\Testing\LaraStrictTestServiceProvider;
+use LaraStrict\Providers\LaraStrictServiceProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
-class LaraStrictTestServiceProviderTest extends TestCase
+class TestServiceProviderTest extends TestCase
 {
     public function makeExpectationCommandData(): array
     {
         return [
-            [EnvironmentType::Production->value, false],
-            [EnvironmentType::Production, false],
-            ['test', false],
-            ['beta', false],
-            ['stage', false],
-            [EnvironmentType::Testing, true],
-            [EnvironmentType::Testing->value, true],
-            [EnvironmentType::Local, true],
-            [EnvironmentType::Local->value, true],
+            'production value' => [EnvironmentType::Production->value, false],
+            'production env' => [EnvironmentType::Production, false],
+            'test string' => ['test', false],
+            'beta string' => ['beta', false],
+            'stage string' => ['stage', false],
+            'testing env' => [EnvironmentType::Testing, true],
+            'testing string' => [EnvironmentType::Testing->value, true],
+            'local env' => [EnvironmentType::Local, true],
+            'local string' => [EnvironmentType::Local->value, true],
         ];
     }
 
@@ -36,11 +36,16 @@ class LaraStrictTestServiceProviderTest extends TestCase
         $config = $this->app->get(Repository::class);
         $config->set('app.env', $environment);
 
-        $this->app->register(LaraStrictTestServiceProvider::class);
+        $this->app->register(LaraStrictServiceProvider::class);
 
         /** @var Kernel $kernel */
         $kernel = $this->app->make(Kernel::class);
 
         $this->assertEquals($has, array_key_exists('make:expectation', $kernel->all()));
+    }
+
+    protected function getPackageProviders($app)
+    {
+        return [];
     }
 }

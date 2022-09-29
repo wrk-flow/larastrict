@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Database\Scopes;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\LaraStrict\Feature\Database\Queries\TestScopeQuery;
-use Tests\LaraStrict\Feature\TestCase;
+use Tests\LaraStrict\Feature\DatabaseTestCase;
 
-class TestSoftDeleteScopeTest extends TestCase
+class TestSoftDeleteScopeTest extends DatabaseTestCase
 {
-    use RefreshDatabase;
-
     public function testSoftDeletingGlobalScope(): void
     {
         /** @var TestScopeQuery $query */

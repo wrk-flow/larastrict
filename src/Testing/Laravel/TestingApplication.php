@@ -27,6 +27,7 @@ class TestingApplication extends TestingContainer implements Application
         public MaintenanceMode $maintenanceMode = new MaintenanceMode(),
         array $makeBindings = [],
         Closure|null $makeAlwaysBinding = null,
+        public string $basePath = 'base'
     ) {
         parent::__construct($makeBindings, $makeAlwaysBinding);
     }
@@ -38,32 +39,32 @@ class TestingApplication extends TestingContainer implements Application
 
     public function basePath($path = '')
     {
-        return 'base/' . $path;
+        return $this->basePath . $this->addPath($path);
     }
 
     public function bootstrapPath($path = '')
     {
-        return 'bootstrap/' . $path;
+        return 'bootstrap' . $this->addPath($path);
     }
 
     public function configPath($path = '')
     {
-        return 'config/' . $path;
+        return 'config' . $this->addPath($path);
     }
 
     public function databasePath($path = '')
     {
-        return 'database/' . $path;
+        return 'database' . $this->addPath($path);
     }
 
     public function resourcePath($path = '')
     {
-        return 'resource/' . $path;
+        return 'resource' . $this->addPath($path);
     }
 
     public function storagePath($path = '')
     {
-        return 'storage/' . $path;
+        return 'storage' . $this->addPath($path);
     }
 
     public function environment(...$environments)
@@ -165,5 +166,10 @@ class TestingApplication extends TestingContainer implements Application
 
     public function terminate()
     {
+    }
+
+    protected function addPath(mixed $path): string
+    {
+        return $path !== '' ? DIRECTORY_SEPARATOR . $path : '';
     }
 }

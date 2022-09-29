@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Database\Scopes;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use LaraStrict\Database\Scopes\WhereOnlySoftDeletedScope;
 use Tests\LaraStrict\Feature\Database\Queries\TestScopeQuery;
-use Tests\LaraStrict\Feature\TestCase;
+use Tests\LaraStrict\Feature\DatabaseTestCase;
 
-class WhereOnlySoftDeletedScopeTest extends TestCase
+class WhereOnlySoftDeletedScopeTest extends DatabaseTestCase
 {
-    use RefreshDatabase;
-
     public function testApplyExpectsOnlyDeletedEntriesFromInitDatabase(): void
     {
         /** @var TestScopeQuery $query */

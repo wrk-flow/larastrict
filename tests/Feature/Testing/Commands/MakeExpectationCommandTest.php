@@ -7,7 +7,6 @@ namespace Tests\LaraStrict\Feature\Testing\Commands;
 use Closure;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Testing\PendingCommand;
-use LaraStrict\Testing\LaraStrictTestServiceProvider;
 use LogicException;
 use Mockery\MockInterface;
 use Tests\LaraStrict\Feature\TestCase;
@@ -30,7 +29,6 @@ class MakeExpectationCommandTest extends TestCase
         parent::setUp();
 
         $this->fileSystem = $this->mock(Filesystem::class);
-        $this->app->register(LaraStrictTestServiceProvider::class);
     }
 
     public function getExpectedPath(string $expectedPath, string $expectedFileName): string

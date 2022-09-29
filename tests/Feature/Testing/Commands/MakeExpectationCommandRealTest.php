@@ -6,7 +6,7 @@ namespace Tests\LaraStrict\Feature\Testing\Commands;
 
 use Exception;
 use Illuminate\Testing\PendingCommand;
-use LaraStrict\Testing\LaraStrictTestServiceProvider;
+use LaraStrict\Testing\TestServiceProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use Tests\LaraStrict\Feature\TestCase;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\SimpleActionContract;
@@ -22,7 +22,7 @@ class MakeExpectationCommandRealTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->app->register(LaraStrictTestServiceProvider::class);
+        $this->app->register(TestServiceProvider::class);
 
         // Do not use test bench path
         $this->originalPath = $this->app->basePath();
