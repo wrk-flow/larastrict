@@ -6,8 +6,9 @@ namespace LaraStrict\Database\Actions;
 
 use Closure;
 use Illuminate\Database\Connection;
+use LaraStrict\Database\Contracts\RunInTransactionActionContract;
 
-class RunInTransactionAction
+class RunInTransactionAction implements RunInTransactionActionContract
 {
     public function __construct(private readonly Connection $connection)
     {

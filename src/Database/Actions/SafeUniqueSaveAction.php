@@ -7,8 +7,9 @@ namespace LaraStrict\Database\Actions;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
+use LaraStrict\Database\Contracts\SafeUniqueSaveActionContract;
 
-class SafeUniqueSaveAction
+class SafeUniqueSaveAction implements SafeUniqueSaveActionContract
 {
     protected const DUPLICATION_ERROR_CODE = 1062;
 

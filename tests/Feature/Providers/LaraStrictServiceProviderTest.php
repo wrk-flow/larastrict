@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Providers;
 
+use LaraStrict\Database\Actions\RunInTransactionAction;
+use LaraStrict\Database\Actions\SafeUniqueSaveAction;
+use LaraStrict\Database\Contracts\RunInTransactionActionContract;
+use LaraStrict\Database\Contracts\SafeUniqueSaveActionContract;
 use LaraStrict\Testing\Actions\GetBasePathForStubsAction;
 use LaraStrict\Testing\Actions\GetNamespaceForStubsAction;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
@@ -27,6 +31,8 @@ class LaraStrictServiceProviderTest extends TestCase
     public function testBindingsFromAllServiceProviders(): void
     {
         $this->assertBindings($this->app, null, [
+            RunInTransactionActionContract::class => RunInTransactionAction::class,
+            SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
             GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
             GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
         ]);
