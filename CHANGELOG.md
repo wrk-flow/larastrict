@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.9] - 2022-09-29
+### :sparkles: New Features
+- [`964a854`](https://github.com/wrk-flow/larastrict/commit/964a8548934cffa748b90d20eede80b095e2af61) - **testing**: Allow larastrict maintainers use our artisan commands *(commit by [@pionl](https://github.com/pionl))*
+- [`a776d5f`](https://github.com/wrk-flow/larastrict/commit/a776d5f383f37abeafaf683db5e0028166d73f0c) - **testing**: Add ability to test RunInTransaction/SafeUniqueSave actions using assert/expectation classes *(commit by [@pionl](https://github.com/pionl))*
+
+### :boom: BREAKING CHANGES
+- due to [`964a854`](https://github.com/wrk-flow/larastrict/commit/964a8548934cffa748b90d20eede80b095e2af61) - Allow larastrict maintainers use our artisan commands *(commit by [@pionl](https://github.com/pionl))*:
+
+  (low) LaraStrictTestServiceProvider renmaned to TestServiceProvider
+
+
 ## [v0.0.8] - 2022-09-28
 ### :sparkles: New Features
 - [`9733d67`](https://github.com/wrk-flow/larastrict/commit/9733d6769ea16f66c0f0531c16defcdfe2638c47) - **testing**: Add AssertProviderBindings for testing service provider bindings *(commit by [@pionl](https://github.com/pionl))*
@@ -62,3 +73,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.6]: https://github.com/wrk-flow/larastrict/compare/v0.0.5...v0.0.6
 [v0.0.7]: https://github.com/wrk-flow/larastrict/compare/v0.0.6...v0.0.7
 [v0.0.8]: https://github.com/wrk-flow/larastrict/compare/v0.0.7...v0.0.8
+[v0.0.9]: https://github.com/wrk-flow/larastrict/compare/v0.0.8...v0.0.9
