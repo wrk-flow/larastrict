@@ -16,19 +16,21 @@ trait AssertProviderRegistersRoutes
     /**
      * Asserts correct that routes are correctly registered in correct prefix (pluralized)
      *
-     * @param class-string<AbstractServiceProvider>                        $registerServiceProvider
+     * @param bool                                                         $onlyGiven Check if only given routes can be
      * @param array<string, array<string>|array<int, Closure(Route):void>> $expectUrlsByMethod
      * ['GET'=>['web/tests/my-api']]
-     * @param bool                                                         $onlyGiven Check if only given routes can be
+     * @param class-string<AbstractServiceProvider>|null                        $registerServiceProvider
      * registered
      */
     public function assertRoutes(
         Application $application,
-        string $registerServiceProvider,
         array $expectUrlsByMethod,
+        ?string $registerServiceProvider = null,
         bool $onlyGiven = false
     ): void {
-        $application->register($registerServiceProvider, true);
+        if ($registerServiceProvider !== null) {
+            $application->register($registerServiceProvider, true);
+        }
 
         /** @var Router $router */
         $router = $application->make(Router::class);

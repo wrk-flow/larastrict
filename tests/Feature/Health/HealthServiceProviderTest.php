@@ -15,14 +15,14 @@ class HealthServiceProviderTest extends TestCase
 
     public function testAlive(): void
     {
-        $this->assertRoutes($this->app, HealthServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => [
                 'api/health/alive' => function (Route $route) {
                     $this->assertEquals(['api'], $route->gatherMiddleware());
                     $this->assertEquals(['api'], $route->excludedMiddleware());
                 },
             ],
-        ]);
+        ], HealthServiceProvider::class);
 
         $this->get('/api/health/alive')
             ->assertJson([

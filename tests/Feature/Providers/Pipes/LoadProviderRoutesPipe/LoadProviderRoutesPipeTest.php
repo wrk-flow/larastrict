@@ -35,14 +35,14 @@ class LoadProviderRoutesPipeTest extends TestCase
 
     public function testBootWithWebOnly(): void
     {
-        $this->assertRoutes($this->app, WithWebServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => ['with-webs/3-url-web'],
-        ], true);
+        ], WithWebServiceProvider::class, true);
     }
 
     public function testWithoutInterface(): void
     {
-        $this->assertRoutes($this->app, TestingServiceProvider::class, [], true);
+        $this->assertRoutes($this->app, [], TestingServiceProvider::class, true);
     }
 
     public function testWithoutAnyUrl(): void
@@ -61,33 +61,33 @@ class LoadProviderRoutesPipeTest extends TestCase
 
                 return true;
             });
-        $this->assertRoutes($this->app, RoutableWithNoFilesServiceProvider::class, [], true);
+        $this->assertRoutes($this->app, [], RoutableWithNoFilesServiceProvider::class, true);
     }
 
     public function testWithApiAndWeb(): void
     {
-        $this->assertRoutes($this->app, WithBothServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => ['api/with-boths/2-url-api', 'with-boths/2-url-web'],
-        ], true);
+        ], WithBothServiceProvider::class, true);
     }
 
     public function testWithApiOnly(): void
     {
-        $this->assertRoutes($this->app, WithApiServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => ['api/with-apis/1-api'],
-        ], true);
+        ], WithApiServiceProvider::class, true);
     }
 
     public function testWithVersionedApiOnly(): void
     {
-        $this->assertRoutes($this->app, WithVersionedApiServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => ['api/v1/test/1-api', 'api/v2/test/2-api'],
-        ], true);
+        ], WithVersionedApiServiceProvider::class, true);
     }
 
     public function testWithCustomOnly(): void
     {
-        $this->assertRoutes($this->app, WithCustomServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => [
                 'with-customs/1-admin' => function (Route $route) {
                     $this->assertEquals(['admin'], $route->gatherMiddleware());
@@ -102,12 +102,12 @@ class LoadProviderRoutesPipeTest extends TestCase
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],
-        ], true);
+        ], WithCustomServiceProvider::class, true);
     }
 
     public function testWithAll(): void
     {
-        $this->assertRoutes($this->app, WithAllServiceProvider::class, [
+        $this->assertRoutes($this->app, [
             'GET' => [
                 'api/with-alls/2-url-api' => function (Route $route) {
                     $this->assertEquals(['api'], $route->gatherMiddleware());
@@ -128,6 +128,6 @@ class LoadProviderRoutesPipeTest extends TestCase
                     $this->assertEquals([], $route->gatherMiddleware());
                 },
             ],
-        ], true);
+        ], WithAllServiceProvider::class, true);
     }
 }

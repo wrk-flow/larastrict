@@ -30,11 +30,11 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBindingsFromAllServiceProviders(): void
     {
-        $this->assertBindings($this->app, null, [
+        $this->assertBindings($this->app, [
             RunInTransactionActionContract::class => RunInTransactionAction::class,
             SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
             GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
             GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
-        ]);
+        ], null);
     }
 }

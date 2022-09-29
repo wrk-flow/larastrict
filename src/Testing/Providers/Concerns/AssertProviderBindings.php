@@ -11,13 +11,13 @@ use PHPUnit\Framework\Assert;
 trait AssertProviderBindings
 {
     /**
-     * @param class-string<ServiceProvider> $registerServiceProvider
      * @param array<string, class-string>   $expectedMap
+     * @param class-string<ServiceProvider>|null $registerServiceProvider
      */
     public function assertBindings(
         Application $application,
-        ?string $registerServiceProvider,
-        array $expectedMap
+        array $expectedMap,
+        ?string $registerServiceProvider = null
     ): void {
         if ($registerServiceProvider !== null) {
             $application->register($registerServiceProvider);
