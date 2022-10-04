@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.11] - 2022-10-04
+### :sparkles: New Features
+- [`a381428`](https://github.com/wrk-flow/larastrict/commit/a3814286d11cce0091bc0ac0feb181f170e6b110) - **providers**: Service provider refactoring to provider flexible pipe register/boot and separation *(commit by [@pionl](https://github.com/pionl))*
+- [`7d3cb75`](https://github.com/wrk-flow/larastrict/commit/7d3cb75a43b49ffd91943f76de15b457228d5f4a) - **providers**: Add ability to register views/translations/components for the provider *(commit by [@pionl](https://github.com/pionl))*
+
+### :boom: BREAKING CHANGES
+- due to [`a381428`](https://github.com/wrk-flow/larastrict/commit/a3814286d11cce0091bc0ac0feb181f170e6b110) - Service provider refactoring to provider flexible pipe register/boot and separation *(commit by [@pionl](https://github.com/pionl))*:
+
+  Service provider refactoring to provider flexible pipe register/boot and separation
+
+
 ## [v0.0.10] - 2022-10-04
 ### :sparkles: New Features
 - [`0a6deb6`](https://github.com/wrk-flow/larastrict/commit/0a6deb626ec0a55f390f2886c65fabb85bd2981e) - **testing**: Make service provider parameter in AssertProviderBinding/Routes null by default *(commit by [@pionl](https://github.com/pionl))*
@@ -86,3 +97,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.8]: https://github.com/wrk-flow/larastrict/compare/v0.0.7...v0.0.8
 [v0.0.9]: https://github.com/wrk-flow/larastrict/compare/v0.0.8...v0.0.9
 [v0.0.10]: https://github.com/wrk-flow/larastrict/compare/v0.0.9...v0.0.10
+[v0.0.11]: https://github.com/wrk-flow/larastrict/compare/v0.0.10...v0.0.11
