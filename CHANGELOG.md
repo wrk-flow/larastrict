@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.10] - 2022-10-04
+### :sparkles: New Features
+- [`0a6deb6`](https://github.com/wrk-flow/larastrict/commit/0a6deb626ec0a55f390f2886c65fabb85bd2981e) - **testing**: Make service provider parameter in AssertProviderBinding/Routes null by default *(commit by [@pionl](https://github.com/pionl))*
+- [`50c7eb2`](https://github.com/wrk-flow/larastrict/commit/50c7eb29ed7e5ef12aea3ec486fb170de43d5716) - **translations**: Allow changing default value for not found translation *(commit by [@pionl](https://github.com/pionl))*
+
+### :boom: BREAKING CHANGES
+- due to [`0a6deb6`](https://github.com/wrk-flow/larastrict/commit/0a6deb626ec0a55f390f2886c65fabb85bd2981e) - Make service provider parameter in AssertProviderBinding/Routes null by default *(commit by [@pionl](https://github.com/pionl))*:
+
+  $registerServiceProvider is now third parameter instead of second.
+
+
 ## [v0.0.9] - 2022-09-29
 ### :sparkles: New Features
 - [`964a854`](https://github.com/wrk-flow/larastrict/commit/964a8548934cffa748b90d20eede80b095e2af61) - **testing**: Allow larastrict maintainers use our artisan commands *(commit by [@pionl](https://github.com/pionl))*
@@ -74,3 +85,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.7]: https://github.com/wrk-flow/larastrict/compare/v0.0.6...v0.0.7
 [v0.0.8]: https://github.com/wrk-flow/larastrict/compare/v0.0.7...v0.0.8
 [v0.0.9]: https://github.com/wrk-flow/larastrict/compare/v0.0.8...v0.0.9
+[v0.0.10]: https://github.com/wrk-flow/larastrict/compare/v0.0.9...v0.0.10
