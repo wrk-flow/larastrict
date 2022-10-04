@@ -11,7 +11,8 @@ use LaraStrict\Cache\Services\CacheMeService;
  */
 abstract class AbstractGetCacheAction
 {
-    public function __construct(protected CacheMeService $cacheMeService)
-    {
+    public function __construct(
+        protected CacheMeService $cacheMeService
+    ) {
     }
 }

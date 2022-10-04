@@ -10,8 +10,9 @@ use LaraStrict\Context\Contracts\ContextValueContract;
 
 class ContextCallService
 {
-    public function __construct(private readonly Container $container)
-    {
+    public function __construct(
+        private readonly Container $container
+    ) {
     }
 
     public function createState(AbstractContext $context, callable $createState): ContextValueContract

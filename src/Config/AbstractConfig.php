@@ -10,8 +10,9 @@ abstract class AbstractConfig
 {
     private readonly string $configFileName;
 
-    public function __construct(private readonly Repository $config)
-    {
+    public function __construct(
+        private readonly Repository $config
+    ) {
         $this->configFileName = $this->getConfigFileName();
     }
 

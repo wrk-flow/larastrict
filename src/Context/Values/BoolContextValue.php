@@ -8,8 +8,9 @@ use LaraStrict\Context\Contracts\ContextValueContract;
 
 class BoolContextValue implements ContextValueContract
 {
-    public function __construct(private readonly bool $is)
-    {
+    public function __construct(
+        private readonly bool $is
+    ) {
     }
 
     public function isValid(): bool

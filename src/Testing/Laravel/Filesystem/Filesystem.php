@@ -16,8 +16,9 @@ class Filesystem implements FilesystemContract, Cloud
      */
     public array $exists = [];
 
-    public function __construct(public readonly string $diskName = 'default')
-    {
+    public function __construct(
+        public readonly string $diskName = 'default'
+    ) {
     }
 
     public function exists($path)

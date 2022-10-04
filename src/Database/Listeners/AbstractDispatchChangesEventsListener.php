@@ -13,8 +13,9 @@ use LaraStrict\Database\Events\AbstractModelChangedEvent;
  */
 abstract class AbstractDispatchChangesEventsListener
 {
-    public function __construct(private readonly Dispatcher $eventDispatcher)
-    {
+    public function __construct(
+        private readonly Dispatcher $eventDispatcher
+    ) {
     }
 
     /**

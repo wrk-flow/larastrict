@@ -8,8 +8,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class PerPageRule implements Rule
 {
-    public function __construct(private readonly int $max = 100)
-    {
+    public function __construct(
+        private readonly int $max = 100
+    ) {
     }
 
     public function passes($attribute, $value)

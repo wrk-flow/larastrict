@@ -10,8 +10,9 @@ use Symfony\Component\Console\Style\StyleInterface;
 
 class LogToOutputService implements LoggerInterface
 {
-    public function __construct(private readonly StyleInterface $output)
-    {
+    public function __construct(
+        private readonly StyleInterface $output
+    ) {
     }
 
     public function emergency(string|Stringable $message, array $context = []): void

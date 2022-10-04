@@ -12,8 +12,9 @@ class SelectScope extends AbstractScope
     /**
      * @param string[] $columns
      */
-    public function __construct(private readonly array $columns)
-    {
+    public function __construct(
+        private readonly array $columns
+    ) {
     }
 
     public function apply(Builder $builder, Model $model): void
