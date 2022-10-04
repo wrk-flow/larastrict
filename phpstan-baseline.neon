@@ -5,4 +5,9 @@ parameters:
 			count: 1
 			path: src/Testing/Actions/GetNamespaceForStubsAction.php
 
+		-
+			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
+			count: 1
+			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
+
 

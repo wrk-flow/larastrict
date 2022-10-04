@@ -53,7 +53,7 @@ abstract class AbstractTranslations
         return $this->translator->choice($this->getKey($key), $number, $replace, $locale);
     }
 
-    private function getKey(string $key): string
+    protected function getKey(string $key): string
     {
         return $this->getLocalizationKey() . '.' . $key;
     }

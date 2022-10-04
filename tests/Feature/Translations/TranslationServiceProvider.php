@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Translations;
 
-use LaraStrict\Providers\AbstractServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-class TranslationServiceProvider extends AbstractServiceProvider
+class TranslationServiceProvider extends ServiceProvider
 {
     public function register(): void
     {

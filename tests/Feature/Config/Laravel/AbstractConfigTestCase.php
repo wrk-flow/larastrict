@@ -61,13 +61,13 @@ abstract class AbstractConfigTestCase extends TestCase
         }
     }
 
-    private function assertGetValue(mixed $expecation, Closure $getValue, string $message): void
+    private function assertGetValue(mixed $expectation, Closure $getValue, string $message): void
     {
-        if (is_callable($expecation)) {
+        if (is_callable($expectation)) {
             $value = $getValue();
-            $this->assertTrue($expecation($value), $message);
+            $this->assertTrue($expectation($value), $message);
         } else {
-            $this->assertSame($expecation, $getValue(), $message);
+            $this->assertSame($expectation, $getValue(), $message);
         }
     }
 }
