@@ -39,4 +39,14 @@ class AbstractTranslationsTest extends TestCase
         ];
         $this->assertEquals($expected, $this->translations->getWays());
     }
+
+    public function testDefaultValueByLaravel(): void
+    {
+        $this->assertEquals('package::test.test', $this->translations->getNotFoundLaravel());
+    }
+
+    public function testCustomDefaultValue(): void
+    {
+        $this->assertEquals('test123', $this->translations->getCustomNotFound());
+    }
 }

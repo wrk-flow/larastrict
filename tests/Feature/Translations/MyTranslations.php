@@ -29,4 +29,14 @@ class MyTranslations extends AbstractTranslations
     {
         return $this->getArray('ways');
     }
+
+    public function getNotFoundLaravel(): string
+    {
+        return $this->get('test');
+    }
+
+    public function getCustomNotFound(): string
+    {
+        return $this->get('test', defaultValue: 'test123');
+    }
 }

@@ -24,9 +24,19 @@ abstract class AbstractTranslations
      */
     abstract public function getLocalizationKey(): string;
 
-    protected function get(string $key, array $replace = [], ?string $locale = null): string
-    {
-        return $this->translator->get($this->getKey($key), $replace, $locale);
+    protected function get(
+        string $key,
+        array $replace = [],
+        ?string $locale = null,
+        string $defaultValue = null
+    ): string {
+        $result = $this->translator->get($this->getKey($key), $replace, $locale);
+
+        if ($defaultValue !== null && $result === $this->getKey($key)) {
+            return $defaultValue;
+        }
+
+        return $result;
     }
 
     protected function getArray(string $key, array $replace = [], ?string $locale = null): array
