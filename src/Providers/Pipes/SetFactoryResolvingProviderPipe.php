@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
 /**
  * We want to place factories in same folder as the model.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Entities;
+namespace LaraStrict\Providers\Entities;
 
 class CustomRouteEntity
 {

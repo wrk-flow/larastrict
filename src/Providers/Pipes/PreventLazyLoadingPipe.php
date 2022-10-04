@@ -6,7 +6,7 @@ namespace LaraStrict\Providers\Pipes;
 
 use Closure;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
 class PreventLazyLoadingPipe implements AppServiceProviderPipeContract
 {

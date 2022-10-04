@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace LaraStrict\Providers;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider;
-use LaraStrict\Actions\BootServiceProviderAction;
 use LaraStrict\Cache\Contracts\BootContexts;
 use LaraStrict\Console\Contracts\HasSchedule;
 use LaraStrict\Console\Contracts\HasScheduleOnEnvironments;
@@ -14,13 +12,16 @@ use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Services\ContextEventsService;
 use LaraStrict\Enums\EnvironmentType;
+use LaraStrict\Providers\Pipes\LoadProviderRoutesPipe;
+use LaraStrict\Providers\Pipes\RegisterProviderPoliciesPipe;
 
-abstract class AbstractServiceProvider extends EventServiceProvider
+abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 {
     public function register(): void
     {
         parent::register();
 
+        // TODO move to pipe
         if ($this->app->runningInConsole() && $this->canRegisterSchedule()) {
             $this->app->booted(function (): void {
                 $schedule = $this->app->make(ScheduleServiceContract::class);
@@ -33,13 +34,22 @@ abstract class AbstractServiceProvider extends EventServiceProvider
 
     public function boot(): void
     {
+        parent::boot();
+
+        // TODO move to pipe
         if ($this instanceof BootContexts) {
             $this->bootContexts($this->contexts());
         }
+    }
 
-        /** @var BootServiceProviderAction $boot */
-        $boot = $this->app->make(BootServiceProviderAction::class);
-        $boot->execute($this->app, $this);
+    protected function registerPipes(): array
+    {
+        return [];
+    }
+
+    protected function bootPipes(): array
+    {
+        return [LoadProviderRoutesPipe::class, RegisterProviderPoliciesPipe::class];
     }
 
     protected function canRegisterSchedule(): bool

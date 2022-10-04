@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Providers;
 
+use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Database\Actions\RunInTransactionAction;
 use LaraStrict\Database\Actions\SafeUniqueSaveAction;
 use LaraStrict\Database\Contracts\RunInTransactionActionContract;
@@ -19,6 +20,20 @@ use Tests\LaraStrict\Feature\TestCase;
 class LaraStrictServiceProviderTest extends TestCase
 {
     use AssertProviderBindings;
+
+    public function testAppServiceProvider(): void
+    {
+        /** @var LaraStrictServiceProvider $serviceProvider */
+        $serviceProvider = $this->app->getProvider(LaraStrictServiceProvider::class);
+        $result = $serviceProvider->getAppServiceProvider();
+
+        $this->assertEquals('LaraStrict', $result->serviceName);
+        $this->assertEquals('lara_strict', $result->serviceFileName);
+        $this->assertStringEndsWith('src/Core', $result->serviceRootDir);
+        $this->assertEquals('LaraStrict\\Core', $result->namespace);
+        $this->assertSame($this->app, $result->application);
+        $this->assertSame($serviceProvider, $result->serviceProvider);
+    }
 
     public function testBootResolveFactory(): void
     {

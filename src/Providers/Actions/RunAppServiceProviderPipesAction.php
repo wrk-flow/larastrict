@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Actions;
+namespace LaraStrict\Providers\Actions;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Pipeline\Pipeline;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
 class RunAppServiceProviderPipesAction implements RunAppServiceProviderPipesActionContract
 {
@@ -18,6 +18,7 @@ class RunAppServiceProviderPipesAction implements RunAppServiceProviderPipesActi
 
     public function execute(AppServiceProviderEntity $app, array $pipes): void
     {
+        /** @var Pipeline $pipeline */
         $pipeline = $this->container->make(Pipeline::class);
 
         $pipeline

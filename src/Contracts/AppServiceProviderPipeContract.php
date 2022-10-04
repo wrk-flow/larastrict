@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Contracts;
 
 use Closure;
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
 interface AppServiceProviderPipeContract
 {

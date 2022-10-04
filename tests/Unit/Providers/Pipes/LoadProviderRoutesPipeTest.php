@@ -8,8 +8,8 @@ use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\RegisterCustomRouteActionContract;
 use LaraStrict\Contracts\RegisterNamedCustomRouteActionContract;
-use LaraStrict\Entities\AppServiceProviderEntity;
 use LaraStrict\Providers\AbstractServiceProvider;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 use LaraStrict\Providers\Pipes\LoadProviderRoutesPipe;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingApplicationRoutes;
@@ -125,7 +125,14 @@ class LoadProviderRoutesPipeTest extends TestCase
                 return $this->customRoutes;
             }
         };
-        $appServiceProvider = new AppServiceProviderEntity($app, $serviceProvider, 'test', __DIR__);
+        $appServiceProvider = new AppServiceProviderEntity(
+            application: $app,
+            serviceProvider: $serviceProvider,
+            serviceName: 'Test',
+            serviceFileName: 'test',
+            serviceRootDir: __DIR__,
+            namespace: __NAMESPACE__,
+        );
 
         $called = false;
         $pipe->handle($appServiceProvider, function ($givenAppServiceProvider) use (

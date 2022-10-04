@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Providers;
+namespace LaraStrict\Core;
 
-use Illuminate\Support\ServiceProvider;
-use LaraStrict\Actions\BootLaraStrictAction;
-use LaraStrict\Actions\RunAppServiceProviderPipesAction;
 use LaraStrict\Cache\CacheServiceProvider;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleServiceService;
 use LaraStrict\Context\ContextServiceProvider;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
+use LaraStrict\Core\Actions\CreateCoreAppServiceProviderAction;
 use LaraStrict\Database\DatabaseServiceProvider;
+use LaraStrict\Providers\AbstractBaseServiceProvider;
+use LaraStrict\Providers\Actions\RunAppServiceProviderPipesAction;
+use LaraStrict\Providers\Pipes\PreventLazyLoadingPipe;
+use LaraStrict\Providers\Pipes\SetFactoryResolvingProviderPipe;
 use LaraStrict\Testing\TestServiceProvider;
 
-class LaraStrictServiceProvider extends ServiceProvider
+class LaraStrictServiceProvider extends AbstractBaseServiceProvider
 {
     public function register(): void
     {
-        parent::register();
-
         // Add ability to "switch" the implementation - it is important to run it now.
         $this->app->singleton(ScheduleServiceContract::class, ScheduleServiceContract::class);
         $this->app->alias(ScheduleServiceService::class, ScheduleServiceContract::class);
@@ -32,16 +32,22 @@ class LaraStrictServiceProvider extends ServiceProvider
         $this->app->register(CacheServiceProvider::class);
         $this->app->register(DatabaseServiceProvider::class);
         $this->app->register(TestServiceProvider::class);
+
+        parent::register();
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    protected function registerPipes(): array
     {
-        /** @var BootLaraStrictAction $boot */
-        $boot = $this->app->make(BootLaraStrictAction::class);
+        return [];
+    }
 
-        $boot->execute($this->app, $this);
+    protected function bootPipes(): array
+    {
+        return [PreventLazyLoadingPipe::class, SetFactoryResolvingProviderPipe::class];
+    }
+
+    protected function getCreateAppServiceProviderActionClass(): string
+    {
+        return CreateCoreAppServiceProviderAction::class;
     }
 }

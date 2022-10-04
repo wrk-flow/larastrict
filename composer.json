@@ -63,7 +63,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "LaraStrict\\Providers\\LaraStrictServiceProvider"
+                "LaraStrict\\Core\\LaraStrictServiceProvider"
             ]
         }
     },

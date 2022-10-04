@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Contracts;
 
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
 interface RunAppServiceProviderPipesActionContract
 {

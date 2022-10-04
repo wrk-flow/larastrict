@@ -6,7 +6,7 @@ namespace LaraStrict\Contracts;
 
 use Closure;
 use Illuminate\Routing\RouteRegistrar;
-use LaraStrict\Entities\CustomRouteEntity;
+use LaraStrict\Providers\Entities\CustomRouteEntity;
 
 interface HasCustomRoutes
 {

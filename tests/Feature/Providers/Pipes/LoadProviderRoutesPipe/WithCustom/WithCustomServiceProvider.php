@@ -7,8 +7,8 @@ namespace Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe\WithCu
 use Illuminate\Routing\RouteRegistrar;
 use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
-use LaraStrict\Entities\CustomRouteEntity;
 use LaraStrict\Providers\AbstractServiceProvider;
+use LaraStrict\Providers\Entities\CustomRouteEntity;
 
 class WithCustomServiceProvider extends AbstractServiceProvider implements HasRoutes, HasCustomRoutes
 {

@@ -6,7 +6,7 @@ namespace LaraStrict\Testing\Actions;
 
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 use PHPUnit\Framework\Assert;
 
 class TestRunAppServiceProviderAction implements RunAppServiceProviderPipesActionContract

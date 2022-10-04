@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Contracts;
 
 use Illuminate\Routing\RouteRegistrar;
-use LaraStrict\Entities\CustomRouteEntity;
+use LaraStrict\Providers\Entities\CustomRouteEntity;
 
 interface RegisterCustomRouteActionContract
 {

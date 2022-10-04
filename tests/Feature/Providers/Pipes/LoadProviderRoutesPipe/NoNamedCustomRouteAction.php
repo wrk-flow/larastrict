@@ -6,7 +6,7 @@ namespace Tests\LaraStrict\Feature\Providers\Pipes\LoadProviderRoutesPipe;
 
 use Illuminate\Routing\RouteRegistrar;
 use LaraStrict\Contracts\RegisterNamedCustomRouteActionContract;
-use LaraStrict\Entities\CustomRouteEntity;
+use LaraStrict\Providers\Entities\CustomRouteEntity;
 
 class NoNamedCustomRouteAction implements RegisterNamedCustomRouteActionContract
 {

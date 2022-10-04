@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Auth\Access\Gate;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
 use LaraStrict\Contracts\HasPolicies;
-use LaraStrict\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
 class RegisterProviderPoliciesPipe implements AppServiceProviderPipeContract
 {

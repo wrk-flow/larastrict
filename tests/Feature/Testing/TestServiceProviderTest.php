@@ -6,8 +6,8 @@ namespace Tests\LaraStrict\Feature\Testing;
 
 use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Console\Kernel;
+use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Enums\EnvironmentType;
-use LaraStrict\Providers\LaraStrictServiceProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 class TestServiceProviderTest extends TestCase
