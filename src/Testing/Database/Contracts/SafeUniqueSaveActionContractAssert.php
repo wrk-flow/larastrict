@@ -41,6 +41,13 @@ class SafeUniqueSaveActionContractAssert extends AbstractExpectationCallMap impl
             return $this->execute($model, $setupClosure, $maxTries, $tries + 1);
         }
 
+        $model->updateTimestamps();
+
+        if ($expectation->setId !== null) {
+            $model->setAttribute('id', $expectation->setId);
+            $model->exists = true;
+        }
+
         return $result;
     }
 }

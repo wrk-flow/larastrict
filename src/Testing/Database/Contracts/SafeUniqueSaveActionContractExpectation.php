@@ -13,6 +13,7 @@ final class SafeUniqueSaveActionContractExpectation
         public readonly bool $fail = false,
         public readonly int $maxTries = 20,
         public readonly int $tries = 1,
+        public readonly string|int|null $setId = null,
     ) {
     }
 }
