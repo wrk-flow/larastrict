@@ -91,5 +91,10 @@ class SafeUniqueSaveActionContractAssertTest extends TestCase
         }
 
         $this->assertEquals($expectedId, $model->getKey());
+
+        if ($expectedId !== null) {
+            $this->assertEquals(true, $model->exists);
+            $this->assertEquals(true, $model->wasRecentlyCreated);
+        }
     }
 }
