@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.13] - 2022-10-11
+### :sparkles: New Features
+- [`9f1eb6e`](https://github.com/wrk-flow/larastrict/commit/9f1eb6ef79f9ae07fa64f8d773636e84c652c4f5) - **validation**: Handle float with comma in NumberRule and improve overflow detection *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.12] - 2022-10-10
 ### :sparkles: New Features
 - [`77e40a6`](https://github.com/wrk-flow/larastrict/commit/77e40a63331969429309e2df9083c98a50e8a068) - **database**: Mimic save (timestamps, exists, generated id) for safe unique save action *(commit by [@pionl](https://github.com/pionl))*
@@ -104,3 +109,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.10]: https://github.com/wrk-flow/larastrict/compare/v0.0.9...v0.0.10
 [v0.0.11]: https://github.com/wrk-flow/larastrict/compare/v0.0.10...v0.0.11
 [v0.0.12]: https://github.com/wrk-flow/larastrict/compare/v0.0.11...v0.0.12
+[v0.0.13]: https://github.com/wrk-flow/larastrict/compare/v0.0.12...v0.0.13
