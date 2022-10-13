@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\LaraStrict\Feature\Testing\Concerns;
+
+use LaraStrict\Testing\Concerns\CreateRequest;
+use Tests\LaraStrict\Feature\TestCase;
+
+class CreatePostRequestTest extends TestCase
+{
+    use CreateRequest;
+
+    public function testSuccess(): void
+    {
+        $data = [
+            TestRequest::KeyTest => 'value',
+        ];
+        $request = $this->createPostRequest($this->app, requestClass: TestRequest::class, data: $data);
+        $this->assertEquals($data, $request->validated());
+    }
+
+    public function testFail(): void
+    {
+        $this->expectExceptionMessage('The test field is required.');
+        $this->createPostRequest($this->app, TestRequest::class, []);
+    }
+}
