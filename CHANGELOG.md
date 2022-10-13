@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.15] - 2022-10-13
+### :sparkles: New Features
+- [`28b335a`](https://github.com/wrk-flow/larastrict/commit/28b335a8caceec6a579891046b68eb3b491ba0dd) - **Database**: Delete/forceDelete will always return int (0 for no deletion was made) *(commit by [@pionl](https://github.com/pionl))*
+- [`066cdca`](https://github.com/wrk-flow/larastrict/commit/066cdca96323158542f99d5f1117f55339a968a3) - **Testing**: Add ability to create custom requests in tests *(commit by [@pionl](https://github.com/pionl))*
+
+### :boom: BREAKING CHANGES
+- due to [`28b335a`](https://github.com/wrk-flow/larastrict/commit/28b335a8caceec6a579891046b68eb3b491ba0dd) - Delete/forceDelete will always return int (0 for no deletion was made) *(commit by [@pionl](https://github.com/pionl))*:
+
+  Delete/forceDelete will always return int (0 for no deletion was made)
+
+
 ## [v0.0.14] - 2022-10-11
 ### :sparkles: New Features
 - [`9e178a0`](https://github.com/wrk-flow/larastrict/commit/9e178a0a854115e85f025619acbf0909080ccaa7) - **database**: Set wasRecentlyCreated to true if setId is set for safe unique save action *(commit by [@pionl](https://github.com/pionl))*
@@ -116,3 +127,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.12]: https://github.com/wrk-flow/larastrict/compare/v0.0.11...v0.0.12
 [v0.0.13]: https://github.com/wrk-flow/larastrict/compare/v0.0.12...v0.0.13
 [v0.0.14]: https://github.com/wrk-flow/larastrict/compare/v0.0.13...v0.0.14
+[v0.0.15]: https://github.com/wrk-flow/larastrict/compare/v0.0.14...v0.0.15
