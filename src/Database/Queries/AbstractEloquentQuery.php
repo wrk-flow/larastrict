@@ -170,24 +170,32 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @param Scope[] $scopes
-     *
-     * @return TModel
      */
-    protected function delete(array $scopes = []): mixed
+    protected function delete(array $scopes = []): int
     {
-        return $this->getQuery($scopes)
+        $delete = $this->getQuery($scopes)
             ->delete();
+
+        if (is_int($delete)) {
+            return $delete;
+        }
+
+        return 0;
     }
 
     /**
      * @param Scope[] $scopes
-     *
-     * @return TModel
      */
-    protected function forceDelete(array $scopes = []): mixed
+    protected function forceDelete(array $scopes = []): int
     {
-        return $this->getQuery($scopes)
+        $delete = $this->getQuery($scopes)
             ->forceDelete();
+
+        if (is_int($delete)) {
+            return $delete;
+        }
+
+        return 0;
     }
 
     /**
