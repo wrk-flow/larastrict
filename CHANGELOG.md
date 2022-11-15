@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.16] - 2022-11-15
+### :sparkles: New Features
+- [`1d95b3e`](https://github.com/wrk-flow/larastrict/commit/1d95b3e0d71c8ae955cea114af8f186ce89dbcc0) - **Testing**: Add ability to generate test Assert for all contracts methods *(commit by [@pionl](https://github.com/pionl))*
+
+### :bug: Bug Fixes
+- [`36197b4`](https://github.com/wrk-flow/larastrict/commit/36197b4f0163bc26d6daa563836f3efe87681e50) - **Testing**: Fix artisan usage with larastrict commands *(commit by [@pionl](https://github.com/pionl))*
+- [`0cd12fe`](https://github.com/wrk-flow/larastrict/commit/0cd12fe9abbb3cc3ebeb6f82aea51b0f47467cdb) - **Testing**: Update dependencies and fix phpstan warnning on latest testbench version *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.15] - 2022-10-13
 ### :sparkles: New Features
 - [`28b335a`](https://github.com/wrk-flow/larastrict/commit/28b335a8caceec6a579891046b68eb3b491ba0dd) - **Database**: Delete/forceDelete will always return int (0 for no deletion was made) *(commit by [@pionl](https://github.com/pionl))*
@@ -128,3 +137,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.13]: https://github.com/wrk-flow/larastrict/compare/v0.0.12...v0.0.13
 [v0.0.14]: https://github.com/wrk-flow/larastrict/compare/v0.0.13...v0.0.14
 [v0.0.15]: https://github.com/wrk-flow/larastrict/compare/v0.0.14...v0.0.15
+[v0.0.16]: https://github.com/wrk-flow/larastrict/compare/v0.0.15...v0.0.16
