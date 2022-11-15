@@ -44,9 +44,12 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 /** @var PackageManifest $packageManifest */
 $packageManifest = $app->make(PackageManifest::class);
+
 foreach ($packageManifest->providers() as $provider) {
     $app->register($provider);
 }
+
+$app->register(\LaraStrict\Core\LaraStrictServiceProvider::class);
 
 $app->bind(GetBasePathForStubsActionContract::class, GetDevBasePathForStubs::class);
 $app->bind(GetNamespaceForStubsActionContract::class, GetDevNamespaceForStubsAction::class);
