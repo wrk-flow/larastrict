@@ -11,14 +11,18 @@ use LaraStrict\Testing\Entities\NamespaceEntity;
 
 class GetDevNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 {
-    public function execute(Command $command, string $basePath): NamespaceEntity
+    public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity
     {
+        // We want to place Laravel assert / expectations to Laravel Folder.
+
+        $subFolder = str_starts_with($inputClass, 'Illuminate' . StubConstants::NameSpaceSeparator) ? 'Laravel' : null;
         return new NamespaceEntity(
-            'src' . DIRECTORY_SEPARATOR . 'Testing' . DIRECTORY_SEPARATOR,
-            implode(StubConstants::NameSpaceSeparator, [
+            implode(DIRECTORY_SEPARATOR, array_filter(['src', 'Testing', $subFolder])) . DIRECTORY_SEPARATOR,
+            implode(StubConstants::NameSpaceSeparator, array_filter([
                 'LaraStrict',
                 'Testing',
-            ]) . StubConstants::NameSpaceSeparator
+                $subFolder,
+            ])) . StubConstants::NameSpaceSeparator
         );
     }
 }

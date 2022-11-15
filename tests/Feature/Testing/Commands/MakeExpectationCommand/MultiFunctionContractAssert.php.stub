@@ -1,0 +1,207 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
+
+use PHPUnit\Framework\Assert;
+
+class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallsMap implements MultiFunctionContract
+{
+    /**
+     * @param array<MultiFunctionContractSelfExpectation> $self
+     * @param array<MultiFunctionContractPhpDocThisExpectation> $phpDocThis
+     * @param array<MultiFunctionContractPhpDocThisParamsExpectation> $phpDocThisParams
+     * @param array<MultiFunctionContractPhpDocBoolExpectation> $phpDocBool
+     * @param array<MultiFunctionContractPhpDocStringExpectation> $phpDocString
+     * @param array<MultiFunctionContractPhpDocFloatExpectation> $phpDocFloat
+     * @param array<MultiFunctionContractPhpDocMixedExpectation> $phpDocMixed
+     * @param array<MultiFunctionContractPhpDocStaticExpectation> $phpDocStatic
+     * @param array<MultiFunctionContractSelfViaClassExpectation> $selfViaClass
+     * @param array<MultiFunctionContractNoReturnExpectation> $noReturn
+     * @param array<MultiFunctionContractMixedExpectation> $mixed
+     */
+    function __construct(
+        array $self = [],
+        array $phpDocThis = [],
+        array $phpDocThisParams = [],
+        array $phpDocBool = [],
+        array $phpDocString = [],
+        array $phpDocFloat = [],
+        array $phpDocMixed = [],
+        array $phpDocStatic = [],
+        array $selfViaClass = [],
+        array $noReturn = [],
+        array $mixed = [],
+    ) {
+        $this->setExpectations(MultiFunctionContractSelfExpectation::class, array_values(array_filter($self)));
+        $this->setExpectations(MultiFunctionContractPhpDocThisExpectation::class, array_values(array_filter($phpDocThis)));
+        $this->setExpectations(MultiFunctionContractPhpDocThisParamsExpectation::class, array_values(array_filter($phpDocThisParams)));
+        $this->setExpectations(MultiFunctionContractPhpDocBoolExpectation::class, array_values(array_filter($phpDocBool)));
+        $this->setExpectations(MultiFunctionContractPhpDocStringExpectation::class, array_values(array_filter($phpDocString)));
+        $this->setExpectations(MultiFunctionContractPhpDocFloatExpectation::class, array_values(array_filter($phpDocFloat)));
+        $this->setExpectations(MultiFunctionContractPhpDocMixedExpectation::class, array_values(array_filter($phpDocMixed)));
+        $this->setExpectations(MultiFunctionContractPhpDocStaticExpectation::class, array_values(array_filter($phpDocStatic)));
+        $this->setExpectations(MultiFunctionContractSelfViaClassExpectation::class, array_values(array_filter($selfViaClass)));
+        $this->setExpectations(MultiFunctionContractNoReturnExpectation::class, array_values(array_filter($noReturn)));
+        $this->setExpectations(MultiFunctionContractMixedExpectation::class, array_values(array_filter($mixed)));
+    }
+
+    function self(string $first, int $second, bool $third): self
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractSelfExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    function phpDocThis(string $first, int $second, bool $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocThisExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $this;
+    }
+
+    /**
+     * @param string $first
+     * @param int    $second
+     * @param bool   $second
+     *
+     * @return $this
+     */
+    function phpDocThisParams($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocThisParamsExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    function phpDocBool($first, $second, callable $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocBoolExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $expectation->return;
+    }
+
+    /**
+     * @return string
+     */
+    function phpDocString($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocStringExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $expectation->return;
+    }
+
+    /**
+     * @return float
+     */
+    function phpDocFloat($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocFloatExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $expectation->return;
+    }
+
+    /**
+     * @return mixed
+     */
+    function phpDocMixed($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocMixedExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $expectation->return;
+    }
+
+    /**
+     * @return static
+     */
+    function phpDocStatic($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractPhpDocStaticExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $this;
+    }
+
+    /**
+     * @return MultiFunctionContract
+     */
+    function selfViaClass($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractSelfViaClassExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $expectation->return;
+    }
+
+    function noReturn($first, $second, $third)
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractNoReturnExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+    }
+
+    function mixed($first, $second, $third): mixed
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractMixedExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->first, $first, $message);
+        Assert::assertEquals($expectation->second, $second, $message);
+        Assert::assertEquals($expectation->third, $third, $message);
+
+        return $expectation->return;
+    }
+}

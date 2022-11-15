@@ -22,7 +22,7 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
     ) {
     }
 
-    public function execute(Command $command, string $basePath): NamespaceEntity
+    public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity
     {
         // Ask for which namespace which to use for "tests"
         $composer = $this->getComposerJsonData($basePath);

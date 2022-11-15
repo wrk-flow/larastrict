@@ -6,14 +6,22 @@ namespace LaraStrict\Testing\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use LaraStrict\Testing\AbstractExpectationCallMap;
+use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Actions\ParsePhpDocAction;
 use LaraStrict\Testing\Constants\StubConstants;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
+use LaraStrict\Testing\Entities\AssertFileStateEntity;
+use LaraStrict\Testing\Entities\PhpDocEntity;
+use LaraStrict\Testing\Enums\PhpType;
+use LogicException;
 use Nette\PhpGenerator\ClassLike;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Factory;
 use Nette\PhpGenerator\Literal;
+use Nette\PhpGenerator\Method;
 use Nette\PhpGenerator\PhpFile;
 use Nette\PhpGenerator\PromotedParameter;
 use Nette\PhpGenerator\PsrPrinter;
@@ -32,13 +40,13 @@ class MakeExpectationCommand extends Command
 {
     protected $signature = 'make:expectation 
         {class : Class name of path to class using PSR-4 specs} 
-        {method?} 
     ';
 
     public function handle(
         Filesystem $filesystem,
         GetBasePathForStubsActionContract $getBasePathAction,
         GetNamespaceForStubsActionContract $getFolderAndNamespaceForStubsAction,
+        ParsePhpDocAction $parsePhpDocAction,
     ): int {
         if (class_exists(ClassType::class) === false) {
             $message = 'First install package that is required:';
@@ -52,8 +60,6 @@ class MakeExpectationCommand extends Command
 
         $basePath = $getBasePathAction->execute();
 
-        $methodName = (string) ($this->input->getArgument('method') ?? 'execute');
-
         $inputClass = $this->getInputClass($basePath, $filesystem);
 
         if ($inputClass === null) {
@@ -62,10 +68,14 @@ class MakeExpectationCommand extends Command
 
         $class = new ReflectionClass($inputClass);
 
-        $method = $class->getMethod($methodName);
+        $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
+
+        if ($methods === []) {
+            throw new LogicException(sprintf('Class %s does not contain any public', $inputClass));
+        }
 
         // Ask for which namespace which to use for "tests"
-        $namespace = $getFolderAndNamespaceForStubsAction->execute($this, $basePath);
+        $namespace = $getFolderAndNamespaceForStubsAction->execute($this, $basePath, $inputClass);
 
         // 1. The first part of namespace should is in 99% App => app. We need to create a valid
         // namespace in tests folder, lets remove the first namespace and rebuild the correct
@@ -91,32 +101,82 @@ class MakeExpectationCommand extends Command
 
         $filesystem->ensureDirectoryExists($directory);
 
-        $expectationClassName = $class->getShortName() . 'Expectation';
+        $useSingleMethodCallMap = count($methods) === 1;
+
+        // Generate assert file that uses generated expectation in a construct
+        $assertClassName = $class->getShortName() . 'Assert';
+        $assertFileState = $this->createAssertFileAndClass(
+            class: $class,
+            namespace: $fullNamespace,
+            className: $assertClassName,
+            expectationClassName: $useSingleMethodCallMap
+                ? $this->getExpectationClassName(class: $class, methodSuffix: '')
+                : null
+        );
 
         $printer = new PsrPrinter();
 
-        $this->writeFile(
-            $directory,
-            $expectationClassName,
-            $filesystem,
-            $this->getExpectationFileContents($printer, $fullNamespace, $expectationClassName, $method)
-        );
+        foreach ($methods as $method) {
+            $methodSuffix = $useSingleMethodCallMap ? '' : Str::ucfirst($method->getName());
+            $expectationClassName = $this->getExpectationClassName($class, $methodSuffix);
 
-        if ($class->isInterface()) {
-            $assertClassName = $class->getShortName() . 'Assert';
+            $phpDoc = $parsePhpDocAction->execute($method);
 
             $this->writeFile(
-                $directory,
-                $assertClassName,
-                $filesystem,
-                $this->getAssertFileContents(
-                    $printer,
-                    $class,
-                    $fullNamespace,
-                    $assertClassName,
-                    $method,
-                    $expectationClassName
-                )
+                directory: $directory,
+                className: $expectationClassName,
+                filesystem: $filesystem,
+                fileContents: $this->getExpectationFileContents(
+                    printer: $printer,
+                    namespace: $fullNamespace,
+                    className: $expectationClassName,
+                    method: $method,
+                    phpDoc: $phpDoc,
+                ),
+            );
+
+            if ($assertFileState !== null) {
+                if ($assertFileState->constructor !== null) {
+                    $methodName = $method->getName();
+
+                    $assertFileState->constructorComments[] = sprintf(
+                        '@param array<%s> $%s',
+                        $expectationClassName,
+                        $methodName
+                    );
+                    $assertFileState->constructorBodies[] = sprintf(
+                        '$this->setExpectations(%s::class, array_values(array_filter($%s)));',
+                        $expectationClassName,
+                        $methodName
+                    );
+
+                    $assertFileState
+                        ->constructor
+                        ->addParameter($methodName)
+                        ->setType('array')
+                        ->setDefaultValue(new Literal('[]'));
+                }
+
+                $this->generateExpectationMethodAssert(
+                    assertClass: $assertFileState->class,
+                    method: $method,
+                    expectationClassName: $useSingleMethodCallMap ? null : $expectationClassName,
+                    phpDoc: $phpDoc,
+                );
+            }
+        }
+
+        if ($assertFileState !== null) {
+            if ($assertFileState->constructor !== null) {
+                $assertFileState->constructor->addComment(implode(PHP_EOL, $assertFileState->constructorComments));
+                $assertFileState->constructor->addBody(implode(PHP_EOL, $assertFileState->constructorBodies));
+            }
+
+            $this->writeFile(
+                directory: $directory,
+                className: $assertClassName,
+                filesystem: $filesystem,
+                fileContents: $printer->printFile($assertFileState->file)
             );
         }
 
@@ -124,17 +184,77 @@ class MakeExpectationCommand extends Command
     }
 
     /**
-     * @param ReflectionClass<object> $interface
+     * Generates a method assert in assert class. Generates __construct if $expectationClassName is passed (requires
+     * extending AbstractExpectationCallsMap).
+     *
+     * @param string|null $expectationClassName Defines if we are using calls map.
      */
-    protected function getAssertFileContents(
-        PsrPrinter $printer,
-        ReflectionClass $interface,
+    protected function generateExpectationMethodAssert(
+        ClassType $assertClass,
+        ReflectionMethod $method,
+        ?string $expectationClassName,
+        PhpDocEntity $phpDoc,
+    ): void {
+        $parameters = $method->getParameters();
+
+        $assertMethod = (new Factory())->fromMethodReflection($method);
+        $assertClass->addMember($assertMethod);
+
+        $assertMethod->addBody(sprintf(
+            '$expectation = $this->getExpectation(%s);',
+            $expectationClassName === null
+                ? ''
+                : $expectationClassName . '::class'
+        ));
+
+        if ($parameters !== []) {
+            $assertMethod->addBody('$message = $this->getDebugMessage();');
+            $assertMethod->addBody('');
+
+            foreach ($parameters as $parameter) {
+                $assertMethod->addBody(sprintf(
+                    'Assert::assertEquals($expectation->%s, $%s, $message);',
+                    $parameter->name,
+                    $parameter->name
+                ));
+            }
+        }
+
+        $returnType = $method->getReturnType();
+
+        if ($returnType instanceof ReflectionNamedType) {
+            $enumReturnType = PhpType::tryFrom($returnType->getName()) ?? PhpType::Mixed;
+        } else {
+            $enumReturnType = $phpDoc->returnType;
+        }
+
+        switch ($enumReturnType) {
+            case PhpType::Mixed:
+                $assertMethod->addBody('');
+                $assertMethod->addBody('return $expectation->return;');
+                break;
+            case PhpType::Self:
+            case PhpType::Static:
+                $assertMethod->addBody('');
+                $assertMethod->addBody('return $this;');
+                break;
+        }
+    }
+
+    /**
+     * @param ReflectionClass<object> $class
+     * @param string                  $expectationClassName Defines if we want to use AbstractExpectationCallMap or
+     *                                                      AbstractExpectationCallsMap (null)
+     */
+    protected function createAssertFileAndClass(
+        ReflectionClass $class,
         string $namespace,
         string $className,
-        ReflectionMethod $method,
-        string $expectationClassName,
-    ): string {
-        $parameters = $method->getParameters();
+        ?string $expectationClassName,
+    ): ?AssertFileStateEntity {
+        if ($class->isInterface() === false) {
+            return null;
+        }
 
         $file = new PhpFile();
         $file->setStrictTypes();
@@ -143,39 +263,23 @@ class MakeExpectationCommand extends Command
         $assertNamespace->addUse(Assert::class);
 
         $assertClass = $assertNamespace->addClass($className);
+        $assertClass->addImplement($class->getName());
 
-        $assertClass->setExtends(AbstractExpectationCallMap::class);
-        $assertClass->addImplement($interface->getName());
-        $assertClass->addComment(sprintf(
-            '@extends %s<%s>',
-            StubConstants::NameSpaceSeparator . AbstractExpectationCallMap::class,
-            StubConstants::NameSpaceSeparator . $namespace . StubConstants::NameSpaceSeparator . $expectationClassName
-        ));
-
-        // TODO at this moment there is a bug https://github.com/nette/php-generator/pull/117/files
-        // TODO it will incorrectly generate new statements
-        $assertMethod = (new Factory())->fromMethodReflection($method);
-        $assertClass->addMember($assertMethod);
-
-        $assertMethod->addBody('$expectation = $this->getExpectation();');
-        $assertMethod->addBody('$message = $this->getDebugMessage();');
-        $assertMethod->addBody('');
-
-        foreach ($parameters as $parameter) {
-            $assertMethod->addBody(sprintf(
-                'Assert::assertEquals($expectation->%s, $%s, $message);',
-                $parameter->name,
-                $parameter->name
+        if ($expectationClassName === null) {
+            $assertConstructor = new Method('__construct');
+            $assertClass->setExtends(AbstractExpectationCallsMap::class);
+            $assertClass->addMember($assertConstructor);
+        } else {
+            $assertClass->setExtends(AbstractExpectationCallMap::class);
+            $assertClass->addComment(sprintf(
+                '@extends %s<%s>',
+                StubConstants::NameSpaceSeparator . AbstractExpectationCallMap::class,
+                StubConstants::NameSpaceSeparator . $namespace . StubConstants::NameSpaceSeparator . $expectationClassName
             ));
+            $assertConstructor = null;
         }
 
-        $returnType = $method->getReturnType();
-        if ($returnType !== null && ($returnType instanceof ReflectionNamedType === false || $returnType->getName() !== 'void')) {
-            $assertMethod->addBody('');
-            $assertMethod->addBody('return $expectation->return;');
-        }
-
-        return $printer->printFile($file);
+        return new AssertFileStateEntity($file, $assertClass, $assertConstructor);
     }
 
     protected function getExpectationFileContents(
@@ -183,6 +287,7 @@ class MakeExpectationCommand extends Command
         string $namespace,
         string $className,
         ReflectionMethod $method,
+        PhpDocEntity $phpDoc,
     ): string {
         $parameters = $method->getParameters();
 
@@ -198,7 +303,9 @@ class MakeExpectationCommand extends Command
             ->addMethod('__construct');
 
         $returnType = $method->getReturnType();
-        if ($returnType !== null && ($returnType instanceof ReflectionNamedType === false || $returnType->getName() !== 'void')) {
+        if ($returnType !== null &&
+            ($returnType instanceof ReflectionNamedType === false || $this->canReturnExpectation($returnType)) ||
+            $phpDoc->returnType === PhpType::Mixed) {
             $constructorParameter = $constructor
                 ->addPromotedParameter('return')
                 ->setReadOnly();
@@ -257,6 +364,11 @@ class MakeExpectationCommand extends Command
 
         if ($allowNull) {
             $constructorParameter->setNullable($allowNull);
+        }
+
+        // Callable not supported in property
+        if ($proposedType === 'callable') {
+            $proposedType = '\Closure';
         }
 
         $constructorParameter->setType($proposedType);
@@ -319,6 +431,25 @@ class MakeExpectationCommand extends Command
 
         $this->line(sprintf('  <fg=gray>File writen to [%s]</>', $filePath));
         $this->newLine();
+    }
+
+    /**
+     * @param ReflectionClass<object> $class
+     */
+    protected function getExpectationClassName(ReflectionClass $class, string $methodSuffix): string
+    {
+        return $class->getShortName() . $methodSuffix . 'Expectation';
+    }
+
+    protected function canReturnExpectation(ReflectionNamedType $returnType): bool
+    {
+        return $returnType->getName() !== PhpType::Void
+            ->value
+            && $returnType->getName() !== PhpType::Self
+                ->value
+            && $returnType->getName() !== PhpType::Static
+                ->value
+        ;
     }
 
     /**

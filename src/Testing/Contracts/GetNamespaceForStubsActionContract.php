@@ -9,5 +9,5 @@ use LaraStrict\Testing\Entities\NamespaceEntity;
 
 interface GetNamespaceForStubsActionContract
 {
-    public function execute(Command $command, string $basePath): NamespaceEntity;
+    public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity;
 }

@@ -18,10 +18,11 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.5.0",
-        "nette/php-generator": "v4.0.3",
+        "nette/php-generator": "v4.0.5",
         "nikic/php-parser": "v4.15.1",
         "nunomaduro/larastan": "2.2.0",
         "orchestra/testbench": "^v7.8.0",
+        "phpstan/phpdoc-parser": "^1.13",
         "phpstan/phpstan": "1.8.6",
         "phpstan/phpstan-deprecation-rules": "^1.0.0",
         "phpstan/phpstan-mockery": "^1.1.0",
@@ -58,7 +59,9 @@
     "suggest": {
         "php-http/mock-client": "Use this package for testing HTTP/s clients.",
         "wrk-flow/php-api-sdk-builder": "Wrap external APIs with type safe API client",
-        "wrk-flow/php-get-type-value": "Get values from array/xml in type safe maner"
+        "wrk-flow/php-get-type-value": "Get values from array/xml in type safe maner",
+        "nette/php-generator": "For generating test exceptions / assert classes",
+        "phpstan/phpdoc-parser": "For better generation of test exceptions (with phpdoc typehints)"
     },
     "extra": {
         "laravel": {

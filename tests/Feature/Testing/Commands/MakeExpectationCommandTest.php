@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Commands;
 
 use Closure;
+use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Testing\PendingCommand;
 use LogicException;
 use Mockery\MockInterface;
 use Tests\LaraStrict\Feature\TestCase;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\MultiFunctionContract;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestAction;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestActionContract;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnAction;
@@ -48,12 +51,18 @@ class MakeExpectationCommandTest extends TestCase
         string $classOrFilePath,
         bool $useClass,
         string $fileName,
-        bool $checkAssert = false
+        bool $checkAssert = false,
+        array $expectationVariants = [],
     ): void {
         $this->expectClass($useClass, $fileName);
 
         $expectedPath = ['tests'];
-        $this->expectResultFile($expectedPath, $fileName, checkAssert: $checkAssert);
+        $this->expectResultFile(
+            $expectedPath,
+            $fileName,
+            checkAssert: $checkAssert,
+            expectationVariants: $expectationVariants
+        );
 
         $this->assertCommand(0, $classOrFilePath);
     }
@@ -65,13 +74,20 @@ class MakeExpectationCommandTest extends TestCase
         string $classOrFilePath,
         bool $useClass,
         string $fileName,
-        bool $checkAssert = false
+        bool $checkAssert = false,
+        array $expectationVariants = [],
     ): void {
         $this->expectClass($useClass, $fileName);
 
         $expectedPath = ['app', 'tests'];
 
-        $this->expectResultFile($expectedPath, $fileName, 'one', checkAssert: $checkAssert);
+        $this->expectResultFile(
+            $expectedPath,
+            $fileName,
+            'one',
+            checkAssert: $checkAssert,
+            expectationVariants: $expectationVariants
+        );
 
         $this->assertCommand(0, $classOrFilePath, 'one');
     }
@@ -83,13 +99,20 @@ class MakeExpectationCommandTest extends TestCase
         string $classOrFilePath,
         bool $useClass,
         string $fileName,
-        bool $checkAssert = false
+        bool $checkAssert = false,
+        array $expectationVariants = [],
     ): void {
         $this->expectClass($useClass, $fileName);
 
         $expectedPath = ['src', 'tests', 'Integration'];
 
-        $this->expectResultFile($expectedPath, $fileName, 'two', checkAssert: $checkAssert);
+        $this->expectResultFile(
+            $expectedPath,
+            $fileName,
+            'two',
+            checkAssert: $checkAssert,
+            expectationVariants: $expectationVariants
+        );
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
     }
@@ -112,8 +135,10 @@ class MakeExpectationCommandTest extends TestCase
 
     public function testMethodDoesNotExistsDefaultValue(): void
     {
-        $this->expectExceptionMessage('Method Tests\LaraStrict\Feature\TestCase::execute() does not exist');
-        $this->assertCommand(expectedResult: 1, class: TestCase::class, expectComposerJson: false);
+        $this->expectExceptionMessage(
+            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public'
+        );
+        $this->assertCommand(expectedResult: 1, class: NoMethods::class, expectComposerJson: false);
     }
 
     public function testClassDoesNotExistsAtPath(): void
@@ -149,6 +174,19 @@ class MakeExpectationCommandTest extends TestCase
             'with file return union' => [self::TestFileName, false, 'TestReturnUnionAction'],
             'with file return intersection' => [self::TestFileName, false, 'TestReturnIntersectionAction'],
             'with file return non nullable' => [self::TestFileName, false, 'TestReturnRequiredAction'],
+            'MultiFunctionContract' => [MultiFunctionContract::class, true, 'MultiFunctionContract', true, [
+                'MultiFunctionContractMixedExpectation',
+                'MultiFunctionContractNoReturnExpectation',
+                'MultiFunctionContractPhpDocBoolExpectation',
+                'MultiFunctionContractPhpDocFloatExpectation',
+                'MultiFunctionContractPhpDocMixedExpectation',
+                'MultiFunctionContractPhpDocStaticExpectation',
+                'MultiFunctionContractPhpDocStringExpectation',
+                'MultiFunctionContractPhpDocThisExpectation',
+                'MultiFunctionContractPhpDocThisParamsExpectation',
+                'MultiFunctionContractSelfExpectation',
+                'MultiFunctionContractSelfViaClassExpectation',
+            ]],
         ];
     }
 
@@ -249,7 +287,12 @@ class MakeExpectationCommandTest extends TestCase
         string $expectedFileName,
         ?string $variantPrefix = null,
         bool $checkAssert = false,
+        array $expectationVariants = [],
     ): void {
+        if ($expectationVariants === []) {
+            $expectationVariants = [$expectedFileName . 'Expectation'];
+        }
+
         $expectedPath = implode(DIRECTORY_SEPARATOR, [
             'vendor',
             'orchestra',
@@ -268,16 +311,29 @@ class MakeExpectationCommandTest extends TestCase
             ->withArgs(static fn (string $path): bool => str_contains($path, $expectedPath));
 
         $this->fileSystem->shouldReceive('put')
-            ->once()
+            ->times(count($expectationVariants))
             ->withArgs(function (string $path, string $contents) use (
                 $expectedPath,
-                $expectedFileName,
-                $variantPrefix
+                $variantPrefix,
+                $expectationVariants
             ): bool {
-                $filePath = $this->getExpectedPath($expectedPath, $expectedFileName . 'Expectation');
-                $this->assertStringContainsString($filePath, $path);
+                $expectedExpectationFileName = null;
+                foreach ($expectationVariants as $expectationVariant) {
+                    $expectedExpectationFileName = $expectationVariant;
+                    $filePath = $this->getExpectedPath($expectedPath, $expectedExpectationFileName);
 
-                $stubFile = $this->getStubFilePath($variantPrefix, $expectedFileName . 'Expectation');
+                    if (str_contains($path, $filePath)) {
+                        break;
+                    }
+
+                    $expectedExpectationFileName = null;
+                }
+
+                if ($expectedExpectationFileName === null) {
+                    throw new Exception('Unknown variant');
+                }
+
+                $stubFile = $this->getStubFilePath($variantPrefix, $expectedExpectationFileName);
                 $expectedResult = file_get_contents($stubFile);
                 $this->assertEquals($expectedResult, $contents);
                 return true;

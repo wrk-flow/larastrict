@@ -27,8 +27,8 @@ class TestReturnActionContractAssert extends \LaraStrict\Testing\AbstractExpecta
         \LaraStrict\Enums\EnvironmentType $enumDefault = \LaraStrict\Enums\EnvironmentType::Testing,
         $noTypeHintDefault = null,
         string $customConstants = Constants\CustomConstants::TEST,
-        \LaraStrict\Testing\Laravel\TestingApplication $object = new LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
-        \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new Illuminate\Support\Collection(/* unknown */),
+        \LaraStrict\Testing\Laravel\TestingApplication $object = new \LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
+        \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new \Illuminate\Support\Collection(/* unknown */),
     ): ?int {
         $expectation = $this->getExpectation();
         $message = $this->getDebugMessage();

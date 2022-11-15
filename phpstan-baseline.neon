@@ -6,6 +6,11 @@ parameters:
 			path: src/Testing/Actions/GetNamespaceForStubsAction.php
 
 		-
+			message: "#^Calling PHPStan\\\\PhpDoc\\\\PhpDocStringResolver\\:\\:resolve\\(\\) is not covered by backward compatibility promise\\. The method might change in a minor PHPStan version\\.$#"
+			count: 1
+			path: src/Testing/Actions/ParsePhpDocAction.php
+
+		-
 			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
 			count: 1
 			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
