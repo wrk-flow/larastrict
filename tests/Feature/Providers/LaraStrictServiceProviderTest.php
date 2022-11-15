@@ -24,14 +24,15 @@ class LaraStrictServiceProviderTest extends TestCase
     public function testAppServiceProvider(): void
     {
         /** @var LaraStrictServiceProvider $serviceProvider */
-        $serviceProvider = $this->app->getProvider(LaraStrictServiceProvider::class);
+        $serviceProvider = $this->app()
+            ->getProvider(LaraStrictServiceProvider::class);
         $result = $serviceProvider->getAppServiceProvider();
 
         $this->assertEquals('LaraStrict', $result->serviceName);
         $this->assertEquals('lara_strict', $result->serviceFileName);
         $this->assertStringEndsWith('src/Core', $result->serviceRootDir);
         $this->assertEquals('LaraStrict\\Core', $result->namespace);
-        $this->assertSame($this->app, $result->application);
+        $this->assertSame($this->app(), $result->application);
         $this->assertSame($serviceProvider, $result->serviceProvider);
     }
 
@@ -45,7 +46,7 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBindingsFromAllServiceProviders(): void
     {
-        $this->assertBindings($this->app, [
+        $this->assertBindings($this->app(), [
             RunInTransactionActionContract::class => RunInTransactionAction::class,
             SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
             GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,

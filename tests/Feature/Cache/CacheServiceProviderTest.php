@@ -11,6 +11,6 @@ class CacheServiceProviderTest extends TestCase
 {
     public function testBooted(): void
     {
-        $this->assertTrue($this->app?->providerIsLoaded(CacheServiceProvider::class));
+        $this->assertTrue($this->app()->providerIsLoaded(CacheServiceProvider::class));
     }
 }

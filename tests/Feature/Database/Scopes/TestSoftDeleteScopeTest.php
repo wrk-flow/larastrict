@@ -12,7 +12,8 @@ class TestSoftDeleteScopeTest extends DatabaseTestCase
     public function testSoftDeletingGlobalScope(): void
     {
         /** @var TestScopeQuery $query */
-        $query = $this->app->make(TestScopeQuery::class);
+        $query = $this->app()
+            ->make(TestScopeQuery::class);
 
         $results = $query->execute([]);
 

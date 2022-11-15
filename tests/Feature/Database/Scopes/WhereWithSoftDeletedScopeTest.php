@@ -13,7 +13,8 @@ class WhereWithSoftDeletedScopeTest extends DatabaseTestCase
     public function testApply(): void
     {
         /** @var TestScopeQuery $query */
-        $query = $this->app->make(TestScopeQuery::class);
+        $query = $this->app()
+            ->make(TestScopeQuery::class);
 
         $results = $query->execute([new WhereWithSoftDeletedScope()]);
 

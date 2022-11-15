@@ -15,7 +15,8 @@ class AppConfigTest extends AbstractConfigTestCase
     {
         parent::setUp();
 
-        $this->config = $this->app->make(AppConfig::class);
+        $this->config = $this->app()
+            ->make(AppConfig::class);
         $this->setRepositoryFromFile();
     }
 

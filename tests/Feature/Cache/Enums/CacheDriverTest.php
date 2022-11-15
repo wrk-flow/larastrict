@@ -9,6 +9,7 @@ use Illuminate\Contracts\Cache\Factory;
 use Illuminate\Contracts\Cache\Repository;
 use InvalidArgumentException;
 use LaraStrict\Cache\Enums\CacheDriver;
+use LogicException;
 use Tests\LaraStrict\Feature\TestCase;
 
 class CacheDriverTest extends TestCase
@@ -41,8 +42,12 @@ class CacheDriverTest extends TestCase
 
     protected function getCache(CacheDriver $driver): Repository
     {
-        /** @var Factory $factory */
-        $factory = $this->app->get(Factory::class);
+        $factory = $this->app()
+            ->get(Factory::class);
+
+        if ($factory instanceof Factory === false) {
+            throw new LogicException('Unable to resolve factory');
+        }
 
         return $factory->store($driver->value);
     }

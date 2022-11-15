@@ -15,7 +15,7 @@ class HealthServiceProviderTest extends TestCase
 
     public function testAlive(): void
     {
-        $this->assertRoutes($this->app, [
+        $this->assertRoutes($this->app(), [
             'GET' => [
                 'api/health/alive' => function (Route $route) {
                     $this->assertEquals(['api'], $route->gatherMiddleware());

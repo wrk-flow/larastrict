@@ -15,7 +15,9 @@ abstract class AbstractConfigTestCase extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->configRepository = $this->app->make(Repository::class);
+
+        $this->configRepository = $this->app()
+            ->make(Repository::class);
     }
 
     abstract protected function getConfigName(): string;

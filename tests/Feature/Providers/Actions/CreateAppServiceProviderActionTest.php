@@ -15,13 +15,13 @@ class CreateAppServiceProviderActionTest extends TestCase
     {
         $action = new CreateAppServiceProviderAction();
 
-        $provider = new TestingServiceProvider($this->app);
-        $result = $action->execute($this->app, $provider);
+        $provider = new TestingServiceProvider($this->app());
+        $result = $action->execute($this->app(), $provider);
         $this->assertEquals('Laravel', $result->serviceName);
         $this->assertEquals('laravel', $result->serviceFileName);
         $this->assertStringEndsWith('src/Testing/Laravel', $result->serviceRootDir);
         $this->assertEquals('LaraStrict\\Testing\\Laravel', $result->namespace);
-        $this->assertSame($this->app, $result->application);
+        $this->assertSame($this->app(), $result->application);
         $this->assertSame($provider, $result->serviceProvider);
     }
 
@@ -29,14 +29,14 @@ class CreateAppServiceProviderActionTest extends TestCase
     {
         $action = new CreateAppServiceProviderAction();
 
-        $provider = new class($this->app) extends AbstractServiceProvider {
+        $provider = new class($this->app()) extends AbstractServiceProvider {
         };
-        $result = $action->execute($this->app, $provider);
+        $result = $action->execute($this->app(), $provider);
         $this->assertEquals('Providers', $result->serviceName);
         $this->assertEquals('providers', $result->serviceFileName);
         $this->assertStringEndsWith('tests/Feature/Providers/Actions', $result->serviceRootDir);
         $this->assertEquals('LaraStrict\Providers', $result->namespace);
-        $this->assertSame($this->app, $result->application);
+        $this->assertSame($this->app(), $result->application);
         $this->assertSame($provider, $result->serviceProvider);
     }
 }

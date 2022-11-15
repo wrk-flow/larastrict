@@ -14,9 +14,11 @@ class AbstractTranslationsTest extends TestCase
     {
         parent::setUp();
 
-        $this->app->register(TranslationServiceProvider::class);
+        $this->app()
+            ->register(TranslationServiceProvider::class);
 
-        $this->translations = $this->app->make(MyTranslations::class);
+        $this->translations = $this->app()
+            ->make(MyTranslations::class);
     }
 
     public function testGetString(): void

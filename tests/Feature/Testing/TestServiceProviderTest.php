@@ -33,13 +33,16 @@ class TestServiceProviderTest extends TestCase
     public function testMakeExpectationCommand(string|EnvironmentType $environment, bool $has): void
     {
         /** @var Repository $config */
-        $config = $this->app->get(Repository::class);
+        $config = $this->app()
+            ->get(Repository::class);
         $config->set('app.env', $environment);
 
-        $this->app->register(LaraStrictServiceProvider::class);
+        $this->app()
+            ->register(LaraStrictServiceProvider::class);
 
         /** @var Kernel $kernel */
-        $kernel = $this->app->make(Kernel::class);
+        $kernel = $this->app()
+            ->make(Kernel::class);
 
         $this->assertEquals($has, array_key_exists('make:expectation', $kernel->all()));
     }

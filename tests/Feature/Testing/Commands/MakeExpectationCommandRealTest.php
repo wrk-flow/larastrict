@@ -22,18 +22,22 @@ class MakeExpectationCommandRealTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->app->register(TestServiceProvider::class);
+        $this->app()
+            ->register(TestServiceProvider::class);
 
         // Do not use test bench path
-        $this->originalPath = $this->app->basePath();
+        $this->originalPath = $this->app()
+            ->basePath();
         $path = realpath(__DIR__ . '/../../../..');
         $this->assertTrue(is_string($path));
-        $this->app->setBasePath($path);
+        $this->app()
+            ->setBasePath($path);
     }
 
     protected function tearDown(): void
     {
-        $this->app->setBasePath($this->originalPath);
+        $this->app()
+            ->setBasePath($this->originalPath);
         parent::tearDown();
     }
 

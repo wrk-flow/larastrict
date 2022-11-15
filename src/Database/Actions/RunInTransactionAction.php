@@ -18,6 +18,7 @@ class RunInTransactionAction implements RunInTransactionActionContract
     /**
      * @template T
      * @param Closure():T $callback
+     * @phpstan-param int<1, max> $attempts
      *
      * @return T
      */

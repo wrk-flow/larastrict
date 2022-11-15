@@ -15,27 +15,30 @@ class AbstractServiceProviderTest extends TestCase
     {
         parent::setUp();
 
-        $this->app->register(TestServiceProvider::class);
+        $this->app()
+            ->register(TestServiceProvider::class);
     }
 
     public function testCustomServiceFileName(): void
     {
         /** @var LaraStrictServiceProvider $serviceProvider */
-        $serviceProvider = $this->app->getProvider(TestServiceProvider::class);
+        $serviceProvider = $this->app()
+            ->getProvider(TestServiceProvider::class);
         $result = $serviceProvider->getAppServiceProvider();
 
         $this->assertEquals('Providers', $result->serviceName);
         $this->assertEquals('test_provider', $result->serviceFileName);
         $this->assertStringEndsWith('tests/Feature/Providers', $result->serviceRootDir);
         $this->assertEquals(__NAMESPACE__, $result->namespace);
-        $this->assertSame($this->app, $result->application);
+        $this->assertSame($this->app(), $result->application);
         $this->assertSame($serviceProvider, $result->serviceProvider);
     }
 
     public function testRegistersTranslations(): void
     {
         /** @var TestTranslation $testTranslation */
-        $testTranslation = $this->app->make(TestTranslation::class);
+        $testTranslation = $this->app()
+            ->make(TestTranslation::class);
 
         $this->assertEquals('translation test', $testTranslation->getTest());
     }
@@ -43,7 +46,8 @@ class AbstractServiceProviderTest extends TestCase
     public function testLoadViewsAndComponents(): void
     {
         /** @var Factory $viewFactory */
-        $viewFactory = $this->app->make(Factory::class);
+        $viewFactory = $this->app()
+            ->make(Factory::class);
 
         $result = $viewFactory->make('Providers::layout');
         $this->assertEquals('Renders inline component

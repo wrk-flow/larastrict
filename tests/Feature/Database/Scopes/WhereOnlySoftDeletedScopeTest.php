@@ -13,7 +13,8 @@ class WhereOnlySoftDeletedScopeTest extends DatabaseTestCase
     public function testApplyExpectsOnlyDeletedEntriesFromInitDatabase(): void
     {
         /** @var TestScopeQuery $query */
-        $query = $this->app->make(TestScopeQuery::class);
+        $query = $this->app()
+            ->make(TestScopeQuery::class);
 
         $results = $query->execute([new WhereOnlySoftDeletedScope()]);
 

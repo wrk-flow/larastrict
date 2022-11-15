@@ -124,6 +124,9 @@ abstract class AbstractEloquentQuery extends AbstractQuery
             ->firstOrFail();
     }
 
+    /**
+     * @return LengthAwarePaginator<TModel>
+     */
     protected function paginate(array $scopes = [], ?int $perPage = null): LengthAwarePaginator
     {
         return $this->getQuery($scopes)

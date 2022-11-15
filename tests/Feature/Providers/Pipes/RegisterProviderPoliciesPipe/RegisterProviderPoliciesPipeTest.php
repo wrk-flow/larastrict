@@ -11,10 +11,12 @@ class RegisterProviderPoliciesPipeTest extends TestCase
 {
     public function test(): void
     {
-        $this->app->register(PoliciesServiceProvider::class, true);
+        $this->app()
+            ->register(PoliciesServiceProvider::class, true);
 
         /** @var Gate $gate */
-        $gate = $this->app->make(Gate::class);
+        $gate = $this->app()
+            ->make(Gate::class);
 
         $policy = $gate->getPolicyFor(Test::class);
         $this->assertInstanceOf(TestPolicy::class, $policy);
