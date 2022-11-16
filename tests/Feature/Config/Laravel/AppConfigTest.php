@@ -68,7 +68,7 @@ class AppConfigTest extends AbstractConfigTestCase
     public function testGetUrl(): void
     {
         $this->assertConfigValue(
-            expectedDefaultValue: 'http://localhost',
+            expectedDefaultValue: 'https://testing',
             keys: [AppConfig::KeyUrl],
             overridesExpectationMap: [
                 'https://localhost' => 'https://localhost',

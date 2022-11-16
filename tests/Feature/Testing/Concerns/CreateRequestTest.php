@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Feature\Testing\Concerns;
 use LaraStrict\Testing\Concerns\CreateRequest;
 use Tests\LaraStrict\Feature\TestCase;
 
-class CreatePostRequestTest extends TestCase
+class CreateRequestTest extends TestCase
 {
     use CreateRequest;
 
@@ -18,6 +18,8 @@ class CreatePostRequestTest extends TestCase
         ];
         $request = $this->createPostRequest($this->app(), requestClass: TestRequest::class, data: $data);
         $this->assertEquals($data, $request->validated());
+        $this->assertTrue($request->acceptsJson());
+        $this->assertEquals('https://testing', $request->url());
     }
 
     public function testFail(): void
