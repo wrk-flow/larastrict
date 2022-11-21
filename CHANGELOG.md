@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.19] - 2022-11-21
+### :sparkles: New Features
+- [`66f9583`](https://github.com/wrk-flow/larastrict/commit/66f9583088316e34dc791706247ecd0c015b729d) - **Testing**: Add TestData concern for simple test using dataProvider and type safe assert *(commit by [@pionl](https://github.com/pionl))*
+- [`47b1342`](https://github.com/wrk-flow/larastrict/commit/47b13422d8e7d29ec1f935fc2cdd5836cedbaf16) - **Testing**: Add AssertProviderSingletons for testing singletons *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.18] - 2022-11-16
 ### :sparkles: New Features
 - [`a9d1a29`](https://github.com/wrk-flow/larastrict/commit/a9d1a295fab370f26ea9a3c791c098838ea7cd84) - **Testing**: Ensure that CreateRequest return request with correct url and json accept header *(commit by [@pionl](https://github.com/pionl))*
@@ -152,3 +158,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [v0.0.17]: https://github.com/wrk-flow/larastrict/compare/v0.0.16...v0.0.17
 [v0.0.18]: https://github.com/wrk-flow/larastrict/compare/v0.0.17...v0.0.18
+[v0.0.19]: https://github.com/wrk-flow/larastrict/compare/v0.0.18...v0.0.19
