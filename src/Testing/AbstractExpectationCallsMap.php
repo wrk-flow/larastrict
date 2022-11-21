@@ -9,12 +9,12 @@ use LogicException;
 abstract class AbstractExpectationCallsMap
 {
     /**
-     * @var array<class-string<object>, array<object>>
+     * @var array<string, array<object>>
      */
     private array $_expectationMap = [];
 
     /**
-     * @var array<class-string<object>, int>
+     * @var array<string, int>
      */
     private array $_callStep = [];
 
@@ -23,36 +23,27 @@ abstract class AbstractExpectationCallsMap
      */
     private int $_currentDebugStep = 0;
 
-    public function addExpectation(object $expectation): self
+    public function addExpectation(string $key, object $expectation): self
     {
-        $this->_expectationMap[$expectation::class][] = $expectation;
+        $this->_expectationMap[$key][] = $expectation;
 
         return $this;
     }
 
     /**
-     * @template TExpectation
-     * @param class-string<TExpectation> $class
-     * @param array<TExpectation>  $expectations
+     * @param array<object>  $expectations
      */
-    public function setExpectations(string $class, array $expectations): self
+    public function setExpectations(string $key, array $expectations): self
     {
-        $this->_expectationMap[$class] = $expectations;
+        $this->_expectationMap[$key] = $expectations;
 
         return $this;
     }
 
-    /**
-     * @template TExpectation of object
-     *
-     * @param class-string<TExpectation> $class
-     *
-     * @return TExpectation
-     */
-    protected function getExpectation(string $class): object
+    protected function getExpectation(string $key): object
     {
-        $map = $this->_expectationMap[$class] ?? [];
-        $callStep = $this->_callStep[$class] ?? 0;
+        $map = $this->_expectationMap[$key] ?? [];
+        $callStep = $this->_callStep[$key] ?? 0;
 
         $this->_currentDebugStep = $callStep + 1;
 
@@ -60,9 +51,8 @@ abstract class AbstractExpectationCallsMap
             throw new LogicException($this->getDebugMessage($this->_currentDebugStep, 'not set', 2));
         }
 
-        /** @var TExpectation $expectation */
         $expectation = $map[$callStep];
-        $this->_callStep[$class] = $this->_currentDebugStep;
+        $this->_callStep[$key] = $this->_currentDebugStep;
 
         return $expectation;
     }

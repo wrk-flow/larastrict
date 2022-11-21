@@ -38,8 +38,10 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'make:expectation', description: 'Make expectation class for given class')]
 class MakeExpectationCommand extends Command
 {
+    const ExceptionProperty = 'exception';
     protected $signature = 'make:expectation 
         {class : Class name of path to class using PSR-4 specs} 
+        {--e|exception : Generate expectation with exception throw}
     ';
 
     public function handle(
@@ -93,10 +95,10 @@ class MakeExpectationCommand extends Command
 
         // Base namespace can contain
         $directory = $basePath . DIRECTORY_SEPARATOR . $namespace->folder . strtr(
-            $fileNamespace,
-            StubConstants::NameSpaceSeparator,
-            DIRECTORY_SEPARATOR
-        );
+                $fileNamespace,
+                StubConstants::NameSpaceSeparator,
+                DIRECTORY_SEPARATOR
+            );
         $fullNamespace = $namespace->baseNamespace . $fileNamespace;
 
         $filesystem->ensureDirectoryExists($directory);
@@ -109,14 +111,14 @@ class MakeExpectationCommand extends Command
             class: $class,
             namespace: $fullNamespace,
             className: $assertClassName,
-            expectationClassName: $useSingleMethodCallMap
-                ? $this->getExpectationClassName(class: $class, methodSuffix: '')
-                : null
         );
+
+        $generateException = $this->option(self::ExceptionProperty);
 
         $printer = new PsrPrinter();
 
         foreach ($methods as $method) {
+            $exceptionExpectationClass = null;
             $methodSuffix = $useSingleMethodCallMap ? '' : Str::ucfirst($method->getName());
             $expectationClassName = $this->getExpectationClassName($class, $methodSuffix);
 
@@ -135,18 +137,35 @@ class MakeExpectationCommand extends Command
                 ),
             );
 
-            if ($assertFileState !== null) {
-                if ($assertFileState->constructor !== null) {
-                    $methodName = $method->getName();
+            if ($generateException) {
+                $exceptionExpectationClass = $expectationClassName . 'Throw';
+                $this->writeFile(
+                    directory: $directory,
+                    className: $exceptionExpectationClass,
+                    filesystem: $filesystem,
+                    fileContents: $this->getExpectationExceptionFileContents(
+                        printer: $printer,
+                        namespace: $fullNamespace,
+                        className: $exceptionExpectationClass,
+                        method: $method,
+                    ),
+                );
+            }
 
+            if ($assertFileState !== null) {
+                $methodName = $method->getName();
+                $expectationKey = $methodName;
+                $expectationsTypes = implode('|', array_filter([$expectationClassName, $exceptionExpectationClass]));
+
+                if ($assertFileState->constructor !== null) {
                     $assertFileState->constructorComments[] = sprintf(
                         '@param array<%s> $%s',
-                        $expectationClassName,
+                        $expectationsTypes,
                         $methodName
                     );
                     $assertFileState->constructorBodies[] = sprintf(
-                        '$this->setExpectations(%s::class, array_values(array_filter($%s)));',
-                        $expectationClassName,
+                        '$this->setExpectations(\'%s\', array_values(array_filter($%s)));',
+                        $expectationKey,
                         $methodName
                     );
 
@@ -160,8 +179,10 @@ class MakeExpectationCommand extends Command
                 $this->generateExpectationMethodAssert(
                     assertClass: $assertFileState->class,
                     method: $method,
-                    expectationClassName: $useSingleMethodCallMap ? null : $expectationClassName,
+                    expectationKey: $expectationKey,
+                    expectationsTypes: $expectationsTypes,
                     phpDoc: $phpDoc,
+                    exceptionExpectationClass: $exceptionExpectationClass,
                 );
             }
         }
@@ -184,27 +205,25 @@ class MakeExpectationCommand extends Command
     }
 
     /**
-     * Generates a method assert in assert class. Generates __construct if $expectationClassName is passed (requires
-     * extending AbstractExpectationCallsMap).
-     *
-     * @param string|null $expectationClassName Defines if we are using calls map.
+     * Generates a method assert in assert class.
      */
     protected function generateExpectationMethodAssert(
         ClassType $assertClass,
         ReflectionMethod $method,
-        ?string $expectationClassName,
+        string $expectationKey,
+        string $expectationsTypes,
         PhpDocEntity $phpDoc,
+        ?string $exceptionExpectationClass,
     ): void {
         $parameters = $method->getParameters();
 
         $assertMethod = (new Factory())->fromMethodReflection($method);
         $assertClass->addMember($assertMethod);
 
+        $assertMethod->addBody(sprintf('/** @var %s $expectation */', $expectationsTypes));
         $assertMethod->addBody(sprintf(
-            '$expectation = $this->getExpectation(%s);',
-            $expectationClassName === null
-                ? ''
-                : $expectationClassName . '::class'
+            '$expectation = $this->getExpectation(\'%s\');',
+            $expectationKey
         ));
 
         if ($parameters !== []) {
@@ -218,6 +237,16 @@ class MakeExpectationCommand extends Command
                     $parameter->name
                 ));
             }
+        }
+
+        if ($exceptionExpectationClass !== null) {
+            $assertMethod->addBody('');
+            $assertMethod->addBody(sprintf(
+                'if ($expectation instanceof %s) {',
+                $exceptionExpectationClass
+            ));
+            $assertMethod->addBody('   throw $expectation->exception;',);
+            $assertMethod->addBody('}');
         }
 
         $returnType = $method->getReturnType();
@@ -243,14 +272,11 @@ class MakeExpectationCommand extends Command
 
     /**
      * @param ReflectionClass<object> $class
-     * @param string                  $expectationClassName Defines if we want to use AbstractExpectationCallMap or
-     *                                                      AbstractExpectationCallsMap (null)
      */
     protected function createAssertFileAndClass(
         ReflectionClass $class,
         string $namespace,
         string $className,
-        ?string $expectationClassName,
     ): ?AssertFileStateEntity {
         if ($class->isInterface() === false) {
             return null;
@@ -265,19 +291,9 @@ class MakeExpectationCommand extends Command
         $assertClass = $assertNamespace->addClass($className);
         $assertClass->addImplement($class->getName());
 
-        if ($expectationClassName === null) {
-            $assertConstructor = new Method('__construct');
-            $assertClass->setExtends(AbstractExpectationCallsMap::class);
-            $assertClass->addMember($assertConstructor);
-        } else {
-            $assertClass->setExtends(AbstractExpectationCallMap::class);
-            $assertClass->addComment(sprintf(
-                '@extends %s<%s>',
-                StubConstants::NameSpaceSeparator . AbstractExpectationCallMap::class,
-                StubConstants::NameSpaceSeparator . $namespace . StubConstants::NameSpaceSeparator . $expectationClassName
-            ));
-            $assertConstructor = null;
-        }
+        $assertConstructor = new Method('__construct');
+        $assertClass->setExtends(AbstractExpectationCallsMap::class);
+        $assertClass->addMember($assertConstructor);
 
         return new AssertFileStateEntity($file, $assertClass, $assertConstructor);
     }
@@ -289,8 +305,6 @@ class MakeExpectationCommand extends Command
         ReflectionMethod $method,
         PhpDocEntity $phpDoc,
     ): string {
-        $parameters = $method->getParameters();
-
         $file = new PhpFile();
         $file->setStrictTypes();
 
@@ -298,9 +312,7 @@ class MakeExpectationCommand extends Command
             ->addNamespace($namespace)
             ->addClass($className);
 
-        $constructor = $class
-            ->setFinal()
-            ->addMethod('__construct');
+        $constructor = $this->createConstructor($class);
 
         $returnType = $method->getReturnType();
         if ($returnType !== null &&
@@ -313,14 +325,30 @@ class MakeExpectationCommand extends Command
             $this->setParameterType($returnType, $constructorParameter);
         }
 
-        foreach ($parameters as $parameter) {
-            $constructorParameter = $constructor
-                ->addPromotedParameter($parameter->name)
-                ->setReadOnly();
+        $this->buildConstructorPropertiesFromMethod(method: $method, constructor: $constructor);
 
-            $this->setParameterType($parameter->getType(), $constructorParameter);
-            $this->setParameterDefaultValue($parameter, $constructorParameter);
-        }
+        return $printer->printFile($file);
+    }
+
+    protected function getExpectationExceptionFileContents(
+        PsrPrinter $printer,
+        string $namespace,
+        string $className,
+        ReflectionMethod $method,
+    ): string {
+        $file = new PhpFile();
+        $file->setStrictTypes();
+
+        $class = $file
+            ->addNamespace($namespace)
+            ->addClass($className);
+
+        $constructor = $this->createConstructor($class);
+        $constructor->addPromotedParameter(self::ExceptionProperty)
+            ->setReadOnly()
+            ->setType('\\Throwable');
+
+        $this->buildConstructorPropertiesFromMethod(method: $method, constructor: $constructor);
 
         return $printer->printFile($file);
     }
@@ -444,12 +472,11 @@ class MakeExpectationCommand extends Command
     protected function canReturnExpectation(ReflectionNamedType $returnType): bool
     {
         return $returnType->getName() !== PhpType::Void
-            ->value
+                ->value
             && $returnType->getName() !== PhpType::Self
                 ->value
             && $returnType->getName() !== PhpType::Static
-                ->value
-        ;
+                ->value;
     }
 
     /**
@@ -458,7 +485,7 @@ class MakeExpectationCommand extends Command
     private function getInputClass(string $basePath, Filesystem $filesystem): ?string
     {
         /** @phpstan-var class-string|string $class */
-        $class = (string) $this->input->getArgument('class');
+        $class = (string)$this->input->getArgument('class');
 
         if (str_ends_with($class, '.php')) {
             $fullPath = $basePath . '/' . $class;
@@ -486,5 +513,25 @@ class MakeExpectationCommand extends Command
         }
 
         return $class;
+    }
+
+    protected function buildConstructorPropertiesFromMethod(ReflectionMethod $method, Method $constructor): void
+    {
+        $parameters = $method->getParameters();
+        foreach ($parameters as $parameter) {
+            $constructorParameter = $constructor
+                ->addPromotedParameter($parameter->name)
+                ->setReadOnly();
+
+            $this->setParameterType($parameter->getType(), $constructorParameter);
+            $this->setParameterDefaultValue($parameter, $constructorParameter);
+        }
+    }
+
+    protected function createConstructor(ClassType $class): Method
+    {
+        return $class
+            ->setFinal()
+            ->addMethod('__construct');
     }
 }

@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Auth\Access;
 
-use Illuminate\Auth\Access\Response;
-use Illuminate\Contracts\Auth\Access\Gate;
-use Illuminate\Contracts\Auth\Authenticatable;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
-class GateAssert extends AbstractExpectationCallsMap implements Gate
+class GateAssert extends \LaraStrict\Testing\AbstractExpectationCallsMap implements \Illuminate\Contracts\Auth\Access\Gate
 {
     /**
      * @param array<GateHasExpectation> $has
@@ -30,7 +26,7 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param array<GateForUserExpectation> $forUser
      * @param array<GateAbilitiesExpectation> $abilities
      */
-    public function __construct(
+    function __construct(
         array $has = [],
         array $define = [],
         array $resource = [],
@@ -48,22 +44,22 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
         array $forUser = [],
         array $abilities = [],
     ) {
-        $this->setExpectations(GateHasExpectation::class, array_values(array_filter($has)));
-        $this->setExpectations(GateDefineExpectation::class, array_values(array_filter($define)));
-        $this->setExpectations(GateResourceExpectation::class, array_values(array_filter($resource)));
-        $this->setExpectations(GatePolicyExpectation::class, array_values(array_filter($policy)));
-        $this->setExpectations(GateBeforeExpectation::class, array_values(array_filter($before)));
-        $this->setExpectations(GateAfterExpectation::class, array_values(array_filter($after)));
-        $this->setExpectations(GateAllowsExpectation::class, array_values(array_filter($allows)));
-        $this->setExpectations(GateDeniesExpectation::class, array_values(array_filter($denies)));
-        $this->setExpectations(GateCheckExpectation::class, array_values(array_filter($check)));
-        $this->setExpectations(GateAnyExpectation::class, array_values(array_filter($any)));
-        $this->setExpectations(GateAuthorizeExpectation::class, array_values(array_filter($authorize)));
-        $this->setExpectations(GateInspectExpectation::class, array_values(array_filter($inspect)));
-        $this->setExpectations(GateRawExpectation::class, array_values(array_filter($raw)));
-        $this->setExpectations(GateGetPolicyForExpectation::class, array_values(array_filter($getPolicyFor)));
-        $this->setExpectations(GateForUserExpectation::class, array_values(array_filter($forUser)));
-        $this->setExpectations(GateAbilitiesExpectation::class, array_values(array_filter($abilities)));
+        $this->setExpectations('has', array_values(array_filter($has)));
+        $this->setExpectations('define', array_values(array_filter($define)));
+        $this->setExpectations('resource', array_values(array_filter($resource)));
+        $this->setExpectations('policy', array_values(array_filter($policy)));
+        $this->setExpectations('before', array_values(array_filter($before)));
+        $this->setExpectations('after', array_values(array_filter($after)));
+        $this->setExpectations('allows', array_values(array_filter($allows)));
+        $this->setExpectations('denies', array_values(array_filter($denies)));
+        $this->setExpectations('check', array_values(array_filter($check)));
+        $this->setExpectations('any', array_values(array_filter($any)));
+        $this->setExpectations('authorize', array_values(array_filter($authorize)));
+        $this->setExpectations('inspect', array_values(array_filter($inspect)));
+        $this->setExpectations('raw', array_values(array_filter($raw)));
+        $this->setExpectations('getPolicyFor', array_values(array_filter($getPolicyFor)));
+        $this->setExpectations('forUser', array_values(array_filter($forUser)));
+        $this->setExpectations('abilities', array_values(array_filter($abilities)));
     }
 
     /**
@@ -72,9 +68,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  string  $ability
      * @return bool
      */
-    public function has($ability)
+    function has($ability)
     {
-        $expectation = $this->getExpectation(GateHasExpectation::class);
+        /** @var GateHasExpectation $expectation */
+        $expectation = $this->getExpectation('has');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -89,9 +86,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  callable|string  $callback
      * @return $this
      */
-    public function define($ability, $callback)
+    function define($ability, $callback)
     {
-        $expectation = $this->getExpectation(GateDefineExpectation::class);
+        /** @var GateDefineExpectation $expectation */
+        $expectation = $this->getExpectation('define');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -105,11 +103,13 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      *
      * @param  string  $name
      * @param  string  $class
+     * @param  array|null  $abilities
      * @return $this
      */
-    public function resource($name, $class, array $abilities = null)
+    function resource($name, $class, array $abilities = null)
     {
-        $expectation = $this->getExpectation(GateResourceExpectation::class);
+        /** @var GateResourceExpectation $expectation */
+        $expectation = $this->getExpectation('resource');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->name, $name, $message);
@@ -126,9 +126,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  string  $policy
      * @return $this
      */
-    public function policy($class, $policy)
+    function policy($class, $policy)
     {
-        $expectation = $this->getExpectation(GatePolicyExpectation::class);
+        /** @var GatePolicyExpectation $expectation */
+        $expectation = $this->getExpectation('policy');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->class, $class, $message);
@@ -140,11 +141,13 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
     /**
      * Register a callback to run before all Gate checks.
      *
+     * @param  callable  $callback
      * @return $this
      */
-    public function before(callable $callback)
+    function before(callable $callback)
     {
-        $expectation = $this->getExpectation(GateBeforeExpectation::class);
+        /** @var GateBeforeExpectation $expectation */
+        $expectation = $this->getExpectation('before');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->callback, $callback, $message);
@@ -155,11 +158,13 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
     /**
      * Register a callback to run after all Gate checks.
      *
+     * @param  callable  $callback
      * @return $this
      */
-    public function after(callable $callback)
+    function after(callable $callback)
     {
-        $expectation = $this->getExpectation(GateAfterExpectation::class);
+        /** @var GateAfterExpectation $expectation */
+        $expectation = $this->getExpectation('after');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->callback, $callback, $message);
@@ -174,9 +179,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  array|mixed  $arguments
      * @return bool
      */
-    public function allows($ability, $arguments = [])
+    function allows($ability, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateAllowsExpectation::class);
+        /** @var GateAllowsExpectation $expectation */
+        $expectation = $this->getExpectation('allows');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -192,9 +198,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  array|mixed  $arguments
      * @return bool
      */
-    public function denies($ability, $arguments = [])
+    function denies($ability, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateDeniesExpectation::class);
+        /** @var GateDeniesExpectation $expectation */
+        $expectation = $this->getExpectation('denies');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -210,9 +217,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  array|mixed  $arguments
      * @return bool
      */
-    public function check($abilities, $arguments = [])
+    function check($abilities, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateCheckExpectation::class);
+        /** @var GateCheckExpectation $expectation */
+        $expectation = $this->getExpectation('check');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->abilities, $abilities, $message);
@@ -228,9 +236,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  array|mixed  $arguments
      * @return bool
      */
-    public function any($abilities, $arguments = [])
+    function any($abilities, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateAnyExpectation::class);
+        /** @var GateAnyExpectation $expectation */
+        $expectation = $this->getExpectation('any');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->abilities, $abilities, $message);
@@ -244,11 +253,14 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
-     * @return Response
+     * @return \Illuminate\Auth\Access\Response
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function authorize($ability, $arguments = [])
+    function authorize($ability, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateAuthorizeExpectation::class);
+        /** @var GateAuthorizeExpectation $expectation */
+        $expectation = $this->getExpectation('authorize');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -262,11 +274,12 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      *
      * @param  string  $ability
      * @param  array|mixed  $arguments
-     * @return Response
+     * @return \Illuminate\Auth\Access\Response
      */
-    public function inspect($ability, $arguments = [])
+    function inspect($ability, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateInspectExpectation::class);
+        /** @var GateInspectExpectation $expectation */
+        $expectation = $this->getExpectation('inspect');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -281,10 +294,13 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  string  $ability
      * @param  array|mixed  $arguments
      * @return mixed
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function raw($ability, $arguments = [])
+    function raw($ability, $arguments = [])
     {
-        $expectation = $this->getExpectation(GateRawExpectation::class);
+        /** @var GateRawExpectation $expectation */
+        $expectation = $this->getExpectation('raw');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->ability, $ability, $message);
@@ -298,10 +314,13 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      *
      * @param  object|string  $class
      * @return mixed
+     *
+     * @throws \InvalidArgumentException
      */
-    public function getPolicyFor($class)
+    function getPolicyFor($class)
     {
-        $expectation = $this->getExpectation(GateGetPolicyForExpectation::class);
+        /** @var GateGetPolicyForExpectation $expectation */
+        $expectation = $this->getExpectation('getPolicyFor');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->class, $class, $message);
@@ -312,12 +331,13 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
     /**
      * Get a guard instance for the given user.
      *
-     * @param Authenticatable|mixed $user
+     * @param  \Illuminate\Contracts\Auth\Authenticatable|mixed  $user
      * @return static
      */
-    public function forUser($user)
+    function forUser($user)
     {
-        $expectation = $this->getExpectation(GateForUserExpectation::class);
+        /** @var GateForUserExpectation $expectation */
+        $expectation = $this->getExpectation('forUser');
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->user, $user, $message);
@@ -330,9 +350,10 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      *
      * @return array
      */
-    public function abilities()
+    function abilities()
     {
-        $expectation = $this->getExpectation(GateAbilitiesExpectation::class);
+        /** @var GateAbilitiesExpectation $expectation */
+        $expectation = $this->getExpectation('abilities');
 
         return $expectation->return;
     }

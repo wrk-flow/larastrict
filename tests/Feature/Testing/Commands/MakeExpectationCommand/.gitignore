@@ -1,2 +1,3 @@
 SimpleActionContractAssert.php
 SimpleActionContractExpectation.php
+SimpleActionContractExpectationThrow.php
