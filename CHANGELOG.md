@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.23] - 2022-11-22
+### :sparkles: New Features
+- [`8b2e816`](https://github.com/wrk-flow/larastrict/commit/8b2e816901c176b9974f822cddcf1af9a103b870) - **Testing**: Add assert Illuminate\Contracts\Events\Dispatcher *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.22] - 2022-11-22
 ### :sparkles: New Features
 - [`e4068ca`](https://github.com/wrk-flow/larastrict/commit/e4068cac67df0d43e45b40e12432b2e8d49f200d) - **Testing**: Support passing files/cookies in CreateRequest concern *(commit by [@pionl](https://github.com/pionl))*
@@ -178,3 +183,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.20]: https://github.com/wrk-flow/larastrict/compare/v0.0.19...v0.0.20
 [v0.0.21]: https://github.com/wrk-flow/larastrict/compare/v0.0.20...v0.0.21
 [v0.0.22]: https://github.com/wrk-flow/larastrict/compare/v0.0.21...v0.0.22
+[v0.0.23]: https://github.com/wrk-flow/larastrict/compare/v0.0.22...v0.0.23
