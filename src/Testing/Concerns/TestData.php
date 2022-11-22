@@ -12,7 +12,7 @@ use Closure;
 trait TestData
 {
     /**
-     * @return array<string|int, array{0: Closure():void}>
+     * @return array<string|int, array{0: Closure(static):void}>
      */
     abstract public function data(): array;
 
@@ -21,6 +21,6 @@ trait TestData
      */
     public function test(Closure $assert): void
     {
-        $assert();
+        $assert($this);
     }
 }

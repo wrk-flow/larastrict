@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Concerns;
 
 use LaraStrict\Testing\Concerns\TestData;
-use PHPUnit\Framework\TestCase;
+use Tests\LaraStrict\Feature\TestCase;
 
 class TestDataTest extends TestCase
 {
@@ -14,17 +14,24 @@ class TestDataTest extends TestCase
     public function data(): array
     {
         return [
-            'test with key' => [
-                fn () => $this->assert(value: true),
+            'can use $app when using $testCase parameter' => [
+                static fn (self $testCase) => $testCase->assert(expectAppNull: false),
+            ],
+            '$app is null when using $this' => [
+                fn () => $this->assert(expectAppNull: true),
             ],
             [
-                fn () => $this->assert(value: true),
+                fn () => $this->assert(expectAppNull: true),
             ],
         ];
     }
 
-    private function assert(bool $value): void
+    private function assert(bool $expectAppNull): void
     {
-        $this->assertTrue($value);
+        $this->assertEquals(
+            $expectAppNull,
+            null === $this->app,
+            'Using $this in closure references test case without app initialized.'
+        );
     }
 }
