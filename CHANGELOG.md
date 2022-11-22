@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.20] - 2022-11-22
+### :sparkles: New Features
+- [`443d42e`](https://github.com/wrk-flow/larastrict/commit/443d42e93a0c6ca4d8e1263113c91d8ae7af95fa) - **Testing**: Support using $this->app in TestData concern *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.19] - 2022-11-21
 ### :sparkles: New Features
 - [`66f9583`](https://github.com/wrk-flow/larastrict/commit/66f9583088316e34dc791706247ecd0c015b729d) - **Testing**: Add TestData concern for simple test using dataProvider and type safe assert *(commit by [@pionl](https://github.com/pionl))*
@@ -159,3 +164,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.17]: https://github.com/wrk-flow/larastrict/compare/v0.0.16...v0.0.17
 [v0.0.18]: https://github.com/wrk-flow/larastrict/compare/v0.0.17...v0.0.18
 [v0.0.19]: https://github.com/wrk-flow/larastrict/compare/v0.0.18...v0.0.19
+[v0.0.20]: https://github.com/wrk-flow/larastrict/compare/v0.0.19...v0.0.20
