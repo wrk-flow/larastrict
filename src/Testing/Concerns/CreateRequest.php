@@ -7,6 +7,7 @@ namespace LaraStrict\Testing\Concerns;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Routing\UrlGenerator;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 trait CreateRequest
@@ -15,6 +16,9 @@ trait CreateRequest
      * @template TRequest of Request
      *
      * @param class-string<TRequest> $requestClass
+     * @param array<string, string|int|float|bool> $cookies
+     * @param array<string, array<UploadedFile>|UploadedFile> $files
+     * @param array<string, string|int|float|bool> $server
      *
      * @return TRequest
      */
@@ -22,7 +26,10 @@ trait CreateRequest
         Application $application,
         string $requestClass,
         array $data,
-        string $accept = 'application/json'
+        string $accept = 'application/json',
+        array $cookies = [],
+        array $files = [],
+        array $server = []
     ): object {
         /** @var UrlGenerator $urlGenerator */
         $urlGenerator = $application->make(UrlGenerator::class);
@@ -32,9 +39,10 @@ trait CreateRequest
             uri: $uri,
             method: 'POST',
             parameters: $data,
-            cookies: [],
-            files: [],
+            cookies: $cookies,
+            files: $files,
             server: [
+                ...$server,
                 'HTTP_ACCEPT' => $accept,
             ],
         );
