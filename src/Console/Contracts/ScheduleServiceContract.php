@@ -15,9 +15,14 @@ interface ScheduleServiceContract
      * Use for long tasks - ensurers that the command is unique.
      *
      * @param string $command         Command signature or class
-     * @param array  $keyedParameters You need to key the parameters by command signature
+     * @param array<string, string|float|int|bool>  $keyedParameters You need to key the parameters by command signature
      */
-    public function queueCommand(string $command, array $keyedParameters = [], int $uniqueFor = 1800): CallbackEvent;
+    public function queueCommand(
+        string $command,
+        array $keyedParameters = [],
+        int $uniqueFor = 1800,
+        string $queue = 'default'
+    ): CallbackEvent;
 
     /**
      * Add a new job callback event to the schedule. Must set $job->queue.

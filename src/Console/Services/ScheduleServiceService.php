@@ -38,11 +38,17 @@ class ScheduleServiceService implements ScheduleServiceContract
      * Use for long tasks - ensurers that the command is unique.
      *
      * @param string $command         Command signature or class
-     * @param array  $keyedParameters You need to key the parameters by command signature
+     * @param array<string, string|float|int|bool>  $keyedParameters You need to key the parameters by command signature
      */
-    public function queueCommand(string $command, array $keyedParameters = [], int $uniqueFor = 1800): CallbackEvent
-    {
+    public function queueCommand(
+        string $command,
+        array $keyedParameters = [],
+        int $uniqueFor = 1800,
+        string $queue = 'default'
+    ): CallbackEvent {
         $job = new CommandInQueueJob($command, $keyedParameters, $uniqueFor);
+        $job->queue = $queue;
+
         $event = $this->schedule->job($job);
 
         // Ensure that php artisan schedule:list will return correct data
