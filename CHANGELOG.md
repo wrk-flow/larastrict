@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.24] - 2022-11-24
+### :boom: BREAKING CHANGES
+- due to [`b5852d7`](https://github.com/wrk-flow/larastrict/commit/b5852d774719e5c15bb8d37a72b78b9b18e06e49) - Add ability to change queue for queued commands *(commit by [@pionl](https://github.com/pionl))*:
+
+  minor impact, scheduleServiceContract contains new parameter `string $queue = 'default'`
+
+
+### :sparkles: New Features
+- [`b5852d7`](https://github.com/wrk-flow/larastrict/commit/b5852d774719e5c15bb8d37a72b78b9b18e06e49) - **Console**: Add ability to change queue for queued commands *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.23] - 2022-11-22
 ### :sparkles: New Features
 - [`8b2e816`](https://github.com/wrk-flow/larastrict/commit/8b2e816901c176b9974f822cddcf1af9a103b870) - **Testing**: Add assert Illuminate\Contracts\Events\Dispatcher *(commit by [@pionl](https://github.com/pionl))*
@@ -184,3 +195,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.21]: https://github.com/wrk-flow/larastrict/compare/v0.0.20...v0.0.21
 [v0.0.22]: https://github.com/wrk-flow/larastrict/compare/v0.0.21...v0.0.22
 [v0.0.23]: https://github.com/wrk-flow/larastrict/compare/v0.0.22...v0.0.23
+[v0.0.24]: https://github.com/wrk-flow/larastrict/compare/v0.0.23...v0.0.24
