@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.25] - 2022-11-28
+### :sparkles: New Features
+- [`e062fe4`](https://github.com/wrk-flow/larastrict/commit/e062fe4d78402797166e32697bcba0a1b86187e4) - **Database**: Move getScopedQuery to AbstractQuery *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.24] - 2022-11-24
 ### :boom: BREAKING CHANGES
 - due to [`b5852d7`](https://github.com/wrk-flow/larastrict/commit/b5852d774719e5c15bb8d37a72b78b9b18e06e49) - Add ability to change queue for queued commands *(commit by [@pionl](https://github.com/pionl))*:
@@ -196,3 +201,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.22]: https://github.com/wrk-flow/larastrict/compare/v0.0.21...v0.0.22
 [v0.0.23]: https://github.com/wrk-flow/larastrict/compare/v0.0.22...v0.0.23
 [v0.0.24]: https://github.com/wrk-flow/larastrict/compare/v0.0.23...v0.0.24
+[v0.0.25]: https://github.com/wrk-flow/larastrict/compare/v0.0.24...v0.0.25
