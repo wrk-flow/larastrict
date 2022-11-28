@@ -22,8 +22,7 @@ class TestScopeQuery extends AbstractEloquentQuery
      */
     public function execute(array $scopes): Collection
     {
-        return $this->getQuery($scopes)
-            ->get();
+        return $this->getAll($scopes);
     }
 
     protected function getModelClass(): string
