@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.28] - 2022-12-13
+### :sparkles: New Features
+- [`5ea6f2c`](https://github.com/wrk-flow/larastrict/commit/5ea6f2cf11d0833351baaa6aac0a525cd423fe9c) - **Testing**: Add assert / expectation for CacheMeService *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.27] - 2022-12-09
 ### :sparkles: New Features
 - [`3b1984f`](https://github.com/wrk-flow/larastrict/commit/3b1984f9c9ce25fd7db69397ec071bb21789e44a) - **Testing**: Add Bus dispatcher assert / expectation *(commit by [@pionl](https://github.com/pionl))*
@@ -214,3 +219,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.25]: https://github.com/wrk-flow/larastrict/compare/v0.0.24...v0.0.25
 [v0.0.26]: https://github.com/wrk-flow/larastrict/compare/v0.0.25...v0.0.26
 [v0.0.27]: https://github.com/wrk-flow/larastrict/compare/v0.0.26...v0.0.27
+[v0.0.28]: https://github.com/wrk-flow/larastrict/compare/v0.0.27...v0.0.28
