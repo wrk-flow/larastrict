@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.30] - 2022-12-14
+### :boom: BREAKING CHANGES
+- due to [`84a913a`](https://github.com/wrk-flow/larastrict/commit/84a913a9f8266d59d5d7e0f8299b36bf937706ad) - Pass method parameters to expectation hook. *(commit by [@pionl](https://github.com/pionl))*:
+
+  hook closure now receives more properties (expectation is last).
+
+
+### :sparkles: New Features
+- [`84a913a`](https://github.com/wrk-flow/larastrict/commit/84a913a9f8266d59d5d7e0f8299b36bf937706ad) - **Testing**: Pass method parameters to expectation hook. *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.29] - 2022-12-14
 ### :sparkles: New Features
 - [`d5b06d9`](https://github.com/wrk-flow/larastrict/commit/d5b06d95e8153f4f4cb226c382524b0e6080a2ba) - **Testing**: Add ability to run hook on assert expectation *(commit by [@pionl](https://github.com/pionl))*
@@ -227,3 +238,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.27]: https://github.com/wrk-flow/larastrict/compare/v0.0.26...v0.0.27
 [v0.0.28]: https://github.com/wrk-flow/larastrict/compare/v0.0.27...v0.0.28
 [v0.0.29]: https://github.com/wrk-flow/larastrict/compare/v0.0.28...v0.0.29
+[v0.0.30]: https://github.com/wrk-flow/larastrict/compare/v0.0.29...v0.0.30
