@@ -6,10 +6,14 @@ namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 final class MultiFunctionContractPhpDocStaticExpectation
 {
+    /**
+     * @param \Closure(self):void|null $hook
+     */
     public function __construct(
         public readonly mixed $first,
         public readonly mixed $second,
         public readonly mixed $third,
+        public readonly ?\Closure $hook = null,
     ) {
     }
 }

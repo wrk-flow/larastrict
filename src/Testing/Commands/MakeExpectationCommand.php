@@ -38,6 +38,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'make:expectation', description: 'Make expectation class for given class')]
 class MakeExpectationCommand extends Command
 {
+    private const HookProperty = 'hook';
+
     protected $signature = 'make:expectation 
         {class : Class name of path to class using PSR-4 specs} 
     ';
@@ -220,6 +222,12 @@ class MakeExpectationCommand extends Command
             }
         }
 
+        $assertMethod->addBody('');
+
+        $assertMethod->addBody(sprintf('if (is_callable($expectation->%s)) {', self::HookProperty));
+        $assertMethod->addBody(sprintf('    call_user_func($expectation->%s, $expectation);', self::HookProperty));
+        $assertMethod->addBody('}');
+
         $returnType = $method->getReturnType();
 
         if ($returnType instanceof ReflectionNamedType) {
@@ -321,6 +329,15 @@ class MakeExpectationCommand extends Command
             $this->setParameterType($parameter->getType(), $constructorParameter);
             $this->setParameterDefaultValue($parameter, $constructorParameter);
         }
+
+        $constructor
+            ->addPromotedParameter(self::HookProperty)
+            ->setReadOnly()
+            ->setType('\Closure')
+            ->setNullable()
+            ->setDefaultValue(null);
+
+        $constructor->addComment(sprintf('@param \Closure(self):void|null $%s', self::HookProperty));
 
         return $printer->printFile($file);
     }

@@ -11,6 +11,11 @@ parameters:
 			path: src/Testing/Actions/ParsePhpDocAction.php
 
 		-
+			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with false and 'Hook should be…' will always evaluate to false\\.$#"
+			count: 1
+			path: tests/Feature/Testing/Commands/MakeExpectationCommandRealTest.php
+
+		-
 			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
 			count: 1
 			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php

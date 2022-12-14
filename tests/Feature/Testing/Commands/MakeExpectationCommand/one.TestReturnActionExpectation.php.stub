@@ -6,6 +6,9 @@ namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 final class TestReturnActionExpectation
 {
+    /**
+     * @param \Closure(self):void|null $hook
+     */
     public function __construct(
         public readonly ?int $return,
         public readonly int $int,
@@ -25,6 +28,7 @@ final class TestReturnActionExpectation
         public readonly string $customConstants = \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants\CustomConstants::TEST,
         public readonly \LaraStrict\Testing\Laravel\TestingApplication $object = new \LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
         public readonly \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new \Illuminate\Support\Collection(/* unknown */),
+        public readonly ?\Closure $hook = null,
     ) {
     }
 }

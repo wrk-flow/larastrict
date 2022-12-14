@@ -6,10 +6,14 @@ namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 final class MultiFunctionContractPhpDocThisExpectation
 {
+    /**
+     * @param \Closure(self):void|null $hook
+     */
     public function __construct(
         public readonly string $first,
         public readonly int $second,
         public readonly bool $third,
+        public readonly ?\Closure $hook = null,
     ) {
     }
 }

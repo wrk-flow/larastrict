@@ -51,6 +51,10 @@ class TestReturnActionContractAssert extends \LaraStrict\Testing\AbstractExpecta
         Assert::assertEquals($expectation->object, $object, $message);
         Assert::assertEquals($expectation->intersectionType, $intersectionType, $message);
 
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, $expectation);
+        }
+
         return $expectation->return;
     }
 }

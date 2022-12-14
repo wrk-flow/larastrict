@@ -6,11 +6,15 @@ namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 final class MultiFunctionContractSelfViaClassExpectation
 {
+    /**
+     * @param \Closure(self):void|null $hook
+     */
     public function __construct(
         public readonly mixed $return,
         public readonly mixed $first,
         public readonly mixed $second,
         public readonly mixed $third,
+        public readonly ?\Closure $hook = null,
     ) {
     }
 }
