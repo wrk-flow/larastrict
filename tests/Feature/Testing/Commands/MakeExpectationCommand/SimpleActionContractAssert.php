@@ -21,7 +21,7 @@ class SimpleActionContractAssert extends \LaraStrict\Testing\AbstractExpectation
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
     }
 }

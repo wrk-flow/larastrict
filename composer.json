@@ -35,7 +35,7 @@
         "post-autoload-dump": [
             "@php ./vendor/bin/testbench package:discover --ansi"
         ],
-        "check": "composer lint && composer test",
+        "check": "composer lint && composer test && composer lint:stan",
         "lint:check": "./vendor/bin/ecs",
         "lint:fix": "./vendor/bin/ecs --fix",
         "lint:stan": "./vendor/bin/phpstan",

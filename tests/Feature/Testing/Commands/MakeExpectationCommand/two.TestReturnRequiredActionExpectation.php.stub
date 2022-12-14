@@ -7,7 +7,7 @@ namespace App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCom
 final class TestReturnRequiredActionExpectation
 {
     /**
-     * @param \Closure(self):void|null $hook
+     * @param \Closure(int,string,mixed,\LaraStrict\Enums\EnvironmentType,\LaraStrict\Testing\Laravel\TestingApplication,string|int,string|int|null,string|int|null,string,string,string,int,\LaraStrict\Enums\EnvironmentType,mixed,string,\LaraStrict\Testing\Laravel\TestingApplication,ArrayAccess&Illuminate\Support\Enumerable,self):void|null $hook
      */
     public function __construct(
         public readonly int $return,

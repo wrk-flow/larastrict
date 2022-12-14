@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 final class MultiFunctionContractSelfExpectation
 {
     /**
-     * @param \Closure(self):void|null $hook
+     * @param \Closure(string,int,bool,self):void|null $hook
      */
     public function __construct(
         public readonly string $first,

@@ -209,11 +209,14 @@ class MakeExpectationCommand extends Command
                 : $expectationClassName . '::class'
         ));
 
+        $hookParameters = [];
+
         if ($parameters !== []) {
             $assertMethod->addBody('$message = $this->getDebugMessage();');
             $assertMethod->addBody('');
 
             foreach ($parameters as $parameter) {
+                $hookParameters[] = sprintf('$%s', $parameter->name);
                 $assertMethod->addBody(sprintf(
                     'Assert::assertEquals($expectation->%s, $%s, $message);',
                     $parameter->name,
@@ -225,7 +228,11 @@ class MakeExpectationCommand extends Command
         $assertMethod->addBody('');
 
         $assertMethod->addBody(sprintf('if (is_callable($expectation->%s)) {', self::HookProperty));
-        $assertMethod->addBody(sprintf('    call_user_func($expectation->%s, $expectation);', self::HookProperty));
+        $assertMethod->addBody(sprintf(
+            '    call_user_func($expectation->%s, %s, $expectation);',
+            self::HookProperty,
+            implode(', ', $hookParameters),
+        ));
         $assertMethod->addBody('}');
 
         $returnType = $method->getReturnType();
@@ -321,12 +328,13 @@ class MakeExpectationCommand extends Command
             $this->setParameterType($returnType, $constructorParameter);
         }
 
+        $parameterTypes = [];
         foreach ($parameters as $parameter) {
             $constructorParameter = $constructor
                 ->addPromotedParameter($parameter->name)
                 ->setReadOnly();
 
-            $this->setParameterType($parameter->getType(), $constructorParameter);
+            $parameterTypes[] = $this->setParameterType($parameter->getType(), $constructorParameter);
             $this->setParameterDefaultValue($parameter, $constructorParameter);
         }
 
@@ -337,7 +345,9 @@ class MakeExpectationCommand extends Command
             ->setNullable()
             ->setDefaultValue(null);
 
-        $constructor->addComment(sprintf('@param \Closure(self):void|null $%s', self::HookProperty));
+        $constructor->addComment(
+            sprintf('@param \Closure(%s,self):void|null $%s', implode(',', $parameterTypes), self::HookProperty)
+        );
 
         return $printer->printFile($file);
     }
@@ -345,7 +355,7 @@ class MakeExpectationCommand extends Command
     protected function setParameterType(
         ReflectionType|ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
         PromotedParameter $constructorParameter
-    ): void {
+    ): string {
         $proposedType = '';
 
         $allowNull = false;
@@ -354,6 +364,11 @@ class MakeExpectationCommand extends Command
                 $name = $type->getName();
                 if ($name === 'null') {
                     $allowNull = false;
+                }
+
+                // Fix global namespace
+                if (class_exists($name)) {
+                    return '\\' . $name;
                 }
 
                 return $name;
@@ -366,6 +381,12 @@ class MakeExpectationCommand extends Command
         if ($type instanceof ReflectionNamedType) {
             $allowNull = $type->allowsNull();
             $proposedType = $type->getName();
+
+            if (class_exists($proposedType)) {
+                // Fix global namespace
+                $proposedType = '\\' . $proposedType;
+            }
+
             $constructorParameter->setNullable($type->allowsNull());
         } elseif ($type instanceof ReflectionUnionType) {
             $allowNull = $type->allowsNull();
@@ -389,6 +410,8 @@ class MakeExpectationCommand extends Command
         }
 
         $constructorParameter->setType($proposedType);
+
+        return $proposedType;
     }
 
     protected function setParameterDefaultValue(

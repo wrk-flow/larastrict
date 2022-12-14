@@ -57,7 +57,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $this;
@@ -76,7 +76,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $this;
@@ -99,7 +99,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $this;
@@ -118,7 +118,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $expectation->return;
@@ -137,7 +137,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $expectation->return;
@@ -156,7 +156,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $expectation->return;
@@ -175,7 +175,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $expectation->return;
@@ -194,7 +194,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $this;
@@ -213,7 +213,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $expectation->return;
@@ -229,7 +229,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
     }
 
@@ -243,7 +243,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         Assert::assertEquals($expectation->third, $third, $message);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+            call_user_func($expectation->hook, $first, $second, $third, $expectation);
         }
 
         return $expectation->return;
