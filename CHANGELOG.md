@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.29] - 2022-12-14
+### :sparkles: New Features
+- [`d5b06d9`](https://github.com/wrk-flow/larastrict/commit/d5b06d95e8153f4f4cb226c382524b0e6080a2ba) - **Testing**: Add ability to run hook on assert expectation *(commit by [@pionl](https://github.com/pionl))*
+- [`56e2e7e`](https://github.com/wrk-flow/larastrict/commit/56e2e7e00185f76bb18bca95dd83b5aa19fa847b) - **Testing**: Commit SimpleActionContract assert for tests *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.28] - 2022-12-13
 ### :sparkles: New Features
 - [`5ea6f2c`](https://github.com/wrk-flow/larastrict/commit/5ea6f2cf11d0833351baaa6aac0a525cd423fe9c) - **Testing**: Add assert / expectation for CacheMeService *(commit by [@pionl](https://github.com/pionl))*
@@ -220,3 +226,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.26]: https://github.com/wrk-flow/larastrict/compare/v0.0.25...v0.0.26
 [v0.0.27]: https://github.com/wrk-flow/larastrict/compare/v0.0.26...v0.0.27
 [v0.0.28]: https://github.com/wrk-flow/larastrict/compare/v0.0.27...v0.0.28
+[v0.0.29]: https://github.com/wrk-flow/larastrict/compare/v0.0.28...v0.0.29
