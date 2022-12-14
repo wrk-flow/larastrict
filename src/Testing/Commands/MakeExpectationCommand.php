@@ -345,8 +345,10 @@ class MakeExpectationCommand extends Command
             ->setNullable()
             ->setDefaultValue(null);
 
+        $parameterTypes[] = 'self';
+
         $constructor->addComment(
-            sprintf('@param \Closure(%s,self):void|null $%s', implode(',', $parameterTypes), self::HookProperty)
+            sprintf('@param \Closure(%s):void|null $%s', implode(',', $parameterTypes), self::HookProperty)
         );
 
         return $printer->printFile($file);

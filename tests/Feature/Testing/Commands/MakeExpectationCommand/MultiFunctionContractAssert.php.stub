@@ -20,6 +20,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
      * @param array<MultiFunctionContractSelfViaClassExpectation> $selfViaClass
      * @param array<MultiFunctionContractNoReturnExpectation> $noReturn
      * @param array<MultiFunctionContractMixedExpectation> $mixed
+     * @param array<MultiFunctionContractNoParamsExpectation> $noParams
      */
     function __construct(
         array $self = [],
@@ -33,6 +34,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         array $selfViaClass = [],
         array $noReturn = [],
         array $mixed = [],
+        array $noParams = [],
     ) {
         $this->setExpectations(MultiFunctionContractSelfExpectation::class, array_values(array_filter($self)));
         $this->setExpectations(MultiFunctionContractPhpDocThisExpectation::class, array_values(array_filter($phpDocThis)));
@@ -45,6 +47,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         $this->setExpectations(MultiFunctionContractSelfViaClassExpectation::class, array_values(array_filter($selfViaClass)));
         $this->setExpectations(MultiFunctionContractNoReturnExpectation::class, array_values(array_filter($noReturn)));
         $this->setExpectations(MultiFunctionContractMixedExpectation::class, array_values(array_filter($mixed)));
+        $this->setExpectations(MultiFunctionContractNoParamsExpectation::class, array_values(array_filter($noParams)));
     }
 
     function self(string $first, int $second, bool $third): self
@@ -244,6 +247,17 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
 
         if (is_callable($expectation->hook)) {
             call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        }
+
+        return $expectation->return;
+    }
+
+    function noParams(): string
+    {
+        $expectation = $this->getExpectation(MultiFunctionContractNoParamsExpectation::class);
+
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, , $expectation);
         }
 
         return $expectation->return;

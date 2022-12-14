@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
+
+final class MultiFunctionContractNoParamsExpectation
+{
+    /**
+     * @param \Closure(self):void|null $hook
+     */
+    public function __construct(
+        public readonly string $return,
+        public readonly ?\Closure $hook = null,
+    ) {
+    }
+}

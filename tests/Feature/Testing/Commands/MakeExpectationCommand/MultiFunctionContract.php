@@ -56,4 +56,6 @@ interface MultiFunctionContract
     public function noReturn($first, $second, $third);
 
     public function mixed($first, $second, $third): mixed;
+
+    public function noParams(): string;
 }

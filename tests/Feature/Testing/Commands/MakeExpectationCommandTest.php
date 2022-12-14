@@ -186,6 +186,7 @@ class MakeExpectationCommandTest extends TestCase
                 'MultiFunctionContractPhpDocThisParamsExpectation',
                 'MultiFunctionContractSelfExpectation',
                 'MultiFunctionContractSelfViaClassExpectation',
+                'MultiFunctionContractNoParamsExpectation',
             ]],
         ];
     }
