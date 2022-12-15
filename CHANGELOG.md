@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.32] - 2022-12-15
+### :bug: Bug Fixes
+- [`e62f54a`](https://github.com/wrk-flow/larastrict/commit/e62f54abf82cc450c8e9a257dd15a286cb944b32) - **Testing**: Fix assert hook generation without method parameters *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.31] - 2022-12-14
 ### :bug: Bug Fixes
 - [`624eea0`](https://github.com/wrk-flow/larastrict/commit/624eea06fae2d4506f383bb3e99c3f6bdbdcf10f) - **Testing**: Fix generating hook parameters for no parameter method *(commit by [@pionl](https://github.com/pionl))*
@@ -245,3 +250,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.29]: https://github.com/wrk-flow/larastrict/compare/v0.0.28...v0.0.29
 [v0.0.30]: https://github.com/wrk-flow/larastrict/compare/v0.0.29...v0.0.30
 [v0.0.31]: https://github.com/wrk-flow/larastrict/compare/v0.0.30...v0.0.31
+[v0.0.32]: https://github.com/wrk-flow/larastrict/compare/v0.0.31...v0.0.32
