@@ -225,11 +225,13 @@ class MakeExpectationCommand extends Command
             }
         }
 
+        $hookParameters[] = '$expectation';
+
         $assertMethod->addBody('');
 
         $assertMethod->addBody(sprintf('if (is_callable($expectation->%s)) {', self::HookProperty));
         $assertMethod->addBody(sprintf(
-            '    call_user_func($expectation->%s, %s, $expectation);',
+            '    call_user_func($expectation->%s, %s);',
             self::HookProperty,
             implode(', ', $hookParameters),
         ));

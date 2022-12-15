@@ -257,7 +257,7 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         $expectation = $this->getExpectation(MultiFunctionContractNoParamsExpectation::class);
 
         if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, , $expectation);
+            call_user_func($expectation->hook, $expectation);
         }
 
         return $expectation->return;
