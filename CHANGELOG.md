@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.33] - 2022-12-19
+### :boom: BREAKING CHANGES
+- due to [`25b420d`](https://github.com/wrk-flow/larastrict/commit/25b420da3b5a8f6dde38707d9a4db9ea4134e9fa) - Adjust convention for boot pipes - use Boot prefix *(commit by [@pionl](https://github.com/pionl))*:
+
+  Low conflict - Renamed LoadProviderRoutes Pipe to BootProviderRoutesPipe,  
+  LoadProviderViewComponents Pipe to BootProviderViewComponents and  
+  RegisterProviderPoliciesPipe to BootProviderPoliciesPipe
+
+
+### :sparkles: New Features
+- [`550ac67`](https://github.com/wrk-flow/larastrict/commit/550ac676597e63a6ff60781705615aa3543296c8) - **Testing**: Add asserts for View and View\\Factory contracts *(commit by [@pionl](https://github.com/pionl))*
+- [`44d355e`](https://github.com/wrk-flow/larastrict/commit/44d355e6c8c7ee71c81147e238b197b32808c889) - **Testing**: Add assertCalled method for asserting if expectations were called *(commit by [@pionl](https://github.com/pionl))*
+- [`d05eb61`](https://github.com/wrk-flow/larastrict/commit/d05eb61b8fcaa889f5c3a73570f1a5e3ba535f08) - **Provider**: Add ability to boot view composers using HasViewComposers interface *(commit by [@pionl](https://github.com/pionl))*
+
+### :recycle: Refactors
+- [`25b420d`](https://github.com/wrk-flow/larastrict/commit/25b420da3b5a8f6dde38707d9a4db9ea4134e9fa) - **Providers**: Adjust convention for boot pipes - use Boot prefix *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.32] - 2022-12-15
 ### :bug: Bug Fixes
 - [`e62f54a`](https://github.com/wrk-flow/larastrict/commit/e62f54abf82cc450c8e9a257dd15a286cb944b32) - **Testing**: Fix assert hook generation without method parameters *(commit by [@pionl](https://github.com/pionl))*
@@ -251,3 +269,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.30]: https://github.com/wrk-flow/larastrict/compare/v0.0.29...v0.0.30
 [v0.0.31]: https://github.com/wrk-flow/larastrict/compare/v0.0.30...v0.0.31
 [v0.0.32]: https://github.com/wrk-flow/larastrict/compare/v0.0.31...v0.0.32
+[v0.0.33]: https://github.com/wrk-flow/larastrict/compare/v0.0.32...v0.0.33
