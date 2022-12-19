@@ -15,6 +15,7 @@ use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Providers\Pipes\BootProviderPoliciesPipe;
 use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Providers\Pipes\BootProviderViewComponents;
+use LaraStrict\Providers\Pipes\BootViewComposersPipe;
 use LaraStrict\Providers\Pipes\LoadProviderTranslations;
 use LaraStrict\Providers\Pipes\LoadProviderViews;
 
@@ -52,7 +53,12 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 
     protected function bootPipes(): array
     {
-        return [BootProviderRoutesPipe::class, BootProviderPoliciesPipe::class, BootProviderViewComponents::class];
+        return [
+            BootProviderRoutesPipe::class,
+            BootProviderPoliciesPipe::class,
+            BootProviderViewComponents::class,
+            BootViewComposersPipe::class,
+        ];
     }
 
     protected function canRegisterSchedule(): bool
