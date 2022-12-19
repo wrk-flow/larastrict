@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Feature\Providers\Pipes\RegisterProviderPoliciesPipe;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Tests\LaraStrict\Feature\TestCase;
 
-class RegisterProviderPoliciesPipeTest extends TestCase
+class BootProviderPoliciesPipeTest extends TestCase
 {
     public function test(): void
     {
