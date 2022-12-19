@@ -10,7 +10,7 @@ use LaraStrict\Contracts\RegisterCustomRouteActionContract;
 use LaraStrict\Contracts\RegisterNamedCustomRouteActionContract;
 use LaraStrict\Providers\AbstractServiceProvider;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
-use LaraStrict\Providers\Pipes\LoadProviderRoutesPipe;
+use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingApplicationRoutes;
 use LaraStrict\Testing\Laravel\TestingContainer;
@@ -108,7 +108,7 @@ class LoadProviderRoutesPipeTest extends TestCase
             $this->expectExceptionMessage($expectedExceptionMessage);
         }
 
-        $pipe = new LoadProviderRoutesPipe($container, new NullLogger());
+        $pipe = new BootProviderRoutesPipe($container, new NullLogger());
         $serviceProvider = new class(
             $app,
             $customRoutes

@@ -12,11 +12,11 @@ use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Services\ContextEventsService;
 use LaraStrict\Enums\EnvironmentType;
-use LaraStrict\Providers\Pipes\LoadProviderRoutesPipe;
+use LaraStrict\Providers\Pipes\BootProviderPoliciesPipe;
+use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
+use LaraStrict\Providers\Pipes\BootProviderViewComponents;
 use LaraStrict\Providers\Pipes\LoadProviderTranslations;
-use LaraStrict\Providers\Pipes\LoadProviderViewComponents;
 use LaraStrict\Providers\Pipes\LoadProviderViews;
-use LaraStrict\Providers\Pipes\RegisterProviderPoliciesPipe;
 
 abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 {
@@ -52,7 +52,7 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 
     protected function bootPipes(): array
     {
-        return [LoadProviderRoutesPipe::class, RegisterProviderPoliciesPipe::class, LoadProviderViewComponents::class];
+        return [BootProviderRoutesPipe::class, BootProviderPoliciesPipe::class, BootProviderViewComponents::class];
     }
 
     protected function canRegisterSchedule(): bool

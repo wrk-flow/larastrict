@@ -10,7 +10,7 @@ use LaraStrict\Contracts\AppServiceProviderPipeContract;
 use LaraStrict\Contracts\HasPolicies;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
-class RegisterProviderPoliciesPipe implements AppServiceProviderPipeContract
+class BootProviderPoliciesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
         private readonly Gate $gate

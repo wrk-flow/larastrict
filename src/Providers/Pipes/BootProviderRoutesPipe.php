@@ -21,7 +21,7 @@ use LaraStrict\Providers\Entities\CustomRouteEntity;
 use LogicException;
 use Psr\Log\LoggerInterface;
 
-class LoadProviderRoutesPipe implements AppServiceProviderPipeContract
+class BootProviderRoutesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
         private readonly Container $container,

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace LaraStrict\Providers\Pipes;
 
 use Closure;
-use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Contracts\View\Factory;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
-use LaraStrict\Contracts\HasViewComponents;
+use LaraStrict\Contracts\HasViewComposers;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
-class LoadProviderViewComponents implements AppServiceProviderPipeContract
+class BootViewComposersPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
-        private readonly BladeCompiler $bladeCompiler
+        private readonly Factory $viewFactory,
     ) {
     }
 
@@ -21,10 +21,11 @@ class LoadProviderViewComponents implements AppServiceProviderPipeContract
     {
         // We need to load view components to its own namespace because Views/components
         // requires lowercase components string (not compatible).
-        if ($appServiceProvider->serviceProvider instanceof HasViewComponents) {
-            $namespace = $appServiceProvider->namespace . '\\Components';
-
-            $this->bladeCompiler->componentNamespace($namespace, $appServiceProvider->serviceName);
+        if ($appServiceProvider->serviceProvider instanceof HasViewComposers) {
+            $appServiceProvider->serviceProvider->bootViewComposers(
+                serviceName: $appServiceProvider->serviceName,
+                viewFactory: $this->viewFactory,
+            );
         }
 
         $next($appServiceProvider);
