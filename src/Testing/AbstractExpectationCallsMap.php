@@ -32,14 +32,30 @@ abstract class AbstractExpectationCallsMap
 
     /**
      * @template TExpectation
+     *
      * @param class-string<TExpectation> $class
-     * @param array<TExpectation>  $expectations
+     * @param array<TExpectation>        $expectations
      */
     public function setExpectations(string $class, array $expectations): self
     {
         $this->_expectationMap[$class] = $expectations;
 
         return $this;
+    }
+
+    public function assertCalled(): void
+    {
+        foreach ($this->_expectationMap as $class => $expectations) {
+            $called = $this->_callStep[$class] ?? 0;
+            $expected = count($expectations);
+            if ($expected === $called) {
+                continue;
+            }
+
+            throw new LogicException(
+                sprintf('[%s] expected %d call/s but was called <%d> time/s', $class, $expected, $called)
+            );
+        }
     }
 
     /**
