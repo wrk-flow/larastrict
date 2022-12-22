@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Providers;
 
+use LaraStrict\Console\Contracts\ScheduleServiceContract;
+use LaraStrict\Console\Services\ScheduleServiceService;
 use LaraStrict\Core\LaraStrictServiceProvider;
+use LaraStrict\Core\Services\ImplementsService;
 use LaraStrict\Database\Actions\RunInTransactionAction;
 use LaraStrict\Database\Actions\SafeUniqueSaveAction;
 use LaraStrict\Database\Contracts\RunInTransactionActionContract;
@@ -38,6 +41,7 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBootResolveFactory(): void
     {
+        /** @var Test $result */
         $result = Test::factory(1)->make()->first();
 
         $this->assertNotNull($result);
@@ -46,11 +50,30 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBindingsFromAllServiceProviders(): void
     {
-        $this->assertBindings($this->app(), [
-            RunInTransactionActionContract::class => RunInTransactionAction::class,
-            SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
-            GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
-            GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
-        ], null);
+        $this->assertBindings(
+            application: $this->app(),
+            expectedMap: [
+                RunInTransactionActionContract::class => RunInTransactionAction::class,
+                SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
+                GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
+                GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
+                ImplementsService::class => ImplementsService::class,
+                ScheduleServiceContract::class => ScheduleServiceService::class,
+            ]
+        );
+    }
+
+    public function testSingletons(): void
+    {
+        $this->assertBindings(
+            application: $this->app(),
+            expectedMap: [
+                ScheduleServiceContract::class => ScheduleServiceService::class,
+                SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
+                GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
+                GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
+                ImplementsService::class => ImplementsService::class,
+            ]
+        );
     }
 }

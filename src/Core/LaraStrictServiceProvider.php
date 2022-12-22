@@ -10,6 +10,7 @@ use LaraStrict\Console\Services\ScheduleServiceService;
 use LaraStrict\Context\ContextServiceProvider;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Core\Actions\CreateCoreAppServiceProviderAction;
+use LaraStrict\Core\Services\ImplementsService;
 use LaraStrict\Database\DatabaseServiceProvider;
 use LaraStrict\Providers\AbstractBaseServiceProvider;
 use LaraStrict\Providers\Actions\RunAppServiceProviderPipesAction;
@@ -32,6 +33,8 @@ class LaraStrictServiceProvider extends AbstractBaseServiceProvider
         $this->app->register(CacheServiceProvider::class);
         $this->app->register(DatabaseServiceProvider::class);
         $this->app->register(TestServiceProvider::class);
+
+        $this->app->singleton(ImplementsService::class, ImplementsService::class);
 
         parent::register();
     }
