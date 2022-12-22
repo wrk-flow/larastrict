@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace LaraStrict\Context\Contexts;
 
+use LaraStrict\Context\Contracts\ContextServiceContract;
 use LaraStrict\Context\Contracts\ContextValueContract;
 use LaraStrict\Context\Services\ContextEventsService;
-use LaraStrict\Context\Services\ContextService;
 
 /**
  * Context allows us to access data across multiple services / actions without loading data again using dependency
@@ -22,7 +22,7 @@ abstract class AbstractContext
         return 3600;
     }
 
-    abstract public function get(ContextService $contextService): ContextValueContract;
+    abstract public function get(ContextServiceContract $contextService): ContextValueContract;
 
     abstract public function getCacheKey(): string;
 

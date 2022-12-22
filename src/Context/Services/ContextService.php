@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaraStrict\Context\Services;
 
 use Closure;
-use Illuminate\Cache\Repository;
 use Illuminate\Contracts\Container\Container;
 use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
@@ -13,20 +12,16 @@ use LaraStrict\Context\Concerns\UseCache;
 use LaraStrict\Context\Concerns\UseCacheWithTags;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Contexts\AbstractIsContext;
+use LaraStrict\Context\Contracts\ContextServiceContract;
 use LaraStrict\Context\Contracts\ContextValueContract;
 use LaraStrict\Context\Values\BoolContextValue;
 use LaraStrict\Core\Services\ImplementsService;
 
-/**
- * Shareable context values between logic that needs same data. Stored in memory and if context supports its it will
- * stores in cache repository (only usable with boot).
- */
-class ContextService
+class ContextService implements ContextServiceContract
 {
     protected const TAG = 'context';
 
     public function __construct(
-        private readonly ContextCallService $callService,
         private readonly CacheMeServiceContract $cacheMeManager,
         private readonly ImplementsService $implementsService
     ) {
@@ -67,36 +62,24 @@ class ContextService
         );
     }
 
-    /**
-     * @template T of  ContextValueContract
-     *
-     * @param Closure(mixed,mixed,mixed): T $createState Create the state
-     *
-     * @return T
-     */
     public function get(AbstractContext $context, Closure $createState): ContextValueContract
     {
         $fullCacheKey = $this->getCacheKey($context);
 
         return $this->cacheMeManager->get(
             key: $fullCacheKey,
-            getValue: fn () => $this->callService->createState($context, $createState),
+            getValue: $createState,
             tags: $this->getTags($context),
             minutes: $context->getCacheTtl(),
             strategy: $this->cacheStrategy($context)
         );
     }
 
-    /**
-     * Returns bool state of the context.
-     *
-     * @param Closure():bool $is
-     */
     public function is(AbstractIsContext $context, Closure $is): BoolContextValue
     {
         return $this->get(
-            $context,
-            static fn (Container $container) => new BoolContextValue((bool) $container->call($is))
+            context: $context,
+            createState: static fn (Container $container) => new BoolContextValue((bool) $container->call($is))
         );
     }
 

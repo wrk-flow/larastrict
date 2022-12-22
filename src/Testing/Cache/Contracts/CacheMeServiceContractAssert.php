@@ -59,7 +59,9 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         Assert::assertEquals($expectation->minutes, $minutes, $message);
         Assert::assertEquals($expectation->strategy, $strategy, $message);
 
-        return $getValue();
+        $callGetValueHook = $expectation->callGetValueHook;
+
+        return $callGetValueHook instanceof Closure === false ? $getValue() : $callGetValueHook($getValue);
     }
 
     /**

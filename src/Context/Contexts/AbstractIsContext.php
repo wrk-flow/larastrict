@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Context\Contexts;
 
 use Closure;
-use LaraStrict\Context\Services\ContextService;
+use LaraStrict\Context\Contracts\ContextServiceContract;
 use LaraStrict\Context\Values\BoolContextValue;
 
 /**
@@ -14,13 +14,14 @@ use LaraStrict\Context\Values\BoolContextValue;
  */
 abstract class AbstractIsContext extends AbstractContext
 {
-    public function get(ContextService $contextService): BoolContextValue
+    public function get(ContextServiceContract $contextService): BoolContextValue
     {
         return $contextService->is($this, $this->is());
     }
 
     /**
-     * @return Closure():bool
+     * @return Closure(mixed...):bool
+     * @phpstan-return Closure(mixed,mixed,mixed,mixed,mixed):bool
      */
     abstract public function is(): Closure;
 }

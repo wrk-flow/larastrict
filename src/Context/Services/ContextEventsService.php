@@ -9,12 +9,13 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Context\Contexts\AbstractContext;
+use LaraStrict\Context\Contracts\ContextServiceContract;
 
 class ContextEventsService
 {
     public function __construct(
         private readonly Dispatcher $eventsDispatcher,
-        private readonly ContextService $contextService,
+        private readonly ContextServiceContract $contextService,
         private readonly Container $container
     ) {
     }
