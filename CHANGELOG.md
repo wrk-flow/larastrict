@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.34] - 2022-12-22
+### :boom: BREAKING CHANGES
+- due to [`4f8557c`](https://github.com/wrk-flow/larastrict/commit/4f8557ceef282842c75466d13f75347c20156d7d) - Add and use ContextServiceContract instead of a implementation class + improve phpstan support *(commit by [@pionl](https://github.com/pionl))*:
+
+  AbstractContext uses ContextServiceContract instead of a class.
+
+
+### :sparkles: New Features
+- [`a904884`](https://github.com/wrk-flow/larastrict/commit/a90488419b0158b561a6507a6fc37964115f5e73) - **Core**: Make ImplementsService a singleton *(commit by [@pionl](https://github.com/pionl))*
+- [`7dfab17`](https://github.com/wrk-flow/larastrict/commit/7dfab17865c580d4657449a3ddacec9085641ab7) - **Testing**: Add ability to run call closures in TestingContainer *(commit by [@pionl](https://github.com/pionl))*
+- [`4f8557c`](https://github.com/wrk-flow/larastrict/commit/4f8557ceef282842c75466d13f75347c20156d7d) - **Context**: Add and use ContextServiceContract instead of a implementation class + improve phpstan support *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.33] - 2022-12-19
 ### :boom: BREAKING CHANGES
 - due to [`25b420d`](https://github.com/wrk-flow/larastrict/commit/25b420da3b5a8f6dde38707d9a4db9ea4134e9fa) - Adjust convention for boot pipes - use Boot prefix *(commit by [@pionl](https://github.com/pionl))*:
@@ -270,3 +283,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.31]: https://github.com/wrk-flow/larastrict/compare/v0.0.30...v0.0.31
 [v0.0.32]: https://github.com/wrk-flow/larastrict/compare/v0.0.31...v0.0.32
 [v0.0.33]: https://github.com/wrk-flow/larastrict/compare/v0.0.32...v0.0.33
+[v0.0.34]: https://github.com/wrk-flow/larastrict/compare/v0.0.33...v0.0.34
