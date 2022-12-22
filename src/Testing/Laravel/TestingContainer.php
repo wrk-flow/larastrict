@@ -16,21 +16,23 @@ use Illuminate\Contracts\Foundation\Application;
 class TestingContainer implements Container
 {
     /**
-     * @param array<string, object|Closure(array):(object|null)|null> $makeBindings      A map of closures that will create.
+     * @param array<string, object|Closure(array):(object|null)|null> $makeBindings A map of closures that will create.
      *                                                                              Receives make $parameters and
      *                                                                              $abstract string
-     * @param Closure(array,string):(object|null)|object|null    $makeAlwaysBinding If makeBindings has no entry, it
+     * @param Closure(array,string):(object|null)|object|null $makeAlwaysBinding If makeBindings has no entry, it
      *                                                                              will call make on this closure or
      *                                                                              given object. Receives make
      *                                                                              $parameters and $abstract string
+     * @param Closure(Closure $call,array $parameters,?string $defaultMethod):mixed $call
      */
     public function __construct(
         private array $makeBindings = [],
         private object|null $makeAlwaysBinding = null,
+        private readonly ?Closure $call = null,
     ) {
     }
 
-    public function bound($abstract)
+    public function bound($abstract): bool
     {
         return false;
     }
@@ -149,6 +151,11 @@ class TestingContainer implements Container
 
     public function call($callback, array $parameters = [], $defaultMethod = null)
     {
+        if ($this->call === null) {
+            return null;
+        }
+
+        return call_user_func($this->call, $callback, $parameters, $defaultMethod);
     }
 
     public function resolved($abstract)
