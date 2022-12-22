@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\ClassMethod\ReturnTypeFromStrictScalarReturnExprRector;
 use Rector\CodingStyle\Rector\ClassConst\VarConstantCommentRector;
 use Rector\CodingStyle\Rector\ClassMethod\UnSpreadOperatorRector;
 use Rector\Config\RectorConfig;
@@ -29,11 +30,14 @@ return static function (RectorConfig $config): void {
     );
 
     // SKIP laravel
+    $laravelClasses = [
+        __DIR__ . '/src/Testing/Laravel/TestingApplication.php',
+        __DIR__ . '/src/Testing/Laravel/TestingContainer.php',
+        __DIR__ . '/src/Testing/Laravel/Filesystem/Filesystem.php',
+    ];
     $config->skip([
-        UnSpreadOperatorRector::class => [
-            __DIR__ . '/src/Testing/Laravel/TestingApplication.php',
-            __DIR__ . '/src/Testing/Laravel/TestingContainer.php',
-        ],
+        UnSpreadOperatorRector::class => $laravelClasses,
+        ReturnTypeFromStrictScalarReturnExprRector::class => $laravelClasses,
         VarConstantCommentRector::class,
         // We want to leave the relative constant path usage
         __DIR__ . '/tests/Feature/Testing/Commands/MakeExpectationCommand/*.php',

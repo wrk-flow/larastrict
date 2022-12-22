@@ -38,8 +38,8 @@ class ViewAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'with',
-                createAssert: static fn () => new ViewAssert(with: [new ViewWithExpectation(key: 'test',)]),
-                call: static fn (ViewAssert $assert) => $assert->with(key: 'test',),
+                createAssert: static fn () => new ViewAssert(with: [new ViewWithExpectation(key: 'test')]),
+                call: static fn (ViewAssert $assert) => $assert->with(key: 'test'),
                 checkResult: true,
                 checkResultIsSelf: true
             ),

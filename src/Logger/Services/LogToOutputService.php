@@ -70,7 +70,7 @@ class LogToOutputService implements LoggerInterface
 
     protected function writeContext(array $context): void
     {
-        if (empty($context)) {
+        if ($context === []) {
             return;
         }
 

@@ -61,7 +61,7 @@ class BootViewComposersPipeTest extends TestCase
             'does not implement' => [
                 static fn (self $self) => $self->assert(
                     app: $app,
-                    serviceProvider: new class($app,) extends AbstractServiceProvider {
+                    serviceProvider: new class($app) extends AbstractServiceProvider {
                     },
                     viewFactory: $viewFactory,
                     factoryComposerExpectation: null,

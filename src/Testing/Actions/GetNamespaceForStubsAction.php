@@ -31,7 +31,7 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
             if (count($autoLoad) === 1) {
                 $baseNamespace = (string) array_keys($autoLoad)[0];
             } else {
-                $baseNamespace = (string) $command->choice('What namespace to use?', array_keys($autoLoad),);
+                $baseNamespace = (string) $command->choice('What namespace to use?', array_keys($autoLoad));
             }
 
             if (array_key_exists($baseNamespace, $autoLoad) === false) {

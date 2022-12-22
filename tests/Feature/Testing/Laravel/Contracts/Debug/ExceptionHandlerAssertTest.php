@@ -77,7 +77,7 @@ class ExceptionHandlerAssertTest extends TestCase
         return new AssertExpectationEntity(
             methodName: 'shouldReport',
             createAssert: static fn () => new ExceptionHandlerAssert(
-                shouldReport: [new ExceptionHandlerShouldReportExpectation(return: $expectedReturn, e: $exception,)]
+                shouldReport: [new ExceptionHandlerShouldReportExpectation(return: $expectedReturn, e: $exception)]
             ),
             call: static fn (ExceptionHandlerAssert $assert) => $assert->shouldReport($exception),
             checkResult: true,

@@ -32,7 +32,7 @@ class CacheMeServiceContractAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'get',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
-                    get: [new CacheMeServiceContractGetExpectation(key: self::Key,)]
+                    get: [new CacheMeServiceContractGetExpectation(key: self::Key)]
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->get(
                     key: self::Key,
@@ -97,9 +97,9 @@ class CacheMeServiceContractAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'delete',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
-                    delete: [new CacheMeServiceContractDeleteExpectation(key: self::Key,)]
+                    delete: [new CacheMeServiceContractDeleteExpectation(key: self::Key)]
                 ),
-                call: static fn (CacheMeServiceContractAssert $assert) => $assert->delete(key: self::Key,),
+                call: static fn (CacheMeServiceContractAssert $assert) => $assert->delete(key: self::Key),
                 checkResult: false,
             ),
             new AssertExpectationEntity(

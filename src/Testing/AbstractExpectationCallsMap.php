@@ -89,7 +89,7 @@ abstract class AbstractExpectationCallsMap
 
         return sprintf(
             'Expectation for [%s@%s] %s for a n (%s) call',
-            $caller['class'] ?? $this::class,
+            $caller['class'] ?? static::class,
             $caller['function'],
             $reason,
             $callStep ?? $this->_currentDebugStep

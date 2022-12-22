@@ -23,22 +23,22 @@ class AuthenticateTest extends TestCase
     {
         return [
             'empty string' => [
-                static fn (self $self) => $self->assert(value: '', expectedValue: '',),
+                static fn (self $self) => $self->assert(value: '', expectedValue: ''),
             ],
             'true' => [
-                static fn (self $self) => $self->assert(value: true, expectedValue: '1',),
+                static fn (self $self) => $self->assert(value: true, expectedValue: '1'),
             ],
             'false' => [
-                static fn (self $self) => $self->assert(value: false, expectedValue: '',),
+                static fn (self $self) => $self->assert(value: false, expectedValue: ''),
             ],
             'true string' => [
-                static fn (self $self) => $self->assert(value: 'true', expectedValue: 'true',),
+                static fn (self $self) => $self->assert(value: 'true', expectedValue: 'true'),
             ],
             'false string' => [
-                static fn (self $self) => $self->assert(value: 'false', expectedValue: 'false',),
+                static fn (self $self) => $self->assert(value: 'false', expectedValue: 'false'),
             ],
             'null' => [
-                static fn (self $self) => $self->assert(value: null, expectedValue: null,),
+                static fn (self $self) => $self->assert(value: null, expectedValue: null),
             ],
             'valid but different env - testing' => [
                 static fn (self $self) => $self->assert(

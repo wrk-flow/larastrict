@@ -49,7 +49,7 @@ class LoadProviderRoutesPipeTest extends TestCase
     {
         $this->loggerMock->shouldReceive('warning')
             ->once()
-            ->withArgs(function (string $message, array $context) {
+            ->withArgs(function (string $message, array $context): bool {
                 $this->assertEquals('No routes have been loaded for <load_provider_routes_pipe> service', $message);
                 $this->assertArrayHasKey('dir', $context);
                 $this->assertArrayHasKey('service', $context);

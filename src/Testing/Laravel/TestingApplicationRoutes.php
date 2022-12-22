@@ -26,7 +26,7 @@ class TestingApplicationRoutes extends TestingApplication implements CachesRoute
         return $this->routesAreCached;
     }
 
-    public function getCachedRoutesPath()
+    public function getCachedRoutesPath(): string
     {
         return 'routes-path';
     }

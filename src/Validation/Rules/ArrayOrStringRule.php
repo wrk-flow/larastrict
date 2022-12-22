@@ -13,7 +13,7 @@ class ArrayOrStringRule implements Rule
         return is_array($value) || is_string($value);
     }
 
-    public function message()
+    public function message(): string
     {
         return 'Given :attribute must by array or string';
     }

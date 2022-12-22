@@ -191,7 +191,7 @@ class GateAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'forUser',
-                createAssert: static fn () => new GateAssert(forUser: [new GateForUserExpectation(user: $user,)]),
+                createAssert: static fn () => new GateAssert(forUser: [new GateForUserExpectation(user: $user)]),
                 call: static fn (GateAssert $assert) => $assert->forUser($user),
                 checkResult: true,
                 checkResultIsSelf: true,

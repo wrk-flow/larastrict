@@ -105,7 +105,7 @@ class FactoryAssertTest extends TestCase
                 createAssert: static fn () => new FactoryAssert(
                     share: [new FactoryShareExpectation(return: null, key: 'test')]
                 ),
-                call: static fn (FactoryAssert $assert) => $assert->share(key: 'test',),
+                call: static fn (FactoryAssert $assert) => $assert->share(key: 'test'),
                 checkResult: true,
                 expectedResult: null
             ),
