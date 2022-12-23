@@ -89,6 +89,31 @@ class ContextServiceContractAssertTest extends TestCase
                 expectedResult: $value
             ),
             new AssertExpectationEntity(
+                methodName: 'get',
+                createAssert: fn () => new ContextServiceContractAssert(get: [
+                    new ContextServiceContractGetExpectation(
+                        return: $value,
+                        context: $context,
+                        hook: function (
+                            AbstractContext $context,
+                            Closure $createState,
+                            ContextServiceContractGetExpectation $expectation
+                        ) use ($value): void {
+                            $this->assertSame($value, $createState('test'));
+                        }
+                    ),
+                ]),
+                call: fn (ContextServiceContractAssert $assert) => $assert->get(
+                    context: $context,
+                    createState: function (string $string) use ($value): TestValue {
+                        $this->assertEquals(expected: 'test', actual: $string);
+                        return $value;
+                    }
+                ),
+                checkResult: true,
+                expectedResult: $value
+            ),
+            new AssertExpectationEntity(
                 methodName: 'is',
                 createAssert: fn () => new ContextServiceContractAssert(is: [
                     new ContextServiceContractIsExpectation(
