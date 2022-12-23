@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.36] - 2022-12-23
+### :boom: BREAKING CHANGES
+- due to [`022b496`](https://github.com/wrk-flow/larastrict/commit/022b49612c942ac7aea0deb309d1596b9c3fb360) - ContextServiceContractGetExpectation createState removed and add ability to assert passed $createState *(commit by [@pionl](https://github.com/pionl))*:
+
+  ContextServiceContractGetExpectation createState removed and add ability to assert passed $createState
+
+
+### :sparkles: New Features
+- [`022b496`](https://github.com/wrk-flow/larastrict/commit/022b49612c942ac7aea0deb309d1596b9c3fb360) - **Testing**: ContextServiceContractGetExpectation createState removed and add ability to assert passed $createState *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.35] - 2022-12-23
 ### :sparkles: New Features
 - [`7a942e0`](https://github.com/wrk-flow/larastrict/commit/7a942e05dffbc8acb5705c9301bae02222d94414) - **Testing**: Context getExpectation createState property is optional due the fact its not needed *(commit by [@pionl](https://github.com/pionl))*
@@ -290,3 +301,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.33]: https://github.com/wrk-flow/larastrict/compare/v0.0.32...v0.0.33
 [v0.0.34]: https://github.com/wrk-flow/larastrict/compare/v0.0.33...v0.0.34
 [v0.0.35]: https://github.com/wrk-flow/larastrict/compare/v0.0.34...v0.0.35
+[v0.0.36]: https://github.com/wrk-flow/larastrict/compare/v0.0.35...v0.0.36
