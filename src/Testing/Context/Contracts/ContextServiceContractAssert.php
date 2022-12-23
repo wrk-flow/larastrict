@@ -89,10 +89,15 @@ class ContextServiceContractAssert extends AbstractExpectationCallsMap implement
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->context, $context, $message);
-        Assert::assertEquals($expectation->createState, $createState, $message);
 
         if (is_callable($expectation->hook)) {
             call_user_func($expectation->hook, $context, $createState, $expectation);
+        }
+
+        if (is_callable($expectation->runCreateState)) {
+            $result = call_user_func($expectation->runCreateState, $createState);
+
+            Assert::assertEquals($result, $expectation->return);
         }
 
         /** @phpstan-ignore-next-line */

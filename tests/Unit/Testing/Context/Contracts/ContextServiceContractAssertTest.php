@@ -67,8 +67,6 @@ class ContextServiceContractAssertTest extends TestCase
                     new ContextServiceContractGetExpectation(
                         return: $value,
                         context: $context,
-                        createState: static function () {
-                        },
                         hook: function (
                             AbstractContext $context,
                             Closure $createState,
@@ -90,17 +88,11 @@ class ContextServiceContractAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'get',
-                createAssert: fn () => new ContextServiceContractAssert(get: [
+                createAssert: static fn () => new ContextServiceContractAssert(get: [
                     new ContextServiceContractGetExpectation(
                         return: $value,
                         context: $context,
-                        hook: function (
-                            AbstractContext $context,
-                            Closure $createState,
-                            ContextServiceContractGetExpectation $expectation
-                        ) use ($value): void {
-                            $this->assertSame($value, $createState('test'));
-                        }
+                        runCreateState: static fn (Closure $createState): TestValue => $createState('test')
                     ),
                 ]),
                 call: fn (ContextServiceContractAssert $assert) => $assert->get(

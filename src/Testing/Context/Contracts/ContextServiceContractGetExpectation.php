@@ -10,18 +10,18 @@ use LaraStrict\Context\Contracts\ContextValueContract;
 
 final class ContextServiceContractGetExpectation
 {
-    public readonly Closure $createState;
-
     /**
      * @param Closure(AbstractContext, Closure, self):void|null $hook
+     * @param Closure(Closure $context):mixed                   $runCreateState should contain a closure that will
+     *                                                          execute given $createState method with correct
+     *                                                          parameters. The returned value will be asserted with
+     *                                                          given $expectation->return value.
      */
     public function __construct(
         public readonly ContextValueContract $return,
         public readonly AbstractContext $context,
-        ?Closure $createState = null,
         public readonly ?Closure $hook = null,
+        public readonly ?Closure $runCreateState = null
     ) {
-        $this->createState = $createState ?? static function () {
-        };
     }
 }
