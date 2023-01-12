@@ -42,6 +42,34 @@ class AbstractTranslationsTest extends TestCase
         $this->assertEquals($expected, $this->translations->getWays());
     }
 
+    public function testFromArray(): void
+    {
+        $expected = [
+            'one' => 'One way',
+            'two' => 'Two way',
+        ];
+        $this->assertEquals($expected, $this->translations->getWays());
+    }
+
+    public function testGetWay(): void
+    {
+        $this->assertEquals('One way', $this->translations->getWay('one'));
+        $this->assertEquals('Two way', $this->translations->getWay('two'));
+    }
+
+    public function testGetWayWithArrayKeys(): void
+    {
+        $this->assertEquals('One way', $this->translations->getWayArrayKeys('one'));
+        $this->assertEquals('Two way', $this->translations->getWayArrayKeys('two'));
+    }
+
+    public function testGetWayNullable(): void
+    {
+        $this->assertEquals('One way', $this->translations->getWayNullable('one'));
+        $this->assertEquals('Two way', $this->translations->getWayNullable('two'));
+        $this->assertEquals(null, $this->translations->getWayNullable('s'));
+    }
+
     public function testDefaultValueByLaravel(): void
     {
         $this->assertEquals('package::test.test', $this->translations->getNotFoundLaravel());
@@ -50,5 +78,10 @@ class AbstractTranslationsTest extends TestCase
     public function testCustomDefaultValue(): void
     {
         $this->assertEquals('test123', $this->translations->getCustomNotFound());
+    }
+
+    public function testCustomDefaultNullValue(): void
+    {
+        $this->assertEquals(null, $this->translations->getCustomNotFoundNullable());
     }
 }

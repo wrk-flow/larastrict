@@ -25,7 +25,7 @@ abstract class AbstractTranslations
     abstract public function getLocalizationKey(): string;
 
     protected function get(
-        string $key,
+        string|array $key,
         array $replace = [],
         ?string $locale = null,
         string $defaultValue = null
@@ -39,13 +39,24 @@ abstract class AbstractTranslations
         return $result;
     }
 
-    protected function getArray(string $key, array $replace = [], ?string $locale = null): array
+    protected function getOptional(string|array $key, array $replace = [], ?string $locale = null): ?string
+    {
+        $result = $this->translator->get($this->getKey($key), $replace, $locale);
+
+        if ($result === $this->getKey($key)) {
+            return null;
+        }
+
+        return $result;
+    }
+
+    protected function getArray(string|array $key, array $replace = [], ?string $locale = null): array
     {
         return $this->translator->get($this->getKey($key), $replace, $locale);
     }
 
     protected function getChoice(
-        string $key,
+        string|array $key,
         int|array|Countable $number,
         array $replace = [],
         ?string $locale = null
@@ -53,8 +64,10 @@ abstract class AbstractTranslations
         return $this->translator->choice($this->getKey($key), $number, $replace, $locale);
     }
 
-    protected function getKey(string $key): string
+    protected function getKey(string|array $key): string
     {
-        return $this->getLocalizationKey() . '.' . $key;
+        $keys = [$this->getLocalizationKey(), ...(is_array($key) ? $key : [$key])];
+
+        return implode('.', $keys);
     }
 }

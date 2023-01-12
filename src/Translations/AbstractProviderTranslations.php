@@ -44,7 +44,7 @@ abstract class AbstractProviderTranslations extends AbstractTranslations
      */
     abstract protected function getProviderClass(): string;
 
-    protected function getKey(string $key): string
+    protected function getKey(string|array $key): string
     {
         return $this->providerKey . '::' . parent::getKey($key);
     }
