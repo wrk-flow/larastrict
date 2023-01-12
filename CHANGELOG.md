@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.37] - 2023-01-12
+### :boom: BREAKING CHANGES
+- due to [`e69f381`](https://github.com/wrk-flow/larastrict/commit/e69f381ec92f3535ffeb667071d871ab5e0254fd) - Add getOptional method to allow return null if translation is not set + support arrayable keys *(commit by [@pionl](https://github.com/pionl))*:
+
+  AbstractTranslations: $key parameter in methods get/getChoice/getArray/getKey accepts string|array instead of string
+
+
+### :sparkles: New Features
+- [`e69f381`](https://github.com/wrk-flow/larastrict/commit/e69f381ec92f3535ffeb667071d871ab5e0254fd) - **Translations**: Add getOptional method to allow return null if translation is not set + support arrayable keys *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.36] - 2022-12-23
 ### :boom: BREAKING CHANGES
 - due to [`022b496`](https://github.com/wrk-flow/larastrict/commit/022b49612c942ac7aea0deb309d1596b9c3fb360) - ContextServiceContractGetExpectation createState removed and add ability to assert passed $createState *(commit by [@pionl](https://github.com/pionl))*:
@@ -302,3 +313,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.34]: https://github.com/wrk-flow/larastrict/compare/v0.0.33...v0.0.34
 [v0.0.35]: https://github.com/wrk-flow/larastrict/compare/v0.0.34...v0.0.35
 [v0.0.36]: https://github.com/wrk-flow/larastrict/compare/v0.0.35...v0.0.36
+[v0.0.37]: https://github.com/wrk-flow/larastrict/compare/v0.0.36...v0.0.37
