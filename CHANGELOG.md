@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.38] - 2023-01-16
+### :sparkles: New Features
+- [`4d0e39e`](https://github.com/wrk-flow/larastrict/commit/4d0e39e452f4cb28bfe5c1be135f022fe469155e) - **Testing**: Add ability to assert event listeners with assert class *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.37] - 2023-01-12
 ### :boom: BREAKING CHANGES
 - due to [`e69f381`](https://github.com/wrk-flow/larastrict/commit/e69f381ec92f3535ffeb667071d871ab5e0254fd) - Add getOptional method to allow return null if translation is not set + support arrayable keys *(commit by [@pionl](https://github.com/pionl))*:
@@ -314,3 +319,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.35]: https://github.com/wrk-flow/larastrict/compare/v0.0.34...v0.0.35
 [v0.0.36]: https://github.com/wrk-flow/larastrict/compare/v0.0.35...v0.0.36
 [v0.0.37]: https://github.com/wrk-flow/larastrict/compare/v0.0.36...v0.0.37
+[v0.0.38]: https://github.com/wrk-flow/larastrict/compare/v0.0.37...v0.0.38
