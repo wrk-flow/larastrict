@@ -15,20 +15,28 @@ class AssertEventListenersTest extends TestCase
     public function testAssertEventListeners(): void
     {
         // Set the event as provided would
-        /** @var Dispatcher $events */
-        $events = $this->app()
-            ->get(Dispatcher::class);
-        $this->app()
-            ->bind(TestListenerContract::class, TestListener::class);
+        $app = $this->app();
 
+        $app->bind(TestListenerContract::class, TestListener::class);
+        $app->bind(TestListenerContract::class, TestListener::class);
+
+        /** @var Dispatcher $events */
+        $events = $app->get(Dispatcher::class);
         $events->listen(TestEvent::class, TestListenerContract::class);
+        $events->listen(TestEvent::class, TestListenerCallsContract::class);
 
         $event = new TestEvent();
         $this->assertEventListeners(
-            app: $this->app(),
+            app: $app,
             event: $event,
-            contract: TestListenerContract::class,
-            assert: new TestListenerContractAssert([new TestListenerContractExpectation(event: $event)])
+            contractMap: [
+                TestListenerContract::class => new TestListenerContractAssert([
+                    new TestListenerContractExpectation(event: $event),
+                ]),
+                TestListenerCallsContract::class => new TestListenerCallsContractAssert([
+                    new TestListenerCallsContractHandleExpectation(event: $event),
+                ]),
+            ],
         );
     }
 }
