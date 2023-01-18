@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.40] - 2023-01-18
+### :sparkles: New Features
+- [`b0ec6a8`](https://github.com/wrk-flow/larastrict/commit/b0ec6a85b6994e98dfdf73df6f7ac22cd4905561) - **Testing**: Fix PHPStan warning when using null in multi function asserts *(commit by [@pionl](https://github.com/pionl))*
+- [`c674c4b`](https://github.com/wrk-flow/larastrict/commit/c674c4b6d21a5f25a55f6498ed330cc8e6fedb1b) - **Testing**: Add TranslatorAssert for asserting translations *(commit by [@pionl](https://github.com/pionl))*
+- [`e02c81b`](https://github.com/wrk-flow/larastrict/commit/e02c81b89beb56e81479f31781993c44196171d7) - **Http**: Add ability to return custom public message in json / views *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.39] - 2023-01-16
 ### :boom: BREAKING CHANGES
 - due to [`1428244`](https://github.com/wrk-flow/larastrict/commit/14282447eceaa2b74db1af14e50a9d19a8f6f9e4) - Add support for multiple listeners in assertEventListeners *(commit by [@pionl](https://github.com/pionl))*:
@@ -332,3 +339,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.37]: https://github.com/wrk-flow/larastrict/compare/v0.0.36...v0.0.37
 [v0.0.38]: https://github.com/wrk-flow/larastrict/compare/v0.0.37...v0.0.38
 [v0.0.39]: https://github.com/wrk-flow/larastrict/compare/v0.0.38...v0.0.39
+[v0.0.40]: https://github.com/wrk-flow/larastrict/compare/v0.0.39...v0.0.40
