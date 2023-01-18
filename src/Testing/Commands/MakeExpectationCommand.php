@@ -142,7 +142,7 @@ class MakeExpectationCommand extends Command
                     $methodName = $method->getName();
 
                     $assertFileState->constructorComments[] = sprintf(
-                        '@param array<%s> $%s',
+                        '@param array<%s|null> $%s',
                         $expectationClassName,
                         $methodName
                     );

@@ -9,18 +9,18 @@ use PHPUnit\Framework\Assert;
 class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallsMap implements MultiFunctionContract
 {
     /**
-     * @param array<MultiFunctionContractSelfExpectation> $self
-     * @param array<MultiFunctionContractPhpDocThisExpectation> $phpDocThis
-     * @param array<MultiFunctionContractPhpDocThisParamsExpectation> $phpDocThisParams
-     * @param array<MultiFunctionContractPhpDocBoolExpectation> $phpDocBool
-     * @param array<MultiFunctionContractPhpDocStringExpectation> $phpDocString
-     * @param array<MultiFunctionContractPhpDocFloatExpectation> $phpDocFloat
-     * @param array<MultiFunctionContractPhpDocMixedExpectation> $phpDocMixed
-     * @param array<MultiFunctionContractPhpDocStaticExpectation> $phpDocStatic
-     * @param array<MultiFunctionContractSelfViaClassExpectation> $selfViaClass
-     * @param array<MultiFunctionContractNoReturnExpectation> $noReturn
-     * @param array<MultiFunctionContractMixedExpectation> $mixed
-     * @param array<MultiFunctionContractNoParamsExpectation> $noParams
+     * @param array<MultiFunctionContractSelfExpectation|null> $self
+     * @param array<MultiFunctionContractPhpDocThisExpectation|null> $phpDocThis
+     * @param array<MultiFunctionContractPhpDocThisParamsExpectation|null> $phpDocThisParams
+     * @param array<MultiFunctionContractPhpDocBoolExpectation|null> $phpDocBool
+     * @param array<MultiFunctionContractPhpDocStringExpectation|null> $phpDocString
+     * @param array<MultiFunctionContractPhpDocFloatExpectation|null> $phpDocFloat
+     * @param array<MultiFunctionContractPhpDocMixedExpectation|null> $phpDocMixed
+     * @param array<MultiFunctionContractPhpDocStaticExpectation|null> $phpDocStatic
+     * @param array<MultiFunctionContractSelfViaClassExpectation|null> $selfViaClass
+     * @param array<MultiFunctionContractNoReturnExpectation|null> $noReturn
+     * @param array<MultiFunctionContractMixedExpectation|null> $mixed
+     * @param array<MultiFunctionContractNoParamsExpectation|null> $noParams
      */
     function __construct(
         array $self = [],
