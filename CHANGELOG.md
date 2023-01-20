@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.41] - 2023-01-20
+### :sparkles: New Features
+- [`6c8d651`](https://github.com/wrk-flow/larastrict/commit/6c8d65152acb1a36ad734901c2c5309928a96679) - **Testing**: Add guard assert *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.40] - 2023-01-18
 ### :sparkles: New Features
 - [`b0ec6a8`](https://github.com/wrk-flow/larastrict/commit/b0ec6a85b6994e98dfdf73df6f7ac22cd4905561) - **Testing**: Fix PHPStan warning when using null in multi function asserts *(commit by [@pionl](https://github.com/pionl))*
@@ -340,3 +345,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.38]: https://github.com/wrk-flow/larastrict/compare/v0.0.37...v0.0.38
 [v0.0.39]: https://github.com/wrk-flow/larastrict/compare/v0.0.38...v0.0.39
 [v0.0.40]: https://github.com/wrk-flow/larastrict/compare/v0.0.39...v0.0.40
+[v0.0.41]: https://github.com/wrk-flow/larastrict/compare/v0.0.40...v0.0.41
