@@ -99,7 +99,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
     }
 
     /**
-     * Deletes exact key withing the tags.
+     * Deletes exact key within the tags.
      */
     public function delete(
         string $key,
