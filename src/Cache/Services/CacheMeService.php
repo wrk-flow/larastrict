@@ -123,7 +123,7 @@ class CacheMeService implements CacheMeServiceContract
     }
 
     /**
-     * Deletes exact key withing the tags.
+     * Deletes exact key within the tags.
      */
     public function delete(
         string $key,

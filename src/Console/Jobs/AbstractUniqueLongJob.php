@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Console\Jobs;
 
 /**
- * There are jobs that are schedule very offten and can take some time. We need to setup correct conditions.
+ * There are jobs that are schedule very often and can take some time. We need to setup correct conditions.
  */
 abstract class AbstractUniqueLongJob extends AbstractUniqueJob
 {

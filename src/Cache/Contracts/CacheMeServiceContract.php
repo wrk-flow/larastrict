@@ -42,7 +42,7 @@ interface CacheMeServiceContract
     public function flush(array $tags = [], CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository): void;
 
     /**
-     * Deletes exact key withing the tags.
+     * Deletes exact key within the tags.
      */
     public function delete(
         string $key,

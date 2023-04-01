@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\StyleInterface;
 abstract class LoggerToOutputCommand extends Command
 {
     /**
-     * Swap logger interface to ouptut all values to output of command I've triggered.
+     * Swap logger interface to output all values to output of command I've triggered.
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

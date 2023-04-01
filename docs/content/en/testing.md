@@ -48,7 +48,7 @@ Check the code for current state of implementation.
 
 #### Make
 
-We can make objects for `app->make()` calls by providing closure that will build the depedency.
+We can make objects for `app->make()` calls by providing closure that will build the dependency.
 
 ```php
 $app = new TestingApplication();

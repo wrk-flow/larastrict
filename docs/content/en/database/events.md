@@ -9,7 +9,7 @@ These are best practices and tools for "event" driven business logic.
 
 ## Model events
 
-For model changes we are providing small life improvments:
+For model changes we are providing small life improvements:
 
 - constants with Laravel event names. See `LaraStrict\Database\Constants\ModelEvents` _at this moment enum can't be used within array as key (in property)_.
 - abstract event classes.

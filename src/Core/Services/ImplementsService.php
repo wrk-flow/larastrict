@@ -11,7 +11,7 @@ class ImplementsService
 
     /**
      * Returns a map of interfaces that object implements. Returns empty array if object does not exists or there is
-     * different erorr.
+     * different error.
      *
      * @return array<string, string>
      */

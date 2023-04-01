@@ -473,7 +473,7 @@ class MakeExpectationCommand extends Command
             $this->info($successMessage);
         }
 
-        $this->line(sprintf('  <fg=gray>File writen to [%s]</>', $filePath));
+        $this->line(sprintf('  <fg=gray>File written to [%s]</>', $filePath));
         $this->newLine();
     }
 
