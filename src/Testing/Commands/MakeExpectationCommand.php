@@ -40,8 +40,8 @@ class MakeExpectationCommand extends Command
 {
     private const HookProperty = 'hook';
 
-    protected $signature = 'make:expectation 
-        {class : Class name of path to class using PSR-4 specs} 
+    protected $signature = 'make:expectation
+        {class : Class name of path to class using PSR-4 specs}
     ';
 
     public function handle(

@@ -1,23 +1,21 @@
 parameters:
-	ignoreErrors:
-		-
-			message: "#^Cannot cast array\\|string to string\\.$#"
-			count: 1
-			path: src/Testing/Actions/GetNamespaceForStubsAction.php
+    ignoreErrors:
+        -
+            message: "#^Cannot cast array\\|string to string\\.$#"
+            count: 1
+            path: src/Testing/Actions/GetNamespaceForStubsAction.php
 
-		-
-			message: "#^Calling PHPStan\\\\PhpDoc\\\\PhpDocStringResolver\\:\\:resolve\\(\\) is not covered by backward compatibility promise\\. The method might change in a minor PHPStan version\\.$#"
-			count: 1
-			path: src/Testing/Actions/ParsePhpDocAction.php
+        -
+            message: "#^Calling PHPStan\\\\PhpDoc\\\\PhpDocStringResolver\\:\\:resolve\\(\\) is not covered by backward compatibility promise\\. The method might change in a minor PHPStan version\\.$#"
+            count: 1
+            path: src/Testing/Actions/ParsePhpDocAction.php
 
-		-
-			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with false and 'Hook should be…' will always evaluate to false\\.$#"
-			count: 1
-			path: tests/Feature/Testing/Commands/MakeExpectationCommandRealTest.php
+        -
+            message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with false and 'Hook should be…' will always evaluate to false\\.$#"
+            count: 1
+            path: tests/Feature/Testing/Commands/MakeExpectationCommandRealTest.php
 
-		-
-			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
-			count: 1
-			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
-
-
+        -
+            message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
+            count: 1
+            path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
