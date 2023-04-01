@@ -72,16 +72,16 @@ listeners.
 
 1. Create a class and extend `LaraStrict\Database\Listeners\AbstractDispatchChangesEventsListener`.
 2. Implement `attributesToEvent` that should return an array map of `attribute name` and a `Closure` that tries to create event (can return null).
-  1. You will receive the value (do not forget typehint the correct type) as first argument
-  2. You will receive the event  (do not forget typehint the correct type) as second argument
-  3. Return an `object` or event name `string`
+    1. You will receive the value (do not forget typehint the correct type) as first argument
+    2. You will receive the event  (do not forget typehint the correct type) as second argument
+    3. Return an `object` or event name `string`
 3. (optional) Typehint which model is received for PHPStan
-  ```php
-  /**
-   * @extends AbstractDispatchChangesEventsListener<ObjectProviderUpdatedEvent>
-   */
-  class DispatchObjectProviderChangesListener extends AbstractDispatchChangesEventsListener
-  ```
+    ```php
+    /**
+     * @extends AbstractDispatchChangesEventsListener<ObjectProviderUpdatedEvent>
+     */
+    class DispatchObjectProviderChangesListener extends AbstractDispatchChangesEventsListener
+    ```
 
 ```php
 declare(strict_types=1);
