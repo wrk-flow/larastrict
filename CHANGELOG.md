@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.43] - 2023-04-26
+### :wrench: Chores
+- [`575966f`](https://github.com/wrk-flow/larastrict/commit/575966f14e80e569ae82e0d707bccb02f9f29753) - Fix incorrect package repository/homepage/name + update checkout to v3 *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.42] - 2023-04-26
 ### :wrench: Chores
 - [`0d98c88`](https://github.com/wrk-flow/larastrict/commit/0d98c88bbdd69ec737a25c65e3afe91496061366) - Introduce EditorConfig *(commit by [@szepeviktor](https://github.com/szepeviktor))*
@@ -355,3 +360,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.41]: https://github.com/wrk-flow/larastrict/compare/v0.0.40...v0.0.41
 
 [v0.0.42]: https://github.com/wrk-flow/larastrict/compare/v0.0.41...v0.0.42
+[v0.0.43]: https://github.com/wrk-flow/larastrict/compare/v0.0.42...v0.0.43
