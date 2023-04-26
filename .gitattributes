@@ -1,7 +1,6 @@
 /.gitattributes export-ignore
 /.github export-ignore
 /.gitignore export-ignore
-/CHANGELOG.md export-ignore
 /CONTRIBUTION.md export-ignore
 /artisan export-ignore
 /docs export-ignore linguist-documentation
