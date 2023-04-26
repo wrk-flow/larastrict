@@ -50,6 +50,6 @@ class AbstractServiceProviderTest extends TestCase
             ->make(Factory::class);
 
         $result = $viewFactory->make('Providers::layout');
-        $this->assertEquals('Renders inline component and class component', $result->render());
+        $this->assertEquals('Renders inline component' . PHP_EOL . ' and class component', $result->render());
     }
 }
