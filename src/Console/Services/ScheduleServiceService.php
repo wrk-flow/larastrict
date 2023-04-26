@@ -37,8 +37,8 @@ class ScheduleServiceService implements ScheduleServiceContract
     /**
      * Use for long tasks - ensurers that the command is unique.
      *
-     * @param string $command         Command signature or class
-     * @param array<string, string|float|int|bool>  $keyedParameters You need to key the parameters by command signature
+     * @param string                               $command         Command signature or class
+     * @param array<string, string|float|int|bool> $keyedParameters You need to key the parameters by command signature
      */
     public function queueCommand(
         string $command,

@@ -146,7 +146,7 @@ class CacheMeService implements CacheMeServiceContract
      *
      * @template T of Model
      *
-     * @param array|Closure(T):void $tags       If closure, model is passed to the closure. Closure should return an array
+     * @param array|Closure(T):void $tags If closure, model is passed to the closure. Closure should return an array
      * of tags to use. If empty, no flush will be done.
      * @param class-string<T>       $modelClass
      */

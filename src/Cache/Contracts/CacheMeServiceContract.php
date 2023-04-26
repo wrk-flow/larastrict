@@ -53,7 +53,7 @@ interface CacheMeServiceContract
     /**
      * Adds a observe functions for created/deleted/updated and flushes the cache.
      *
-     * @param array|Closure       $tags       If closure, model is passed to the closure. Closure should return an array
+     * @param array|Closure       $tags If closure, model is passed to the closure. Closure should return an array
      * of tags to use. If empty, no flush will be done.
      * @param class-string<Model> $modelClass
      */
