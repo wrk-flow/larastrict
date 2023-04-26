@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.42] - 2023-04-26
+### :wrench: Chores
+- [`0d98c88`](https://github.com/wrk-flow/larastrict/commit/0d98c88bbdd69ec737a25c65e3afe91496061366) - Introduce EditorConfig *(commit by [@szepeviktor](https://github.com/szepeviktor))*
+- [`77197b7`](https://github.com/wrk-flow/larastrict/commit/77197b7305f71102fb36711bf103596156a9f42c) - Fix Markdown list *(commit by [@szepeviktor](https://github.com/szepeviktor))*
+- [`a2f308d`](https://github.com/wrk-flow/larastrict/commit/a2f308d800df9e1fee02d4d61325d4af2bd6a596) - Run lint + fix test *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.41] - 2023-01-20
 ### :sparkles: New Features
 - [`6c8d651`](https://github.com/wrk-flow/larastrict/commit/6c8d65152acb1a36ad734901c2c5309928a96679) - **Testing**: Add guard assert *(commit by [@pionl](https://github.com/pionl))*
@@ -346,3 +353,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.39]: https://github.com/wrk-flow/larastrict/compare/v0.0.38...v0.0.39
 [v0.0.40]: https://github.com/wrk-flow/larastrict/compare/v0.0.39...v0.0.40
 [v0.0.41]: https://github.com/wrk-flow/larastrict/compare/v0.0.40...v0.0.41
+
+[v0.0.42]: https://github.com/wrk-flow/larastrict/compare/v0.0.41...v0.0.42
