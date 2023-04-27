@@ -27,11 +27,7 @@ class ScheduleServiceService implements ScheduleServiceContract
 
     public function command(string $command, array $parameters = []): Event
     {
-        $event = $this->schedule->command($command, $parameters);
-
-        $this->logEvent($event);
-
-        return $event;
+        return $this->schedule->command($command, $parameters);
     }
 
     /**
@@ -58,8 +54,6 @@ class ScheduleServiceService implements ScheduleServiceContract
         $event->command = Application::formatCommandString($name);
         $event->description = 'queued ' . $name;
 
-        $this->logEvent($event);
-
         return $event;
     }
 
@@ -68,16 +62,6 @@ class ScheduleServiceService implements ScheduleServiceContract
      */
     public function job(object|string $job, ?string $queue = null, ?string $connection = null): Event|CallbackEvent
     {
-        $event = $this->schedule->job($job, $queue, $connection);
-
-        $this->logEvent($event);
-
-        return $event;
-    }
-
-    private function logEvent(Event|CallbackEvent $event): void
-    {
-        // Always output to docker output. Env?
-        $event->appendOutputTo('/proc/1/fd/2');
+        return $this->schedule->job($job, $queue, $connection);
     }
 }

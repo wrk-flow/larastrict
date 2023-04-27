@@ -43,7 +43,8 @@ class GetAppServiceProviderForClassAction
 
                 return $serviceProvider->getAppServiceProvider();
             },
-            strategy: CacheMeStrategy::Memory
+            strategy: CacheMeStrategy::Memory,
+            log: false
         );
     }
 }
