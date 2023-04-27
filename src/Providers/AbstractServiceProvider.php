@@ -16,6 +16,7 @@ use LaraStrict\Providers\Pipes\BootProviderPoliciesPipe;
 use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Providers\Pipes\BootProviderViewComponents;
 use LaraStrict\Providers\Pipes\BootViewComposersPipe;
+use LaraStrict\Providers\Pipes\LoadProviderConfig;
 use LaraStrict\Providers\Pipes\LoadProviderTranslations;
 use LaraStrict\Providers\Pipes\LoadProviderViews;
 
@@ -48,7 +49,7 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 
     protected function registerPipes(): array
     {
-        return [LoadProviderViews::class, LoadProviderTranslations::class];
+        return [LoadProviderViews::class, LoadProviderTranslations::class, LoadProviderConfig::class];
     }
 
     protected function bootPipes(): array

@@ -156,6 +156,6 @@ class AppConfigTest extends AbstractConfigTestCase
 
     protected function getConfigName(): string
     {
-        return AppConfig::ConfigName;
+        return 'app';
     }
 }
