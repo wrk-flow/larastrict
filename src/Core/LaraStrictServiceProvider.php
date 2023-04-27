@@ -12,6 +12,7 @@ use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Core\Actions\CreateCoreAppServiceProviderAction;
 use LaraStrict\Core\Services\ImplementsService;
 use LaraStrict\Database\DatabaseServiceProvider;
+use LaraStrict\Docker\DockerServiceProvider;
 use LaraStrict\Providers\AbstractBaseServiceProvider;
 use LaraStrict\Providers\Actions\RunAppServiceProviderPipesAction;
 use LaraStrict\Providers\Pipes\PreventLazyLoadingPipe;
@@ -33,6 +34,7 @@ class LaraStrictServiceProvider extends AbstractBaseServiceProvider
         $this->app->register(CacheServiceProvider::class);
         $this->app->register(DatabaseServiceProvider::class);
         $this->app->register(TestServiceProvider::class);
+        $this->app->register(DockerServiceProvider::class);
 
         $this->app->singleton(ImplementsService::class, ImplementsService::class);
 
