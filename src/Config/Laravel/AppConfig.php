@@ -81,6 +81,6 @@ class AppConfig extends AbstractConfig
 
     protected function getConfigFileName(): string
     {
-        return self::ConfigName;
+        return 'app';
     }
 }

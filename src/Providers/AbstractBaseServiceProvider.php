@@ -10,6 +10,7 @@ use LaraStrict\Contracts\CreateAppServiceProviderActionContract;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Providers\Actions\CreateAppServiceProviderAction;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
+use LogicException;
 
 abstract class AbstractBaseServiceProvider extends EventServiceProvider
 {
@@ -58,6 +59,19 @@ abstract class AbstractBaseServiceProvider extends EventServiceProvider
     public function laraLoadTranslationsFrom(string $path, string $namespace): void
     {
         $this->loadTranslationsFrom($path, $namespace);
+    }
+
+    public function laraLoadProviderConfigFrom(string $path, string $namespace): void
+    {
+        $serviceFileName = $namespace . '.php';
+        $configPath = $path . '/Config/' . $serviceFileName;
+        $realPath = realpath($configPath);
+
+        if ($realPath === false) {
+            throw new LogicException('Failed to load config at ' . $configPath);
+        }
+
+        $this->mergeConfigFrom($realPath, $namespace);
     }
 
     /**

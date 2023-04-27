@@ -11,9 +11,7 @@ class AbstractProviderTranslationsTest extends TestCase
 {
     public function testNotLoaded(): void
     {
-        $this->expectExceptionMessage(
-            sprintf('Provider for translation <%s> not loaded', TranslationServiceProvider::class)
-        );
+        $this->expectExceptionMessage(sprintf('Provider for <%s> not loaded', TranslationServiceProvider::class));
         $this->app()
             ->make(InvalidServiceProviderTranslations::class);
     }
@@ -25,7 +23,7 @@ class AbstractProviderTranslationsTest extends TestCase
 
         $this->expectExceptionMessage(
             sprintf(
-                'Provider <%s> for translation must use <%s>',
+                'Provider <%s> must use <%s>',
                 TranslationServiceProvider::class,
                 AbstractServiceProvider::class
             )
