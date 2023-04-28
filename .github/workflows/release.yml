@@ -4,13 +4,15 @@ on:
     branches:
       - "main"
 
+concurrency:
+  group: larastrict-release-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
-    name: "Check code"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@main
+    name: Check code
     secrets: inherit
-    with:
-      gistID: 8eeaf1185a65b196e8bbb06c1b103154
+    uses: ./.github/workflows/check.yml
 
   deploy:
     needs:
