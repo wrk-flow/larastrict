@@ -57,7 +57,7 @@ class CacheMeServiceContractAssertTest extends TestCase
                     value: self::Return,
                     tags: [self::Return],
                     minutes: 230,
-                    strategy: CacheMeStrategy::Memory
+                    strategy: CacheMeStrategy::Memory,
                 ),
                 checkResult: false,
             ),
@@ -68,7 +68,7 @@ class CacheMeServiceContractAssertTest extends TestCase
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->set(
                     key: self::Key,
-                    value: self::Return
+                    value: self::Return,
                 ),
                 checkResult: false,
             ),

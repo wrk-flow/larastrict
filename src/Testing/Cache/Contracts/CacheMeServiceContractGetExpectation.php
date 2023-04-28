@@ -18,7 +18,8 @@ final class CacheMeServiceContractGetExpectation
         public readonly array $tags = [],
         public readonly int $minutes = CacheExpirations::HalfDay,
         public readonly CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        public readonly ?Closure $callGetValueHook = null
+        public readonly ?Closure $callGetValueHook = null,
+        public readonly bool $log = true,
     ) {
     }
 }

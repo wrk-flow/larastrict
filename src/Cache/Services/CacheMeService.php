@@ -36,7 +36,8 @@ class CacheMeService implements CacheMeServiceContract
         Closure $getValue,
         array $tags = [],
         int $minutes = CacheExpirations::HalfDay,
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
+        bool $log = true
     ): mixed {
         if ($strategy === CacheMeStrategy::None) {
             return $this->container->call($getValue);
@@ -66,8 +67,14 @@ class CacheMeService implements CacheMeServiceContract
                     $updateRepositories[] = $subRepository;
                 }
 
-                // Do not spam log
-                $this->store($updateRepositories, $key, $value, $tags, $minutes, false);
+                $this->store(
+                    repositories: $updateRepositories,
+                    key: $key,
+                    value: $value,
+                    tags: $tags,
+                    minutes: $minutes,
+                    log: false
+                );
             }
 
             break;
@@ -79,7 +86,14 @@ class CacheMeService implements CacheMeServiceContract
             $value = $this->container->call($getValue);
 
             if ($value !== null) {
-                $this->store($repositories, $key, $value, $tags, $minutes);
+                $this->store(
+                    repositories: $repositories,
+                    key: $key,
+                    value: $value,
+                    tags: $tags,
+                    minutes: $minutes,
+                    log: $log
+                );
             }
         }
 
@@ -94,9 +108,17 @@ class CacheMeService implements CacheMeServiceContract
         mixed $value,
         array $tags = [],
         int $minutes = CacheExpirations::HalfDay,
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
+        bool $log = true
     ): void {
-        $this->store($this->repositories($tags, $strategy), $key, $value, $tags, $minutes);
+        $this->store(
+            repositories: $this->repositories($tags, $strategy),
+            key: $key,
+            value: $value,
+            tags: $tags,
+            minutes: $minutes,
+            log: $log
+        );
     }
 
     /**
@@ -113,7 +135,7 @@ class CacheMeService implements CacheMeServiceContract
             'strategy' => $strategy->value,
         ]);
 
-        foreach ($this->repositories($tags, $strategy) as $repository) {
+        foreach ($this->repositories(tags: $tags, strategy: $strategy) as $repository) {
             if ($repository instanceof TaggedCache) {
                 $repository->flush();
             } else {
