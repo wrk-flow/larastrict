@@ -1,0 +1,23 @@
+name: "Git conventions"
+
+on:
+  push:
+    branches:
+      - "*"
+      - "!gh-pages"
+
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, review_requested, auto_merge_enabled]
+
+concurrency:
+  group: larastrict-commits-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  commits:
+    name: 👮‍Confronts to conventional commits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: webiny/action-conventional-commits@v1.1.0
+
