@@ -45,7 +45,7 @@ class ContextService implements ContextServiceContract
             key: $fullCacheKey,
             value: $value,
             tags: $this->getTags($context),
-            minutes: $context->getCacheTtl()
+            minutes: $context->getCacheTtl(),
         );
     }
 
@@ -58,7 +58,7 @@ class ContextService implements ContextServiceContract
             value: $value,
             tags: $this->getTags($context),
             minutes: $context->getCacheTtl(),
-            strategy: CacheMeStrategy::Memory
+            strategy: CacheMeStrategy::Memory,
         );
     }
 

@@ -50,6 +50,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         array $tags = [],
         int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
+        bool $log = true,
     ): mixed {
         $expectation = $this->getExpectation(CacheMeServiceContractGetExpectation::class);
         $message = $this->getDebugMessage();
@@ -58,6 +59,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         Assert::assertEquals($expectation->tags, $tags, $message);
         Assert::assertEquals($expectation->minutes, $minutes, $message);
         Assert::assertEquals($expectation->strategy, $strategy, $message);
+        Assert::assertEquals($expectation->log, $log, $message);
 
         $callGetValueHook = $expectation->callGetValueHook;
 
@@ -73,6 +75,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         array $tags = [],
         int $minutes = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
+        bool $log = true,
     ): void {
         $expectation = $this->getExpectation(CacheMeServiceContractSetExpectation::class);
         $message = $this->getDebugMessage();
@@ -82,6 +85,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         Assert::assertEquals($expectation->tags, $tags, $message);
         Assert::assertEquals($expectation->minutes, $minutes, $message);
         Assert::assertEquals($expectation->strategy, $strategy, $message);
+        Assert::assertEquals($expectation->log, $log, $message);
     }
 
     /**
