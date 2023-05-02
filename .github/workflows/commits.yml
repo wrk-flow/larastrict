@@ -1,10 +1,7 @@
 name: "Git conventions"
 
 on:
-  push:
-    branches:
-      - "*"
-      - "!gh-pages"
+  workflow_call:
 
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review, review_requested, auto_merge_enabled]

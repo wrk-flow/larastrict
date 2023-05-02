@@ -9,6 +9,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  commits:
+    name: Check commits
+    secrets: inherit
+    uses: ./.github/workflows/commits.yml
+
   check:
     name: Check code
     secrets: inherit
@@ -26,7 +31,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Bump version and push tag
-        uses: anothrNick/github-tag-action@1.40.0
+        uses: anothrNick/github-tag-action@1.62.0
         id: version
         env:
           DEFAULT_BUMP: patch
