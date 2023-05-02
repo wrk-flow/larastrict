@@ -73,6 +73,8 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
 
                 $consoleOutputFactory->twoColumnDetail($line, $stringValue);
             }
+
+            $outputStyle->newLine();
         }
     }
 }
