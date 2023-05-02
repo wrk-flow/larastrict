@@ -1,0 +1,10 @@
+{
+  "name": "larastrict",
+  "short_name": "larastrict",
+  "icons": [],
+  "start_url": "/?standalone=true",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#F9322C",
+  "lang": "en"
+}
