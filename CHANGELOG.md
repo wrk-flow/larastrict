@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.45] - 2023-05-02
+### :wrench: Chores
+- [`757942a`](https://github.com/wrk-flow/larastrict/commit/757942a2b4ccaff1532bb41e3bfe65ab9ac6a8d5) - **Console**: Add extra space after writing context in twoDetailColumns *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.44] - 2023-05-02
 ### :boom: BREAKING CHANGES
 - due to [`30e3a0c`](https://github.com/wrk-flow/larastrict/commit/30e3a0c76314bb78d3d9cd7762949506241506d1) - Add ability to turn of log for get/set method *(commit by [@pionl](https://github.com/pionl))*:
@@ -384,3 +389,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.42]: https://github.com/wrk-flow/larastrict/compare/v0.0.41...v0.0.42
 [v0.0.43]: https://github.com/wrk-flow/larastrict/compare/v0.0.42...v0.0.43
 [v0.0.44]: https://github.com/wrk-flow/larastrict/compare/v0.0.43...v0.0.44
+[v0.0.45]: https://github.com/wrk-flow/larastrict/compare/v0.0.44...v0.0.45
