@@ -12,7 +12,7 @@ jobs:
   check:
     name: Check code
     secrets: inherit
-    uses: ./.github/workflows/check.yml
+    uses: ./.github/workflows/check-code.yml
 
   deploy:
     needs:
