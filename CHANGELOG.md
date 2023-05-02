@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.44] - 2023-05-02
+### :boom: BREAKING CHANGES
+- due to [`30e3a0c`](https://github.com/wrk-flow/larastrict/commit/30e3a0c76314bb78d3d9cd7762949506241506d1) - Add ability to turn of log for get/set method *(commit by [@pionl](https://github.com/pionl))*:
+
+  If you are extending CacheMeServiceContract then add new last parameter `bool $log = true` to set/get method.
+
+- due to [`0b1d41d`](https://github.com/wrk-flow/larastrict/commit/0b1d41de5aa66ee55cc21b14bfcecbb8ed74251b) - Add ability to output LogInterface usage to console. *(commit by [@pionl](https://github.com/pionl))*:
+
+  LogToOutputService and LoggerToOutputCommand removed (was not working).
+
+
+### :sparkles: New Features
+- [`30e3a0c`](https://github.com/wrk-flow/larastrict/commit/30e3a0c76314bb78d3d9cd7762949506241506d1) - **Cache**: Add ability to turn of log for get/set method *(commit by [@pionl](https://github.com/pionl))*
+- [`449ba5c`](https://github.com/wrk-flow/larastrict/commit/449ba5c158618bc869ab965d58effe3ca1bced7d) - **Config**: Add ability to set value *(commit by [@pionl](https://github.com/pionl))*
+- [`1c5c1c7`](https://github.com/wrk-flow/larastrict/commit/1c5c1c714ca36d361477f0f52b0f790590ea6e23) - **Config**: Add ability to provider app service provider config *(commit by [@pionl](https://github.com/pionl))*
+- [`1c5970b`](https://github.com/wrk-flow/larastrict/commit/1c5970b08353d3e25d2d306c398f528f86ee959f) - **Docker**: Add proper docker support for schedule (needs to be enabled) *(commit by [@pionl](https://github.com/pionl))*
+- [`0b1d41d`](https://github.com/wrk-flow/larastrict/commit/0b1d41de5aa66ee55cc21b14bfcecbb8ed74251b) - **Console**: Add ability to output LogInterface usage to console. *(commit by [@pionl](https://github.com/pionl))*
+
+### :wrench: Chores
+- [`69a3337`](https://github.com/wrk-flow/larastrict/commit/69a3337e412fe0fb660c8ec25044199d70583802) - **Actions**: Improve github actions *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.43] - 2023-04-26
 ### :wrench: Chores
 - [`575966f`](https://github.com/wrk-flow/larastrict/commit/575966f14e80e569ae82e0d707bccb02f9f29753) - Fix incorrect package repository/homepage/name + update checkout to v3 *(commit by [@pionl](https://github.com/pionl))*
@@ -361,3 +383,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [v0.0.42]: https://github.com/wrk-flow/larastrict/compare/v0.0.41...v0.0.42
 [v0.0.43]: https://github.com/wrk-flow/larastrict/compare/v0.0.42...v0.0.43
+[v0.0.44]: https://github.com/wrk-flow/larastrict/compare/v0.0.43...v0.0.44
