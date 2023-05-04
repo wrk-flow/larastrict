@@ -9,6 +9,7 @@ use Illuminate\Console\View\Components\Factory;
 use LaraStrict\Log\Managers\ConsoleOutputManager;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @internal
@@ -32,6 +33,8 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
             return;
         }
 
+        $context = $record['context'];
+        $hasContext = $context !== [];
         $message = $record['message'];
 
         switch ($record['level']) {
@@ -51,15 +54,11 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
                 $consoleOutputFactory->error($message);
                 break;
             default:
-                $outputStyle->newLine();
-                $outputStyle->write(messages: '  <options=bold>' . $message . '</>');
-                $outputStyle->newLine();
+                $this->writeLine(outputStyle: $outputStyle, message: $message, hasContext: $hasContext);
                 break;
         }
 
-        $context = $record['context'];
-
-        if ($context !== []) {
+        if ($hasContext) {
             foreach ($context as $line => $value) {
                 $isGenericValue = is_string($value) || is_int($value) || is_float($value) || is_bool($value);
 
@@ -74,6 +73,17 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
                 $consoleOutputFactory->twoColumnDetail($line, $stringValue);
             }
 
+            $outputStyle->newLine();
+        }
+    }
+
+    protected function writeLine(OutputStyle $outputStyle, mixed $message, bool $hasContext): void
+    {
+        $outputStyle->newLine();
+        $outputStyle->write(messages: '  <options=bold>' . $message . '</>');
+        $outputStyle->newLine();
+
+        if ($hasContext === false) {
             $outputStyle->newLine();
         }
     }
