@@ -33,6 +33,10 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
             return;
         }
 
+        if ($outputStyle->getVerbosity() <= OutputInterface::VERBOSITY_QUIET) {
+            return;
+        }
+
         $context = $record['context'];
         $hasContext = $context !== [];
         $message = $record['message'];
@@ -52,6 +56,13 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
                 break;
             case Logger::ERROR:
                 $consoleOutputFactory->error($message);
+                break;
+            case Logger::DEBUG:
+                if ($outputStyle->getVerbosity() <= OutputInterface::VERBOSITY_NORMAL) {
+                    return;
+                }
+
+                $this->writeLine(outputStyle: $outputStyle, message: $message, hasContext: $hasContext);
                 break;
             default:
                 $this->writeLine(outputStyle: $outputStyle, message: $message, hasContext: $hasContext);
