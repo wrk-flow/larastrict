@@ -202,7 +202,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      *
      * @return Builder<TModel>
      */

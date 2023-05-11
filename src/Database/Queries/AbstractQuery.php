@@ -12,7 +12,7 @@ abstract class AbstractQuery
     /**
      * @template TBuilderModel of \Illuminate\Database\Eloquent\Model
      * @param Builder<TBuilderModel>     $builder
-     * @param Scope[]|null[] $scopes
+     * @param array<int, Scope|null> $scopes
      *
      * @return Builder<TBuilderModel>
      */
