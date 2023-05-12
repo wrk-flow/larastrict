@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.48] - 2023-05-12
+### :bug: Bug Fixes
+- [`ec40840`](https://github.com/wrk-flow/larastrict/commit/ec40840d0aafb66034e08a1ecbc38c61d5b6c381) - **Database**: Fix PHPStan with scopes parameter in missing methods *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.47] - 2023-05-11
 ### :bug: Bug Fixes
 - [`2e9e6fe`](https://github.com/wrk-flow/larastrict/commit/2e9e6feb82a3078cfae28c99f7049d972502c814) - **Database**: Fix PHPStan with scopes parameter *(commit by [@pionl](https://github.com/pionl))*
@@ -403,3 +408,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.45]: https://github.com/wrk-flow/larastrict/compare/v0.0.44...v0.0.45
 [v0.0.46]: https://github.com/wrk-flow/larastrict/compare/v0.0.45...v0.0.46
 [v0.0.47]: https://github.com/wrk-flow/larastrict/compare/v0.0.46...v0.0.47
+[v0.0.48]: https://github.com/wrk-flow/larastrict/compare/v0.0.47...v0.0.48
