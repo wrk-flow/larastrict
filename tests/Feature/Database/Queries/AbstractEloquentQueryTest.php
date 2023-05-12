@@ -11,51 +11,60 @@ use Tests\LaraStrict\Feature\TestCase;
 
 class AbstractEloquentQueryTest extends TestCase
 {
-    /**
-     * @return array<string|int, array{0: Closure(static):void}>
-     */
     public function dataScopes(): array
     {
         return [
             'empty' => [
-                static fn (self $self) => $self->assertScopes(
-                    'select * from "tests" where "tests"."deleted_at" is null',
-                    []
+                static fn (self $self, string $class) => $self->assertScopes(
+                    expectedSql: 'select * from "tests" where "tests"."deleted_at" is null',
+                    scopes: [],
+                    class: $class
                 ),
             ],
             'null' => [
-                static fn (self $self) => $self->assertScopes(
-                    'select * from "tests" where "tests"."deleted_at" is null',
-                    [null]
+                static fn (self $self, string $class) => $self->assertScopes(
+                    expectedSql: 'select * from "tests" where "tests"."deleted_at" is null',
+                    scopes: [null],
+                    class: $class
                 ),
             ],
             'null and test scope' => [
-                static fn (self $self) => $self->assertScopes(
-                    'select * from "tests" where "test" = ? and "tests"."deleted_at" is null',
-                    [new TestScope(), null]
+                static fn (self $self, string $class) => $self->assertScopes(
+                    expectedSql: 'select * from "tests" where "test" = ? and "tests"."deleted_at" is null',
+                    scopes: [new TestScope(), null],
+                    class: $class
                 ),
             ],
         ];
     }
 
     /**
-     * @param Closure(static):void $assert
+     * @param Closure(static $assert, class-string<TestSqlQueryContract> $class):void $assert
      *
      * @dataProvider dataScopes
      */
     public function testScopes(Closure $assert): void
     {
-        $assert($this);
+        $assert($this, TestSqlQuery::class);
     }
 
     /**
      * @param array<int, Scope|null> $scopes
      */
-    public function assertScopes(string $expectedSql, array $scopes): void
+    public function assertScopes(string $expectedSql, array $scopes, string $class): void
     {
-        $query = app(TestSqlQuery::class);
-        assert($query instanceof TestSqlQuery);
-
+        /** @var object $query */
+        $query = app($class);
+        $this->assertInstanceOf(expected: TestSqlQueryContract::class, actual: $query);
         $this->assertEquals(expected: $expectedSql, actual: $query->execute($scopes));
+    }
+
+    /**
+     * @param Closure(static $assert, class-string<TestSqlQueryContract> $class):void $assert
+     * @dataProvider dataScopes
+     */
+    public function testChunkScopes(Closure $assert): void
+    {
+        $assert($this, TestChunkSqlQuery::class);
     }
 }

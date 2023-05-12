@@ -45,7 +45,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     abstract protected function getModelClass(): string;
 
     /**
-     * @param Scope[]           $scopes
+     * @param array<int, Scope|null>           $scopes
      * @param array<OrderScope> $orderBy
      *
      * @return ChunkedModelQueryResult<TModel>
@@ -92,7 +92,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      *
      * @return Collection<int,TModel>
      */
@@ -103,7 +103,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      *
      * @return TModel|null
      */
@@ -114,7 +114,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      *
      * @return TModel
      */
@@ -125,6 +125,8 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
+     * @param array<int, Scope|null> $scopes
+     *
      * @return LengthAwarePaginator<TModel>
      */
     protected function paginate(array $scopes = [], ?int $perPage = null): LengthAwarePaginator
@@ -134,7 +136,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      *
      * @return TModel|null
      */
@@ -148,7 +150,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[]                            $scopes
+     * @param array<int, Scope|null>                            $scopes
      * @param Closure(int|string):Exception|null $customException Creates a custom exceptions if model does not exists.
      *                                                            Receives $id argument.
      *
@@ -172,7 +174,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      */
     protected function delete(array $scopes = []): int
     {
@@ -187,7 +189,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param Scope[] $scopes
+     * @param array<int, Scope|null> $scopes
      */
     protected function forceDelete(array $scopes = []): int
     {

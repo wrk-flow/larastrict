@@ -6,14 +6,16 @@ namespace Tests\LaraStrict\Feature\Database\Queries;
 
 use Illuminate\Database\Eloquent\Scope;
 
-class TestSqlQuery extends AbstractTestQuery implements TestSqlQueryContract
+class TestChunkSqlQuery extends AbstractTestQuery implements TestSqlQueryContract
 {
     /**
      * @param array<int, Scope|null> $scopes
      */
     public function execute(array $scopes): string
     {
-        return $this->getQuery($scopes)
+        return $this
+            ->chunk($scopes)
+            ->query
             ->toSql();
     }
 }
