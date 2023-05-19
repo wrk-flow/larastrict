@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Providers;
 
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
-use LaraStrict\Console\Services\ScheduleServiceService;
+use LaraStrict\Console\Services\ScheduleService;
 use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Core\Services\ImplementsService;
 use LaraStrict\Database\Actions\RunInTransactionAction;
@@ -58,7 +58,7 @@ class LaraStrictServiceProviderTest extends TestCase
                 GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
                 GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
                 ImplementsService::class => ImplementsService::class,
-                ScheduleServiceContract::class => ScheduleServiceService::class,
+                ScheduleServiceContract::class => ScheduleService::class,
             ]
         );
     }
@@ -68,7 +68,7 @@ class LaraStrictServiceProviderTest extends TestCase
         $this->assertBindings(
             application: $this->app(),
             expectedMap: [
-                ScheduleServiceContract::class => ScheduleServiceService::class,
+                ScheduleServiceContract::class => ScheduleService::class,
                 SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
                 GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
                 GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,

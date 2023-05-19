@@ -6,7 +6,7 @@ namespace LaraStrict\Core;
 
 use LaraStrict\Cache\CacheServiceProvider;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
-use LaraStrict\Console\Services\ScheduleServiceService;
+use LaraStrict\Console\Services\ScheduleService;
 use LaraStrict\Context\ContextServiceProvider;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Core\Actions\CreateCoreAppServiceProviderAction;
@@ -26,7 +26,7 @@ class LaraStrictServiceProvider extends AbstractBaseServiceProvider
     {
         // Add ability to "switch" the implementation - it is important to run it now.
         $this->app->singleton(ScheduleServiceContract::class, ScheduleServiceContract::class);
-        $this->app->alias(ScheduleServiceService::class, ScheduleServiceContract::class);
+        $this->app->alias(ScheduleService::class, ScheduleServiceContract::class);
 
         $this->app->bind(RunAppServiceProviderPipesActionContract::class, RunAppServiceProviderPipesAction::class);
 

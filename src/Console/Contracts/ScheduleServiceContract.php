@@ -14,8 +14,9 @@ interface ScheduleServiceContract
     /**
      * Use for long tasks - ensurers that the command is unique.
      *
-     * @param string $command         Command signature or class
-     * @param array<string, string|float|int|bool>  $keyedParameters You need to key the parameters by command signature
+     * @param string                                                $command Command signature or class
+     * @param array<string|int, string|float|int|bool|array<mixed>> $keyedParameters You need to key the parameters by
+     * command signature. Example of key-ed parameters: ['argument-name' => 'value', '--option' => true]
      */
     public function queueCommand(
         string $command,

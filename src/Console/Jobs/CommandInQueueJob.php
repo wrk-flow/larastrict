@@ -25,16 +25,13 @@ class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
         public int $uniqueFor = 1800
     ) {
         parent::__construct();
-        // We need to build unique id and parameters should be used too
-        $parametersKey = '';
-
         // Calling command in kernel requires key => value structure.
         foreach ($parameters as $key => $value) {
             $this->parameters[$key] = $value;
-            $parametersKey .= $key . $value;
         }
 
-        $this->parametersKey = md5($parametersKey);
+        ksort($parameters);
+        $this->parametersKey = md5(serialize($parameters));
     }
 
     public function handle(Kernel $kernel, ConsoleOutput $consoleOutput, LoggerInterface $logger): void

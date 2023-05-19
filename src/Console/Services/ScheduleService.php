@@ -16,8 +16,9 @@ use LaraStrict\Console\Jobs\CommandInQueueJob;
  * - Adds ability to force all commands in queue
  * - Force logging of output to running process.
  * - Ensure jobs are unique.
+ * @interal
  */
-class ScheduleServiceService implements ScheduleServiceContract
+class ScheduleService implements ScheduleServiceContract
 {
     public function __construct(
         private readonly LaravelSchedule $schedule,
@@ -30,12 +31,6 @@ class ScheduleServiceService implements ScheduleServiceContract
         return $this->schedule->command($command, $parameters);
     }
 
-    /**
-     * Use for long tasks - ensurers that the command is unique.
-     *
-     * @param string                               $command         Command signature or class
-     * @param array<string, string|float|int|bool> $keyedParameters You need to key the parameters by command signature
-     */
     public function queueCommand(
         string $command,
         array $keyedParameters = [],
