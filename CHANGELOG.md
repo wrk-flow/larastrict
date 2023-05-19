@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.49] - 2023-05-19
+### :boom: BREAKING CHANGES
+- due to [`1742fcf`](https://github.com/wrk-flow/larastrict/commit/1742fcf9abd099124ddb30d55ace8557267dbe28) - Allow array arguments in queued command *(commit by [@pionl](https://github.com/pionl))*:
+
+  low - ScheduleServiceService renamed to ScheduleService
+
+
+### :bug: Bug Fixes
+- [`1742fcf`](https://github.com/wrk-flow/larastrict/commit/1742fcf9abd099124ddb30d55ace8557267dbe28) - **Schedule**: Allow array arguments in queued command *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.48] - 2023-05-12
 ### :bug: Bug Fixes
 - [`ec40840`](https://github.com/wrk-flow/larastrict/commit/ec40840d0aafb66034e08a1ecbc38c61d5b6c381) - **Database**: Fix PHPStan with scopes parameter in missing methods *(commit by [@pionl](https://github.com/pionl))*
@@ -409,3 +420,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.46]: https://github.com/wrk-flow/larastrict/compare/v0.0.45...v0.0.46
 [v0.0.47]: https://github.com/wrk-flow/larastrict/compare/v0.0.46...v0.0.47
 [v0.0.48]: https://github.com/wrk-flow/larastrict/compare/v0.0.47...v0.0.48
+[v0.0.49]: https://github.com/wrk-flow/larastrict/compare/v0.0.48...v0.0.49
