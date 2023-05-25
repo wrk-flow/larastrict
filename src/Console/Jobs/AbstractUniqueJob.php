@@ -22,7 +22,7 @@ abstract class AbstractUniqueJob implements ShouldQueue, ShouldBeUnique
 
     public function __construct()
     {
-        if ($this->queue !== null) {
+        if ($this->queue === null) {
             $this->queue = 'default';
         }
     }
