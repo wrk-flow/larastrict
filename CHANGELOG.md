@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.51] - 2023-05-25
+### :bug: Bug Fixes
+- [`a54eeb4`](https://github.com/wrk-flow/larastrict/commit/a54eeb49248d41794fd943a127d5d518cb544d41) - **Queue**: Correctly ensure that queue is not overridden when using property *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.50] - 2023-05-25
 ### :bug: Bug Fixes
 - [`4844918`](https://github.com/wrk-flow/larastrict/commit/4844918256ff68f7a4c68d93fdef894d080cdc85) - **Queue**: Ensure that queue is not overridden when using property *(commit by [@pionl](https://github.com/pionl))*
@@ -427,3 +432,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.48]: https://github.com/wrk-flow/larastrict/compare/v0.0.47...v0.0.48
 [v0.0.49]: https://github.com/wrk-flow/larastrict/compare/v0.0.48...v0.0.49
 [v0.0.50]: https://github.com/wrk-flow/larastrict/compare/v0.0.49...v0.0.50
+[v0.0.51]: https://github.com/wrk-flow/larastrict/compare/v0.0.50...v0.0.51
