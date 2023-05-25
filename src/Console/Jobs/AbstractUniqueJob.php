@@ -8,7 +8,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 abstract class AbstractUniqueJob implements ShouldQueue, ShouldBeUnique
 {
@@ -23,20 +22,12 @@ abstract class AbstractUniqueJob implements ShouldQueue, ShouldBeUnique
 
     public function __construct()
     {
-        $this->queue = 'default';
+        if ($this->queue !== null) {
+            $this->queue = 'default';
+        }
     }
 
     abstract public function uniqueId(): string;
-
-    /**
-     * Get the middleware the job should pass through.
-     *
-     * @return array
-     */
-    public function middleware()
-    {
-        return [(new WithoutOverlapping($this->uniqueId()))->expireAfter($this->uniqueFor)];
-    }
 
     /**
      * Calculate the number of seconds to wait before retrying the job.
