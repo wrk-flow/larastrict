@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.52] - 2023-06-01
+### :bug: Bug Fixes
+- [`4292a8a`](https://github.com/wrk-flow/larastrict/commit/4292a8a578a0a77aa72d608a46aed977c53b0418) - **Rules**: Improve NumberRule range of supported int/float values *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.51] - 2023-05-25
 ### :bug: Bug Fixes
 - [`a54eeb4`](https://github.com/wrk-flow/larastrict/commit/a54eeb49248d41794fd943a127d5d518cb544d41) - **Queue**: Correctly ensure that queue is not overridden when using property *(commit by [@pionl](https://github.com/pionl))*
@@ -433,3 +438,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.49]: https://github.com/wrk-flow/larastrict/compare/v0.0.48...v0.0.49
 [v0.0.50]: https://github.com/wrk-flow/larastrict/compare/v0.0.49...v0.0.50
 [v0.0.51]: https://github.com/wrk-flow/larastrict/compare/v0.0.50...v0.0.51
+[v0.0.52]: https://github.com/wrk-flow/larastrict/compare/v0.0.51...v0.0.52
