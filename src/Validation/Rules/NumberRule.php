@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Validation\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use LaraStrict\Core\Helpers\Value;
 
 class NumberRule implements Rule
 {
@@ -15,15 +16,13 @@ class NumberRule implements Rule
             return $intVal !== PHP_INT_MAX && $intVal !== PHP_INT_MIN;
         }
 
-        $value = strtr((string) $value, [
-            ',' => '.',
-        ]);
+        $value = Value::toFloat((string) $value);
 
-        if (is_numeric($value) === false) {
+        if ($value === null) {
             return false;
         }
 
-        return str_contains((string) (float) $value, 'E+') === false;
+        return str_contains((string) $value, 'E+') === false;
     }
 
     public function message(): string
