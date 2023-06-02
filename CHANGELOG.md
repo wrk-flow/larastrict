@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.53] - 2023-06-02
+### :sparkles: New Features
+- [`6d89f9a`](https://github.com/wrk-flow/larastrict/commit/6d89f9ae280f73478ec36e4502b1309c9c6c09b2) - **Database**: Add float cast that supports comma *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.52] - 2023-06-01
 ### :bug: Bug Fixes
 - [`4292a8a`](https://github.com/wrk-flow/larastrict/commit/4292a8a578a0a77aa72d608a46aed977c53b0418) - **Rules**: Improve NumberRule range of supported int/float values *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -439,3 +444,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.50]: https://github.com/wrk-flow/larastrict/compare/v0.0.49...v0.0.50
 [v0.0.51]: https://github.com/wrk-flow/larastrict/compare/v0.0.50...v0.0.51
 [v0.0.52]: https://github.com/wrk-flow/larastrict/compare/v0.0.51...v0.0.52
+[v0.0.53]: https://github.com/wrk-flow/larastrict/compare/v0.0.52...v0.0.53
