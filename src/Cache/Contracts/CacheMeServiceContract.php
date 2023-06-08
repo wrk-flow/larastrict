@@ -15,7 +15,10 @@ interface CacheMeServiceContract
      * Tries to get the value from the cache using given strategy (by default tries memory and then repository). If
      * value does not exist, creates it via callback. If repository supports tags it will use tagged store.
      *
-     * @param Closure $getValue method is called with dependency injection
+     * @template T
+     * @param Closure(mixed...):T $getValue method is called with dependency injection
+     * @phpstan-param Closure(mixed,mixed,mixed,mixed,mixed,mixed):T $getValue
+     * @return T
      */
     public function get(
         string $key,

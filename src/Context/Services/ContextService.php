@@ -79,7 +79,9 @@ class ContextService implements ContextServiceContract
     {
         return $this->get(
             context: $context,
-            createState: static fn (Container $container) => new BoolContextValue((bool) $container->call($is))
+            createState: static fn (Container $container): BoolContextValue => new BoolContextValue(
+                (bool) $container->call($is)
+            )
         );
     }
 

@@ -26,7 +26,7 @@ class GetAppServiceProviderForClassAction
     {
         return $this->cacheMeService->get(
             key: 'app-service-provider-' . $providerClass,
-            getValue: static function (Application $application) use ($providerClass) {
+            getValue: static function (Application $application) use ($providerClass): AppServiceProviderEntity {
                 // TODO add ability to cache getProvider (laravel patch)
                 $serviceProvider = $application->getProvider($providerClass);
                 if ($serviceProvider instanceof ServiceProvider === false) {
