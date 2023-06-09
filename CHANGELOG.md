@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.54] - 2023-06-09
+### :bug: Bug Fixes
+- [`4d75907`](https://github.com/wrk-flow/larastrict/commit/4d75907fbef35fb2dba1edf6f938ab48e8fb3ebc) - **Database**: Allow all Laravel 9 versions (Fix PHPStan warnings) *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.53] - 2023-06-02
 ### :sparkles: New Features
 - [`6d89f9a`](https://github.com/wrk-flow/larastrict/commit/6d89f9ae280f73478ec36e4502b1309c9c6c09b2) - **Database**: Add float cast that supports comma *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -445,3 +450,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.51]: https://github.com/wrk-flow/larastrict/compare/v0.0.50...v0.0.51
 [v0.0.52]: https://github.com/wrk-flow/larastrict/compare/v0.0.51...v0.0.52
 [v0.0.53]: https://github.com/wrk-flow/larastrict/compare/v0.0.52...v0.0.53
+[v0.0.54]: https://github.com/wrk-flow/larastrict/compare/v0.0.53...v0.0.54
