@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v0.0.54] - 2023-06-09
 ### :bug: Bug Fixes
 - [`4d75907`](https://github.com/wrk-flow/larastrict/commit/4d75907fbef35fb2dba1edf6f938ab48e8fb3ebc) - **Database**: Allow all Laravel 9 versions (Fix PHPStan warnings) *(commit by [@pionl](https://github.com/pionl))*
+- [`8f48750`](https://github.com/wrk-flow/larastrict/commit/8f487509a314309b6c657797a58552f6c8a2698b) - **Cache**: Add @template return type to CacheMeServiceContract::get
 
 
 ## [v0.0.53] - 2023-06-02
