@@ -120,7 +120,7 @@ class AppConfigTest extends AbstractConfigTestCase
 
     public function testGetEnvironmentDefault(): void
     {
-        $this->assertEquals(EnvironmentType::Production, $this->config->getEnvironment());
+        $this->assertEquals(EnvironmentType::Testing, $this->config->getEnvironment());
     }
 
     /**
