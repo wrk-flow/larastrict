@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Core;
 
 use LaraStrict\Cache\CacheServiceProvider;
+use LaraStrict\Config\ConfigServiceProvider;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleService;
 use LaraStrict\Context\ContextServiceProvider;
@@ -31,6 +32,7 @@ class LaraStrictServiceProvider extends AbstractBaseServiceProvider
         $this->app->bind(RunAppServiceProviderPipesActionContract::class, RunAppServiceProviderPipesAction::class);
 
         // Register our service providers
+        $this->app->register(ConfigServiceProvider::class);
         $this->app->register(ContextServiceProvider::class);
         $this->app->register(CacheServiceProvider::class);
         $this->app->register(DatabaseServiceProvider::class);

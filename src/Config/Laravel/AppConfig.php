@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace LaraStrict\Config\Laravel;
 
 use LaraStrict\Config\AbstractConfig;
+use LaraStrict\Config\Contracts\AppConfigContract;
 use LaraStrict\Enums\EnvironmentType;
 
-class AppConfig extends AbstractConfig
+class AppConfig extends AbstractConfig implements AppConfigContract
 {
     final public const KeyEnv = 'env';
 
@@ -81,6 +82,6 @@ class AppConfig extends AbstractConfig
 
     protected function getConfigFileName(): string
     {
-        return 'app';
+        return self::ConfigName;
     }
 }

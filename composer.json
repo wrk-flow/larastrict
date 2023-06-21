@@ -43,6 +43,7 @@
         "lint:upgrade": "vendor/bin/rector process",
         "lint": "composer lint:upgrade && composer lint:fix && composer lint:stan",
         "test": "./vendor/bin/phpunit",
+        "test:stubs": "STUBS_GENERATE=true ./vendor/bin/phpunit",
         "test:coverage": "./vendor/bin/phpunit --coverage-text"
     },
     "autoload": {

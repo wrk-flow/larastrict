@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Testing;
 
 use Illuminate\Support\ServiceProvider;
-use LaraStrict\Config\Laravel\AppConfig;
+use LaraStrict\Config\Contracts\AppConfigContract;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Actions\GetBasePathForStubsAction;
 use LaraStrict\Testing\Actions\GetNamespaceForStubsAction;
@@ -28,8 +28,8 @@ class TestServiceProvider extends ServiceProvider
             return;
         }
 
-        /** @var AppConfig $config */
-        $config = $this->app->make(AppConfig::class);
+        /** @var AppConfigContract $config */
+        $config = $this->app->make(AppConfigContract::class);
 
         $environment = $config->getEnvironment();
         if (in_array($environment, [EnvironmentType::Testing, EnvironmentType::Local], false) === false) {
