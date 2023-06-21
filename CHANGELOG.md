@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.55] - 2023-06-21
+### :sparkles: New Features
+- [`8ae2d7a`](https://github.com/wrk-flow/larastrict/commit/8ae2d7a41aeaee271d00691a55170c0fc15a60c4) - **Testing**: Add ability to assert AppConfig (use AppConfigContract for implementation) *(commit by [@pionl](https://github.com/pionl))*
+
+### :bug: Bug Fixes
+- [`b0874e8`](https://github.com/wrk-flow/larastrict/commit/b0874e83eb89f2316b5c38893865cf2a80bdda61) - **Testing**: Fix MakeExpectationCommand with union returns in assert class *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.54] - 2023-06-09
 ### :bug: Bug Fixes
 - [`4d75907`](https://github.com/wrk-flow/larastrict/commit/4d75907fbef35fb2dba1edf6f938ab48e8fb3ebc) - **Database**: Allow all Laravel 9 versions (Fix PHPStan warnings) *(commit by [@pionl](https://github.com/pionl))*
@@ -452,3 +460,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.52]: https://github.com/wrk-flow/larastrict/compare/v0.0.51...v0.0.52
 [v0.0.53]: https://github.com/wrk-flow/larastrict/compare/v0.0.52...v0.0.53
 [v0.0.54]: https://github.com/wrk-flow/larastrict/compare/v0.0.53...v0.0.54
+
+[v0.0.55]: https://github.com/wrk-flow/larastrict/compare/v0.0.54...v0.0.55
