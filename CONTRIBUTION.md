@@ -63,6 +63,12 @@ composer run check
 2. `composer require wrkflow/larastrict:*`
 4. (optional, IDEA) Mark `core/src` directory as `Sources root` and set `Larastrict` as the namespace.
 
+## Stubfiles
+
+For MakeExpectationCommand we are using stubs. If you want to generate the stub files from current command output then run:
+
+- Composer: `composer test:stubs`
+- PHPStorm run configuration: `test:stubs`
 
 ## Fixes
 

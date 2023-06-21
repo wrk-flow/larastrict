@@ -20,6 +20,7 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnA
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnIntersectionAction;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnRequiredAction;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionAction;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionActionContract;
 
 class MakeExpectationCommandTest extends TestCase
 {
@@ -27,11 +28,24 @@ class MakeExpectationCommandTest extends TestCase
 
     private MockInterface $fileSystem;
 
+    private static ?bool $stubsGenerated = null;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->fileSystem = $this->mock(Filesystem::class);
+    }
+
+    public function generateStubsIfNeeded(string $stubFile, string $contents): void
+    {
+        if (self::$stubsGenerated === null) {
+            self::$stubsGenerated = (bool) getenv('STUBS_GENERATE');
+        }
+
+        if (self::$stubsGenerated) {
+            file_put_contents($stubFile, $contents);
+        }
     }
 
     public function getExpectedPath(string $expectedPath, string $expectedFileName): string
@@ -161,6 +175,12 @@ class MakeExpectationCommandTest extends TestCase
             'with contract return' => [TestReturnActionContract::class, true, 'TestReturnActionContract', true],
             'with class return 1' => [TestReturnAction::class, true, 'TestReturnAction'],
             'with class return union' => [TestReturnUnionAction::class, true, 'TestReturnUnionAction'],
+            'with class return union - contract' => [
+                TestReturnUnionActionContract::class,
+                true,
+                'TestReturnUnionActionContract',
+                true,
+            ],
             'with class return intersection' => [
                 TestReturnIntersectionAction::class,
                 true,
@@ -335,6 +355,9 @@ class MakeExpectationCommandTest extends TestCase
                 }
 
                 $stubFile = $this->getStubFilePath($variantPrefix, $expectedExpectationFileName);
+
+                $this->generateStubsIfNeeded($stubFile, $contents);
+
                 $expectedResult = file_get_contents($stubFile);
                 $this->assertEquals($expectedResult, $contents);
                 return true;
@@ -352,6 +375,9 @@ class MakeExpectationCommandTest extends TestCase
                     $this->assertStringContainsString($filePath, $path);
 
                     $stubFile = $this->getStubFilePath($variantPrefix, $expectedFileName . 'Assert');
+
+                    $this->generateStubsIfNeeded($stubFile, $contents);
+
                     $expectedResult = file_get_contents($stubFile);
                     $this->assertEquals($expectedResult, $contents);
                     return true;
