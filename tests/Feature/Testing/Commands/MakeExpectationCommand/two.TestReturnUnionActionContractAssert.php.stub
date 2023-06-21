@@ -1,0 +1,60 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
+
+use PHPUnit\Framework\Assert;
+
+/**
+ * @extends \LaraStrict\Testing\AbstractExpectationCallMap<\App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionActionContractExpectation>
+ */
+class TestReturnUnionActionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallMap implements \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionActionContract
+{
+    function execute(
+        int $int,
+        string $string,
+        $noTypeHint,
+        \LaraStrict\Enums\EnvironmentType $type,
+        \LaraStrict\Testing\Laravel\TestingApplication $testingApplication,
+        string|int $multi,
+        string|int|null $multiNull,
+        string|int|null $multiNullDefault = 'test',
+        string $optional = null,
+        string $optionalString = 'test',
+        string $constant = DIRECTORY_SEPARATOR,
+        int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::HalfDay,
+        \LaraStrict\Enums\EnvironmentType $enumDefault = \LaraStrict\Enums\EnvironmentType::Testing,
+        $noTypeHintDefault = null,
+        string $customConstants = \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants\CustomConstants::TEST,
+        \LaraStrict\Testing\Laravel\TestingApplication $object = new \LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
+        \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new \Illuminate\Support\Collection(/* unknown */),
+    ): \LaraStrict\Testing\Laravel\TestingApplication|string|int|null {
+        $expectation = $this->getExpectation();
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->int, $int, $message);
+        Assert::assertEquals($expectation->string, $string, $message);
+        Assert::assertEquals($expectation->noTypeHint, $noTypeHint, $message);
+        Assert::assertEquals($expectation->type, $type, $message);
+        Assert::assertEquals($expectation->testingApplication, $testingApplication, $message);
+        Assert::assertEquals($expectation->multi, $multi, $message);
+        Assert::assertEquals($expectation->multiNull, $multiNull, $message);
+        Assert::assertEquals($expectation->multiNullDefault, $multiNullDefault, $message);
+        Assert::assertEquals($expectation->optional, $optional, $message);
+        Assert::assertEquals($expectation->optionalString, $optionalString, $message);
+        Assert::assertEquals($expectation->constant, $constant, $message);
+        Assert::assertEquals($expectation->constantClass, $constantClass, $message);
+        Assert::assertEquals($expectation->enumDefault, $enumDefault, $message);
+        Assert::assertEquals($expectation->noTypeHintDefault, $noTypeHintDefault, $message);
+        Assert::assertEquals($expectation->customConstants, $customConstants, $message);
+        Assert::assertEquals($expectation->object, $object, $message);
+        Assert::assertEquals($expectation->intersectionType, $intersectionType, $message);
+
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, $int, $string, $noTypeHint, $type, $testingApplication, $multi, $multiNull, $multiNullDefault, $optional, $optionalString, $constant, $constantClass, $enumDefault, $noTypeHintDefault, $customConstants, $object, $intersectionType, $expectation);
+        }
+
+        return $expectation->return;
+    }
+}

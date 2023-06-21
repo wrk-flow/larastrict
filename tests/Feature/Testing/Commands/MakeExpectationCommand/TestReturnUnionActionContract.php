@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 use ArrayAccess;
+use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants;
 use const DIRECTORY_SEPARATOR;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Enumerable;
@@ -12,7 +13,7 @@ use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Laravel\TestingApplication;
 
-class TestReturnUnionAction implements TestReturnUnionActionContract
+interface TestReturnUnionActionContract
 {
     public function execute(
         int $int,
@@ -32,7 +33,5 @@ class TestReturnUnionAction implements TestReturnUnionActionContract
         string $customConstants = Constants\CustomConstants::TEST,
         TestingApplication $object = new TestingApplication(),
         ArrayAccess&Enumerable $intersectionType = new Collection()
-    ): string|int|null|TestingApplication {
-        return 1;
-    }
+    ): string|int|null|TestingApplication;
 }

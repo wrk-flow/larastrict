@@ -241,6 +241,8 @@ class MakeExpectationCommand extends Command
 
         if ($returnType instanceof ReflectionNamedType) {
             $enumReturnType = PhpType::tryFrom($returnType->getName()) ?? PhpType::Mixed;
+        } elseif ($returnType instanceof ReflectionUnionType) {
+            $enumReturnType = PhpType::Mixed;
         } else {
             $enumReturnType = $phpDoc->returnType;
         }
