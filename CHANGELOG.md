@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.56] - 2023-06-22
+### :sparkles: New Features
+- [`b8636b8`](https://github.com/wrk-flow/larastrict/commit/b8636b8b60669919c024d46191de96151e42ac4c) - **Testing**: Add Cache RepositoryAssert *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.55] - 2023-06-21
 ### :sparkles: New Features
 - [`8ae2d7a`](https://github.com/wrk-flow/larastrict/commit/8ae2d7a41aeaee271d00691a55170c0fc15a60c4) - **Testing**: Add ability to assert AppConfig (use AppConfigContract for implementation) *(commit by [@pionl](https://github.com/pionl))*
@@ -462,3 +467,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.54]: https://github.com/wrk-flow/larastrict/compare/v0.0.53...v0.0.54
 
 [v0.0.55]: https://github.com/wrk-flow/larastrict/compare/v0.0.54...v0.0.55
+[v0.0.56]: https://github.com/wrk-flow/larastrict/compare/v0.0.55...v0.0.56
