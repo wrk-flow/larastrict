@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.58] - 2023-06-22
+### :bug: Bug Fixes
+- [`21c5a53`](https://github.com/wrk-flow/larastrict/commit/21c5a533cb677ba027bbb25044a657bff3b8874f) - **Testing**: Fix missing UrlGenerator and add tests *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.57] - 2023-06-22
 ### :sparkles: New Features
 - [`d432f7b`](https://github.com/wrk-flow/larastrict/commit/d432f7b0813527505e0dcf74c284b48bfe9ef16a) - **Testing**: Add ResponseFactoryAssert *(commit by [@pionl](https://github.com/pionl))*
@@ -474,3 +479,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.55]: https://github.com/wrk-flow/larastrict/compare/v0.0.54...v0.0.55
 [v0.0.56]: https://github.com/wrk-flow/larastrict/compare/v0.0.55...v0.0.56
 [v0.0.57]: https://github.com/wrk-flow/larastrict/compare/v0.0.56...v0.0.57
+[v0.0.58]: https://github.com/wrk-flow/larastrict/compare/v0.0.57...v0.0.58
