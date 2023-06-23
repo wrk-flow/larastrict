@@ -33,18 +33,35 @@ trait AssertEventListeners
 
         $asserts = [];
 
+        /**
+         * The goal is to prevent other listeners from being called, so we will remove all listeners for the event and
+         * validate if the desired listeners were registered. Then we will re-register the listener we want and call the
+         * event again to validate the results.
+         *
+         * @var Dispatcher $events
+         */
+        $events = $app->make(Dispatcher::class);
+        $currentListenersMap = array_flip($events->getRawListeners()[$event::class] ?? []);
+        $events->forget($event::class);
+
         foreach ($contractMap as $contract => $assert) {
             if ($shouldBuildResults) {
                 $expectedListenerResults[] = null;
             }
 
+            // Listener must be registered for the event, if not we will fail
+            Assert::assertArrayHasKey(
+                $contract,
+                $currentListenersMap,
+                sprintf('Listener not %s registered for event: %s', $contract, $event::class)
+            );
+
             $asserts[] = $assert;
 
             $app->bind(abstract: $contract, concrete: static fn () => $assert);
-        }
 
-        /** @var Dispatcher $events */
-        $events = $app->make(Dispatcher::class);
+            $events->listen($event::class, $contract);
+        }
 
         if ($disableWildcard) {
             $events->forget('*');

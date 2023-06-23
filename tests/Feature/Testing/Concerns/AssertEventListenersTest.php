@@ -24,6 +24,8 @@ class AssertEventListenersTest extends TestCase
         $events = $app->get(Dispatcher::class);
         $events->listen(TestEvent::class, TestListenerContract::class);
         $events->listen(TestEvent::class, TestListenerCallsContract::class);
+        // Should not be called - it will be un-registered.
+        $events->listen(TestEvent::class, TestListenerCallsContractAssert::class);
 
         $event = new TestEvent();
         $this->assertEventListeners(
