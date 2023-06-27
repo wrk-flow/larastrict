@@ -6,7 +6,7 @@ namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 use PHPUnit\Framework\Assert;
 
-class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallsMap implements MultiFunctionContract
+class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExpectationCallsMap implements MultiFunctionContract
 {
     /**
      * @param array<MultiFunctionContractSelfExpectation|null> $self
@@ -36,18 +36,19 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\AbstractExpectatio
         array $mixed = [],
         array $noParams = [],
     ) {
-        $this->setExpectations(MultiFunctionContractSelfExpectation::class, array_values(array_filter($self)));
-        $this->setExpectations(MultiFunctionContractPhpDocThisExpectation::class, array_values(array_filter($phpDocThis)));
-        $this->setExpectations(MultiFunctionContractPhpDocThisParamsExpectation::class, array_values(array_filter($phpDocThisParams)));
-        $this->setExpectations(MultiFunctionContractPhpDocBoolExpectation::class, array_values(array_filter($phpDocBool)));
-        $this->setExpectations(MultiFunctionContractPhpDocStringExpectation::class, array_values(array_filter($phpDocString)));
-        $this->setExpectations(MultiFunctionContractPhpDocFloatExpectation::class, array_values(array_filter($phpDocFloat)));
-        $this->setExpectations(MultiFunctionContractPhpDocMixedExpectation::class, array_values(array_filter($phpDocMixed)));
-        $this->setExpectations(MultiFunctionContractPhpDocStaticExpectation::class, array_values(array_filter($phpDocStatic)));
-        $this->setExpectations(MultiFunctionContractSelfViaClassExpectation::class, array_values(array_filter($selfViaClass)));
-        $this->setExpectations(MultiFunctionContractNoReturnExpectation::class, array_values(array_filter($noReturn)));
-        $this->setExpectations(MultiFunctionContractMixedExpectation::class, array_values(array_filter($mixed)));
-        $this->setExpectations(MultiFunctionContractNoParamsExpectation::class, array_values(array_filter($noParams)));
+        parent::__construct();
+        $this->setExpectations(MultiFunctionContractSelfExpectation::class, $self);
+        $this->setExpectations(MultiFunctionContractPhpDocThisExpectation::class, $phpDocThis);
+        $this->setExpectations(MultiFunctionContractPhpDocThisParamsExpectation::class, $phpDocThisParams);
+        $this->setExpectations(MultiFunctionContractPhpDocBoolExpectation::class, $phpDocBool);
+        $this->setExpectations(MultiFunctionContractPhpDocStringExpectation::class, $phpDocString);
+        $this->setExpectations(MultiFunctionContractPhpDocFloatExpectation::class, $phpDocFloat);
+        $this->setExpectations(MultiFunctionContractPhpDocMixedExpectation::class, $phpDocMixed);
+        $this->setExpectations(MultiFunctionContractPhpDocStaticExpectation::class, $phpDocStatic);
+        $this->setExpectations(MultiFunctionContractSelfViaClassExpectation::class, $selfViaClass);
+        $this->setExpectations(MultiFunctionContractNoReturnExpectation::class, $noReturn);
+        $this->setExpectations(MultiFunctionContractMixedExpectation::class, $mixed);
+        $this->setExpectations(MultiFunctionContractNoParamsExpectation::class, $noParams);
     }
 
     function self(string $first, int $second, bool $third): self

@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Testing\Concerns;
 
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class TestListenerCallsContractAssert extends AbstractExpectationCallsMap implements TestListenerCallsContract
 {
     /**
-     * @param array<TestListenerCallsContractHandleExpectation> $handle
-     * @param array<TestListenerCallsContractTestExpectation> $test
+     * @param array<TestListenerCallsContractHandleExpectation|null> $handle
+     * @param array<TestListenerCallsContractTestExpectation|null> $test
      */
     public function __construct(array $handle = [], array $test = [])
     {
-        $this->setExpectations(TestListenerCallsContractHandleExpectation::class, array_values(array_filter($handle)));
-        $this->setExpectations(TestListenerCallsContractTestExpectation::class, array_values(array_filter($test)));
+        parent::__construct();
+
+        $this->setExpectations(TestListenerCallsContractHandleExpectation::class, $handle);
+        $this->setExpectations(TestListenerCallsContractTestExpectation::class, $test);
     }
 
     public function handle(TestEvent $event): void

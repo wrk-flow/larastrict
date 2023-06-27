@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implements CacheMeServiceContract
 {
     /**
-     * @param array<CacheMeServiceContractGetExpectation> $get
-     * @param array<CacheMeServiceContractSetExpectation> $set
-     * @param array<CacheMeServiceContractFlushExpectation> $flush
-     * @param array<CacheMeServiceContractDeleteExpectation> $delete
-     * @param array<CacheMeServiceContractObserveAndFlushExpectation> $observeAndFlush
+     * @param array<CacheMeServiceContractGetExpectation|null> $get
+     * @param array<CacheMeServiceContractSetExpectation|null> $set
+     * @param array<CacheMeServiceContractFlushExpectation|null> $flush
+     * @param array<CacheMeServiceContractDeleteExpectation|null> $delete
+     * @param array<CacheMeServiceContractObserveAndFlushExpectation|null> $observeAndFlush
      */
     public function __construct(
         array $get = [],
@@ -28,14 +28,12 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         array $delete = [],
         array $observeAndFlush = [],
     ) {
-        $this->setExpectations(CacheMeServiceContractGetExpectation::class, array_values(array_filter($get)));
-        $this->setExpectations(CacheMeServiceContractSetExpectation::class, array_values(array_filter($set)));
-        $this->setExpectations(CacheMeServiceContractFlushExpectation::class, array_values(array_filter($flush)));
-        $this->setExpectations(CacheMeServiceContractDeleteExpectation::class, array_values(array_filter($delete)));
-        $this->setExpectations(
-            CacheMeServiceContractObserveAndFlushExpectation::class,
-            array_values(array_filter($observeAndFlush))
-        );
+        parent::__construct();
+        $this->setExpectations(CacheMeServiceContractGetExpectation::class, $get);
+        $this->setExpectations(CacheMeServiceContractSetExpectation::class, $set);
+        $this->setExpectations(CacheMeServiceContractFlushExpectation::class, $flush);
+        $this->setExpectations(CacheMeServiceContractDeleteExpectation::class, $delete);
+        $this->setExpectations(CacheMeServiceContractObserveAndFlushExpectation::class, $observeAndFlush);
     }
 
     /**

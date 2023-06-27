@@ -6,7 +6,7 @@ namespace Tests\LaraStrict\Feature\Testing\Laravel\Contracts\Debug;
 
 use Exception;
 use Illuminate\Http\Request;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Debug\ExceptionHandlerAssert;

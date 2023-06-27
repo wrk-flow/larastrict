@@ -6,11 +6,17 @@ namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 use PHPUnit\Framework\Assert;
 
-/**
- * @extends \LaraStrict\Testing\AbstractExpectationCallMap<\App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestActionContractExpectation>
- */
-class TestActionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallMap implements \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestActionContract
+class TestActionContractAssert extends \LaraStrict\Testing\Assert\AbstractExpectationCallsMap implements \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestActionContract
 {
+    /**
+     * @param array<TestActionContractExpectation|null> $execute
+     */
+    function __construct(array $execute = [])
+    {
+        parent::__construct();
+        $this->setExpectations(TestActionContractExpectation::class, $execute);
+    }
+
     function execute(
         int $int,
         string $string,
@@ -30,7 +36,7 @@ class TestActionContractAssert extends \LaraStrict\Testing\AbstractExpectationCa
         \LaraStrict\Testing\Laravel\TestingApplication $object = new \LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
         \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new \Illuminate\Support\Collection(/* unknown */),
     ): void {
-        $expectation = $this->getExpectation();
+        $expectation = $this->getExpectation(TestActionContractExpectation::class);
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->int, $int, $message);

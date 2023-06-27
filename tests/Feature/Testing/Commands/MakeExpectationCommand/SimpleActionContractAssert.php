@@ -6,14 +6,20 @@ namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 use PHPUnit\Framework\Assert;
 
-/**
- * @extends \LaraStrict\Testing\AbstractExpectationCallMap<\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\SimpleActionContractExpectation>
- */
-class SimpleActionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallMap implements SimpleActionContract
+class SimpleActionContractAssert extends \LaraStrict\Testing\Assert\AbstractExpectationCallsMap implements SimpleActionContract
 {
+    /**
+     * @param array<SimpleActionContractExpectation|null> $execute
+     */
+    function __construct(array $execute = [])
+    {
+        parent::__construct();
+        $this->setExpectations(SimpleActionContractExpectation::class, $execute);
+    }
+
     function execute(string $first, int $second, bool $third)
     {
-        $expectation = $this->getExpectation();
+        $expectation = $this->getExpectation(SimpleActionContractExpectation::class);
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->first, $first, $message);

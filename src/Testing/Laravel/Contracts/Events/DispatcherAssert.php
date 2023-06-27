@@ -6,7 +6,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Events;
 
 use Closure;
 use Illuminate\Contracts\Events\Dispatcher;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher

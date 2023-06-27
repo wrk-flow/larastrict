@@ -7,14 +7,21 @@ namespace LaraStrict\Testing\Database\Contracts;
 use Closure;
 use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Database\Contracts\SafeUniqueSaveActionContract;
-use LaraStrict\Testing\AbstractExpectationCallMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
-/**
- * @extends AbstractExpectationCallMap<SafeUniqueSaveActionContractExpectation>
- */
-class SafeUniqueSaveActionContractAssert extends AbstractExpectationCallMap implements SafeUniqueSaveActionContract
+class SafeUniqueSaveActionContractAssert extends AbstractExpectationCallsMap implements SafeUniqueSaveActionContract
 {
+    /**
+     * @param array<SafeUniqueSaveActionContractExpectation|null> $expectations
+     */
+    public function __construct(array $expectations = [])
+    {
+        parent::__construct();
+
+        $this->setExpectations(SafeUniqueSaveActionContractExpectation::class, $expectations);
+    }
+
     /**
      * Ensures that model will be reset if duplication error has occurred.
      *
@@ -28,7 +35,7 @@ class SafeUniqueSaveActionContractAssert extends AbstractExpectationCallMap impl
      */
     public function execute(Model $model, Closure $setupClosure, int $maxTries = 20, int $tries = 1): mixed
     {
-        $expectation = $this->getExpectation();
+        $expectation = $this->getExpectation(SafeUniqueSaveActionContractExpectation::class);
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->model, $model, $message);

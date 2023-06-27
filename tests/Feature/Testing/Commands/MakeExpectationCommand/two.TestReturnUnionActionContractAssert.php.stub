@@ -6,11 +6,17 @@ namespace App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCom
 
 use PHPUnit\Framework\Assert;
 
-/**
- * @extends \LaraStrict\Testing\AbstractExpectationCallMap<\App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionActionContractExpectation>
- */
-class TestReturnUnionActionContractAssert extends \LaraStrict\Testing\AbstractExpectationCallMap implements \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionActionContract
+class TestReturnUnionActionContractAssert extends \LaraStrict\Testing\Assert\AbstractExpectationCallsMap implements \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnUnionActionContract
 {
+    /**
+     * @param array<TestReturnUnionActionContractExpectation|null> $execute
+     */
+    function __construct(array $execute = [])
+    {
+        parent::__construct();
+        $this->setExpectations(TestReturnUnionActionContractExpectation::class, $execute);
+    }
+
     function execute(
         int $int,
         string $string,
@@ -30,7 +36,7 @@ class TestReturnUnionActionContractAssert extends \LaraStrict\Testing\AbstractEx
         \LaraStrict\Testing\Laravel\TestingApplication $object = new \LaraStrict\Testing\Laravel\TestingApplication(/* unknown */),
         \ArrayAccess&\Illuminate\Support\Enumerable $intersectionType = new \Illuminate\Support\Collection(/* unknown */),
     ): \LaraStrict\Testing\Laravel\TestingApplication|string|int|null {
-        $expectation = $this->getExpectation();
+        $expectation = $this->getExpectation(TestReturnUnionActionContractExpectation::class);
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->int, $int, $message);

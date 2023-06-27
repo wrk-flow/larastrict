@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Unit\Testing\Context\Contracts;
 use Closure;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Values\BoolContextValue;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Context\Contracts\ContextServiceContractAssert;
 use LaraStrict\Testing\Context\Contracts\ContextServiceContractDeleteExpectation;

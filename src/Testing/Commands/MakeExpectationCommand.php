@@ -7,9 +7,8 @@ namespace LaraStrict\Testing\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use LaraStrict\Testing\AbstractExpectationCallMap;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Actions\ParsePhpDocAction;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Constants\StubConstants;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
@@ -111,9 +110,6 @@ class MakeExpectationCommand extends Command
             class: $class,
             namespace: $fullNamespace,
             className: $assertClassName,
-            expectationClassName: $useSingleMethodCallMap
-                ? $this->getExpectationClassName(class: $class, methodSuffix: '')
-                : null
         );
 
         $printer = new PsrPrinter();
@@ -138,31 +134,29 @@ class MakeExpectationCommand extends Command
             );
 
             if ($assertFileState !== null) {
-                if ($assertFileState->constructor !== null) {
-                    $methodName = $method->getName();
+                $methodName = $method->getName();
 
-                    $assertFileState->constructorComments[] = sprintf(
-                        '@param array<%s|null> $%s',
-                        $expectationClassName,
-                        $methodName
-                    );
-                    $assertFileState->constructorBodies[] = sprintf(
-                        '$this->setExpectations(%s::class, array_values(array_filter($%s)));',
-                        $expectationClassName,
-                        $methodName
-                    );
+                $assertFileState->constructorComments[] = sprintf(
+                    '@param array<%s|null> $%s',
+                    $expectationClassName,
+                    $methodName
+                );
+                $assertFileState->constructorBodies[] = sprintf(
+                    '$this->setExpectations(%s::class, $%s);',
+                    $expectationClassName,
+                    $methodName
+                );
 
-                    $assertFileState
-                        ->constructor
-                        ->addParameter($methodName)
-                        ->setType('array')
-                        ->setDefaultValue(new Literal('[]'));
-                }
+                $assertFileState
+                    ->constructor
+                    ->addParameter($methodName)
+                    ->setType('array')
+                    ->setDefaultValue(new Literal('[]'));
 
                 $this->generateExpectationMethodAssert(
                     assertClass: $assertFileState->class,
                     method: $method,
-                    expectationClassName: $useSingleMethodCallMap ? null : $expectationClassName,
+                    expectationClassName: $expectationClassName,
                     phpDoc: $phpDoc,
                 );
             }
@@ -188,13 +182,11 @@ class MakeExpectationCommand extends Command
     /**
      * Generates a method assert in assert class. Generates __construct if $expectationClassName is passed (requires
      * extending AbstractExpectationCallsMap).
-     *
-     * @param string|null $expectationClassName Defines if we are using calls map.
      */
     protected function generateExpectationMethodAssert(
         ClassType $assertClass,
         ReflectionMethod $method,
-        ?string $expectationClassName,
+        string $expectationClassName,
         PhpDocEntity $phpDoc,
     ): void {
         $parameters = $method->getParameters();
@@ -204,9 +196,7 @@ class MakeExpectationCommand extends Command
 
         $assertMethod->addBody(sprintf(
             '$expectation = $this->getExpectation(%s);',
-            $expectationClassName === null
-                ? ''
-                : $expectationClassName . '::class'
+            $expectationClassName . '::class'
         ));
 
         $hookParameters = [];
@@ -262,14 +252,11 @@ class MakeExpectationCommand extends Command
 
     /**
      * @param ReflectionClass<object> $class
-     * @param string                  $expectationClassName Defines if we want to use AbstractExpectationCallMap or
-     *                                                      AbstractExpectationCallsMap (null)
      */
     protected function createAssertFileAndClass(
         ReflectionClass $class,
         string $namespace,
         string $className,
-        ?string $expectationClassName,
     ): ?AssertFileStateEntity {
         if ($class->isInterface() === false) {
             return null;
@@ -284,19 +271,11 @@ class MakeExpectationCommand extends Command
         $assertClass = $assertNamespace->addClass($className);
         $assertClass->addImplement($class->getName());
 
-        if ($expectationClassName === null) {
-            $assertConstructor = new Method('__construct');
-            $assertClass->setExtends(AbstractExpectationCallsMap::class);
-            $assertClass->addMember($assertConstructor);
-        } else {
-            $assertClass->setExtends(AbstractExpectationCallMap::class);
-            $assertClass->addComment(sprintf(
-                '@extends %s<%s>',
-                StubConstants::NameSpaceSeparator . AbstractExpectationCallMap::class,
-                StubConstants::NameSpaceSeparator . $namespace . StubConstants::NameSpaceSeparator . $expectationClassName
-            ));
-            $assertConstructor = null;
-        }
+        $assertConstructor = new Method('__construct');
+        $assertClass->setExtends(AbstractExpectationCallsMap::class);
+        $assertClass->addMember($assertConstructor);
+
+        $assertConstructor->addBody('parent::__construct();');
 
         return new AssertFileStateEntity($file, $assertClass, $assertConstructor);
     }
@@ -494,8 +473,7 @@ class MakeExpectationCommand extends Command
             && $returnType->getName() !== PhpType::Self
                 ->value
             && $returnType->getName() !== PhpType::Static
-                ->value
-        ;
+                ->value;
     }
 
     /**

@@ -5,23 +5,24 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
 use Illuminate\Contracts\View\View;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class ViewAssert extends AbstractExpectationCallsMap implements View
 {
     /**
-     * @param array<ViewNameExpectation> $name
-     * @param array<ViewWithExpectation> $with
-     * @param array<ViewGetDataExpectation> $getData
-     * @param array<ViewRenderExpectation> $render
+     * @param array<ViewNameExpectation|null> $name
+     * @param array<ViewWithExpectation|null> $with
+     * @param array<ViewGetDataExpectation|null> $getData
+     * @param array<ViewRenderExpectation|null> $render
      */
     public function __construct(array $name = [], array $with = [], array $getData = [], array $render = [])
     {
-        $this->setExpectations(ViewNameExpectation::class, array_values(array_filter($name)));
-        $this->setExpectations(ViewWithExpectation::class, array_values(array_filter($with)));
-        $this->setExpectations(ViewGetDataExpectation::class, array_values(array_filter($getData)));
-        $this->setExpectations(ViewRenderExpectation::class, array_values(array_filter($render)));
+        parent::__construct();
+        $this->setExpectations(ViewNameExpectation::class, $name);
+        $this->setExpectations(ViewWithExpectation::class, $with);
+        $this->setExpectations(ViewGetDataExpectation::class, $getData);
+        $this->setExpectations(ViewRenderExpectation::class, $render);
     }
 
     /**

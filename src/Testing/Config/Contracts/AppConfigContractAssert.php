@@ -6,7 +6,7 @@ namespace LaraStrict\Testing\Config\Contracts;
 
 use LaraStrict\Config\Contracts\AppConfigContract;
 use LaraStrict\Enums\EnvironmentType;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 
 class AppConfigContractAssert extends AbstractExpectationCallsMap implements AppConfigContract
 {
@@ -28,22 +28,14 @@ class AppConfigContractAssert extends AbstractExpectationCallsMap implements App
         array $isInDebugMode = [],
         array $getEnvironment = [],
     ) {
-        $this->setExpectations(AppConfigContractGetVersionExpectation::class, array_values(array_filter($getVersion)));
-        $this->setExpectations(AppConfigContractGetKeyExpectation::class, array_values(array_filter($getKey)));
-        $this->setExpectations(AppConfigContractGetUrlExpectation::class, array_values(array_filter($getUrl)));
-        $this->setExpectations(
-            AppConfigContractGetAssetUrlExpectation::class,
-            array_values(array_filter($getAssetUrl))
-        );
-        $this->setExpectations(AppConfigContractGetNameExpectation::class, array_values(array_filter($getName)));
-        $this->setExpectations(
-            AppConfigContractIsInDebugModeExpectation::class,
-            array_values(array_filter($isInDebugMode))
-        );
-        $this->setExpectations(
-            AppConfigContractGetEnvironmentExpectation::class,
-            array_values(array_filter($getEnvironment))
-        );
+        parent::__construct();
+        $this->setExpectations(AppConfigContractGetVersionExpectation::class, $getVersion);
+        $this->setExpectations(AppConfigContractGetKeyExpectation::class, $getKey);
+        $this->setExpectations(AppConfigContractGetUrlExpectation::class, $getUrl);
+        $this->setExpectations(AppConfigContractGetAssetUrlExpectation::class, $getAssetUrl);
+        $this->setExpectations(AppConfigContractGetNameExpectation::class, $getName);
+        $this->setExpectations(AppConfigContractIsInDebugModeExpectation::class, $isInDebugMode);
+        $this->setExpectations(AppConfigContractGetEnvironmentExpectation::class, $getEnvironment);
     }
 
     /**
