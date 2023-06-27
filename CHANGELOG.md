@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.62] - 2023-06-27
+### :bug: Bug Fixes
+- [`c30fc9c`](https://github.com/wrk-flow/larastrict/commit/c30fc9ccb2917bbcd84fa99e6105d3d8334288ec) - **Testing**: Upgrade Laravel assert (construct, nullable, remove array_values) *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.61] - 2023-06-27
 ### :boom: BREAKING CHANGES
 - due to [`acc90a9`](https://github.com/wrk-flow/larastrict/commit/acc90a92dce54ef67f483fe734e70bb4e1ecd9d0) - AssertExpectations automatically checks if expectations were called *(commit by [@pionl](https://github.com/pionl))*:
@@ -531,3 +536,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [v0.0.59]: https://github.com/wrk-flow/larastrict/compare/v0.0.58...v0.0.59
 [v0.0.60]: https://github.com/wrk-flow/larastrict/compare/v0.0.59...v0.0.60
 [v0.0.61]: https://github.com/wrk-flow/larastrict/compare/v0.0.60...v0.0.61
+[v0.0.62]: https://github.com/wrk-flow/larastrict/compare/v0.0.61...v0.0.62
