@@ -15,10 +15,10 @@ use Throwable;
 class ExceptionHandlerAssert extends AbstractExpectationCallsMap implements ExceptionHandler
 {
     /**
-     * @param array<ExceptionHandlerReportExpectation> $report
-     * @param array<ExceptionHandlerShouldReportExpectation> $shouldReport
-     * @param array<ExceptionHandlerRenderExpectation> $render
-     * @param array<ExceptionHandlerRenderForConsoleExpectation> $renderForConsole
+     * @param array<ExceptionHandlerReportExpectation|null> $report
+     * @param array<ExceptionHandlerShouldReportExpectation|null> $shouldReport
+     * @param array<ExceptionHandlerRenderExpectation|null> $render
+     * @param array<ExceptionHandlerRenderForConsoleExpectation|null> $renderForConsole
      */
     public function __construct(
         array $report = [],
@@ -26,16 +26,11 @@ class ExceptionHandlerAssert extends AbstractExpectationCallsMap implements Exce
         array $render = [],
         array $renderForConsole = []
     ) {
-        $this->setExpectations(ExceptionHandlerReportExpectation::class, array_values(array_filter($report)));
-        $this->setExpectations(
-            ExceptionHandlerShouldReportExpectation::class,
-            array_values(array_filter($shouldReport))
-        );
-        $this->setExpectations(ExceptionHandlerRenderExpectation::class, array_values(array_filter($render)));
-        $this->setExpectations(
-            ExceptionHandlerRenderForConsoleExpectation::class,
-            array_values(array_filter($renderForConsole))
-        );
+        parent::__construct();
+        $this->setExpectations(ExceptionHandlerReportExpectation::class, $report);
+        $this->setExpectations(ExceptionHandlerShouldReportExpectation::class, $shouldReport);
+        $this->setExpectations(ExceptionHandlerRenderExpectation::class, $render);
+        $this->setExpectations(ExceptionHandlerRenderForConsoleExpectation::class, $renderForConsole);
     }
 
     /**

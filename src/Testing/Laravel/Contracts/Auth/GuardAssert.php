@@ -29,13 +29,14 @@ class GuardAssert extends AbstractExpectationCallsMap implements Guard
         array $hasUser = [],
         array $setUser = [],
     ) {
-        $this->setExpectations(GuardCheckExpectation::class, array_values(array_filter($check)));
-        $this->setExpectations(GuardGuestExpectation::class, array_values(array_filter($guest)));
-        $this->setExpectations(GuardUserExpectation::class, array_values(array_filter($user)));
-        $this->setExpectations(GuardIdExpectation::class, array_values(array_filter($id)));
-        $this->setExpectations(GuardValidateExpectation::class, array_values(array_filter($validate)));
-        $this->setExpectations(GuardHasUserExpectation::class, array_values(array_filter($hasUser)));
-        $this->setExpectations(GuardSetUserExpectation::class, array_values(array_filter($setUser)));
+        parent::__construct();
+        $this->setExpectations(GuardCheckExpectation::class, $check);
+        $this->setExpectations(GuardGuestExpectation::class, $guest);
+        $this->setExpectations(GuardUserExpectation::class, $user);
+        $this->setExpectations(GuardIdExpectation::class, $id);
+        $this->setExpectations(GuardValidateExpectation::class, $validate);
+        $this->setExpectations(GuardHasUserExpectation::class, $hasUser);
+        $this->setExpectations(GuardSetUserExpectation::class, $setUser);
     }
 
     /**

@@ -12,15 +12,15 @@ use PHPUnit\Framework\Assert;
 class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
 {
     /**
-     * @param array<DispatcherListenExpectation> $listen
-     * @param array<DispatcherHasListenersExpectation> $hasListeners
-     * @param array<DispatcherSubscribeExpectation> $subscribe
-     * @param array<DispatcherUntilExpectation> $until
-     * @param array<DispatcherDispatchExpectation> $dispatch
-     * @param array<DispatcherPushExpectation> $push
-     * @param array<DispatcherFlushExpectation> $flush
-     * @param array<DispatcherForgetExpectation> $forget
-     * @param array<DispatcherForgetPushedExpectation> $forgetPushed
+     * @param array<DispatcherListenExpectation|null> $listen
+     * @param array<DispatcherHasListenersExpectation|null> $hasListeners
+     * @param array<DispatcherSubscribeExpectation|null> $subscribe
+     * @param array<DispatcherUntilExpectation|null> $until
+     * @param array<DispatcherDispatchExpectation|null> $dispatch
+     * @param array<DispatcherPushExpectation|null> $push
+     * @param array<DispatcherFlushExpectation|null> $flush
+     * @param array<DispatcherForgetExpectation|null> $forget
+     * @param array<DispatcherForgetPushedExpectation|null> $forgetPushed
      */
     public function __construct(
         array $listen = [],
@@ -33,15 +33,16 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         array $forget = [],
         array $forgetPushed = [],
     ) {
-        $this->setExpectations(DispatcherListenExpectation::class, array_values(array_filter($listen)));
-        $this->setExpectations(DispatcherHasListenersExpectation::class, array_values(array_filter($hasListeners)));
-        $this->setExpectations(DispatcherSubscribeExpectation::class, array_values(array_filter($subscribe)));
-        $this->setExpectations(DispatcherUntilExpectation::class, array_values(array_filter($until)));
-        $this->setExpectations(DispatcherDispatchExpectation::class, array_values(array_filter($dispatch)));
-        $this->setExpectations(DispatcherPushExpectation::class, array_values(array_filter($push)));
-        $this->setExpectations(DispatcherFlushExpectation::class, array_values(array_filter($flush)));
-        $this->setExpectations(DispatcherForgetExpectation::class, array_values(array_filter($forget)));
-        $this->setExpectations(DispatcherForgetPushedExpectation::class, array_values(array_filter($forgetPushed)));
+        parent::__construct();
+        $this->setExpectations(DispatcherListenExpectation::class, $listen);
+        $this->setExpectations(DispatcherHasListenersExpectation::class, $hasListeners);
+        $this->setExpectations(DispatcherSubscribeExpectation::class, $subscribe);
+        $this->setExpectations(DispatcherUntilExpectation::class, $until);
+        $this->setExpectations(DispatcherDispatchExpectation::class, $dispatch);
+        $this->setExpectations(DispatcherPushExpectation::class, $push);
+        $this->setExpectations(DispatcherFlushExpectation::class, $flush);
+        $this->setExpectations(DispatcherForgetExpectation::class, $forget);
+        $this->setExpectations(DispatcherForgetPushedExpectation::class, $forgetPushed);
     }
 
     /**

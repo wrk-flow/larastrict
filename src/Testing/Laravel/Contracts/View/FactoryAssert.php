@@ -14,14 +14,14 @@ use PHPUnit\Framework\Assert;
 class FactoryAssert extends AbstractExpectationCallsMap implements Factory
 {
     /**
-     * @param array<FactoryExistsExpectation> $exists
-     * @param array<FactoryFileExpectation> $file
-     * @param array<FactoryMakeExpectation> $make
-     * @param array<FactoryShareExpectation> $share
-     * @param array<FactoryComposerExpectation> $composer
-     * @param array<FactoryCreatorExpectation> $creator
-     * @param array<FactoryAddNamespaceExpectation> $addNamespace
-     * @param array<FactoryReplaceNamespaceExpectation> $replaceNamespace
+     * @param array<FactoryExistsExpectation|null> $exists
+     * @param array<FactoryFileExpectation|null> $file
+     * @param array<FactoryMakeExpectation|null> $make
+     * @param array<FactoryShareExpectation|null> $share
+     * @param array<FactoryComposerExpectation|null> $composer
+     * @param array<FactoryCreatorExpectation|null> $creator
+     * @param array<FactoryAddNamespaceExpectation|null> $addNamespace
+     * @param array<FactoryReplaceNamespaceExpectation|null> $replaceNamespace
      */
     public function __construct(
         array $exists = [],
@@ -33,6 +33,7 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
         array $addNamespace = [],
         array $replaceNamespace = [],
     ) {
+        parent::__construct();
         $this->setExpectations(FactoryExistsExpectation::class, $exists);
         $this->setExpectations(FactoryFileExpectation::class, $file);
         $this->setExpectations(FactoryMakeExpectation::class, $make);

@@ -56,28 +56,26 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
         array $deleteMultiple = [],
         array $has = [],
     ) {
-        $this->setExpectations(RepositoryPullExpectation::class, array_values(array_filter($pull)));
-        $this->setExpectations(RepositoryPutExpectation::class, array_values(array_filter($put)));
-        $this->setExpectations(RepositoryAddExpectation::class, array_values(array_filter($add)));
-        $this->setExpectations(RepositoryIncrementExpectation::class, array_values(array_filter($increment)));
-        $this->setExpectations(RepositoryDecrementExpectation::class, array_values(array_filter($decrement)));
-        $this->setExpectations(RepositoryForeverExpectation::class, array_values(array_filter($forever)));
-        $this->setExpectations(RepositoryRememberExpectation::class, array_values(array_filter($remember)));
-        $this->setExpectations(RepositorySearExpectation::class, array_values(array_filter($sear)));
-        $this->setExpectations(
-            RepositoryRememberForeverExpectation::class,
-            array_values(array_filter($rememberForever))
-        );
-        $this->setExpectations(RepositoryForgetExpectation::class, array_values(array_filter($forget)));
-        $this->setExpectations(RepositoryGetStoreExpectation::class, array_values(array_filter($getStore)));
-        $this->setExpectations(RepositoryGetExpectation::class, array_values(array_filter($get)));
-        $this->setExpectations(RepositorySetExpectation::class, array_values(array_filter($set)));
-        $this->setExpectations(RepositoryDeleteExpectation::class, array_values(array_filter($delete)));
-        $this->setExpectations(RepositoryClearExpectation::class, array_values(array_filter($clear)));
-        $this->setExpectations(RepositoryGetMultipleExpectation::class, array_values(array_filter($getMultiple)));
-        $this->setExpectations(RepositorySetMultipleExpectation::class, array_values(array_filter($setMultiple)));
-        $this->setExpectations(RepositoryDeleteMultipleExpectation::class, array_values(array_filter($deleteMultiple)));
-        $this->setExpectations(RepositoryHasExpectation::class, array_values(array_filter($has)));
+        parent::__construct();
+        $this->setExpectations(RepositoryPullExpectation::class, $pull);
+        $this->setExpectations(RepositoryPutExpectation::class, $put);
+        $this->setExpectations(RepositoryAddExpectation::class, $add);
+        $this->setExpectations(RepositoryIncrementExpectation::class, $increment);
+        $this->setExpectations(RepositoryDecrementExpectation::class, $decrement);
+        $this->setExpectations(RepositoryForeverExpectation::class, $forever);
+        $this->setExpectations(RepositoryRememberExpectation::class, $remember);
+        $this->setExpectations(RepositorySearExpectation::class, $sear);
+        $this->setExpectations(RepositoryRememberForeverExpectation::class, $rememberForever);
+        $this->setExpectations(RepositoryForgetExpectation::class, $forget);
+        $this->setExpectations(RepositoryGetStoreExpectation::class, $getStore);
+        $this->setExpectations(RepositoryGetExpectation::class, $get);
+        $this->setExpectations(RepositorySetExpectation::class, $set);
+        $this->setExpectations(RepositoryDeleteExpectation::class, $delete);
+        $this->setExpectations(RepositoryClearExpectation::class, $clear);
+        $this->setExpectations(RepositoryGetMultipleExpectation::class, $getMultiple);
+        $this->setExpectations(RepositorySetMultipleExpectation::class, $setMultiple);
+        $this->setExpectations(RepositoryDeleteMultipleExpectation::class, $deleteMultiple);
+        $this->setExpectations(RepositoryHasExpectation::class, $has);
     }
 
     /**
