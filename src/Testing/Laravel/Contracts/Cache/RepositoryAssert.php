@@ -9,7 +9,7 @@ use DateInterval;
 use DateTimeInterface;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Cache\Store;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class RepositoryAssert extends AbstractExpectationCallsMap implements Repository

@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class FactoryAssert extends AbstractExpectationCallsMap implements Factory
@@ -33,17 +33,14 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
         array $addNamespace = [],
         array $replaceNamespace = [],
     ) {
-        $this->setExpectations(FactoryExistsExpectation::class, array_values(array_filter($exists)));
-        $this->setExpectations(FactoryFileExpectation::class, array_values(array_filter($file)));
-        $this->setExpectations(FactoryMakeExpectation::class, array_values(array_filter($make)));
-        $this->setExpectations(FactoryShareExpectation::class, array_values(array_filter($share)));
-        $this->setExpectations(FactoryComposerExpectation::class, array_values(array_filter($composer)));
-        $this->setExpectations(FactoryCreatorExpectation::class, array_values(array_filter($creator)));
-        $this->setExpectations(FactoryAddNamespaceExpectation::class, array_values(array_filter($addNamespace)));
-        $this->setExpectations(
-            FactoryReplaceNamespaceExpectation::class,
-            array_values(array_filter($replaceNamespace))
-        );
+        $this->setExpectations(FactoryExistsExpectation::class, $exists);
+        $this->setExpectations(FactoryFileExpectation::class, $file);
+        $this->setExpectations(FactoryMakeExpectation::class, $make);
+        $this->setExpectations(FactoryShareExpectation::class, $share);
+        $this->setExpectations(FactoryComposerExpectation::class, $composer);
+        $this->setExpectations(FactoryCreatorExpectation::class, $creator);
+        $this->setExpectations(FactoryAddNamespaceExpectation::class, $addNamespace);
+        $this->setExpectations(FactoryReplaceNamespaceExpectation::class, $replaceNamespace);
     }
 
     /**

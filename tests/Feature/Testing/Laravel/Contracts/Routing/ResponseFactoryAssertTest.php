@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Feature\Testing\Laravel\Contracts\Routing;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryAssert;

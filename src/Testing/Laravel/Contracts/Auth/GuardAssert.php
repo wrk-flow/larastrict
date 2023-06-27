@@ -6,7 +6,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Guard;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class GuardAssert extends AbstractExpectationCallsMap implements Guard

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Testing\Laravel\Contracts\Translation;
 
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Translation\TranslatorAssert;

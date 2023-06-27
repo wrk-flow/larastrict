@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Config\Contracts;
 
 use LaraStrict\Enums\EnvironmentType;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Config\Contracts\AppConfigContractAssert;
 use LaraStrict\Testing\Config\Contracts\AppConfigContractGetAssetUrlExpectation;

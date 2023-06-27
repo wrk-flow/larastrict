@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Testing;
+namespace LaraStrict\Testing\Assert;
 
 use LogicException;
 
@@ -23,6 +23,11 @@ abstract class AbstractExpectationCallsMap
      */
     private int $_currentDebugStep = 0;
 
+    public function __construct()
+    {
+        AssertExpectationManager::getInstance()->register($this);
+    }
+
     public function addExpectation(object $expectation): self
     {
         $this->_expectationMap[$expectation::class][] = $expectation;
@@ -34,17 +39,19 @@ abstract class AbstractExpectationCallsMap
      * @template TExpectation
      *
      * @param class-string<TExpectation> $class
-     * @param array<TExpectation>        $expectations
+     * @param array<TExpectation|null>        $expectations
      */
     public function setExpectations(string $class, array $expectations): self
     {
-        $this->_expectationMap[$class] = $expectations;
+        $this->_expectationMap[$class] = array_values(array_filter($expectations));
+        $this->_callStep[$class] = 0;
 
         return $this;
     }
 
     public function assertCalled(): void
     {
+        $errors = [];
         foreach ($this->_expectationMap as $class => $expectations) {
             $called = $this->_callStep[$class] ?? 0;
             $expected = count($expectations);
@@ -52,10 +59,14 @@ abstract class AbstractExpectationCallsMap
                 continue;
             }
 
-            throw new LogicException(
-                sprintf('[%s] expected %d call/s but was called <%d> time/s', $class, $expected, $called)
-            );
+            $errors[] = sprintf('[%s] expected %d call/s but was called <%d> time/s', $class, $expected, $called);
         }
+
+        if ($errors === []) {
+            return;
+        }
+
+        throw new LogicException(implode(PHP_EOL, array_map(static fn (string $e) => $e, $errors)));
     }
 
     /**

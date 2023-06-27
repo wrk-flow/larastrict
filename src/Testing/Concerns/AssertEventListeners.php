@@ -6,14 +6,13 @@ namespace LaraStrict\Testing\Concerns;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Events\Dispatcher;
-use LaraStrict\Testing\AbstractExpectationCallMap;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 trait AssertEventListeners
 {
     /**
-     * @template T of AbstractExpectationCallsMap|AbstractExpectationCallMap
+     * @template T of AbstractExpectationCallsMap
      * @param array<class-string, T> $contractMap
      * @param bool $disableWildcard You can receive un-wanted listener responses (like laravel-ray). By default, we will remove any wildcard event.
      * @param array|null $expectedListenerResults By default, assert returns nothing, we will auto populate nulls based on
@@ -72,9 +71,7 @@ trait AssertEventListeners
         Assert::assertEquals($expectedListenerResults, $results);
 
         foreach ($asserts as $assert) {
-            if ($assert instanceof AbstractExpectationCallsMap) {
-                $assert->assertCalled();
-            }
+            $assert->assertCalled();
         }
     }
 }

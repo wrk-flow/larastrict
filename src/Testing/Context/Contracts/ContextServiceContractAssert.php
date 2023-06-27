@@ -10,18 +10,18 @@ use LaraStrict\Context\Contexts\AbstractIsContext;
 use LaraStrict\Context\Contracts\ContextServiceContract;
 use LaraStrict\Context\Contracts\ContextValueContract;
 use LaraStrict\Context\Values\BoolContextValue;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class ContextServiceContractAssert extends AbstractExpectationCallsMap implements ContextServiceContract
 {
     /**
-     * @param array<ContextServiceContractDeleteExpectation> $delete
-     * @param array<ContextServiceContractSetExpectation> $set
-     * @param array<ContextServiceContractSetWithoutCacheExpectation> $setWithoutCache
-     * @param array<ContextServiceContractGetExpectation> $get
-     * @param array<ContextServiceContractIsExpectation> $is
-     * @param array<ContextServiceContractGetCacheKeyExpectation> $getCacheKey
+     * @param array<ContextServiceContractDeleteExpectation|null> $delete
+     * @param array<ContextServiceContractSetExpectation|null> $set
+     * @param array<ContextServiceContractSetWithoutCacheExpectation|null> $setWithoutCache
+     * @param array<ContextServiceContractGetExpectation|null> $get
+     * @param array<ContextServiceContractIsExpectation|null> $is
+     * @param array<ContextServiceContractGetCacheKeyExpectation|null> $getCacheKey
      */
     public function __construct(
         array $delete = [],
@@ -31,18 +31,13 @@ class ContextServiceContractAssert extends AbstractExpectationCallsMap implement
         array $is = [],
         array $getCacheKey = [],
     ) {
-        $this->setExpectations(ContextServiceContractDeleteExpectation::class, array_values(array_filter($delete)));
-        $this->setExpectations(ContextServiceContractSetExpectation::class, array_values(array_filter($set)));
-        $this->setExpectations(
-            ContextServiceContractSetWithoutCacheExpectation::class,
-            array_values(array_filter($setWithoutCache))
-        );
-        $this->setExpectations(ContextServiceContractGetExpectation::class, array_values(array_filter($get)));
-        $this->setExpectations(ContextServiceContractIsExpectation::class, array_values(array_filter($is)));
-        $this->setExpectations(
-            ContextServiceContractGetCacheKeyExpectation::class,
-            array_values(array_filter($getCacheKey))
-        );
+        parent::__construct();
+        $this->setExpectations(ContextServiceContractDeleteExpectation::class, $delete);
+        $this->setExpectations(ContextServiceContractSetExpectation::class, $set);
+        $this->setExpectations(ContextServiceContractSetWithoutCacheExpectation::class, $setWithoutCache);
+        $this->setExpectations(ContextServiceContractGetExpectation::class, $get);
+        $this->setExpectations(ContextServiceContractIsExpectation::class, $is);
+        $this->setExpectations(ContextServiceContractGetCacheKeyExpectation::class, $getCacheKey);
     }
 
     public function delete(AbstractContext $context): void

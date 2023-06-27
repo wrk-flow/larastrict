@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Laravel\Contracts\Bus;
 
 use Illuminate\Contracts\Bus\Dispatcher;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher

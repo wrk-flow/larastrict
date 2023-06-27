@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Cache\Contracts;
 
 use LaraStrict\Cache\Enums\CacheMeStrategy;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Cache\Contracts\CacheMeServiceContractAssert;
 use LaraStrict\Testing\Cache\Contracts\CacheMeServiceContractDeleteExpectation;
 use LaraStrict\Testing\Cache\Contracts\CacheMeServiceContractFlushExpectation;

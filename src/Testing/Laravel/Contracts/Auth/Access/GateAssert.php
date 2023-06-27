@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth\Access;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Authenticatable;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class GateAssert extends AbstractExpectationCallsMap implements Gate

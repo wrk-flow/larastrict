@@ -13,7 +13,7 @@ class AssertFileStateEntity
     public function __construct(
         public readonly PhpFile $file,
         public readonly ClassType $class,
-        public readonly ?Method $constructor,
+        public readonly Method $constructor,
         public array $constructorComments = [],
         public array $constructorBodies = [],
     ) {

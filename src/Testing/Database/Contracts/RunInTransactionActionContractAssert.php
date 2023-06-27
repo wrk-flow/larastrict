@@ -6,19 +6,19 @@ namespace LaraStrict\Testing\Database\Contracts;
 
 use Closure;
 use LaraStrict\Database\Contracts\RunInTransactionActionContract;
-use LaraStrict\Testing\AbstractExpectationCallMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
-/**
- * @extends AbstractExpectationCallMap<RunInTransactionActionContractExpectation>
- */
-class RunInTransactionActionContractAssert extends AbstractExpectationCallMap implements RunInTransactionActionContract
+class RunInTransactionActionContractAssert extends AbstractExpectationCallsMap implements RunInTransactionActionContract
 {
-    public function __construct(array $expectationMap = [
-        new RunInTransactionActionContractExpectation(false),
-    ], int $callStep = 0)
+    /**
+     * @param array<RunInTransactionActionContractExpectation|null> $expectations
+     */
+    public function __construct(array $expectations = [new RunInTransactionActionContractExpectation(false)])
     {
-        parent::__construct($expectationMap, $callStep);
+        parent::__construct();
+
+        $this->setExpectations(RunInTransactionActionContractExpectation::class, $expectations);
     }
 
     /**
@@ -30,7 +30,7 @@ class RunInTransactionActionContractAssert extends AbstractExpectationCallMap im
      */
     public function execute(Closure $callback, int $attempts = 1): mixed
     {
-        $expectation = $this->getExpectation();
+        $expectation = $this->getExpectation(RunInTransactionActionContractExpectation::class);
         $message = $this->getDebugMessage();
 
         Assert::assertEquals($expectation->attempts, $attempts, $message);

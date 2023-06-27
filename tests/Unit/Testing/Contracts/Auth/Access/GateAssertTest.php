@@ -6,7 +6,7 @@ namespace Tests\LaraStrict\Unit\Testing\Contracts\Auth\Access;
 
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Auth\User;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Auth\Access\GateAbilitiesExpectation;

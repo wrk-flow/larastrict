@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Concerns;
 
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LogicException;
 

@@ -6,7 +6,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Translation;
 
 use Countable;
 use Illuminate\Contracts\Translation\Translator;
-use LaraStrict\Testing\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 
 class TranslatorAssert extends AbstractExpectationCallsMap implements Translator
@@ -19,10 +19,12 @@ class TranslatorAssert extends AbstractExpectationCallsMap implements Translator
      */
     public function __construct(array $get = [], array $choice = [], array $getLocale = [], array $setLocale = [])
     {
-        $this->setExpectations(TranslatorGetExpectation::class, array_values(array_filter($get)));
-        $this->setExpectations(TranslatorChoiceExpectation::class, array_values(array_filter($choice)));
-        $this->setExpectations(TranslatorGetLocaleExpectation::class, array_values(array_filter($getLocale)));
-        $this->setExpectations(TranslatorSetLocaleExpectation::class, array_values(array_filter($setLocale)));
+        parent::__construct();
+
+        $this->setExpectations(TranslatorGetExpectation::class, $get);
+        $this->setExpectations(TranslatorChoiceExpectation::class, $choice);
+        $this->setExpectations(TranslatorGetLocaleExpectation::class, $getLocale);
+        $this->setExpectations(TranslatorSetLocaleExpectation::class, $setLocale);
     }
 
     /**
