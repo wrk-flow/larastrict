@@ -48,35 +48,21 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
         array $redirectGuest = [],
         array $redirectToIntended = [],
     ) {
-        $this->setExpectations(ResponseFactoryMakeExpectation::class, array_values(array_filter($make)));
-        $this->setExpectations(ResponseFactoryNoContentExpectation::class, array_values(array_filter($noContent)));
-        $this->setExpectations(ResponseFactoryViewExpectation::class, array_values(array_filter($view)));
-        $this->setExpectations(ResponseFactoryJsonExpectation::class, array_values(array_filter($json)));
-        $this->setExpectations(ResponseFactoryJsonpExpectation::class, array_values(array_filter($jsonp)));
-        $this->setExpectations(ResponseFactoryStreamExpectation::class, array_values(array_filter($stream)));
-        $this->setExpectations(
-            ResponseFactoryStreamDownloadExpectation::class,
-            array_values(array_filter($streamDownload))
-        );
-        $this->setExpectations(ResponseFactoryDownloadExpectation::class, array_values(array_filter($download)));
-        $this->setExpectations(ResponseFactoryFileExpectation::class, array_values(array_filter($file)));
-        $this->setExpectations(ResponseFactoryRedirectToExpectation::class, array_values(array_filter($redirectTo)));
-        $this->setExpectations(
-            ResponseFactoryRedirectToRouteExpectation::class,
-            array_values(array_filter($redirectToRoute))
-        );
-        $this->setExpectations(
-            ResponseFactoryRedirectToActionExpectation::class,
-            array_values(array_filter($redirectToAction))
-        );
-        $this->setExpectations(
-            ResponseFactoryRedirectGuestExpectation::class,
-            array_values(array_filter($redirectGuest))
-        );
-        $this->setExpectations(
-            ResponseFactoryRedirectToIntendedExpectation::class,
-            array_values(array_filter($redirectToIntended))
-        );
+        parent::__construct();
+        $this->setExpectations(ResponseFactoryMakeExpectation::class, $make);
+        $this->setExpectations(ResponseFactoryNoContentExpectation::class, $noContent);
+        $this->setExpectations(ResponseFactoryViewExpectation::class, $view);
+        $this->setExpectations(ResponseFactoryJsonExpectation::class, $json);
+        $this->setExpectations(ResponseFactoryJsonpExpectation::class, $jsonp);
+        $this->setExpectations(ResponseFactoryStreamExpectation::class, $stream);
+        $this->setExpectations(ResponseFactoryStreamDownloadExpectation::class, $streamDownload);
+        $this->setExpectations(ResponseFactoryDownloadExpectation::class, $download);
+        $this->setExpectations(ResponseFactoryFileExpectation::class, $file);
+        $this->setExpectations(ResponseFactoryRedirectToExpectation::class, $redirectTo);
+        $this->setExpectations(ResponseFactoryRedirectToRouteExpectation::class, $redirectToRoute);
+        $this->setExpectations(ResponseFactoryRedirectToActionExpectation::class, $redirectToAction);
+        $this->setExpectations(ResponseFactoryRedirectGuestExpectation::class, $redirectGuest);
+        $this->setExpectations(ResponseFactoryRedirectToIntendedExpectation::class, $redirectToIntended);
     }
 
     /**

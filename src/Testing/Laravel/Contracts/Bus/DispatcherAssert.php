@@ -11,13 +11,13 @@ use PHPUnit\Framework\Assert;
 class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
 {
     /**
-     * @param array<DispatcherDispatchExpectation> $dispatch
-     * @param array<DispatcherDispatchSyncExpectation> $dispatchSync
-     * @param array<DispatcherDispatchNowExpectation> $dispatchNow
-     * @param array<DispatcherHasCommandHandlerExpectation> $hasCommandHandler
-     * @param array<DispatcherGetCommandHandlerExpectation> $getCommandHandler
-     * @param array<DispatcherPipeThroughExpectation> $pipeThrough
-     * @param array<DispatcherMapExpectation> $map
+     * @param array<DispatcherDispatchExpectation|null> $dispatch
+     * @param array<DispatcherDispatchSyncExpectation|null> $dispatchSync
+     * @param array<DispatcherDispatchNowExpectation|null> $dispatchNow
+     * @param array<DispatcherHasCommandHandlerExpectation|null> $hasCommandHandler
+     * @param array<DispatcherGetCommandHandlerExpectation|null> $getCommandHandler
+     * @param array<DispatcherPipeThroughExpectation|null> $pipeThrough
+     * @param array<DispatcherMapExpectation|null> $map
      */
     public function __construct(
         array $dispatch = [],
@@ -28,19 +28,14 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         array $pipeThrough = [],
         array $map = [],
     ) {
-        $this->setExpectations(DispatcherDispatchExpectation::class, array_values(array_filter($dispatch)));
-        $this->setExpectations(DispatcherDispatchSyncExpectation::class, array_values(array_filter($dispatchSync)));
-        $this->setExpectations(DispatcherDispatchNowExpectation::class, array_values(array_filter($dispatchNow)));
-        $this->setExpectations(
-            DispatcherHasCommandHandlerExpectation::class,
-            array_values(array_filter($hasCommandHandler))
-        );
-        $this->setExpectations(
-            DispatcherGetCommandHandlerExpectation::class,
-            array_values(array_filter($getCommandHandler))
-        );
-        $this->setExpectations(DispatcherPipeThroughExpectation::class, array_values(array_filter($pipeThrough)));
-        $this->setExpectations(DispatcherMapExpectation::class, array_values(array_filter($map)));
+        parent::__construct();
+        $this->setExpectations(DispatcherDispatchExpectation::class, $dispatch);
+        $this->setExpectations(DispatcherDispatchSyncExpectation::class, $dispatchSync);
+        $this->setExpectations(DispatcherDispatchNowExpectation::class, $dispatchNow);
+        $this->setExpectations(DispatcherHasCommandHandlerExpectation::class, $hasCommandHandler);
+        $this->setExpectations(DispatcherGetCommandHandlerExpectation::class, $getCommandHandler);
+        $this->setExpectations(DispatcherPipeThroughExpectation::class, $pipeThrough);
+        $this->setExpectations(DispatcherMapExpectation::class, $map);
     }
 
     /**

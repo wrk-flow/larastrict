@@ -13,22 +13,22 @@ use PHPUnit\Framework\Assert;
 class GateAssert extends AbstractExpectationCallsMap implements Gate
 {
     /**
-     * @param array<GateHasExpectation> $has
-     * @param array<GateDefineExpectation> $define
-     * @param array<GateResourceExpectation> $resource
-     * @param array<GatePolicyExpectation> $policy
-     * @param array<GateBeforeExpectation> $before
-     * @param array<GateAfterExpectation> $after
-     * @param array<GateAllowsExpectation> $allows
-     * @param array<GateDeniesExpectation> $denies
-     * @param array<GateCheckExpectation> $check
-     * @param array<GateAnyExpectation> $any
-     * @param array<GateAuthorizeExpectation> $authorize
-     * @param array<GateInspectExpectation> $inspect
-     * @param array<GateRawExpectation> $raw
-     * @param array<GateGetPolicyForExpectation> $getPolicyFor
-     * @param array<GateForUserExpectation> $forUser
-     * @param array<GateAbilitiesExpectation> $abilities
+     * @param array<GateHasExpectation|null> $has
+     * @param array<GateDefineExpectation|null> $define
+     * @param array<GateResourceExpectation|null> $resource
+     * @param array<GatePolicyExpectation|null> $policy
+     * @param array<GateBeforeExpectation|null> $before
+     * @param array<GateAfterExpectation|null> $after
+     * @param array<GateAllowsExpectation|null> $allows
+     * @param array<GateDeniesExpectation|null> $denies
+     * @param array<GateCheckExpectation|null> $check
+     * @param array<GateAnyExpectation|null> $any
+     * @param array<GateAuthorizeExpectation|null> $authorize
+     * @param array<GateInspectExpectation|null> $inspect
+     * @param array<GateRawExpectation|null> $raw
+     * @param array<GateGetPolicyForExpectation|null> $getPolicyFor
+     * @param array<GateForUserExpectation|null> $forUser
+     * @param array<GateAbilitiesExpectation|null> $abilities
      */
     public function __construct(
         array $has = [],
@@ -48,22 +48,23 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
         array $forUser = [],
         array $abilities = [],
     ) {
-        $this->setExpectations(GateHasExpectation::class, array_values(array_filter($has)));
-        $this->setExpectations(GateDefineExpectation::class, array_values(array_filter($define)));
-        $this->setExpectations(GateResourceExpectation::class, array_values(array_filter($resource)));
-        $this->setExpectations(GatePolicyExpectation::class, array_values(array_filter($policy)));
-        $this->setExpectations(GateBeforeExpectation::class, array_values(array_filter($before)));
-        $this->setExpectations(GateAfterExpectation::class, array_values(array_filter($after)));
-        $this->setExpectations(GateAllowsExpectation::class, array_values(array_filter($allows)));
-        $this->setExpectations(GateDeniesExpectation::class, array_values(array_filter($denies)));
-        $this->setExpectations(GateCheckExpectation::class, array_values(array_filter($check)));
-        $this->setExpectations(GateAnyExpectation::class, array_values(array_filter($any)));
-        $this->setExpectations(GateAuthorizeExpectation::class, array_values(array_filter($authorize)));
-        $this->setExpectations(GateInspectExpectation::class, array_values(array_filter($inspect)));
-        $this->setExpectations(GateRawExpectation::class, array_values(array_filter($raw)));
-        $this->setExpectations(GateGetPolicyForExpectation::class, array_values(array_filter($getPolicyFor)));
-        $this->setExpectations(GateForUserExpectation::class, array_values(array_filter($forUser)));
-        $this->setExpectations(GateAbilitiesExpectation::class, array_values(array_filter($abilities)));
+        parent::__construct();
+        $this->setExpectations(GateHasExpectation::class, $has);
+        $this->setExpectations(GateDefineExpectation::class, $define);
+        $this->setExpectations(GateResourceExpectation::class, $resource);
+        $this->setExpectations(GatePolicyExpectation::class, $policy);
+        $this->setExpectations(GateBeforeExpectation::class, $before);
+        $this->setExpectations(GateAfterExpectation::class, $after);
+        $this->setExpectations(GateAllowsExpectation::class, $allows);
+        $this->setExpectations(GateDeniesExpectation::class, $denies);
+        $this->setExpectations(GateCheckExpectation::class, $check);
+        $this->setExpectations(GateAnyExpectation::class, $any);
+        $this->setExpectations(GateAuthorizeExpectation::class, $authorize);
+        $this->setExpectations(GateInspectExpectation::class, $inspect);
+        $this->setExpectations(GateRawExpectation::class, $raw);
+        $this->setExpectations(GateGetPolicyForExpectation::class, $getPolicyFor);
+        $this->setExpectations(GateForUserExpectation::class, $forUser);
+        $this->setExpectations(GateAbilitiesExpectation::class, $abilities);
     }
 
     /**
