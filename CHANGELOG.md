@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.63] - 2023-06-28
+### :sparkles: New Features
+- [`2573fce`](https://github.com/wrk-flow/larastrict/commit/2573fce4195a112baa20c5d8ca9c89e30921f6ca) - **Http**: Add JsonResource that can create instances (with unit testing) *(commit by [@pionl](https://github.com/pionl))*
+- [`882c3b5`](https://github.com/wrk-flow/larastrict/commit/882c3b566f569e851304ebde3cd1c3fae4f1d1fa) - **Testing**: Add a unit test case for quick testing of resources *(commit by [@pionl](https://github.com/pionl))*
+- [`6e9a475`](https://github.com/wrk-flow/larastrict/commit/6e9a475f16e943f22ad80ead06612761987cb1aa) - **Testing**: Add ability to test models without Laravel framework *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.62] - 2023-06-27
 ### :bug: Bug Fixes
 - [`c30fc9c`](https://github.com/wrk-flow/larastrict/commit/c30fc9ccb2917bbcd84fa99e6105d3d8334288ec) - **Testing**: Upgrade Laravel assert (construct, nullable, remove array_values) *(commit by [@pionl](https://github.com/pionl))*
@@ -509,3 +516,5 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.60]: https://github.com/wrk-flow/larastrict/compare/v0.0.59...v0.0.60
 [v0.0.61]: https://github.com/wrk-flow/larastrict/compare/v0.0.60...v0.0.61
 [v0.0.62]: https://github.com/wrk-flow/larastrict/compare/v0.0.61...v0.0.62
+
+[v0.0.63]: https://github.com/wrk-flow/larastrict/compare/v0.0.62...v0.0.63
