@@ -13,35 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :boom: BREAKING CHANGES
 - due to [`acc90a9`](https://github.com/wrk-flow/larastrict/commit/acc90a92dce54ef67f483fe734e70bb4e1ecd9d0) - AssertExpectations automatically checks if expectations were called *(commit by [@pionl](https://github.com/pionl))*:
 
-  Due the changes the expectation logic has been changed and you need to update your code:  
-  - `LaraStrict\Testing\AbstractExpectationCallsMap` moved to `LaraStrict\Testing\Assert\AbstractExpectationCallsMap`  
-  - Every generated Assert needs to be updated (regenerate or manually change it):  
-       - Add `parent::construct()` the the constructor  
-       - Add missing `|null` to expectations phpdoc if missing  
-       - Remove `array_values(array_filter(` usage (not required)  
-       - Example src/Testing/Context/Contracts/ContextServiceContractAssert.php  
-  - `LaraStrict\Testing\AbstractExpectationCallMap` was removed in favor of `AbstractExpectationCallsMap`  
-       - example of change: `src/Testing/Database/Contracts/SafeUniqueSaveActionContractAssert.php`  
-       - Extend AbstractExpectationCallsMap  
-       - Add constructor method and call parent  
-       - Add `array $expectations = []` to the constructor  
-       - Move template value from `@extends` to phpdoc for $expectations  
-       - Remove `@extends` phpdoc  
-       - Add expectation class to `getExpectation call`  
-  ```php  
-      /**  
-       * @param array<SafeUniqueSaveActionContractExpectation|null> $expectations  
-       */  
-      public function __construct(array $expectations = [])  
-      {  
-          parent::__construct();  
-          $this->setExpectations(AppConfigContractGetVersionExpectation::class, $expectations);  
-      }  
-  ….  
-  $expectation = $this->getExpectation(AppConfigContractGetVersionExpectation::class);  
-  ```  
-  - To automatically assert if expectations were used use `AssertExpectationTestCase` or `AssertExpectationManagerTrait`
-
+Due the changes the expectation logic has been changed and you need to update your code. How to migrate in PR #40
 
 ### :sparkles: New Features
 - [`acc90a9`](https://github.com/wrk-flow/larastrict/commit/acc90a92dce54ef67f483fe734e70bb4e1ecd9d0) - **Testing**: AssertExpectations automatically checks if expectations were called *(commit by [@pionl](https://github.com/pionl))*
