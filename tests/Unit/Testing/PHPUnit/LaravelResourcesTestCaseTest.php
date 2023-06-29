@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Testing\PHPUnit;
 
+use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LaraStrict\Testing\PHPUnit\ResourceTestCase;
@@ -37,6 +38,15 @@ class LaravelResourcesTestCaseTest extends ResourceTestCase
                 ),
             ],
         ];
+    }
+
+    /**
+     * @param Closure(static):void $assert
+     * @dataProvider data
+     */
+    public function test(Closure $assert): void
+    {
+        $assert($this);
     }
 
     protected function createResource(mixed $object): JsonResource

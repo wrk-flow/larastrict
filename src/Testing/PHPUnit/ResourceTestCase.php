@@ -26,15 +26,6 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     abstract public function data(): array;
 
     /**
-     * @param Closure(static):void $assert
-     * @dataProvider data
-     */
-    public function test(Closure $assert): void
-    {
-        $assert($this);
-    }
-
-    /**
      * @param TEntity|callable():TEntity         $object
      * @param array<string|int, mixed>|Exception $expected
      * @param TestingContainer|null              $container Set container to the resource.
