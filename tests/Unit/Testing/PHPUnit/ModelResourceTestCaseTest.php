@@ -32,7 +32,7 @@ class ModelResourceTestCaseTest extends ModelResourceTestCase
         ];
     }
 
-    protected function createResource(object $object): JsonResource
+    protected function createResource(mixed $object): JsonResource
     {
         return new ModelResource($object);
     }

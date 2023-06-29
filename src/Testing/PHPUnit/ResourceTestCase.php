@@ -14,7 +14,7 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Adapter\Phpunit\MockeryTestCaseSetUp;
 
 /**
- * @template TEntity of object
+ * @template TEntity
  */
 abstract class ResourceTestCase extends AssertExpectationTestCase
 {
@@ -44,15 +44,15 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     }
 
     /**
-     * @param TEntity $object
+     * @param TEntity|callable():TEntity $object
      * @param array<string|int, mixed>  $expected
      * @param TestingContainer|null $container Set container to the resource.
      */
-    protected function assert(object $object, array $expected, ?TestingContainer $container = null): void
+    protected function assert(mixed $object, array $expected, ?TestingContainer $container = null): void
     {
         $request = new Request();
 
-        $resource = $this->createResource($object);
+        $resource = $this->createResource(is_callable($object) ? $object() : $object);
 
         if ($resource instanceof LaraStrictJsonResource && $container !== null) {
             $resource->setContainer($container);
@@ -64,5 +64,5 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     /**
      * @param TEntity $object
      */
-    abstract protected function createResource(object $object): JsonResource;
+    abstract protected function createResource(mixed $object): JsonResource;
 }

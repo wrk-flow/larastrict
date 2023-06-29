@@ -31,7 +31,7 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
         ];
     }
 
-    protected function createResource(object $object): JsonResource
+    protected function createResource(mixed $object): JsonResource
     {
         return new LaravelResource($object);
     }
