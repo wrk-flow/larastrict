@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace LaraStrict\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Http\Enums\HttpMessage;
 
 /**
