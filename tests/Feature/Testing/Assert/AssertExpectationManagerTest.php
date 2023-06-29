@@ -11,6 +11,9 @@ class AssertExpectationManagerTest extends TestCase
 {
     public function testSingleton(): void
     {
+        // Singleton is initialized in different test case.
+        AssertExpectationManager::resetSingleton();
+
         $instance = AssertExpectationManager::getInstance();
 
         $this->assertSame($instance, AssertExpectationManager::getInstance());

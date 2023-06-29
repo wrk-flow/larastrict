@@ -25,6 +25,11 @@ final class AssertExpectationManager
         return self::$singleton;
     }
 
+    public static function resetSingleton(): void
+    {
+        self::$singleton = null;
+    }
+
     public function register(AbstractExpectationCallsMap $map): void
     {
         $this->currentExpectations[] = $map;

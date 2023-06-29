@@ -6,6 +6,8 @@ namespace LaraStrict\Testing\PHPUnit;
 
 use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Testing\PHPUnit\Traits\MockModels;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+use Mockery\Adapter\Phpunit\MockeryTestCaseSetUp;
 
 /**
  * @template TModel of Model
@@ -13,12 +15,16 @@ use LaraStrict\Testing\PHPUnit\Traits\MockModels;
  */
 abstract class ModelResourceTestCase extends ResourceTestCase
 {
+    use MockeryPHPUnitIntegration;
+    use MockeryTestCaseSetUp;
     use MockModels;
 
-    protected function setUp(): void
+    protected function mockeryTestSetUp(): void
     {
-        parent::setUp();
-
         $this->mockModels();
+    }
+
+    protected function mockeryTestTearDown(): void
+    {
     }
 }

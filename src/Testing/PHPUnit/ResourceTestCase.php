@@ -13,8 +13,6 @@ use LaraStrict\Http\Resources\JsonResourceCollection;
 use LaraStrict\Testing\Assert\AssertExpectationTestCase;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LogicException;
-use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use Mockery\Adapter\Phpunit\MockeryTestCaseSetUp;
 use Throwable;
 
 /**
@@ -22,9 +20,6 @@ use Throwable;
  */
 abstract class ResourceTestCase extends AssertExpectationTestCase
 {
-    use MockeryPHPUnitIntegration;
-    use MockeryTestCaseSetUp;
-
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
@@ -37,14 +32,6 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     public function test(Closure $assert): void
     {
         $assert($this);
-    }
-
-    protected function mockeryTestSetUp(): void
-    {
-    }
-
-    protected function mockeryTestTearDown(): void
-    {
     }
 
     /**
