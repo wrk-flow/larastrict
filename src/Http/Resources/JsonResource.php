@@ -19,6 +19,20 @@ abstract class JsonResource extends BaseJsonResource
         return $this;
     }
 
+    public static function collection($resource): JsonResourceCollection
+    {
+        return tap(
+            new JsonResourceCollection($resource, static::class),
+            static function (JsonResourceCollection $collection) {
+                // preserveKeys was added Laravel v9.45.0
+                if (property_exists($collection, 'preserveKeys')
+                    && property_exists(static::class, 'preserveKeys')) {
+                    $collection->preserveKeys = (new static(null))->preserveKeys === true;
+                }
+            }
+        );
+    }
+
     protected function getContainer(): Container
     {
         if ($this->container === null) {

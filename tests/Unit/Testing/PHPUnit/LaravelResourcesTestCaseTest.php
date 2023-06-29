@@ -10,28 +10,28 @@ use LaraStrict\Testing\PHPUnit\ResourceTestCase;
 use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
 
 /**
- * @extends ResourceTestCase<TestEntity>
+ * @extends ResourceTestCase<array<TestEntity>>
  */
-class LaravelResourceTestCaseTest extends ResourceTestCase
+class LaravelResourcesTestCaseTest extends ResourceTestCase
 {
     public function data(): array
     {
         return [
-            [
+            'ok - value 1' => [
                 static fn (self $testCase) => $testCase->assert(
-                    object: new TestEntity(value: 'test'),
-                    expected: self::expect(value: 'test')
+                    object: [new TestEntity(value: 'test')],
+                    expected: [self::expect(value: 'test')]
                 ),
             ],
-            [
+            'ok - value 2' => [
                 static fn (self $testCase) => $testCase->assert(
-                    object: new TestEntity(value: 'test22'),
-                    expected: self::expect(value: 'test22')
+                    object: [new TestEntity(value: 'test22')],
+                    expected: [self::expect(value: 'test22')]
                 ),
             ],
             'fail while setting container' => [
                 static fn (self $testCase) => $testCase->assert(
-                    object: new TestEntity(value: 'test'),
+                    object: [new TestEntity(value: 'test')],
                     expected: self::containerCannotBeSetException(),
                     container: new TestingContainer(),
                 ),
@@ -41,7 +41,7 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
 
     protected function createResource(mixed $object): JsonResource
     {
-        return new LaravelResource($object);
+        return LaravelResource::collection($object);
     }
 
     protected static function expect(string $value): array
