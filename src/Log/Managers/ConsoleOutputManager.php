@@ -32,9 +32,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ConsoleOutputManager
 {
     private const KeyDriver = 'larastrict_console_output_driver';
-
     private const KeyLoggingConsoleOutput = 'larastrict_console_output';
-
     private const KeyLoggingOutputStack = 'larastrict_console_output_stack';
 
     private ?string $previousDefaultDriver = null;

@@ -14,7 +14,6 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestAction;
 class TestingContainerTest extends TestCase
 {
     final public const Args = ['arg1'];
-
     final public const Abstract = 'test';
 
     public function make(): array

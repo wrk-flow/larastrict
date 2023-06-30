@@ -14,9 +14,7 @@ final class FloatCast implements CastsAttributes
 {
     // Laravel casts supports creating cast with arguments.
     public const OneDecimal = self::class . ':1';
-
     public const ThreeDecimals = self::class . ':3';
-
     public const FourDecimals = self::class . ':4';
 
     public function __construct(

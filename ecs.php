@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
@@ -11,6 +12,14 @@ return static function (ECSConfig $containerConfigurator): void {
     $containerConfigurator->import(SetList::SYMPLIFY);
     $containerConfigurator->import(SetList::COMMON);
     $containerConfigurator->import(SetList::CLEAN_CODE);
+
+    $containerConfigurator->ruleWithConfiguration(ClassAttributesSeparationFixer::class, [
+        'elements' => [
+            'const' => 'only_if_meta',
+            'property' => 'one',
+            'method' => 'one',
+        ],
+    ]);
 
     $containerConfigurator->parallel();
     $containerConfigurator->paths(

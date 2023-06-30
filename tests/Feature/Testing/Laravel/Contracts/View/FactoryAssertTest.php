@@ -23,11 +23,9 @@ use Tests\LaraStrict\Unit\Testing\Laravel\Composer;
 class FactoryAssertTest extends TestCase
 {
     use AssertExpectations;
-
     final public const Data = [
         'data' => 1,
     ];
-
     final public const MergeData = [
         'data' => 2,
     ];

@@ -20,9 +20,7 @@ use Tests\LaraStrict\Feature\Database\Models\Test;
 class CacheMeServiceContractAssertTest extends TestCase
 {
     use AssertExpectations;
-
     private const Return = 'test';
-
     private const Key = 'key';
 
     protected function generateData(): array

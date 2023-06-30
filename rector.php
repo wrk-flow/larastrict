@@ -6,6 +6,7 @@ use Rector\CodeQuality\Rector\ClassMethod\ReturnTypeFromStrictScalarReturnExprRe
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\ClassConst\VarConstantCommentRector;
 use Rector\CodingStyle\Rector\ClassMethod\UnSpreadOperatorRector;
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
 use Rector\Core\ValueObject\PhpVersion;
 use Rector\Set\ValueObject\LevelSetList;
@@ -40,6 +41,7 @@ return static function (RectorConfig $config): void {
         UnSpreadOperatorRector::class => $laravelClasses,
         ReturnTypeFromStrictScalarReturnExprRector::class => $laravelClasses,
         VarConstantCommentRector::class,
+        NewlineAfterStatementRector::class,
         StaticArrowFunctionRector::class => [__DIR__ . '/src/Log/Managers/ConsoleOutputManager.php'],
         // We want to leave the relative constant path usage
         __DIR__ . '/tests/Feature/Testing/Commands/MakeExpectationCommand/*.php',

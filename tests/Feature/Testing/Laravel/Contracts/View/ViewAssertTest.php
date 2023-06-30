@@ -17,11 +17,9 @@ use PHPUnit\Framework\TestCase;
 class ViewAssertTest extends TestCase
 {
     use AssertExpectations;
-
     final public const Data = [
         'data' => 1,
     ];
-
     final public const MergeData = [
         'data' => 2,
     ];

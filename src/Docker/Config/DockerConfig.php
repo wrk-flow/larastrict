@@ -10,7 +10,6 @@ use LaraStrict\Docker\DockerServiceProvider;
 class DockerConfig extends AbstractProviderConfig
 {
     final public const KeyInDockerEnvironment = 'in_docker_environment';
-
     final public const KeyOutputProcess = 'output_process';
 
     public function isInDockerEnvironment(): bool

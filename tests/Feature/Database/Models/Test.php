@@ -17,9 +17,7 @@ class Test extends Model
 {
     use HasFactory;
     use SoftDeletes;
-
     final public const AttributeTest = 'test';
-
     final public const AttributeDeletedAt = 'deleted_at';
 
     protected $fillable = [self::AttributeTest];

@@ -20,7 +20,6 @@ use Tests\LaraStrict\Unit\Testing\Laravel\Composer;
 class BootViewComposersPipeTest extends TestCase
 {
     use TestData;
-
     final public const ServiceName = 'Test';
 
     public function data(): array

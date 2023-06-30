@@ -11,19 +11,12 @@ use LaraStrict\Enums\EnvironmentType;
 class AppConfig extends AbstractConfig implements AppConfigContract
 {
     final public const KeyEnv = 'env';
-
     final public const ConfigName = 'app';
-
     final public const KeyKey = 'key';
-
     final public const KeyUrl = 'url';
-
     final public const KeyAssetUrl = 'asset_url';
-
     final public const KeyName = 'name';
-
     final public const KeyDebug = 'debug';
-
     final public const KeyVersion = 'version';
 
     /**

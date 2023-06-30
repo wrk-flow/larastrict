@@ -19,7 +19,6 @@ use Throwable;
 class GetPublicExceptionMessageActionTest extends TestCase
 {
     use TestData;
-
     final public const TranslationKey = 'exceptions.' . TranslatableException::class;
 
     public function data(): array

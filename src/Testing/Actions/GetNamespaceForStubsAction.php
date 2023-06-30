@@ -14,7 +14,6 @@ use LogicException;
 class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 {
     final public const ComposerAutoLoadDev = 'autoload-dev';
-
     final public const ComposerPsr4 = 'psr-4';
 
     public function __construct(
