@@ -22,7 +22,7 @@ concurrency:
 jobs:
   code:
     name: "Code check"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@413382f6c5e64547023014233ddf78bf9a627607
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@a1834abbb49f67a0349bc29aad66e434c0441721
     secrets: inherit
 
   tests:
@@ -30,7 +30,7 @@ jobs:
     strategy:
       matrix:
         phpVersion: [ "8.1", "8.2" ]
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@413382f6c5e64547023014233ddf78bf9a627607
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@a1834abbb49f67a0349bc29aad66e434c0441721
     with:
       gistID: ${{ vars.GIST_ID }}
       gistOnPhpVersion: "8.2"
