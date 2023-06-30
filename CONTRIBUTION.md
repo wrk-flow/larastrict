@@ -18,7 +18,7 @@ Use the discussion functionality and propose your idea:
 - We are using [conventionalcommits](https://www.conventionalcommits.org/en/v1.0.0/)
 - CHANGELOG.md is generated from given commits using this [action](https://github.com/requarks/changelog-action).
 - Use: `fix: feat:, build:, chore:, ci:, docs:, style:, refactor:, perf:, test:`
-- These keywords will ignore changelog change `build,docs,other,style`
+- These keywords will ignore changelog change `build,docs,style`
 
 ## Wait to take in account
 
