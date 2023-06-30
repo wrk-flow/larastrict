@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\PHPUnit;
 
-use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Testing\PHPUnit\Traits\MockModels;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Adapter\Phpunit\MockeryTestCaseSetUp;
 
 /**
- * @template TModel of Model
- * @extends ResourceTestCase<TModel>
+ * @template TEntity
+ * @extends ResourceTestCase<TEntity>
  */
 abstract class ModelResourceTestCase extends ResourceTestCase
 {
