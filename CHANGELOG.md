@@ -4,6 +4,61 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.64] - 2023-06-30
+### :boom: BREAKING CHANGES
+- due to [`780f59a`](https://github.com/wrk-flow/larastrict/commit/780f59a55187f79a993699f9356065961b12f27c) - ResourceTestCase $object supports mixed type or closure *(commit by [@pionl](https://github.com/pionl))*:
+
+  Update createResource typehint to mixed.
+
+- due to [`e3bf3ec`](https://github.com/wrk-flow/larastrict/commit/e3bf3ecce475e816ff0572efd12f0e7ecea12c3c) - Add support for setting container to collection of resources *(commit by [@pionl](https://github.com/pionl))*:
+
+  If you pass container and do not use JsonResource exception will be thrown.
+
+- due to [`20b1ff4`](https://github.com/wrk-flow/larastrict/commit/20b1ff410011dd42f1f47a6047fdf7ab0fa3807b) - Move mockery to ModelResourceTestCase *(commit by [@pionl](https://github.com/pionl))*:
+
+  ResourceTestCase does not include Mockery. Use this if needed  
+  ```php  
+      use MockeryPHPUnitIntegration;  
+      use MockeryTestCaseSetUp;  
+      protected function mockeryTestSetUp(): void  
+      {  
+          $this->mockModels();  
+      }  
+      protected function mockeryTestTearDown(): void  
+      {  
+      }  
+  ```
+
+- due to [`99006bf`](https://github.com/wrk-flow/larastrict/commit/99006bfd06ffc669ce6b38a59d51075b4c92c10c) - PHPStorm run for ResourceTestCase with single data entry test *(commit by [@pionl](https://github.com/pionl))*:
+
+  to allow running single data test in PHPStorm, test function was removed.  
+  To run tests add this method when extending the TestCase.  
+  ```php  
+      /**  
+       * @param \Closure(static):void $assert  
+       * @dataProvider data  
+       */  
+      public function test(\Closure $assert): void  
+      {  
+          $assert($this);  
+      }  
+  ```
+
+
+### :sparkles: New Features
+- [`3e7b7e9`](https://github.com/wrk-flow/larastrict/commit/3e7b7e9f9571f61a48156d51a1d565438f1b89ca) - **Http**: Update MessageResource to use own JsonResource *(commit by [@pionl](https://github.com/pionl))*
+- [`780f59a`](https://github.com/wrk-flow/larastrict/commit/780f59a55187f79a993699f9356065961b12f27c) - **Testing**: ResourceTestCase $object supports mixed type or closure *(commit by [@pionl](https://github.com/pionl))*
+- [`e3bf3ec`](https://github.com/wrk-flow/larastrict/commit/e3bf3ecce475e816ff0572efd12f0e7ecea12c3c) - **Http**: Add support for setting container to collection of resources *(commit by [@pionl](https://github.com/pionl))*
+- [`20b1ff4`](https://github.com/wrk-flow/larastrict/commit/20b1ff410011dd42f1f47a6047fdf7ab0fa3807b) - **Testing**: Move mockery to ModelResourceTestCase *(commit by [@pionl](https://github.com/pionl))*
+- [`34af3f0`](https://github.com/wrk-flow/larastrict/commit/34af3f0554ac70ca4cdb2ba7374cfe9e3ec61f8d) - **Http**: Add resourceArray to JsonResource/ResourceTestCase *(commit by [@pionl](https://github.com/pionl))*
+
+### :bug: Bug Fixes
+- [`99006bf`](https://github.com/wrk-flow/larastrict/commit/99006bfd06ffc669ce6b38a59d51075b4c92c10c) - **Testing**: PHPStorm run for ResourceTestCase with single data entry test *(commit by [@pionl](https://github.com/pionl))*
+
+### :white_check_mark: Tests
+- [`6a2788a`](https://github.com/wrk-flow/larastrict/commit/6a2788a62bdbe80e60f0167ce8289178a3586149) - Add test for internal resources *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.63] - 2023-06-28
 ### :sparkles: New Features
 - [`2573fce`](https://github.com/wrk-flow/larastrict/commit/2573fce4195a112baa20c5d8ca9c89e30921f6ca) - **Http**: Add JsonResource that can create instances (with unit testing) *(commit by [@pionl](https://github.com/pionl))*
@@ -518,3 +573,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.62]: https://github.com/wrk-flow/larastrict/compare/v0.0.61...v0.0.62
 
 [v0.0.63]: https://github.com/wrk-flow/larastrict/compare/v0.0.62...v0.0.63
+[v0.0.64]: https://github.com/wrk-flow/larastrict/compare/v0.0.63...v0.0.64
