@@ -29,10 +29,11 @@ jobs:
     name: "Run tests"
     strategy:
       matrix:
-        php-version: [ "8.1", "8.2" ]
+        phpVersion: [ "8.1", "8.2" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@413382f6c5e64547023014233ddf78bf9a627607
     with:
       gistID: ${{ vars.GIST_ID }}
       gistOnPhpVersion: "8.2"
+      phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
