@@ -38,17 +38,38 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
         $assert($this);
     }
 
+    public function testResourceArray(): void
+    {
+        $resource = $this->createResource(new TestEntity(value: 'test'));
+
+        $this->assertEquals(
+            expected: self::expected(value: 'test', instance: '1'),
+            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1'))
+        );
+    }
+
+    public function testResourceArrayCollection(): void
+    {
+        $resource = LaraStrictResource::collection([new TestEntity(value: 'test')]);
+
+        $this->assertEquals(
+            expected: [self::expected(value: 'test', instance: '1')],
+            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1'))
+        );
+    }
+
+    public function testResourceArrayNull(): void
+    {
+        $this->assertNull($this->resourceArray(resource: null, container: $this->createContainer(instance: '1')));
+        $this->assertNull($this->resourceArray(resource: null));
+    }
+
     protected function myAssert(string $value, string $instance): void
     {
         $this->assert(
             object: new TestEntity(value: $value),
-            expected: [
-                'test' => $value,
-                'instance' => $instance,
-            ],
-            container: new TestingContainer(
-                makeAlwaysBinding: static fn () => new TestAction($instance)
-            ),
+            expected: self::expected($value, $instance),
+            container: $this->createContainer($instance),
         );
     }
 
@@ -57,10 +78,18 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
         return new LaraStrictResource($object);
     }
 
-    protected static function createContainer(string $value): TestingContainer
+    protected static function createContainer(string $instance): TestingContainer
     {
         return new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction($value)
+            makeAlwaysBinding: static fn () => new TestAction($instance)
         );
+    }
+
+    protected static function expected(string $value, string $instance): array
+    {
+        return [
+            'test' => $value,
+            'instance' => $instance,
+        ];
     }
 }

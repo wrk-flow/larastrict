@@ -6,6 +6,7 @@ namespace LaraStrict\Http\Resources;
 
 use Illuminate\Container\Container as LaravelContainer;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
 
 abstract class JsonResource extends BaseJsonResource
@@ -40,6 +41,21 @@ abstract class JsonResource extends BaseJsonResource
         }
 
         return $this->container;
+    }
+
+    /**
+     * Call toArray on the resource with given request. If the resource is a JsonResource or JsonResourceCollection,
+     * container is set on the resource.
+     *
+     * @return array<string|int, mixed>
+     */
+    protected function resourceArray(Request $request, BaseJsonResource $resource): array
+    {
+        if ($resource instanceof self || $resource instanceof JsonResourceCollection) {
+            $resource->setContainer($this->getContainer());
+        }
+
+        return (array) $resource->toArray($request);
     }
 
     /**

@@ -6,8 +6,10 @@ namespace LaraStrict\Testing\PHPUnit;
 
 use Closure;
 use Exception;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
 use LaraStrict\Http\Resources\JsonResource as LaraStrictJsonResource;
 use LaraStrict\Http\Resources\JsonResourceCollection;
 use LaraStrict\Testing\Assert\AssertExpectationTestCase;
@@ -20,6 +22,23 @@ use Throwable;
  */
 abstract class ResourceTestCase extends AssertExpectationTestCase
 {
+    private ?Request $request = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->request = null;
+    }
+
+    public function getRequest(): Request
+    {
+        if ($this->request === null) {
+            $this->request = $this->createRequest();
+        }
+
+        return $this->request;
+    }
+
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
@@ -37,24 +56,15 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
             $this->expectExceptionObject($expected);
         }
 
-        $request = new Request();
-
         $resource = $this->createResource(is_callable($object) ? $object() : $object);
 
-        if ($container !== null) {
-            if ($resource instanceof LaraStrictJsonResource === false
-                && $resource instanceof JsonResourceCollection === false) {
-                throw self::containerCannotBeSetException();
-            }
-
-            $resource->setContainer($container);
-        }
+        $this->tryToSetContainer(container: $container, resource: $resource);
 
         if ($expected instanceof Throwable) {
             $this->expectExceptionObject($expected);
         }
 
-        $result = $resource->resolve($request);
+        $result = $resource->resolve($this->getRequest());
 
         $this->assertEquals(expected: $expected, actual: $result);
     }
@@ -64,6 +74,28 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
      */
     abstract protected function createResource(mixed $object): JsonResource;
 
+    /**
+     * Calls toArray on the resource. If the resource is a LaraStrictJsonResource or JsonResourceCollection, the
+     * container will be set on the resource (if provided).
+     *
+     * By default, the request is set from $this->getRequest() method.
+     *
+     * @return array<int|string, mixed>|null
+     */
+    protected function resourceArray(
+        ?BaseJsonResource $resource,
+        ?TestingContainer $container = null,
+        Request $request = null
+    ): ?array {
+        if ($resource === null) {
+            return null;
+        }
+
+        $this->tryToSetContainer(container: $container, resource: $resource);
+
+        return (array) $resource->toArray($request ?? $this->getRequest());
+    }
+
     protected static function containerCannotBeSetException(): LogicException
     {
         return new LogicException(sprintf(
@@ -71,5 +103,24 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
             LaraStrictJsonResource::class,
             JsonResourceCollection::class
         ));
+    }
+
+    protected function createRequest(): Request
+    {
+        return new Request();
+    }
+
+    protected function tryToSetContainer(?TestingContainer $container, BaseJsonResource $resource): void
+    {
+        if ($container === null) {
+            return;
+        }
+
+        if ($resource instanceof LaraStrictJsonResource === false
+            && $resource instanceof JsonResourceCollection === false) {
+            throw self::containerCannotBeSetException();
+        }
+
+        $resource->setContainer($container);
     }
 }
