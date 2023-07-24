@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :boom: BREAKING CHANGES
 - due to [`ecbd60b`](https://github.com/wrk-flow/larastrict/commit/ecbd60b80eda06fc18a5ac4dd866ae8d6f8490ad) - Add ability to create request without Laravel container *(commit by [@pionl](https://github.com/pionl))*:
 
-  createPostRequest has been renamed to createAndValidadeRequest
+  createPostRequest has been renamed to createAndValidateRequest
 
 
 ### :sparkles: New Features
