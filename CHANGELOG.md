@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.67] - 2023-07-24
+### :sparkles: New Features
+- [`e99a21e`](https://github.com/wrk-flow/larastrict/commit/e99a21e6713ebf03c7931078507f4204daa8a9c5) - **Database**: Add ability to force null values to 0.0 when using FloatCast *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.66] - 2023-07-08
 ### :sparkles: New Features
 - [`0583ac8`](https://github.com/wrk-flow/larastrict/commit/0583ac8578f639e2bf189ea977bc820567299d56) - **Database**: Add OrderByValuesScope for ordering by values in given order *(commit by [@pionl](https://github.com/pionl))*
@@ -586,3 +591,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.64]: https://github.com/wrk-flow/larastrict/compare/v0.0.63...v0.0.64
 [v0.0.65]: https://github.com/wrk-flow/larastrict/compare/v0.0.64...v0.0.65
 [v0.0.66]: https://github.com/wrk-flow/larastrict/compare/v0.0.65...v0.0.66
+[v0.0.67]: https://github.com/wrk-flow/larastrict/compare/v0.0.66...v0.0.67
