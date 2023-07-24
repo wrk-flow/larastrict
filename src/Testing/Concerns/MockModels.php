@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace LaraStrict\Testing\PHPUnit\Traits;
+namespace LaraStrict\Testing\Concerns;
 
 use Illuminate\Database\ConnectionResolverInterface;
 use Illuminate\Database\Eloquent\Model;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\PHPUnit;
 
-use LaraStrict\Testing\PHPUnit\Traits\MockModels;
+use LaraStrict\Testing\Concerns\MockModels;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Mockery\Adapter\Phpunit\MockeryTestCaseSetUp;
 
