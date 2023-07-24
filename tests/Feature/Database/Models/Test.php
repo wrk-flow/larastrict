@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use LaraStrict\Database\Models\Casts\FloatCast;
 
 /**
  * @property int $test
@@ -19,6 +20,25 @@ class Test extends Model
     use SoftDeletes;
     final public const AttributeTest = 'test';
     final public const AttributeDeletedAt = 'deleted_at';
+    final public const AttributeFloatNonNull = 'float_non_null';
+    final public const AttributeFloat = 'float';
+    final public const AttributeFloat1Decimals = 'float_1_decimals';
+    final public const AttributeFloat3Decimals = 'float_3_decimals';
+    final public const AttributeFloat4Decimals = 'float_4_decimals';
+    final public const AttributeFloat1DecimalsNonNull = 'float_1_decimals_non_null';
+    final public const AttributeFloat3DecimalsNonNull = 'float_3_decimals_non_null';
+    final public const AttributeFloat4DecimalsNonNull = 'float_4_decimals_non_null';
+
+    protected $casts = [
+        self::AttributeFloatNonNull => FloatCast::NonNull,
+        self::AttributeFloat => FloatCast::class,
+        self::AttributeFloat1Decimals => FloatCast::OneDecimal,
+        self::AttributeFloat3Decimals => FloatCast::ThreeDecimals,
+        self::AttributeFloat4Decimals => FloatCast::FourDecimals,
+        self::AttributeFloat1DecimalsNonNull => FloatCast::OneDecimalNonNull,
+        self::AttributeFloat3DecimalsNonNull => FloatCast::ThreeDecimalsNonNull,
+        self::AttributeFloat4DecimalsNonNull => FloatCast::FourDecimalsNonNull,
+    ];
 
     protected $fillable = [self::AttributeTest];
 }
