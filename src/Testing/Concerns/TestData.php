@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Concerns;
 use Closure;
 
 /**
- * Create simple test case with data set and their assert closure
+ * Create simple test case with data set and their assert closure TODO: deprecate
  */
 trait TestData
 {

@@ -12,7 +12,6 @@ use LaraStrict\User\Contracts\GetUserForAutoLoginActionContract;
 use LaraStrict\User\Http\Middlewares\Authenticate;
 use Tests\LaraStrict\Feature\TestCase;
 use Tests\LaraStrict\Feature\Testing\Concerns\TestRequest;
-use const true;
 
 class AuthenticateTest extends TestCase
 {
@@ -65,8 +64,7 @@ class AuthenticateTest extends TestCase
         $this->app()
             ->detectEnvironment(static fn () => $environment->value);
 
-        $request = $this->createPostRequest(
-            application: $this->app(),
+        $request = $this->createFormRequest(
             requestClass: TestRequest::class,
             data: [
                 'test' => 'test',

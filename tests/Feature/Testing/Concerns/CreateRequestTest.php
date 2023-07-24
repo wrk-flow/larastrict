@@ -16,7 +16,7 @@ class CreateRequestTest extends TestCase
         $data = [
             TestRequest::KeyTest => 'value',
         ];
-        $request = $this->createPostRequest($this->app(), requestClass: TestRequest::class, data: $data);
+        $request = $this->createAndValidateRequest($this->app(), requestClass: TestRequest::class, data: $data);
         $this->assertEquals($data, $request->validated());
         $this->assertTrue($request->acceptsJson());
         $this->assertEquals('https://testing', $request->url());
@@ -25,6 +25,6 @@ class CreateRequestTest extends TestCase
     public function testFail(): void
     {
         $this->expectExceptionMessage('The test field is required.');
-        $this->createPostRequest($this->app(), TestRequest::class, []);
+        $this->createAndValidateRequest($this->app(), TestRequest::class, []);
     }
 }

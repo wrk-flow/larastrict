@@ -16,14 +16,14 @@ use Illuminate\Contracts\Foundation\Application;
 class TestingContainer implements Container
 {
     /**
-     * @param array<string, object|Closure(array):(object|null)|null> $makeBindings A map of closures that will create.
+     * @param array<string, object|Closure(array $makeBindings, class-string $abstract):(object|null)|null> $makeBindings A map of closures that will create.
      *                                                                              Receives make $parameters and
      *                                                                              $abstract string
      * @param Closure(array,string):(object|null)|object|null $makeAlwaysBinding If makeBindings has no entry, it
      *                                                                              will call make on this closure or
      *                                                                              given object. Receives make
      *                                                                              $parameters and $abstract string
-     * @param Closure(Closure $call,array $parameters,?string $defaultMethod):mixed $call
+     * @param Closure(Closure $call,array $makeBindings,?string $defaultMethod):mixed $call
      */
     public function __construct(
         private array $makeBindings = [],
