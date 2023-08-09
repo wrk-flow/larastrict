@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Assert;
 
-use LogicException;
-
 abstract class AbstractExpectationCallsMap
 {
     /**
@@ -39,7 +37,7 @@ abstract class AbstractExpectationCallsMap
      * @template TExpectation
      *
      * @param class-string<TExpectation> $class
-     * @param array<TExpectation|null>        $expectations
+     * @param array<TExpectation|null>   $expectations
      */
     public function setExpectations(string $class, array $expectations): self
     {
@@ -66,7 +64,7 @@ abstract class AbstractExpectationCallsMap
             return;
         }
 
-        throw new LogicException(implode(PHP_EOL, array_map(static fn (string $e) => $e, $errors)));
+        throw new AssertException(implode(PHP_EOL, array_map(static fn(string $e) => $e, $errors)));
     }
 
     /**
@@ -84,7 +82,7 @@ abstract class AbstractExpectationCallsMap
         $this->_currentDebugStep = $callStep + 1;
 
         if (array_key_exists($callStep, $map) === false) {
-            throw new LogicException($this->getDebugMessage($this->_currentDebugStep, 'not set', 2));
+            throw new AssertException($this->getDebugMessage($this->_currentDebugStep, 'not set', 2, true));
         }
 
         /** @var TExpectation $expectation */
@@ -94,16 +92,33 @@ abstract class AbstractExpectationCallsMap
         return $expectation;
     }
 
-    protected function getDebugMessage(int $callStep = null, string $reason = 'failed', int $debugLevel = 1): string
-    {
+    protected function getDebugMessage(
+        int $callStep = null,
+        string $reason = 'failed',
+        int $debugLevel = 1,
+        bool $addArguments = false
+    ): string {
         $caller = debug_backtrace()[$debugLevel];
 
+        // print_r / var_dump can cause high memory usage.
+        $printableArguments = [];
+        foreach ($caller['args'] as $arg) {
+            if (is_object($arg)) {
+                $printableArguments[] = $arg::class;
+            } elseif (is_array($arg)) {
+                $printableArguments[] = 'array with ' . count($arg) . ' element/s';
+            } else {
+                $printableArguments[] = (string)$arg;
+            }
+        }
+
         return sprintf(
-            'Expectation for [%s@%s] %s for a n (%s) call',
+            'Expectation for [%s@%s] %s for a n (%s) call%s',
             $caller['class'] ?? static::class,
             $caller['function'],
             $reason,
-            $callStep ?? $this->_currentDebugStep
+            $callStep ?? $this->_currentDebugStep,
+            $addArguments === false ? '.' : (' with arguments: (' . implode(', ', $printableArguments) . ')')
         );
     }
 }
