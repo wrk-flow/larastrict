@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Concerns;
 
 use Closure;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -82,7 +83,8 @@ trait CreateRequest
         array $cookies = [],
         array $files = [],
         array $server = [],
-        array $makeBindings = []
+        array $makeBindings = [],
+        Authenticatable $user = null,
     ): Request {
         $symfonyRequest = SymfonyRequest::create(
             uri: 'https://testing',
@@ -96,18 +98,22 @@ trait CreateRequest
             ],
         );
 
-        $requestClass = $requestClass::createFromBase($symfonyRequest);
+        $request = $requestClass::createFromBase($symfonyRequest);
 
-        $requestClass->setContainer(
+        $request->setContainer(
             new TestingContainer(
                 makeBindings: $makeBindings,
                 makeAlwaysBinding: static fn (array $parameters, string $class) => new $class(...$parameters)
             )
         );
 
-        $requestClass->setValidator(new ValidatorMock($data));
-        $requestClass->validateResolved();
+        if ($user !== null) {
+            $request->setUserResolver(static fn () => $user);
+        }
 
-        return $requestClass;
+        $request->setValidator(new ValidatorMock($data));
+        $request->validateResolved();
+
+        return $request;
     }
 }
