@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.70] - 2023-09-05
+### :sparkles: New Features
+- [`60da0a8`](https://github.com/wrk-flow/larastrict/commit/60da0a8623e63428a72c6fcb218dcb88403510af) - **Testing**: GateAssert->authorize now throws exception if false response is returned *(commit by [@pionl](https://github.com/pionl))*
+- [`872fe0c`](https://github.com/wrk-flow/larastrict/commit/872fe0c8fe9b0e036332aef25cc98fb8a31d76f1) - **Testing**: CreateRequest now accept user parameter that is passed to request *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.69] - 2023-07-24
 ### :boom: BREAKING CHANGES
 - due to [`ecbd60b`](https://github.com/wrk-flow/larastrict/commit/ecbd60b80eda06fc18a5ac4dd866ae8d6f8490ad) - Add ability to create request without Laravel container *(commit by [@pionl](https://github.com/pionl))*:
@@ -611,3 +617,5 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.67]: https://github.com/wrk-flow/larastrict/compare/v0.0.66...v0.0.67
 [v0.0.68]: https://github.com/wrk-flow/larastrict/compare/v0.0.67...v0.0.68
 [v0.0.69]: https://github.com/wrk-flow/larastrict/compare/v0.0.68...v0.0.69
+
+[v0.0.70]: https://github.com/wrk-flow/larastrict/compare/v0.0.69...v0.0.70
