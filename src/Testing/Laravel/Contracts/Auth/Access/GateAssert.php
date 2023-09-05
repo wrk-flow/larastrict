@@ -255,7 +255,16 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
         Assert::assertEquals($expectation->ability, $ability, $message);
         Assert::assertEquals($expectation->arguments, $arguments, $message);
 
-        return $expectation->return;
+        if ($expectation->return instanceof Response === false) {
+            $response = new Response($expectation->return);
+        } else {
+            $response = $expectation->return;
+        }
+
+        // Run authorize() method to force exception
+        $response->authorize();
+
+        return $response;
     }
 
     /**
