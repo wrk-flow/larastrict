@@ -20,8 +20,8 @@ abstract class AbstractBaseServiceProvider extends EventServiceProvider
     {
         parent::register();
 
-        /** @var RunAppServiceProviderPipesActionContract $runPipes */
         $runPipes = $this->app->make(RunAppServiceProviderPipesActionContract::class);
+        assert($runPipes instanceof RunAppServiceProviderPipesActionContract);
 
         $runPipes->execute($this->getAppServiceProvider(), $this->registerPipes());
     }
@@ -30,8 +30,8 @@ abstract class AbstractBaseServiceProvider extends EventServiceProvider
     {
         parent::boot();
 
-        /** @var RunAppServiceProviderPipesActionContract $runPipes */
         $runPipes = $this->app->make(RunAppServiceProviderPipesActionContract::class);
+        assert($runPipes instanceof RunAppServiceProviderPipesActionContract);
 
         $runPipes->execute($this->getAppServiceProvider(), $this->bootPipes());
     }
@@ -39,8 +39,8 @@ abstract class AbstractBaseServiceProvider extends EventServiceProvider
     public function getAppServiceProvider(): AppServiceProviderEntity
     {
         if ($this->appServiceProvider === null) {
-            /** @var CreateAppServiceProviderAction $action */
             $action = $this->app->make($this->getCreateAppServiceProviderActionClass());
+            assert($action instanceof CreateAppServiceProviderActionContract);
 
             $this->appServiceProvider = $action->execute($this->app, $this);
         }
