@@ -11,7 +11,9 @@ use LaraStrict\Console\Services\ScheduleService;
 use LaraStrict\Context\ContextServiceProvider;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Core\Actions\CreateCoreAppServiceProviderAction;
+use LaraStrict\Core\Contracts\SleepServiceContract;
 use LaraStrict\Core\Services\ImplementsService;
+use LaraStrict\Core\Services\SleepService;
 use LaraStrict\Database\DatabaseServiceProvider;
 use LaraStrict\Docker\DockerServiceProvider;
 use LaraStrict\Log\LogServiceProvider;
@@ -26,6 +28,7 @@ class LaraStrictServiceProvider extends AbstractBaseServiceProvider
     public function register(): void
     {
         // Add ability to "switch" the implementation - it is important to run it now.
+        $this->app->singleton(SleepServiceContract::class, SleepService::class);
         $this->app->singleton(ScheduleServiceContract::class, ScheduleServiceContract::class);
         $this->app->alias(ScheduleService::class, ScheduleServiceContract::class);
 

@@ -6,6 +6,7 @@ namespace Tests\LaraStrict\Feature\Providers;
 
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleService;
+use LaraStrict\Core\Contracts\SleepServiceContract;
 use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Core\Services\ImplementsService;
 use LaraStrict\Database\Actions\RunInTransactionAction;
@@ -73,6 +74,7 @@ class LaraStrictServiceProviderTest extends TestCase
                 GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
                 GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
                 ImplementsService::class => ImplementsService::class,
+                SleepServiceContract::class => SleepServiceContract::class,
             ]
         );
     }

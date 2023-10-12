@@ -9,20 +9,20 @@ use Illuminate\Pipeline\Pipeline;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 
-class RunAppServiceProviderPipesAction implements RunAppServiceProviderPipesActionContract
+final class RunAppServiceProviderPipesAction implements RunAppServiceProviderPipesActionContract
 {
     public function __construct(
         private readonly Container $container
     ) {
     }
 
-    public function execute(AppServiceProviderEntity $app, array $pipes): void
+    public function execute(AppServiceProviderEntity $appServiceProvider, array $pipes): void
     {
-        /** @var Pipeline $pipeline */
         $pipeline = $this->container->make(Pipeline::class);
+        assert($pipeline instanceof Pipeline);
 
         $pipeline
-            ->send($app)
+            ->send($appServiceProvider)
             ->through($pipes)
             ->then(static function () {
             });
