@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.71] - 2023-10-12
+### :sparkles: New Features
+- [`e20cea1`](https://github.com/wrk-flow/larastrict/commit/e20cea1b6107d325b7ca703cd7d98b28959e5a0f) - **Core**: Add contract for sleep service with no sleep implementation in tests *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.70] - 2023-09-05
 ### :sparkles: New Features
 - [`60da0a8`](https://github.com/wrk-flow/larastrict/commit/60da0a8623e63428a72c6fcb218dcb88403510af) - **Testing**: GateAssert->authorize now throws exception if false response is returned *(commit by [@pionl](https://github.com/pionl))*
@@ -619,3 +624,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.69]: https://github.com/wrk-flow/larastrict/compare/v0.0.68...v0.0.69
 
 [v0.0.70]: https://github.com/wrk-flow/larastrict/compare/v0.0.69...v0.0.70
+[v0.0.71]: https://github.com/wrk-flow/larastrict/compare/v0.0.70...v0.0.71
