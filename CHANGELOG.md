@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.72] - 2023-11-11
+### :bug: Bug Fixes
+- [`942323d`](https://github.com/wrk-flow/larastrict/commit/942323d97554c7430af50b4a742a7dbc323c13ff) - **Testing**: Fix assert listener when closure listener is registered *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.71] - 2023-10-12
 ### :sparkles: New Features
 - [`e20cea1`](https://github.com/wrk-flow/larastrict/commit/e20cea1b6107d325b7ca703cd7d98b28959e5a0f) - **Core**: Add contract for sleep service with no sleep implementation in tests *(commit by [@pionl](https://github.com/pionl))*
@@ -625,3 +630,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 
 [v0.0.70]: https://github.com/wrk-flow/larastrict/compare/v0.0.69...v0.0.70
 [v0.0.71]: https://github.com/wrk-flow/larastrict/compare/v0.0.70...v0.0.71
+[v0.0.72]: https://github.com/wrk-flow/larastrict/compare/v0.0.71...v0.0.72
