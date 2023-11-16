@@ -53,15 +53,15 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
 
     function self(string $first, int $second, bool $third): self
     {
-        $expectation = $this->getExpectation(MultiFunctionContractSelfExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractSelfExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
         return $this;
@@ -72,15 +72,15 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocThis(string $first, int $second, bool $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocThisExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocThisExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
         return $this;
@@ -95,15 +95,15 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocThisParams($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocThisParamsExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocThisParamsExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
         return $this;
@@ -114,18 +114,18 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocBool($first, $second, callable $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocBoolExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocBoolExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 
     /**
@@ -133,18 +133,18 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocString($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocStringExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocStringExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 
     /**
@@ -152,18 +152,18 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocFloat($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocFloatExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocFloatExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 
     /**
@@ -171,18 +171,18 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocMixed($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocMixedExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocMixedExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 
     /**
@@ -190,15 +190,15 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function phpDocStatic($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractPhpDocStaticExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractPhpDocStaticExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
         return $this;
@@ -209,58 +209,58 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      */
     function selfViaClass($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractSelfViaClassExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractSelfViaClassExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 
     function noReturn($first, $second, $third)
     {
-        $expectation = $this->getExpectation(MultiFunctionContractNoReturnExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractNoReturnExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
     }
 
     function mixed($first, $second, $third): mixed
     {
-        $expectation = $this->getExpectation(MultiFunctionContractMixedExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(MultiFunctionContractMixedExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 
     function noParams(): string
     {
-        $expectation = $this->getExpectation(MultiFunctionContractNoParamsExpectation::class);
+        $_expectation = $this->getExpectation(MultiFunctionContractNoParamsExpectation::class);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $_expectation);
         }
 
-        return $expectation->return;
+        return $_expectation->return;
     }
 }

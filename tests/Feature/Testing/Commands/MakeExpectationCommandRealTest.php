@@ -61,7 +61,7 @@ class MakeExpectationCommandRealTest extends TestCase
         $hookCalled = false;
         $assert = new SimpleActionContractAssert([
             new SimpleActionContractExpectation('test', 2, false),
-            new SimpleActionContractExpectation('test2', 1, true, hook: function (
+            new SimpleActionContractExpectation('test2', 1, true, _hook: function (
                 string $first,
                 int $second,
                 bool $third,

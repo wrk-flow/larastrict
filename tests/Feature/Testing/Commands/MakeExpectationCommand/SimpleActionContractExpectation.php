@@ -7,13 +7,13 @@ namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 final class SimpleActionContractExpectation
 {
     /**
-     * @param \Closure(string,int,bool,self):void|null $hook
+     * @param \Closure(string,int,bool,self):void|null $_hook
      */
     public function __construct(
         public readonly string $first,
         public readonly int $second,
         public readonly bool $third,
-        public readonly ?\Closure $hook = null,
+        public readonly ?\Closure $_hook = null,
     ) {
     }
 }

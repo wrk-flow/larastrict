@@ -37,7 +37,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'make:expectation', description: 'Make expectation class for given class')]
 class MakeExpectationCommand extends Command
 {
-    private const HookProperty = 'hook';
+    private const HookProperty = '_hook';
 
     protected $signature = 'make:expectation
         {class : Class name of path to class using PSR-4 specs}
@@ -195,33 +195,33 @@ class MakeExpectationCommand extends Command
         $assertClass->addMember($assertMethod);
 
         $assertMethod->addBody(sprintf(
-            '$expectation = $this->getExpectation(%s);',
+            '$_expectation = $this->getExpectation(%s);',
             $expectationClassName . '::class'
         ));
 
         $hookParameters = [];
 
         if ($parameters !== []) {
-            $assertMethod->addBody('$message = $this->getDebugMessage();');
+            $assertMethod->addBody('$_message = $this->getDebugMessage();');
             $assertMethod->addBody('');
 
             foreach ($parameters as $parameter) {
                 $hookParameters[] = sprintf('$%s', $parameter->name);
                 $assertMethod->addBody(sprintf(
-                    'Assert::assertEquals($expectation->%s, $%s, $message);',
+                    'Assert::assertEquals($_expectation->%s, $%s, $_message);',
                     $parameter->name,
                     $parameter->name
                 ));
             }
         }
 
-        $hookParameters[] = '$expectation';
+        $hookParameters[] = '$_expectation';
 
         $assertMethod->addBody('');
 
-        $assertMethod->addBody(sprintf('if (is_callable($expectation->%s)) {', self::HookProperty));
+        $assertMethod->addBody(sprintf('if (is_callable($_expectation->%s)) {', self::HookProperty));
         $assertMethod->addBody(sprintf(
-            '    call_user_func($expectation->%s, %s);',
+            '    call_user_func($_expectation->%s, %s);',
             self::HookProperty,
             implode(', ', $hookParameters),
         ));
@@ -240,7 +240,7 @@ class MakeExpectationCommand extends Command
         switch ($enumReturnType) {
             case PhpType::Mixed:
                 $assertMethod->addBody('');
-                $assertMethod->addBody('return $expectation->return;');
+                $assertMethod->addBody('return $_expectation->return;');
                 break;
             case PhpType::Self:
             case PhpType::Static:
