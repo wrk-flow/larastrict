@@ -7,14 +7,14 @@ namespace App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCom
 final class MultiFunctionContractSelfViaClassExpectation
 {
     /**
-     * @param \Closure(mixed,mixed,mixed,self):void|null $hook
+     * @param \Closure(mixed,mixed,mixed,self):void|null $_hook
      */
     public function __construct(
         public readonly mixed $return,
         public readonly mixed $first,
         public readonly mixed $second,
         public readonly mixed $third,
-        public readonly ?\Closure $hook = null,
+        public readonly ?\Closure $_hook = null,
     ) {
     }
 }

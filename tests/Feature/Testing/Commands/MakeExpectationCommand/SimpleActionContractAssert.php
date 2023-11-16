@@ -19,15 +19,15 @@ class SimpleActionContractAssert extends \LaraStrict\Testing\Assert\AbstractExpe
 
     function execute(string $first, int $second, bool $third)
     {
-        $expectation = $this->getExpectation(SimpleActionContractExpectation::class);
-        $message = $this->getDebugMessage();
+        $_expectation = $this->getExpectation(SimpleActionContractExpectation::class);
+        $_message = $this->getDebugMessage();
 
-        Assert::assertEquals($expectation->first, $first, $message);
-        Assert::assertEquals($expectation->second, $second, $message);
-        Assert::assertEquals($expectation->third, $third, $message);
+        Assert::assertEquals($_expectation->first, $first, $_message);
+        Assert::assertEquals($_expectation->second, $second, $_message);
+        Assert::assertEquals($_expectation->third, $third, $_message);
 
-        if (is_callable($expectation->hook)) {
-            call_user_func($expectation->hook, $first, $second, $third, $expectation);
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
     }
 }

@@ -7,11 +7,11 @@ namespace App\Integration\LaraStrict\Feature\Testing\Commands\MakeExpectationCom
 final class MultiFunctionContractNoParamsExpectation
 {
     /**
-     * @param \Closure(self):void|null $hook
+     * @param \Closure(self):void|null $_hook
      */
     public function __construct(
         public readonly string $return,
-        public readonly ?\Closure $hook = null,
+        public readonly ?\Closure $_hook = null,
     ) {
     }
 }
