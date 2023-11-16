@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.73] - 2023-11-16
+### :bug: Bug Fixes
+- [`c644785`](https://github.com/wrk-flow/larastrict/commit/c6447853ab3aca2cdb74cae8c980ec2f94980f8d) - **Testing**: Internal variables for generated assert has prefix underscore *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.72] - 2023-11-11
 ### :bug: Bug Fixes
 - [`942323d`](https://github.com/wrk-flow/larastrict/commit/942323d97554c7430af50b4a742a7dbc323c13ff) - **Testing**: Fix assert listener when closure listener is registered *(commit by [@pionl](https://github.com/pionl))*
@@ -631,3 +636,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.70]: https://github.com/wrk-flow/larastrict/compare/v0.0.69...v0.0.70
 [v0.0.71]: https://github.com/wrk-flow/larastrict/compare/v0.0.70...v0.0.71
 [v0.0.72]: https://github.com/wrk-flow/larastrict/compare/v0.0.71...v0.0.72
+[v0.0.73]: https://github.com/wrk-flow/larastrict/compare/v0.0.72...v0.0.73
