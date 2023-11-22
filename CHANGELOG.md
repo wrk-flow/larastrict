@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.74] - 2023-11-22
+### :boom: BREAKING CHANGES
+- due to [`dcb79f3`](https://github.com/wrk-flow/larastrict/commit/dcb79f34653cfbb32a5d1dbd13c726704b665457) - OrderByValuesScope is now from ASC to DESC order of given values *(commit by [@pionl](https://github.com/pionl))*:
+
+  Values must be ordered from prefered order to last wanted order (now it was incorrectly used)
+
+
+### :bug: Bug Fixes
+- [`dcb79f3`](https://github.com/wrk-flow/larastrict/commit/dcb79f34653cfbb32a5d1dbd13c726704b665457) - **Database**: OrderByValuesScope is now from ASC to DESC order of given values *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.73] - 2023-11-16
 ### :bug: Bug Fixes
 - [`c644785`](https://github.com/wrk-flow/larastrict/commit/c6447853ab3aca2cdb74cae8c980ec2f94980f8d) - **Testing**: Internal variables for generated assert has prefix underscore *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -637,3 +648,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.71]: https://github.com/wrk-flow/larastrict/compare/v0.0.70...v0.0.71
 [v0.0.72]: https://github.com/wrk-flow/larastrict/compare/v0.0.71...v0.0.72
 [v0.0.73]: https://github.com/wrk-flow/larastrict/compare/v0.0.72...v0.0.73
+[v0.0.74]: https://github.com/wrk-flow/larastrict/compare/v0.0.73...v0.0.74
