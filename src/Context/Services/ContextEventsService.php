@@ -10,6 +10,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Contracts\ContextServiceContract;
+use LaraStrict\Context\Contracts\ContextValueContract;
 
 class ContextEventsService
 {
@@ -20,31 +21,52 @@ class ContextEventsService
     ) {
     }
 
-    public function setOn(Closure|string|array $events, callable $createContext, callable $getStateToStore): void
+    /**
+     * @template TEvent of object
+     * @template TContext of AbstractContext
+     * @template TContextValue of ContextValueContract
+     *
+     * @param array<class-string<TEvent>>|class-string<TEvent> $events
+     * @param callable(TEvent):(TContext|null)                 $createContext
+     * @param callable(TEvent):(TContextValue|null)            $getStateToStore
+     */
+    public function setOn(array|string $events, callable $createContext, callable $getStateToStore): void
     {
         $this->eventsDispatcher->listen(
             $events,
             function ($event) use ($createContext, $getStateToStore): void {
                 $context = $createContext($event);
 
-                if ($context === null) {
+                if ($context instanceof AbstractContext === false) {
                     return;
                 }
 
                 $value = $this->container->call($getStateToStore, [
                     'event' => $event,
                 ]);
+
+                if ($value === null) {
+                    return;
+                }
+
                 $this->contextService->set($context, $value);
             }
         );
     }
 
-    public function clearOn(Closure|string|array $events, callable $createContext): void
+    /**
+     * @template TEvent of object
+     * @template TContext of AbstractContext
+     *
+     * @param array<class-string<TEvent>>|class-string<TEvent> $events
+     * @param callable(TEvent):(TContext|null)                 $createContext
+     */
+    public function clearOn(string|array $events, callable $createContext): void
     {
         $this->eventsDispatcher->listen($events, function ($event) use ($createContext): void {
             $context = $createContext($event);
 
-            if ($context === null) {
+            if ($context instanceof AbstractContext === false) {
                 return;
             }
 
@@ -55,15 +77,20 @@ class ContextEventsService
     /**
      * Clears cache based on the model has given attribute changes and then clear the context cache.
      *
-     * @param array<string>                   $watchForAttributesChanges Clear if any of given attributes changes
-     * @param Closure(object):?Model          $getModelFromEvent         Convert event to model
-     * @param Closure(object):AbstractContext $createContext             Convert event to context
+     * @template TEvent of object
+     * @template TContext of AbstractContext
+     *
+     * @param array<class-string<TEvent>>|class-string<TEvent> $events
+     * @param array<string>                                    $watchForAttributesChanges Clear if any of given
+     * attributes changes
+     * @param Closure(TEvent):(Model|null)                     $getModelFromEvent Convert event to model
+     * @param callable(TEvent):(TContext|null)                 $createContext
      */
     public function clearOnModelChanges(
         Closure|string|array $events,
         array $watchForAttributesChanges,
         Closure $getModelFromEvent,
-        Closure $createContext
+        callable $createContext
     ): void {
         $this->eventsDispatcher->listen(
             $events,
@@ -77,7 +104,13 @@ class ContextEventsService
                     return;
                 }
 
-                $this->contextService->delete($createContext($event));
+                $context = $createContext($event);
+
+                if ($context instanceof AbstractContext === false) {
+                    return;
+                }
+
+                $this->contextService->delete($context);
             }
         );
     }
