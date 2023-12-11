@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace LaraStrict\Providers;
 
+use Closure;
+use Illuminate\Contracts\Container\Container;
 use LaraStrict\Cache\Contracts\BootContexts;
 use LaraStrict\Console\Contracts\HasSchedule;
 use LaraStrict\Console\Contracts\HasScheduleOnEnvironments;
@@ -19,6 +21,7 @@ use LaraStrict\Providers\Pipes\BootViewComposersPipe;
 use LaraStrict\Providers\Pipes\LoadProviderConfig;
 use LaraStrict\Providers\Pipes\LoadProviderTranslations;
 use LaraStrict\Providers\Pipes\LoadProviderViews;
+use LogicException;
 
 abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 {
@@ -76,6 +79,33 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
     }
 
     /**
+     * Ensures that contextual binding in container will get tagged implementation of given interface.
+     *
+     * @template TImplementation of object
+     * @param class-string<TImplementation> $class
+     * @return Closure(Container $container):array<TImplementation>
+     */
+    protected function giveTaggedImplementation(string $class): Closure
+    {
+        return static function (Container $container) use ($class) {
+            $taggedServices = $container->tagged($class);
+            $services = [];
+            foreach ($taggedServices as $service) {
+                if ($service instanceof $class === false) {
+                    throw new LogicException(sprintf(
+                        'Tagged implementation for %s must be instance of %s',
+                        $service::class,
+                        $class
+                    ));
+                }
+
+                $services[] = $service;
+            }
+            return $services;
+        };
+    }
+
+    /**
      * @param array<class-string<AbstractContext>> $contextClasses
      */
     private function bootContexts(array $contextClasses): void
@@ -84,8 +114,8 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
             return;
         }
 
-        /** @var ContextEventsService $service */
         $service = $this->app->make(ContextEventsService::class);
+        assert($service instanceof ContextEventsService);
 
         foreach ($contextClasses as $context) {
             $context::boot($service);
