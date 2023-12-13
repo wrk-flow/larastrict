@@ -35,12 +35,16 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         Closure $getValue,
         array $tags = [],
-        int $minutes = CacheExpirations::HalfDay,
+        int $seconds = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        bool $log = true
+        bool $log = true,
+        ?int $minutes = null
     ): mixed {
         if ($strategy === CacheMeStrategy::None) {
             return $this->container->call($getValue);
+        }
+        if ($minutes !== null) {
+            $seconds = $minutes * 60;
         }
 
         $value = null;
@@ -72,7 +76,7 @@ class CacheMeService implements CacheMeServiceContract
                     key: $key,
                     value: $value,
                     tags: $tags,
-                    minutes: $minutes,
+                    seconds: $seconds,
                     log: false
                 );
             }
@@ -91,7 +95,7 @@ class CacheMeService implements CacheMeServiceContract
                     key: $key,
                     value: $value,
                     tags: $tags,
-                    minutes: $minutes,
+                    seconds: $seconds,
                     log: $log
                 );
             }
@@ -107,7 +111,7 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HalfDay,
+        int $seconds = CacheExpirations::HalfDay,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         bool $log = true
     ): void {
@@ -116,7 +120,7 @@ class CacheMeService implements CacheMeServiceContract
             key: $key,
             value: $value,
             tags: $tags,
-            minutes: $minutes,
+            seconds: $seconds,
             log: $log
         );
     }
@@ -244,7 +248,7 @@ class CacheMeService implements CacheMeServiceContract
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HalfDay,
+        int $seconds = CacheExpirations::HalfDay,
         bool $log = true
     ): void {
         if ($repositories === []) {
@@ -254,14 +258,14 @@ class CacheMeService implements CacheMeServiceContract
         if ($log) {
             $this->logger->debug('Storing cache', [
                 'key' => $key,
-                'minutes' => $minutes,
+                'seconds' => $seconds,
                 'tags' => $tags,
                 'store' => array_map(static fn (CacheContract $store) => $store->getStore()::class, $repositories),
             ]);
         }
 
         foreach ($repositories as $store) {
-            $store->set($key, $value, $minutes);
+            $store->set($key, $value, $seconds);
         }
     }
 
