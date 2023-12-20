@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Actions;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
 use LaraStrict\Testing\Constants\StubConstants;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Entities\NamespaceEntity;
+use LaraStrict\Testing\Services\ComposerJsonDataService;
 use LogicException;
 
 class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
@@ -17,14 +17,14 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
     final public const ComposerPsr4 = 'psr-4';
 
     public function __construct(
-        private readonly Filesystem $filesystem,
+        private readonly ComposerJsonDataService $getComposerJsonDataAction,
     ) {
     }
 
     public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity
     {
         // Ask for which namespace which to use for "tests"
-        $composer = $this->getComposerJsonData($basePath);
+        $composer = $this->getComposerJsonDataAction->data($basePath);
         $autoLoad = $this->getComposerDevAutoLoad($composer);
         if ($autoLoad !== []) {
             if (count($autoLoad) === 1) {
@@ -45,11 +45,6 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
         }
 
         return new NamespaceEntity($folder, $baseNamespace);
-    }
-
-    protected function getComposerJsonData(string $basePath): mixed
-    {
-        return json_decode($this->filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
     }
 
     private function getComposerDevAutoLoad(array $composer): array

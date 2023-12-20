@@ -8,15 +8,17 @@ use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
 use LaraStrict\Testing\Actions\ParsePhpDocAction;
+use LaraStrict\Testing\Actions\PathToClassAction;
 use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
+use LaraStrict\Testing\Attributes\TestAssert;
 use LaraStrict\Testing\Constants\StubConstants;
+use LaraStrict\Testing\Contracts\FinderFactoryContract;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Entities\AssertFileStateEntity;
 use LaraStrict\Testing\Entities\PhpDocEntity;
 use LaraStrict\Testing\Enums\PhpType;
 use LogicException;
-use Nette\PhpGenerator\ClassLike;
 use Nette\PhpGenerator\ClassType;
 use Nette\PhpGenerator\Factory;
 use Nette\PhpGenerator\Literal;
@@ -33,6 +35,7 @@ use ReflectionParameter;
 use ReflectionType;
 use ReflectionUnionType;
 use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Finder\Finder;
 
 #[AsCommand(name: 'make:expectation', description: 'Make expectation class for given class')]
 class MakeExpectationCommand extends Command
@@ -40,7 +43,7 @@ class MakeExpectationCommand extends Command
     private const HookProperty = '_hook';
 
     protected $signature = 'make:expectation
-        {class : Class name of path to class using PSR-4 specs}
+        {class : Class name of path to class using PSR-4 specs or use all keyword}
     ';
 
     public function handle(
@@ -48,6 +51,8 @@ class MakeExpectationCommand extends Command
         GetBasePathForStubsActionContract $getBasePathAction,
         GetNamespaceForStubsActionContract $getFolderAndNamespaceForStubsAction,
         ParsePhpDocAction $parsePhpDocAction,
+        FinderFactoryContract $finderFactory,
+        PathToClassAction $pathToClassAction,
     ): int {
         if (class_exists(ClassType::class) === false) {
             $message = 'First install package that is required:';
@@ -61,12 +66,43 @@ class MakeExpectationCommand extends Command
 
         $basePath = $getBasePathAction->execute();
 
-        $inputClass = $this->getInputClass($basePath, $filesystem);
+        /** @phpstan-var class-string|string $class */
+        $class = (string) $this->input->getArgument('class');
 
-        if ($inputClass === null) {
+        if ($class === 'all') {
+            $inputClasses = $this->findAllClasses($finderFactory->create(), $pathToClassAction);
+        } else {
+            $inClass = $this->normalizeToClass($class, $basePath, $filesystem, $pathToClassAction);
+            $inputClasses = $inClass === null ? [] : [$inClass];
+        }
+
+        if ($inputClasses === []) {
             return 1;
         }
 
+        foreach ($inputClasses as $inputClass) {
+            $this->generateExpectationFiles(
+                $inputClass,
+                $getFolderAndNamespaceForStubsAction,
+                $basePath,
+                $filesystem,
+                $parsePhpDocAction
+            );
+        }
+
+        return 0;
+    }
+
+    /**
+     * @param class-string $inputClass
+     */
+    public function generateExpectationFiles(
+        string $inputClass,
+        GetNamespaceForStubsActionContract $getFolderAndNamespaceForStubsAction,
+        string $basePath,
+        Filesystem $filesystem,
+        ParsePhpDocAction $parsePhpDocAction
+    ): void {
         $class = new ReflectionClass($inputClass);
 
         $methods = $class->getMethods(ReflectionMethod::IS_PUBLIC);
@@ -175,8 +211,6 @@ class MakeExpectationCommand extends Command
                 fileContents: $printer->printFile($assertFileState->file)
             );
         }
-
-        return 0;
     }
 
     /**
@@ -479,11 +513,25 @@ class MakeExpectationCommand extends Command
     /**
      * @return class-string|null
      */
-    private function getInputClass(string $basePath, Filesystem $filesystem): ?string
+    private function checkInterface(string $class): ?string
     {
-        /** @phpstan-var class-string|string $class */
-        $class = (string) $this->input->getArgument('class');
+        if (class_exists($class) === false && interface_exists($class) === false) {
+            $this->writeError(sprintf('Provided class does not exists [%s]', $class));
+            return null;
+        }
 
+        return $class;
+    }
+
+    /**
+     * @return class-string|null
+     */
+    private function normalizeToClass(
+        string $class,
+        string $basePath,
+        Filesystem $filesystem,
+        PathToClassAction $pathToClassAction
+    ): ?string {
         if (str_ends_with($class, '.php')) {
             $fullPath = $basePath . '/' . $class;
 
@@ -492,23 +540,34 @@ class MakeExpectationCommand extends Command
                 return null;
             }
 
-            $file = PhpFile::fromCode($filesystem->get($fullPath));
+            return $pathToClassAction->execute($fullPath);
+        }
 
-            /** @phpstan-var array<class-string, ClassLike> $classes */
-            $classes = $file->getClasses();
-            if ($classes === []) {
-                $this->writeError(sprintf('Provided file does not contain any class [%s]', $class));
-                return null;
+        return $this->checkInterface($class);
+    }
+
+    /**
+     * @return array<class-string>
+     */
+    private function findAllClasses(Finder $finder, PathToClassAction $pathToClassAction): array
+    {
+        $classes = [];
+        foreach ($finder as $file) {
+            $interface = $pathToClassAction->execute($file->getRealPath());
+            require_once $file->getPathname();
+
+            if (interface_exists($interface, false) === false) {
+                continue;
             }
 
-            $class = array_keys($classes)[0];
+            $classReflection = new ReflectionClass($interface);
+            $attributes = $classReflection->getAttributes(TestAssert::class);
+            if ($attributes === []) {
+                continue;
+            }
+            $classes[] = $interface;
         }
 
-        if (class_exists($class) === false && interface_exists($class) === false) {
-            $this->writeError(sprintf('Provided class does not exists [%s]', $class));
-            return null;
-        }
-
-        return $class;
+        return $classes;
     }
 }

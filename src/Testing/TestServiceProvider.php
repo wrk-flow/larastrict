@@ -11,15 +11,18 @@ use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Actions\GetBasePathForStubsAction;
 use LaraStrict\Testing\Actions\GetNamespaceForStubsAction;
 use LaraStrict\Testing\Commands\MakeExpectationCommand;
+use LaraStrict\Testing\Contracts\FinderFactoryContract;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Core\Services\NoSleepService;
+use LaraStrict\Testing\Factories\FinderFactory;
 
 class TestServiceProvider extends ServiceProvider
 {
     public array $bindings = [
         GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
         GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
+        FinderFactoryContract::class => FinderFactory::class,
     ];
 
     public function register(): void
