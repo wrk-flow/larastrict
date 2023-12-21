@@ -242,6 +242,15 @@ class MakeExpectationCommandTest extends TestCase
                 ->once()
                 ->withArgs($this->expectClassFileExistsArgClosure())
                 ->andReturn(file_get_contents($realPath));
+            $this->fileSystem->shouldReceive('isFile')
+                ->once()
+                ->withArgs($this->expectClassFileExistsArgClosure())
+                ->andReturn(true);
+
+            $this->fileSystem->shouldReceive('dirname')
+                ->once()
+                ->withArgs($this->expectClassFileExistsArgClosure())
+                ->andReturn(dirname($realPath));
         }
     }
 
@@ -254,23 +263,47 @@ class MakeExpectationCommandTest extends TestCase
         bool $expectComposerJson = true,
     ): void {
         if ($expectComposerJson) {
+            if ($variantPrefix !== null) {
+                $composerPath = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . $variantPrefix . '.composer.json';
+            } else {
+                $composerPath = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . 'composer.json';
+            }
+
+            $expectedComposerCheck = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . 'composer.json';
+
+            // We are checking if the composer we detect exists
+            // our implementation expets always composer.json file
+            $this->fileSystem->shouldReceive('isFile')
+                ->once()
+                ->with(function($arg) use ($expectedComposerCheck){
+
+                    $x = 1;
+                })
+                ->andReturn(true);
+
             $this->fileSystem->shouldReceive('get')
                 ->once()
-                ->withArgs(
-                    static fn (string $path): bool => str_contains(
-                        $path,
-                        '/vendor/orchestra/testbench-core/laravel/composer.json'
-                    )
-                )
-                ->andReturnUsing(static function (string $path) use ($variantPrefix): string {
-                    if ($variantPrefix !== null) {
-                        $variantPrefix = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . $variantPrefix . '.composer.json';
+                ->with($expectedComposerCheck)
+                ->andReturnUsing(static function (string $path) use ($composerPath): string {
+                    $fileGetContents = file_get_contents($composerPath);
+                    if ($fileGetContents === false) {
+                        throw new LogicException('File not loaded' . $composerPath);
                     }
 
-                    $filePath = $variantPrefix ?? $path;
-                    $fileGetContents = file_get_contents($filePath);
+                    return $fileGetContents;
+                });
+
+            //Transform real testbanch composer to our expectation composer
+            $this->fileSystem->shouldReceive('get')
+                ->once()
+                ->withArgs(static fn (string $path): bool => str_contains(
+                    $path,
+                    '/vendor/orchestra/testbench-core/laravel/composer.json'
+                ))
+                ->andReturnUsing(static function (string $path) use ($composerPath): string {
+                    $fileGetContents = file_get_contents($composerPath);
                     if ($fileGetContents === false) {
-                        throw new LogicException('File not loaded' . $filePath);
+                        throw new LogicException('File not loaded' . $composerPath);
                     }
 
                     return $fileGetContents;
@@ -328,7 +361,6 @@ class MakeExpectationCommandTest extends TestCase
         ]);
 
         $this->fileSystem->shouldReceive('ensureDirectoryExists')
-            ->once()
             ->withArgs(static fn (string $path): bool => str_contains($path, $expectedPath));
 
         $this->fileSystem->shouldReceive('put')

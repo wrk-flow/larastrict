@@ -40,23 +40,37 @@ final class PathToClassAction
      */
     private function replacePathToClass(array $dirs, string $path): ?string
     {
+        $map = [];
         foreach ($dirs as $ns => $dir) {
             if (str_starts_with($path, $dir) === false) {
                 continue;
             }
-            /** @var class-string $class */
-            $class = preg_replace_callback(
-                sprintf('~^%s[/\\\](?<path>.*)\.php$~', preg_quote($dir, '~')),
-                static fn (array $matches) => $ns . strtr($matches['path'], [
-                    '/' => '\\',
-                ]),
-                $path
-            );
-            assert(is_string($class));
 
-            return $class;
+            $map[] = [
+                'count' => strlen($ns),
+                'data' => ['ns' => $ns, 'dir' => $dir],
+            ];
         }
 
-        return null;
+        if ($map === []) {
+            return null;
+        }
+
+        usort($map, static fn(array $a, array $b) => $b['count'] <=> $a['count']);
+        ['dir' => $dir, 'ns' => $ns] = $map[0]['data'];
+
+        /** @var class-string $class */
+        $class = preg_replace_callback(
+            sprintf('~^%s[/\\\](?<path>.*)\.php$~', preg_quote($dir, '~')),
+            static fn (array $matches) => $ns . strtr($matches['path'], [
+                    '/' => '\\',
+                ]),
+            $path
+        );
+        assert(is_string($class));
+
+        return $class;
+
+
     }
 }
