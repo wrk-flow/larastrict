@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Actions;
 
 use Illuminate\Console\Command;
+use LaraStrict\Testing\Constants\ComposerConstants;
 use LaraStrict\Testing\Constants\StubConstants;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Entities\NamespaceEntity;
@@ -13,9 +14,6 @@ use LogicException;
 
 class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 {
-    final public const ComposerAutoLoadDev = 'autoload-dev';
-    final public const ComposerPsr4 = 'psr-4';
-
     public function __construct(
         private readonly ComposerJsonDataService $getComposerJsonDataAction,
     ) {
@@ -49,9 +47,8 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 
     private function getComposerDevAutoLoad(array $composer): array
     {
-        if (isset($composer[self::ComposerAutoLoadDev])
-            && isset($composer[self::ComposerAutoLoadDev][self::ComposerPsr4])) {
-            return $composer[self::ComposerAutoLoadDev][self::ComposerPsr4];
+        if (isset($composer[ComposerConstants::AutoLoadDev][ComposerConstants::Psr4])) {
+            return $composer[ComposerConstants::AutoLoadDev][ComposerConstants::Psr4];
         }
 
         return [];

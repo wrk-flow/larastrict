@@ -6,6 +6,7 @@ namespace LaraStrict\Testing\Actions;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
+use LaraStrict\Testing\Constants\ComposerConstants;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Services\ComposerJsonDataService;
 
@@ -21,7 +22,7 @@ final class ComposerAutoloadAbsoluteAction
         private readonly Filesystem $filesystem,
         GetBasePathForStubsActionContract $getBasePathForStubsAction,
     ) {
-        $this->dirs = $this->makeDirs($getBasePathForStubsAction->execute());
+        $this->dirs = $this->prepareSourceDirs($getBasePathForStubsAction->execute());
     }
 
     /**
@@ -39,13 +40,17 @@ final class ComposerAutoloadAbsoluteAction
     /**
      * @return array<string, string>
      */
-    private function makeDirs(string $basePath): array
+    private function prepareSourceDirs(string $basePath): array
     {
         $data = $this->getComposerJsonDataAction->data($basePath);
         $dirs = [];
 
-        if (isset($data['autoload']['psr-4']) && is_array($data['autoload']['psr-4'])) {
-            foreach ($data['autoload']['psr-4'] as $ns => $path) {
+        foreach ([ComposerConstants::AutoLoad, ComposerConstants::AutoLoadDev] as $section) {
+            if (isset($data[$section][ComposerConstants::Psr4]) === false || is_array($data[$section][ComposerConstants::Psr4]) === false) {
+                continue;
+            }
+
+            foreach ($data[$section][ComposerConstants::Psr4] as $ns => $path) {
                 $dirs[$ns] = $basePath . DIRECTORY_SEPARATOR . trim((string) $path, '\\/');
             }
         }
@@ -68,6 +73,6 @@ final class ComposerAutoloadAbsoluteAction
             $path = $this->filesystem->dirname($path);
         }
 
-        return $this->makeDirs($path);
+        return $this->prepareSourceDirs($path);
     }
 }
