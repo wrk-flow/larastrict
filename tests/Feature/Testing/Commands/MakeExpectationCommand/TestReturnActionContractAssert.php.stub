@@ -29,7 +29,7 @@ class TestReturnActionContractAssert extends \LaraStrict\Testing\Assert\Abstract
         string $optional = null,
         string $optionalString = 'test',
         string $constant = DIRECTORY_SEPARATOR,
-        int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::HalfDay,
+        int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::Day,
         \LaraStrict\Enums\EnvironmentType $enumDefault = \LaraStrict\Enums\EnvironmentType::Testing,
         $noTypeHintDefault = null,
         string $customConstants = Constants\CustomConstants::TEST,

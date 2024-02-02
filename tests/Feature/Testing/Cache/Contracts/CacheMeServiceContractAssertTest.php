@@ -54,7 +54,7 @@ class CacheMeServiceContractAssertTest extends TestCase
                     key: self::Key,
                     value: self::Return,
                     tags: [self::Return],
-                    minutes: 230,
+                    seconds: 230,
                     strategy: CacheMeStrategy::Memory,
                 ),
                 checkResult: false,

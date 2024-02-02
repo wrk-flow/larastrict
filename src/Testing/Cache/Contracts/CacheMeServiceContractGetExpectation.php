@@ -16,7 +16,7 @@ final class CacheMeServiceContractGetExpectation
     public function __construct(
         public readonly string $key,
         public readonly array $tags = [],
-        public readonly int $minutes = CacheExpirations::HalfDay,
+        public readonly int $minutes = CacheExpirations::Day,
         public readonly CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         public readonly ?Closure $callGetValueHook = null,
         public readonly bool $log = true,
