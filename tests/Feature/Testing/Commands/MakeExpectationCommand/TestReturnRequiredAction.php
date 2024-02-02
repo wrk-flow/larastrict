@@ -26,7 +26,7 @@ class TestReturnRequiredAction
         ?string $optional = null,
         string $optionalString = 'test',
         string $constant = DIRECTORY_SEPARATOR,
-        int $constantClass = CacheExpirations::HalfDay,
+        int $constantClass = CacheExpirations::Day,
         EnvironmentType $enumDefault = EnvironmentType::Testing,
         $noTypeHintDefault = null,
         string $customConstants = Constants\CustomConstants::TEST,

@@ -22,7 +22,7 @@ final class TestReturnActionExpectation
         public readonly ?string $optional = null,
         public readonly string $optionalString = 'test',
         public readonly string $constant = \DIRECTORY_SEPARATOR,
-        public readonly int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::HalfDay,
+        public readonly int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::Day,
         public readonly \LaraStrict\Enums\EnvironmentType $enumDefault = \LaraStrict\Enums\EnvironmentType::Testing,
         public readonly mixed $noTypeHintDefault = null,
         public readonly string $customConstants = \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\Constants\CustomConstants::TEST,

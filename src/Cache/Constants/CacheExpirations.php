@@ -5,17 +5,49 @@ declare(strict_types=1);
 namespace LaraStrict\Cache\Constants;
 
 /**
- * Stores on minutes.
+ * Stores in seconds
  */
-class CacheExpirations
+final class CacheExpirations
 {
     /**
-     * 720 minutes - 12 hours.
+     * minute in seconds
      */
-    final public const HalfDay = 720;
+    public const Minute = 60;
 
     /**
-     * 1 days.
+     * hour in seconds
      */
-    final public const Long = 44640;
+    public const Hour = 60 * self::Minute;
+
+    /**
+     * day in seconds
+     */
+    public const Day = 24 * self::Hour;
+
+    /**
+     * week in seconds
+     */
+    public const Week = 7 * self::Day;
+
+    /**
+     * average month in seconds
+     */
+    public const Month = 2_629_800;
+
+    /**
+     * average year in seconds
+     */
+    public const Year = 31_557_600;
+
+    /**
+     * Fixed value
+     *
+     * @deprecated
+     */
+    public const Long = self::Month;
+
+    /**
+     * @deprecated
+     */
+    public const HalfDay = 12 * self::Hour;
 }
