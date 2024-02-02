@@ -13,7 +13,7 @@ final class CacheMeServiceContractSetExpectation
         public readonly string $key,
         public readonly mixed $value,
         public readonly array $tags = [],
-        public readonly int $minutes = CacheExpirations::HalfDay,
+        public readonly int $minutes = CacheExpirations::Day,
         public readonly CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         public readonly bool $log = true,
     ) {

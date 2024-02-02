@@ -46,7 +46,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         string $key,
         Closure $getValue,
         array $tags = [],
-        int $minutes = CacheExpirations::HalfDay,
+        int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         bool $log = true,
     ): mixed {
@@ -55,7 +55,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
 
         Assert::assertEquals($expectation->key, $key, $message);
         Assert::assertEquals($expectation->tags, $tags, $message);
-        Assert::assertEquals($expectation->minutes, $minutes, $message);
+        Assert::assertEquals($expectation->minutes, $seconds, $message);
         Assert::assertEquals($expectation->strategy, $strategy, $message);
         Assert::assertEquals($expectation->log, $log, $message);
 
@@ -71,7 +71,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         string $key,
         mixed $value,
         array $tags = [],
-        int $minutes = CacheExpirations::HalfDay,
+        int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         bool $log = true,
     ): void {
@@ -81,7 +81,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
         Assert::assertEquals($expectation->key, $key, $message);
         Assert::assertEquals($expectation->value, $value, $message);
         Assert::assertEquals($expectation->tags, $tags, $message);
-        Assert::assertEquals($expectation->minutes, $minutes, $message);
+        Assert::assertEquals($expectation->minutes, $seconds, $message);
         Assert::assertEquals($expectation->strategy, $strategy, $message);
         Assert::assertEquals($expectation->log, $log, $message);
     }
