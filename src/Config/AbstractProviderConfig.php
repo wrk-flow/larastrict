@@ -6,13 +6,13 @@ namespace LaraStrict\Config;
 
 use Illuminate\Config\Repository;
 use LaraStrict\Providers\AbstractServiceProvider;
-use LaraStrict\Providers\Actions\GetAppServiceProviderForClassAction;
+use LaraStrict\Providers\Contracts\GetAppServiceProviderForClassActionContract;
 
 abstract class AbstractProviderConfig extends AbstractConfig
 {
     public function __construct(
         Repository $config,
-        private readonly GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction
+        private readonly GetAppServiceProviderForClassActionContract $getAppServiceProviderForClassAction
     ) {
         parent::__construct($config);
     }
