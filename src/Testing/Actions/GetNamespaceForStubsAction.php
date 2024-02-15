@@ -7,6 +7,7 @@ namespace LaraStrict\Testing\Actions;
 use Illuminate\Console\Command;
 use LaraStrict\Testing\Constants\ComposerConstants;
 use LaraStrict\Testing\Constants\StubConstants;
+use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Entities\NamespaceEntity;
 use LaraStrict\Testing\Services\ComposerJsonDataService;
@@ -16,11 +17,13 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 {
     public function __construct(
         private readonly ComposerJsonDataService $getComposerJsonDataAction,
+        private readonly GetBasePathForStubsActionContract $getBasePathAction,
     ) {
     }
 
-    public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity
+    public function execute(Command $command, string $inputClass): NamespaceEntity
     {
+        $basePath = $this->getBasePathAction->execute();
         // Ask for which namespace which to use for "tests"
         $composer = $this->getComposerJsonDataAction->data($basePath);
         $autoLoad = $this->getComposerDevAutoLoad($composer);
