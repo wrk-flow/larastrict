@@ -121,8 +121,8 @@ final class GenerateExpectationClassAction
 
         if ($methods === []) {
             throw new LogicException('Class %s does not contain any public', $class->getName());
-        } else if ($class->isInterface() === false) {
-            throw new LogicException('Class %s is not interface', $class->getName());
+//        } else if ($class->isInterface() === false) {
+//            throw new LogicException('Class %s is not interface', $class->getName());
         }
 
         return $methods;
