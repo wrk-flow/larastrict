@@ -21,6 +21,7 @@ use LaraStrict\Providers\AbstractBaseServiceProvider;
 use LaraStrict\Providers\Actions\RunAppServiceProviderPipesAction;
 use LaraStrict\Providers\Pipes\PreventLazyLoadingPipe;
 use LaraStrict\Providers\Pipes\SetFactoryResolvingProviderPipe;
+use LaraStrict\Queue\QueueServiceProvider;
 use LaraStrict\Testing\TestServiceProvider;
 
 class LaraStrictServiceProvider extends AbstractBaseServiceProvider
@@ -42,6 +43,7 @@ class LaraStrictServiceProvider extends AbstractBaseServiceProvider
         $this->app->register(TestServiceProvider::class);
         $this->app->register(DockerServiceProvider::class);
         $this->app->register(LogServiceProvider::class);
+        $this->app->register(QueueServiceProvider::class);
 
         $this->app->singleton(ImplementsService::class, ImplementsService::class);
 
