@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.78] - 2024-02-28
+### :sparkles: New Features
+- [`046a9e3`](https://github.com/wrk-flow/larastrict/commit/046a9e32ef4cfeb5a1d05f73aab6153e300956cf) - **Queue**: Add ability to dispatch job in testable way *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.77] - 2024-02-06
 ### :sparkles: New Features
 - [`e2eb679`](https://github.com/wrk-flow/larastrict/commit/e2eb67978ad676af2deddedfd3cb60e8333da41a) - **CacheMeService**: ttl defined like seconds instead of minutes *(commit by [@pionl](https://github.com/pionl))*
@@ -673,3 +678,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.75]: https://github.com/wrk-flow/larastrict/compare/v0.0.74...v0.0.75
 [v0.0.76]: https://github.com/wrk-flow/larastrict/compare/v0.0.75...v0.0.76
 [v0.0.77]: https://github.com/wrk-flow/larastrict/compare/v0.0.76...v0.0.77
+[v0.0.78]: https://github.com/wrk-flow/larastrict/compare/v0.0.77...v0.0.78
