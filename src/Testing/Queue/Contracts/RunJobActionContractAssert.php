@@ -21,16 +21,17 @@ class RunJobActionContractAssert extends AbstractExpectationCallsMap implements 
         $this->setExpectations(RunJobActionContractExpectation::class, $execute);
     }
 
-    public function execute(Job $job, Command $command = null): mixed
+    public function execute(Job $job, Command $command = null, string $method = null): mixed
     {
         $_expectation = $this->getExpectation(RunJobActionContractExpectation::class);
         $_message = $this->getDebugMessage();
 
         Assert::assertEquals($_expectation->job, $job, $_message);
         Assert::assertEquals($_expectation->command, $command, $_message);
+        Assert::assertEquals($_expectation->method, $method, $_message);
 
         if (is_callable($_expectation->_hook)) {
-            call_user_func($_expectation->_hook, $job, $command, $_expectation);
+            call_user_func($_expectation->_hook, $job, $command, $method, $_expectation);
         }
 
         return $_expectation->return;
