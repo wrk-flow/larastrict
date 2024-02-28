@@ -11,7 +11,7 @@ use LaraStrict\Queue\Jobs\Job;
 final class RunJobActionContractExpectation
 {
     /**
-     * @param Closure(Job, Command, string, self):void|null $_hook
+     * @param Closure(Job, Command, string|null, self):void|null $_hook
      */
     public function __construct(
         public readonly mixed $return,

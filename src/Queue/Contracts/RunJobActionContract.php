@@ -15,5 +15,5 @@ interface RunJobActionContract
      *
      * @return mixed Returns the result of the job
      */
-    public function execute(Job $job, ?Command $command = null, string $method = null): mixed;
+    public function execute(Job $job, ?Command $command = null, ?string $method = null): mixed;
 }
