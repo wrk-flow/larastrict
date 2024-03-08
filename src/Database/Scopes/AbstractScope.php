@@ -12,16 +12,27 @@ use Illuminate\Database\Eloquent\Scope;
 abstract class AbstractScope implements Scope
 {
     /**
-     * @param Builder<Model> $builder
+     * @template TModel of Model
+     * @param Builder<TModel> $builder
      */
     abstract public function apply(Builder $builder, Model $model): void;
 
     /**
-     * @param Relation<Model> $relation
+     * @template TModel of Model
+     * @param Relation<TModel> $relation
      */
     public function applyOnRelation(Relation $relation): void
     {
         $this->applyRelationScope($this, $relation);
+    }
+
+    /**
+     * @template TModel of Model
+     * @param Builder<TModel> $builder
+     */
+    public function applyOnBuilder(Builder $builder): void
+    {
+        $this->apply($builder, $builder->getModel());
     }
 
     /**
@@ -35,7 +46,8 @@ abstract class AbstractScope implements Scope
     }
 
     /**
-     * @param Builder<Model> $builder
+     * @template TModel of Model
+     * @param Builder<TModel> $builder
      */
     protected function applyChildScope(Scope $scope, Builder $builder, Model $model): void
     {
@@ -43,7 +55,8 @@ abstract class AbstractScope implements Scope
     }
 
     /**
-     * @param Relation<Model> $relation
+     * @template TModel of Model
+     * @param Relation<TModel> $relation
      */
     protected function applyRelationScope(Scope $scope, Relation $relation): void
     {

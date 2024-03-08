@@ -46,9 +46,6 @@ abstract class AbstractInScope extends AbstractScope
         $this->not = $not;
     }
 
-    /**
-     * @param Builder<Model> $builder
-     */
     public function apply(Builder $builder, Model $model): void
     {
         $column = $this->table === '' ? $this->getColumn($model) : $this->table . '.' . $this->getColumn($model);
