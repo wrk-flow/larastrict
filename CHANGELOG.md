@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.82] - 2024-03-08
+### :sparkles: New Features
+- [`64d2322`](https://github.com/wrk-flow/larastrict/commit/64d232225b102a8f2cfdc5d427d4f38a5995cd6e) - **Database**: Improve phpstan support for scopes *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.81] - 2024-02-28
 ### :sparkles: New Features
 - [`3429635`](https://github.com/wrk-flow/larastrict/commit/3429635985896bc7b56dceaa0c2c86ff8cdf95ce) - **Queue**: Add _preHook closure to RunJobActionContractExpectation *(commit by [@pionl](https://github.com/pionl))*
@@ -697,3 +702,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.79]: https://github.com/wrk-flow/larastrict/compare/v0.0.78...v0.0.79
 [v0.0.80]: https://github.com/wrk-flow/larastrict/compare/v0.0.79...v0.0.80
 [v0.0.81]: https://github.com/wrk-flow/larastrict/compare/v0.0.80...v0.0.81
+[v0.0.82]: https://github.com/wrk-flow/larastrict/compare/v0.0.81...v0.0.82
