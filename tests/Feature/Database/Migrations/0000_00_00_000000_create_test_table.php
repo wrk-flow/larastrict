@@ -7,17 +7,17 @@ namespace Tests\LaraStrict\Feature\Database\Migrations;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Schema\Blueprint;
 use LaraStrict\Database\Migrations\AbstractCreateMigration;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 return new class() extends AbstractCreateMigration {
     public function getModelClass(): string
     {
-        return Test::class;
+        return TestModel::class;
     }
 
     public function schema(Blueprint $table): void
     {
-        $table->integer(Test::AttributeTest);
+        $table->integer(TestModel::AttributeTest);
         $table->softDeletes();
         $table->timestamps();
     }
@@ -26,12 +26,12 @@ return new class() extends AbstractCreateMigration {
     {
         parent::up();
 
-        Test::factory(10)
+        TestModel::factory(10)
             ->state(new Sequence([
-                Test::AttributeDeletedAt => null,
+                TestModel::AttributeDeletedAt => null,
             ], [
-                Test::AttributeDeletedAt => now(),
-            ],))
+                TestModel::AttributeDeletedAt => now(),
+            ], ))
             ->create();
     }
 };

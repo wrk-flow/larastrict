@@ -10,6 +10,7 @@ use LaraStrict\Database\Entities\ChunkWriteStateEntity;
 use LaraStrict\Database\Services\ChunkWriteService;
 use LaraStrict\Tests\Traits\SqlTestEnable;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,8 +26,8 @@ final class ChunkWriteServiceTest extends TestCase
     public static function data(): array
     {
         return [
-            [
-                'empty' => static function (self $self) {
+            'empty' => [
+                static function (self $self) {
                     $self->assert(new ChunkWriteStateEntity(), static function () {
                         yield from [];
                     },);
@@ -55,8 +56,8 @@ final class ChunkWriteServiceTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);

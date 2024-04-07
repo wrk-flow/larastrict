@@ -15,9 +15,6 @@ use PHPUnit\Framework\Attributes\BeforeClass;
 
 trait SqlTestEnable
 {
-    /**
-     * @beforeClass
-     */
     #[BeforeClass]
     final public static function beforeClassSqlTestEnable(): void
     {

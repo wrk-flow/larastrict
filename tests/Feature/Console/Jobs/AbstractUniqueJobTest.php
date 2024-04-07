@@ -6,6 +6,7 @@ namespace Tests\LaraStrict\Feature\Console\Jobs;
 
 use Closure;
 use LaraStrict\Console\Jobs\AbstractUniqueJob;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class AbstractUniqueJobTest extends TestCase
@@ -13,7 +14,7 @@ class AbstractUniqueJobTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataQueue(): array
+    public static function dataQueue(): array
     {
         return [
             [
@@ -27,8 +28,8 @@ class AbstractUniqueJobTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider dataQueue
      */
+    #[DataProvider('dataQueue')]
     public function testQueue(Closure $assert): void
     {
         $assert($this);

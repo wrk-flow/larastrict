@@ -12,7 +12,7 @@ class OrderScope extends AbstractScope
 {
     public function __construct(
         private readonly string $column,
-        private readonly SortDirection $direction = SortDirection::Asc
+        private readonly SortDirection $direction = SortDirection::Asc,
     ) {
     }
 

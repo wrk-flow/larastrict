@@ -32,7 +32,7 @@ class CreateAppServiceProviderAction implements CreateAppServiceProviderActionCo
             serviceName: $serviceName,
             serviceFileName: $this->getServiceFileName($serviceName, $provider),
             serviceRootDir: $dir,
-            namespace: $namespace
+            namespace: $namespace,
         );
     }
 

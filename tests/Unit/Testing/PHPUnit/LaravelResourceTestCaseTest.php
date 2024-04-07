@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LaraStrict\Testing\PHPUnit\ResourceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
 
 /**
@@ -15,19 +16,19 @@ use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
  */
 class LaravelResourceTestCaseTest extends ResourceTestCase
 {
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
                 static fn (self $testCase) => $testCase->assert(
                     object: new TestEntity(value: 'test'),
-                    expected: self::expected(value: 'test')
+                    expected: self::expected(value: 'test'),
                 ),
             ],
             [
                 static fn (self $testCase) => $testCase->assert(
                     object: new TestEntity(value: 'test22'),
-                    expected: self::expected(value: 'test22')
+                    expected: self::expected(value: 'test22'),
                 ),
             ],
             'fail while setting container' => [
@@ -42,8 +43,8 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -55,7 +56,7 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
 
         $this->assertEquals(
             expected: self::expected(value: 'test'),
-            actual: $this->resourceArray(resource: $resource)
+            actual: $this->resourceArray(resource: $resource),
         );
     }
 
@@ -65,7 +66,7 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
 
         $this->assertEquals(
             expected: [self::expected(value: 'test')],
-            actual: $this->resourceArray(resource: $resource)
+            actual: $this->resourceArray(resource: $resource),
         );
     }
 

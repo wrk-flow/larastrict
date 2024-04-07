@@ -65,7 +65,7 @@ class MakeExpectationCommandRealTest extends TestCase
                 string $first,
                 int $second,
                 bool $third,
-                SimpleActionContractExpectation $expectation
+                SimpleActionContractExpectation $expectation,
             ) use (&$hookCalled): void {
                 $hookCalled = true;
                 $this->assertEquals(1, $expectation->second);
@@ -86,7 +86,7 @@ class MakeExpectationCommandRealTest extends TestCase
             $this->assertStringContainsString(
                 'Expectation for [Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\SimpleActionContractAssert@execute] failed for a n (3) call',
                 $expectationFailedException->getMessage(),
-                'Should contain debug message'
+                'Should contain debug message',
             );
         }
 
@@ -96,7 +96,7 @@ class MakeExpectationCommandRealTest extends TestCase
         } catch (Exception $exception) {
             $this->assertEquals(
                 'Expectation for [Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\SimpleActionContractAssert@execute] not set for a n (4) call',
-                $exception->getMessage()
+                $exception->getMessage(),
             );
         }
     }

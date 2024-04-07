@@ -22,7 +22,7 @@ interface ScheduleServiceContract
         string $command,
         array $keyedParameters = [],
         int $uniqueFor = 1800,
-        string $queue = 'default'
+        string $queue = 'default',
     ): CallbackEvent;
 
     /**

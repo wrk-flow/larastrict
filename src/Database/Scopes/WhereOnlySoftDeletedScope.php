@@ -15,7 +15,7 @@ class WhereOnlySoftDeletedScope extends AbstractScope
     {
         if (method_exists($model, 'getQualifiedDeletedAtColumn') === false) {
             throw new LogicException(
-                'Unable to apply OnlySoftDeletedScope because ' . $model::class . ' model does not implement SoftDeletes trait'
+                'Unable to apply OnlySoftDeletedScope because ' . $model::class . ' model does not implement SoftDeletes trait',
             );
         }
 

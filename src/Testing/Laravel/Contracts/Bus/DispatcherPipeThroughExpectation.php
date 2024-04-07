@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Bus;
 final class DispatcherPipeThroughExpectation
 {
     public function __construct(
-        public readonly array $pipes
+        public readonly array $pipes,
     ) {
     }
 }

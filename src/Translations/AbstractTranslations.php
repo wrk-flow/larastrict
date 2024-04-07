@@ -15,7 +15,7 @@ use Illuminate\Contracts\Translation\Translator;
 abstract class AbstractTranslations
 {
     public function __construct(
-        private readonly Translator $translator
+        private readonly Translator $translator,
     ) {
     }
 
@@ -28,7 +28,7 @@ abstract class AbstractTranslations
         string|array $key,
         array $replace = [],
         ?string $locale = null,
-        string $defaultValue = null
+        string $defaultValue = null,
     ): string {
         $result = $this->translator->get($this->getKey($key), $replace, $locale);
 
@@ -59,7 +59,7 @@ abstract class AbstractTranslations
         string|array $key,
         int|array|Countable $number,
         array $replace = [],
-        ?string $locale = null
+        ?string $locale = null,
     ): string {
         return $this->translator->choice($this->getKey($key), $number, $replace, $locale);
     }

@@ -26,7 +26,7 @@ trait AssertProviderRegistersRoutes
         Application $application,
         array $expectUrlsByMethod,
         ?string $registerServiceProvider = null,
-        bool $onlyGiven = false
+        bool $onlyGiven = false,
     ): void {
         if ($registerServiceProvider !== null) {
             $application->register($registerServiceProvider, true);

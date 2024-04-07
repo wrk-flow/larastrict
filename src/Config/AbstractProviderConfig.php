@@ -12,7 +12,7 @@ abstract class AbstractProviderConfig extends AbstractConfig
 {
     public function __construct(
         Repository $config,
-        private readonly GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction
+        private readonly GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction,
     ) {
         parent::__construct($config);
     }

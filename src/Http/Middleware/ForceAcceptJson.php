@@ -14,7 +14,7 @@ class ForceAcceptJson
 {
     public function __construct(
         private readonly Repository $configRepository,
-        private readonly Application $application
+        private readonly Application $application,
     ) {
     }
 

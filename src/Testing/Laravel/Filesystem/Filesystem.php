@@ -6,6 +6,8 @@ namespace LaraStrict\Testing\Laravel\Filesystem;
 
 use Illuminate\Contracts\Filesystem\Cloud;
 use Illuminate\Contracts\Filesystem\Filesystem as FilesystemContract;
+use Illuminate\Http\File;
+use Illuminate\Http\UploadedFile;
 
 class Filesystem implements FilesystemContract, Cloud
 {
@@ -17,7 +19,7 @@ class Filesystem implements FilesystemContract, Cloud
     public array $exists = [];
 
     public function __construct(
-        public readonly string $diskName = 'default'
+        public readonly string $diskName = 'default',
     ) {
     }
 
@@ -124,5 +126,46 @@ class Filesystem implements FilesystemContract, Cloud
     public function url($path)
     {
         return 'http://localhost/' . $path;
+    }
+
+    /**
+     * @todo Remove when dropping support for Laravel 10
+     * Get the full path to the file that exists at the given relative path.
+     *
+     * @param  string  $path
+     *
+     * @return string
+     */
+    public function path($path)
+    {
+        return $path;
+    }
+
+    /**
+     * @todo Remove when dropping support for Laravel 10
+     * Store the uploaded file on the disk.
+     *
+     * @param File|UploadedFile|string $path
+     * @param File|UploadedFile|string|array|null $file
+     *
+     * @return string|false
+     */
+    public function putFile($path, $file = null, mixed $options = [])
+    {
+        return 'the-file';
+    }
+
+    /**
+     * @todo Remove when dropping support for Laravel 10
+     * Store the uploaded file on the disk with a given name.
+     *
+     * @param File|UploadedFile|string $path
+     * @param File|UploadedFile|string|array|null $file
+     * @param  string|array|null  $name
+     * @return string|false
+     */
+    public function putFileAs($path, $file, $name = null, mixed $options = [])
+    {
+        return 'the-file';
     }
 }

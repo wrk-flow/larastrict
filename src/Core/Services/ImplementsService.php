@@ -21,7 +21,7 @@ class ImplementsService
 
         if (array_key_exists($className, $this->classImplementsCache) === false) {
             $classImplements = class_implements($object);
-            $this->classImplementsCache[$className] = is_array($classImplements) ? $classImplements : [];
+            $this->classImplementsCache[$className] = $classImplements;
         }
 
         return $this->classImplementsCache[$className];

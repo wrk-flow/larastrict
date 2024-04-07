@@ -13,7 +13,9 @@ class ValidConfig extends AbstractProviderConfig
 
     public function getTest(): string
     {
-        return $this->get(self::KeyTest);
+        $value = $this->get(self::KeyTest);
+        assert(is_string($value));
+        return $value;
     }
 
     protected function getServiceProvider(): string

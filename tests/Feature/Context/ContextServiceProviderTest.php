@@ -25,7 +25,7 @@ class ContextServiceProviderTest extends TestCase
                 ContextEventsService::class => ContextEventsService::class,
                 ContextServiceContract::class => ContextService::class,
             ],
-            registerServiceProvider: ContextServiceProvider::class
+            registerServiceProvider: ContextServiceProvider::class,
         );
     }
 
@@ -34,7 +34,7 @@ class ContextServiceProviderTest extends TestCase
         $this->assertSingletons(
             application: $this->app(),
             expectedMap: [ContextEventsService::class, ContextServiceContract::class],
-            registerServiceProvider: ContextServiceProvider::class
+            registerServiceProvider: ContextServiceProvider::class,
         );
     }
 }

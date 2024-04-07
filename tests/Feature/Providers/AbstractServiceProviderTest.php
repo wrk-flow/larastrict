@@ -79,8 +79,8 @@ class AbstractServiceProviderTest extends TestCase
             sprintf(
                 'Tagged implementation for %s must be instance of %s',
                 CreateAppServiceProviderAction::class,
-                TestImplementationInterface::class
-            )
+                TestImplementationInterface::class,
+            ),
         );
         $this->app()
             ->make(DITestImplementationAction::class);

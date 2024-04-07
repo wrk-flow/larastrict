@@ -180,7 +180,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
             return $model;
         } catch (ModelNotFoundException $modelNotFoundException) {
-            if ($customException === null) {
+            if (! $customException instanceof Closure) {
                 throw $modelNotFoundException;
             } elseif ($customException instanceof Throwable) {
                 throw $customException;

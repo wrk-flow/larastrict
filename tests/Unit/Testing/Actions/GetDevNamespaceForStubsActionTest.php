@@ -8,11 +8,12 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Auth\Access\Gate;
 use LaraStrict\Testing\Actions\GetDevNamespaceForStubsAction;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class GetDevNamespaceForStubsActionTest extends TestCase
 {
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
@@ -28,9 +29,7 @@ class GetDevNamespaceForStubsActionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testNamespace(string $class, string $expectedBaseNamespace, string $expectedFolder): void
     {
         $result = (new GetDevNamespaceForStubsAction())->execute(new Command(), 'test', $class);

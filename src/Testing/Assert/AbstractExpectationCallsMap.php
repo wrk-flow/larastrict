@@ -36,7 +36,7 @@ abstract class AbstractExpectationCallsMap
     }
 
     /**
-     * @template TExpectation
+     * @template TExpectation of object
      *
      * @param class-string<TExpectation> $class
      * @param array<TExpectation|null>        $expectations
@@ -103,7 +103,7 @@ abstract class AbstractExpectationCallsMap
             $caller['class'] ?? static::class,
             $caller['function'],
             $reason,
-            $callStep ?? $this->_currentDebugStep
+            $callStep ?? $this->_currentDebugStep,
         );
     }
 }

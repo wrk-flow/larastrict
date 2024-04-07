@@ -24,32 +24,48 @@ class AppConfig extends AbstractConfig implements AppConfigContract
      */
     public function getVersion(): string
     {
-        return (string) ($this->get(self::KeyVersion, null, true) ?? 'DEV.' . time());
+        $value = ($this->get(self::KeyVersion, null, true) ?? 'DEV.' . time());
+        assert(is_string($value) || is_numeric($value));
+        return (string) $value;
     }
 
     public function getKey(): string
     {
-        return $this->get(self::KeyKey);
+        $value = $this->get(self::KeyKey);
+        assert(is_string($value));
+        return $value;
     }
 
     public function getUrl(): string
     {
-        return $this->get(self::KeyUrl, emptyToDefault: true);
+        $value = $this->get(self::KeyUrl, emptyToDefault: true);
+        assert(is_string($value));
+        return $value;
     }
 
     public function getAssetUrl(): ?string
     {
-        return $this->get(self::KeyAssetUrl, null, true);
+        $value = $this->get(self::KeyAssetUrl, null, true);
+        if ($value === null) {
+            return null;
+        }
+
+        assert(is_string($value));
+        return $value;
     }
 
     public function getName(): string
     {
-        return $this->get(self::KeyName, emptyToDefault: true);
+        $value = $this->get(self::KeyName, emptyToDefault: true);
+        assert(is_string($value));
+        return $value;
     }
 
     public function isInDebugMode(): bool
     {
-        return (bool) $this->get(self::KeyDebug, false, true);
+        $value = $this->get(self::KeyDebug, false, true);
+        assert(is_bool($value) || is_numeric($value) || is_string($value));
+        return (bool) $value;
     }
 
     public function getEnvironment(): EnvironmentType|string
@@ -63,6 +79,7 @@ class AppConfig extends AbstractConfig implements AppConfigContract
         if (is_int($env)) {
             $env = 'production';
         }
+        assert(is_string($env));
 
         $envType = EnvironmentType::tryFrom($env);
 

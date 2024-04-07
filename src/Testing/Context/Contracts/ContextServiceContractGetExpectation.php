@@ -21,7 +21,7 @@ final class ContextServiceContractGetExpectation
         public readonly ContextValueContract $return,
         public readonly AbstractContext $context,
         public readonly ?Closure $hook = null,
-        public readonly ?Closure $runCreateState = null
+        public readonly ?Closure $runCreateState = null,
     ) {
     }
 }

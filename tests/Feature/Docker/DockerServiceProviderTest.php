@@ -11,6 +11,7 @@ use Illuminate\Console\Scheduling\Event;
 use Illuminate\Contracts\Events\Dispatcher;
 use LaraStrict\Docker\Config\DockerConfig;
 use LaraStrict\Docker\DockerServiceProvider;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 use const true;
 
@@ -26,19 +27,19 @@ class DockerServiceProviderTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataEnsureOutput(): array
+    public static function dataEnsureOutput(): array
     {
         return [
             'will change because it contains default value' => [
                 static fn (self $self) => $self->assertEnsureOutput(
                     isInDockerEnvironment: true,
-                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => '/proc/1/fd/1'
+                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => '/proc/1/fd/1',
                 ),
             ],
             'will do nothing because is not in docker env' => [
                 static fn (self $self) => $self->assertEnsureOutput(
                     isInDockerEnvironment: false,
-                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => $event->task->getDefaultOutput()
+                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => $event->task->getDefaultOutput(),
                 ),
             ],
             'will do nothing because task output was changed by user using appendOutputTo' => [
@@ -64,9 +65,8 @@ class DockerServiceProviderTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataEnsureOutput
      */
+    #[DataProvider('dataEnsureOutput')]
     public function testEnsureOutput(Closure $assert): void
     {
         $assert($this);
@@ -97,7 +97,7 @@ class DockerServiceProviderTest extends TestCase
 
         $event = new ScheduledTaskStarting(task: new Event(mutex: $eventMutex, command: 'test'));
 
-        if ($setDockerOutput !== null) {
+        if ($setDockerOutput instanceof Closure) {
             $setDockerOutput($event);
         }
 

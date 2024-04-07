@@ -19,7 +19,7 @@ class TestDependencyContext extends AbstractContext
     {
         $value = $contextService->get(
             context: $this,
-            createState: fn (string $dependency): TestValue => new TestValue($this->value)
+            createState: fn (string $dependency): TestValue => new TestValue($this->value),
         );
 
         Assert::assertEquals($this->value, $value->value);

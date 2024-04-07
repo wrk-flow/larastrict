@@ -8,7 +8,6 @@ use Closure;
 use Exception;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
 use LaraStrict\Http\Resources\JsonResource as LaraStrictJsonResource;
 use LaraStrict\Http\Resources\JsonResourceCollection;
@@ -32,7 +31,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
 
     public function getRequest(): Request
     {
-        if ($this->request === null) {
+        if (! $this->request instanceof Request) {
             $this->request = $this->createRequest();
         }
 
@@ -42,7 +41,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    abstract public function data(): array;
+    abstract static public function data(): array;
 
     /**
      * @param TEntity|callable():TEntity         $object
@@ -72,7 +71,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     /**
      * @param TEntity $object
      */
-    abstract protected function createResource(mixed $object): JsonResource;
+    abstract protected function createResource(mixed $object): BaseJsonResource;
 
     /**
      * Calls toArray on the resource. If the resource is a LaraStrictJsonResource or JsonResourceCollection, the
@@ -85,9 +84,9 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     protected function resourceArray(
         ?BaseJsonResource $resource,
         ?TestingContainer $container = null,
-        Request $request = null
+        Request $request = null,
     ): ?array {
-        if ($resource === null) {
+        if (! $resource instanceof BaseJsonResource) {
             return null;
         }
 
@@ -101,7 +100,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
         return new LogicException(sprintf(
             'Container can only be set on %s or %s.',
             LaraStrictJsonResource::class,
-            JsonResourceCollection::class
+            JsonResourceCollection::class,
         ));
     }
 
@@ -112,7 +111,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
 
     protected function tryToSetContainer(?TestingContainer $container, BaseJsonResource $resource): void
     {
-        if ($container === null) {
+        if (! $container instanceof TestingContainer) {
             return;
         }
 

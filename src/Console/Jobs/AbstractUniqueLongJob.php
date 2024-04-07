@@ -10,9 +10,7 @@ namespace LaraStrict\Console\Jobs;
 abstract class AbstractUniqueLongJob extends AbstractUniqueJob
 {
     public int $tries = 60;
-
     public int $maxExceptions = 1;
-
     public int $uniqueFor = 300;
 
     /**

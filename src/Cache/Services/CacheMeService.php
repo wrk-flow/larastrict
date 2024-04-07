@@ -24,7 +24,7 @@ class CacheMeService implements CacheMeServiceContract
     public function __construct(
         private readonly Factory $cacheFactory,
         private readonly LoggerInterface $logger,
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 
@@ -40,7 +40,7 @@ class CacheMeService implements CacheMeServiceContract
         int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         bool $log = true,
-        ?int $minutes = null
+        ?int $minutes = null,
     ): mixed {
         if ($strategy === CacheMeStrategy::None) {
             return $this->container->call($getValue);
@@ -79,7 +79,7 @@ class CacheMeService implements CacheMeServiceContract
                     value: $value,
                     tags: $tags,
                     seconds: $seconds,
-                    log: false
+                    log: false,
                 );
             }
 
@@ -98,7 +98,7 @@ class CacheMeService implements CacheMeServiceContract
                     value: $value,
                     tags: $tags,
                     seconds: $seconds,
-                    log: $log
+                    log: $log,
                 );
             }
         }
@@ -115,7 +115,7 @@ class CacheMeService implements CacheMeServiceContract
         array $tags = [],
         int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        bool $log = true
+        bool $log = true,
     ): void {
         $this->store(
             repositories: $this->repositories($tags, $strategy),
@@ -123,7 +123,7 @@ class CacheMeService implements CacheMeServiceContract
             value: $value,
             tags: $tags,
             seconds: $seconds,
-            log: $log
+            log: $log,
         );
     }
 
@@ -134,7 +134,7 @@ class CacheMeService implements CacheMeServiceContract
      */
     public function flush(
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void {
         $this->logger->debug('Flushing cache', [
             'tags' => $tags,
@@ -156,7 +156,7 @@ class CacheMeService implements CacheMeServiceContract
     public function delete(
         string $key,
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void {
         $this->logger->debug('Deleting cache', [
             'tags' => $tags,
@@ -207,7 +207,7 @@ class CacheMeService implements CacheMeServiceContract
      */
     protected function repositories(
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): array {
         $stores = [];
 
@@ -251,7 +251,7 @@ class CacheMeService implements CacheMeServiceContract
         mixed $value,
         array $tags = [],
         int $seconds = CacheExpirations::Day,
-        bool $log = true
+        bool $log = true,
     ): void {
         if ($repositories === []) {
             return;

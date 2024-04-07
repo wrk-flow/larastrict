@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 class ViewAssertTest extends TestCase
 {
     use AssertExpectations;
+
     final public const Data = [
         'data' => 1,
     ];
@@ -24,7 +25,7 @@ class ViewAssertTest extends TestCase
         'data' => 2,
     ];
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         return [
             new AssertExpectationEntity(
@@ -32,37 +33,37 @@ class ViewAssertTest extends TestCase
                 createAssert: static fn () => new ViewAssert(name: [new ViewNameExpectation(return: 'test')]),
                 call: static fn (ViewAssert $assert) => $assert->name(),
                 checkResult: true,
-                expectedResult: 'test'
+                expectedResult: 'test',
             ),
             new AssertExpectationEntity(
                 methodName: 'with',
                 createAssert: static fn () => new ViewAssert(with: [new ViewWithExpectation(key: 'test')]),
                 call: static fn (ViewAssert $assert) => $assert->with(key: 'test'),
                 checkResult: true,
-                checkResultIsSelf: true
+                checkResultIsSelf: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'with',
                 createAssert: static fn () => new ViewAssert(
-                    with: [new ViewWithExpectation(key: 'test', value: 'value')]
+                    with: [new ViewWithExpectation(key: 'test', value: 'value')],
                 ),
                 call: static fn (ViewAssert $assert) => $assert->with(key: 'test', value: 'value'),
                 checkResult: true,
-                checkResultIsSelf: true
+                checkResultIsSelf: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'getData',
-                createAssert: static fn () => new ViewAssert(getData: [new ViewGetDataExpectation(return: 'test')]),
+                createAssert: static fn () => new ViewAssert(getData: [new ViewGetDataExpectation(return: ['test'])]),
                 call: static fn (ViewAssert $assert) => $assert->getData(),
                 checkResult: true,
-                expectedResult: 'test'
+                expectedResult: ['test'],
             ),
             new AssertExpectationEntity(
                 methodName: 'render',
                 createAssert: static fn () => new ViewAssert(render: [new ViewRenderExpectation(return: 'render')]),
                 call: static fn (ViewAssert $assert) => $assert->render(),
                 checkResult: true,
-                expectedResult: 'render'
+                expectedResult: 'render',
             ),
         ];
     }

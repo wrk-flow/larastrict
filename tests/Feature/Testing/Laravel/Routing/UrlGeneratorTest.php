@@ -26,7 +26,7 @@ class UrlGeneratorTest extends TestCase
     {
         $this->assertEquals(
             expected: 'http://localhost/previous-fallback',
-            actual: $this->urlGenerator->previous()
+            actual: $this->urlGenerator->previous(),
         );
     }
 
@@ -39,7 +39,7 @@ class UrlGeneratorTest extends TestCase
     {
         $this->assertEquals(
             expected: 'http://localhost/previous-fallback',
-            actual: $this->urlGenerator->previous('s')
+            actual: $this->urlGenerator->previous('s'),
         );
     }
 
@@ -56,7 +56,7 @@ class UrlGeneratorTest extends TestCase
             expected: 'http://localhost/path?foo=bar',
             actual: $this->urlGenerator->to('path', [
                 'foo' => 'bar',
-            ])
+            ]),
         );
     }
 
@@ -67,7 +67,7 @@ class UrlGeneratorTest extends TestCase
             expected: 'https://localhost/path?foo=bar',
             actual: $this->urlGenerator->to('path', [
                 'foo' => 'bar',
-            ], true)
+            ], true),
         );
     }
 
@@ -84,7 +84,7 @@ class UrlGeneratorTest extends TestCase
             expected: 'http://localhost/path?foo=bar',
             actual: $this->urlGenerator->secure('path', [
                 'foo' => 'bar',
-            ])
+            ]),
         );
     }
 
@@ -99,7 +99,7 @@ class UrlGeneratorTest extends TestCase
     {
         $this->assertEquals(
             expected: 'https://localhost/assets/path',
-            actual: $this->urlGenerator->asset('path', true)
+            actual: $this->urlGenerator->asset('path', true),
         );
     }
 
@@ -116,7 +116,7 @@ class UrlGeneratorTest extends TestCase
             expected: 'http://localhost/route/name?foo=bar',
             actual: $this->urlGenerator->route('name', [
                 'foo' => 'bar',
-            ])
+            ]),
         );
     }
 
@@ -127,7 +127,7 @@ class UrlGeneratorTest extends TestCase
             expected: '/route/name?foo=bar',
             actual: $this->urlGenerator->route('name', [
                 'foo' => 'bar',
-            ], false)
+            ], false),
         );
     }
 
@@ -142,7 +142,7 @@ class UrlGeneratorTest extends TestCase
     {
         $this->assertEquals(
             expected: 'http://localhost/action/action',
-            actual: $this->urlGenerator->action('action')
+            actual: $this->urlGenerator->action('action'),
         );
     }
 
@@ -153,7 +153,7 @@ class UrlGeneratorTest extends TestCase
             expected: 'http://localhost/action/action?foo=bar',
             actual: $this->urlGenerator->action('action', [
                 'foo' => 'bar',
-            ])
+            ]),
         );
     }
 
@@ -164,7 +164,7 @@ class UrlGeneratorTest extends TestCase
             expected: '/action/action?foo=bar',
             actual: $this->urlGenerator->action('action', [
                 'foo' => 'bar',
-            ], false)
+            ], false),
         );
     }
 
@@ -186,7 +186,7 @@ class UrlGeneratorTest extends TestCase
         $this->urlGenerator->setRootControllerNamespace('App\Http\Controllers\New');
         $this->assertEquals(
             expected: 'App\Http\Controllers\New',
-            actual: $this->urlGenerator->getRootControllerNamespace()
+            actual: $this->urlGenerator->getRootControllerNamespace(),
         );
     }
 }

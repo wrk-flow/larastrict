@@ -24,7 +24,7 @@ class PipeActionTest extends TestCase
                 static fn () => null,
                 static fn () => null,
             ]),
-            'Should receive null when default closure is not set'
+            'Should receive null when default closure is not set',
         );
 
         $this->assertEquals(
@@ -33,7 +33,7 @@ class PipeActionTest extends TestCase
                 static fn () => null,
                 static fn () => null,
             ], static fn () => 'test'),
-            'Should receive test from default closure'
+            'Should receive test from default closure',
         );
     }
 
@@ -45,7 +45,7 @@ class PipeActionTest extends TestCase
                 static fn () => 'marco',
                 static fn () => null,
             ]),
-            'Should receive null when default closure is not set'
+            'Should receive null when default closure is not set',
         );
 
         $this->assertEquals(
@@ -54,7 +54,7 @@ class PipeActionTest extends TestCase
                 static fn () => null,
                 static fn () => 'polo',
             ], static fn () => 'test'),
-            'Should receive test from default closure'
+            'Should receive test from default closure',
         );
     }
 }

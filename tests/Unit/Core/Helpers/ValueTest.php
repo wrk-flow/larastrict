@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Unit\Core\Helpers;
 
 use LaraStrict\Core\Helpers\Value;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class ValueTest extends TestCase
 {
-    /**
-     * @dataProvider provideValueToFloat
-     */
+    #[DataProvider('provideValueToFloat')]
     public function testValueToFloat(string|float|int $actual, ?float $expected): void
     {
         $this->assertSame($expected, Value::toFloat($actual));
     }
 
-    public function provideValueToFloat(): array
+    public static function provideValueToFloat(): array
     {
         return [
             ['', null],

@@ -10,6 +10,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Testing\PendingCommand;
 use LogicException;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\MultiFunctionContract;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods;
@@ -27,7 +28,6 @@ class MakeExpectationCommandTest extends TestCase
     final public const TestFileName = 'app/TestAction.php';
 
     private MockInterface $fileSystem;
-
     private static ?bool $stubsGenerated = null;
 
     protected function setUp(): void
@@ -58,9 +58,7 @@ class MakeExpectationCommandTest extends TestCase
         return __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.php.stub';
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testWithoutAutoloadDev(
         string $classOrFilePath,
         bool $useClass,
@@ -75,15 +73,13 @@ class MakeExpectationCommandTest extends TestCase
             $expectedPath,
             $fileName,
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath);
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testWithAutoloadDevButOnlyOneEntry(
         string $classOrFilePath,
         bool $useClass,
@@ -100,15 +96,13 @@ class MakeExpectationCommandTest extends TestCase
             $fileName,
             'one',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'one');
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testWithAutoloadDevTwoEntrySelectionSecond(
         string $classOrFilePath,
         bool $useClass,
@@ -125,7 +119,7 @@ class MakeExpectationCommandTest extends TestCase
             $fileName,
             'two',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
@@ -143,14 +137,14 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: 'Test',
             expectedMessage: 'Provided class does not exists [Test]',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
     public function testMethodDoesNotExistsDefaultValue(): void
     {
         $this->expectExceptionMessage(
-            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public'
+            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public',
         );
         $this->assertCommand(expectedResult: 1, class: NoMethods::class, expectComposerJson: false);
     }
@@ -163,11 +157,11 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: self::TestFileName,
             expectedMessage: 'File does not exists at [' . self::TestFileName . ']',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
-    public function data(): array
+    public static function data(): array
     {
         return [
             'with class 1' => [TestAction::class, true, 'TestAction'],
@@ -223,7 +217,7 @@ class MakeExpectationCommandTest extends TestCase
     {
         return static fn (string $path) => str_contains(
             $path,
-            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName
+            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName,
         );
     }
 
@@ -259,8 +253,8 @@ class MakeExpectationCommandTest extends TestCase
                 ->withArgs(
                     static fn (string $path): bool => str_contains(
                         $path,
-                        '/vendor/orchestra/testbench-core/laravel/composer.json'
-                    )
+                        '/vendor/orchestra/testbench-core/laravel/composer.json',
+                    ),
                 )
                 ->andReturnUsing(static function (string $path) use ($variantPrefix): string {
                     if ($variantPrefix !== null) {

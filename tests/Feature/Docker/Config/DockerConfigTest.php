@@ -6,6 +6,7 @@ namespace Tests\LaraStrict\Feature\Docker\Config;
 
 use Closure;
 use LaraStrict\Docker\Config\DockerConfig;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Config\Laravel\AbstractConfigTestCase;
 
 class DockerConfigTest extends AbstractConfigTestCase
@@ -23,7 +24,7 @@ class DockerConfigTest extends AbstractConfigTestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataIsInDockerEnvironment(): array
+    public static function dataIsInDockerEnvironment(): array
     {
         return [
             'default should be false' => [
@@ -43,9 +44,8 @@ class DockerConfigTest extends AbstractConfigTestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataIsInDockerEnvironment
      */
+    #[DataProvider('dataIsInDockerEnvironment')]
     public function testIsInDockerEnvironment(Closure $assert): void
     {
         $assert($this);
@@ -63,7 +63,7 @@ class DockerConfigTest extends AbstractConfigTestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataGetDockerOutputProcess(): array
+    public static function dataGetDockerOutputProcess(): array
     {
         return [
             'default should be /proc/1/fd/1' => [
@@ -80,9 +80,8 @@ class DockerConfigTest extends AbstractConfigTestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataGetDockerOutputProcess
      */
+    #[DataProvider('dataGetDockerOutputProcess')]
     public function testGetDockerOutputProcess(Closure $assert): void
     {
         $assert($this);

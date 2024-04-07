@@ -17,7 +17,7 @@ class ContextEventsService
     public function __construct(
         private readonly Dispatcher $eventsDispatcher,
         private readonly ContextServiceContract $contextService,
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 
@@ -45,12 +45,12 @@ class ContextEventsService
                     'event' => $event,
                 ]);
 
-                if ($value === null) {
+                if (($value instanceof ContextValueContract) === false) {
                     return;
                 }
 
                 $this->contextService->set($context, $value);
-            }
+            },
         );
     }
 
@@ -90,7 +90,7 @@ class ContextEventsService
         Closure|string|array $events,
         array $watchForAttributesChanges,
         Closure $getModelFromEvent,
-        callable $createContext
+        callable $createContext,
     ): void {
         $this->eventsDispatcher->listen(
             $events,
@@ -111,7 +111,7 @@ class ContextEventsService
                 }
 
                 $this->contextService->delete($context);
-            }
+            },
         );
     }
 }

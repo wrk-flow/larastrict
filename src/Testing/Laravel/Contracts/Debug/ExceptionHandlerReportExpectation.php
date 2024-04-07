@@ -9,7 +9,7 @@ use Throwable;
 final class ExceptionHandlerReportExpectation
 {
     public function __construct(
-        public readonly Throwable $e
+        public readonly Throwable $e,
     ) {
     }
 }

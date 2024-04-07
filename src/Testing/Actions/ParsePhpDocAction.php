@@ -28,7 +28,7 @@ class ParsePhpDocAction
 
     public function execute(ReflectionMethod $method): PhpDocEntity
     {
-        if ($this->phpDocStringResolver === null) {
+        if (! $this->phpDocStringResolver instanceof PhpDocStringResolver) {
             return new PhpDocEntity();
         }
 

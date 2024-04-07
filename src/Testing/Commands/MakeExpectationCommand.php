@@ -96,7 +96,7 @@ class MakeExpectationCommand extends Command
         $directory = $basePath . DIRECTORY_SEPARATOR . $namespace->folder . strtr(
             $fileNamespace,
             StubConstants::NameSpaceSeparator,
-            DIRECTORY_SEPARATOR
+            DIRECTORY_SEPARATOR,
         );
         $fullNamespace = $namespace->baseNamespace . $fileNamespace;
 
@@ -133,18 +133,18 @@ class MakeExpectationCommand extends Command
                 ),
             );
 
-            if ($assertFileState !== null) {
+            if ($assertFileState instanceof AssertFileStateEntity) {
                 $methodName = $method->getName();
 
                 $assertFileState->constructorComments[] = sprintf(
                     '@param array<%s|null> $%s',
                     $expectationClassName,
-                    $methodName
+                    $methodName,
                 );
                 $assertFileState->constructorBodies[] = sprintf(
                     '$this->setExpectations(%s::class, $%s);',
                     $expectationClassName,
-                    $methodName
+                    $methodName,
                 );
 
                 $assertFileState
@@ -162,8 +162,8 @@ class MakeExpectationCommand extends Command
             }
         }
 
-        if ($assertFileState !== null) {
-            if ($assertFileState->constructor !== null) {
+        if ($assertFileState instanceof AssertFileStateEntity) {
+            if ($assertFileState->constructor instanceof Method) {
                 $assertFileState->constructor->addComment(implode(PHP_EOL, $assertFileState->constructorComments));
                 $assertFileState->constructor->addBody(implode(PHP_EOL, $assertFileState->constructorBodies));
             }
@@ -172,7 +172,7 @@ class MakeExpectationCommand extends Command
                 directory: $directory,
                 className: $assertClassName,
                 filesystem: $filesystem,
-                fileContents: $printer->printFile($assertFileState->file)
+                fileContents: $printer->printFile($assertFileState->file),
             );
         }
 
@@ -196,7 +196,7 @@ class MakeExpectationCommand extends Command
 
         $assertMethod->addBody(sprintf(
             '$_expectation = $this->getExpectation(%s);',
-            $expectationClassName . '::class'
+            $expectationClassName . '::class',
         ));
 
         $hookParameters = [];
@@ -210,7 +210,7 @@ class MakeExpectationCommand extends Command
                 $assertMethod->addBody(sprintf(
                     'Assert::assertEquals($_expectation->%s, $%s, $_message);',
                     $parameter->name,
-                    $parameter->name
+                    $parameter->name,
                 ));
             }
         }
@@ -331,7 +331,7 @@ class MakeExpectationCommand extends Command
         $parameterTypes[] = 'self';
 
         $constructor->addComment(
-            sprintf('@param \Closure(%s):void|null $%s', implode(',', $parameterTypes), self::HookProperty)
+            sprintf('@param \Closure(%s):void|null $%s', implode(',', $parameterTypes), self::HookProperty),
         );
 
         return $printer->printFile($file);
@@ -339,7 +339,7 @@ class MakeExpectationCommand extends Command
 
     protected function setParameterType(
         ReflectionType|ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
-        PromotedParameter $constructorParameter
+        PromotedParameter $constructorParameter,
     ): string {
         $proposedType = '';
 
@@ -401,7 +401,7 @@ class MakeExpectationCommand extends Command
 
     protected function setParameterDefaultValue(
         ReflectionParameter $parameter,
-        PromotedParameter $constructorParameter
+        PromotedParameter $constructorParameter,
     ): void {
         if ($parameter->isDefaultValueAvailable() === false) {
             return;
@@ -420,7 +420,7 @@ class MakeExpectationCommand extends Command
 
         if (is_object($defaultValue)) {
             $objectLiteral = new Literal(
-                'new ' . StubConstants::NameSpaceSeparator . $defaultValue::class . '(/* unknown */)'
+                'new ' . StubConstants::NameSpaceSeparator . $defaultValue::class . '(/* unknown */)',
             );
             $constructorParameter->setDefaultValue($objectLiteral);
         } else {
@@ -442,7 +442,7 @@ class MakeExpectationCommand extends Command
         string $directory,
         string $className,
         Filesystem $filesystem,
-        string $fileContents
+        string $fileContents,
     ): void {
         $filePath = $directory . DIRECTORY_SEPARATOR . $className . '.php';
         $filesystem->put($filePath, $fileContents);
@@ -481,9 +481,10 @@ class MakeExpectationCommand extends Command
      */
     private function getInputClass(string $basePath, Filesystem $filesystem): ?string
     {
-        /** @phpstan-var class-string|string $class */
-        $class = (string) $this->input->getArgument('class');
+        $class = $this->input->getArgument('class');
+        assert(is_string($class), 'Class must be a string');
 
+        /** @phpstan-var class-string|string $class */
         if (str_ends_with($class, '.php')) {
             $fullPath = $basePath . '/' . $class;
 

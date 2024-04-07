@@ -16,7 +16,7 @@ class UpdatedResourceTest extends TestCase
             expected: [
                 'message' => 'updated',
             ],
-            actual: (new UpdatedResource())->toArray(new Request())
+            actual: (new UpdatedResource())->toArray(new Request()),
         );
     }
 }

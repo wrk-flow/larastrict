@@ -6,15 +6,16 @@ namespace Tests\LaraStrict\Feature\Database\Models\Casts;
 
 use Closure;
 use LaraStrict\Database\Models\Casts\FloatCast;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 class FloatCastTest extends TestCase
 {
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataEnsureThatFloatIsReturned(): array
+    public static function dataEnsureThatFloatIsReturned(): array
     {
         return [
             'decimals' => [
@@ -42,14 +43,14 @@ class FloatCastTest extends TestCase
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
                     value: null,
                     expected: 0.0,
-                    nonNull: true
+                    nonNull: true,
                 ),
             ],
             'non null set to true, empty string' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
                     value: '',
                     expected: 0.0,
-                    nonNull: true
+                    nonNull: true,
                 ),
             ],
             'non null set to true, decimals' => [
@@ -71,9 +72,8 @@ class FloatCastTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataEnsureThatFloatIsReturned
      */
+    #[DataProvider('dataEnsureThatFloatIsReturned')]
     public function testEnsureThatFloatIsReturned(Closure $assert): void
     {
         $assert($this);
@@ -82,19 +82,19 @@ class FloatCastTest extends TestCase
     public function assertEnsureThatFloatIsReturned(
         ?string $value,
         ?float $expected,
-        bool $nonNull = false
+        bool $nonNull = false,
     ): void {
         $cast = $nonNull === false ? new FloatCast() : new FloatCast(nonNull: $nonNull);
         $this->assertSame(
             expected: $expected,
-            actual: $cast->get(model: new Test(), key: '', value: $value, attributes: []),
+            actual: $cast->get(model: new TestModel(), key: '', value: $value, attributes: []),
         );
     }
 
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataConvertFloatToModelDecimalValue(): array
+    public static function dataConvertFloatToModelDecimalValue(): array
     {
         return [
             '4 decimals - 1' => [
@@ -214,8 +214,8 @@ class FloatCastTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider dataConvertFloatToModelDecimalValue
      */
+    #[DataProvider('dataConvertFloatToModelDecimalValue')]
     public function testConvertFloatToModelDecimalValue(Closure $assert): void
     {
         $assert($this);
@@ -224,11 +224,11 @@ class FloatCastTest extends TestCase
     public function assertConvertFloatToModelDecimalValue(
         float|string|null $value,
         ?string $expected,
-        FloatCast $cast
+        FloatCast $cast,
     ): void {
         $this->assertSame(
             expected: $expected,
-            actual: $cast->set(model: new Test(), key: '', value: $value, attributes: []),
+            actual: $cast->set(model: new TestModel(), key: '', value: $value, attributes: []),
         );
     }
 }

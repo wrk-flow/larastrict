@@ -10,7 +10,7 @@ use Illuminate\Support\MessageBag;
 class ValidatorMock implements Validator
 {
     public function __construct(
-        private readonly array $validatedData
+        private readonly array $validatedData,
     ) {
     }
 

@@ -14,7 +14,10 @@ class DockerConfig extends AbstractProviderConfig
 
     public function isInDockerEnvironment(): bool
     {
-        return $this->get(keyOrPath: self::KeyInDockerEnvironment);
+        $bool = $this->get(keyOrPath: self::KeyInDockerEnvironment);
+        assert(is_bool($bool) || is_string($bool) || is_int($bool));
+
+        return (bool) $bool;
     }
 
     public function setIsInDockerEnvironment(bool $value): void
@@ -24,7 +27,9 @@ class DockerConfig extends AbstractProviderConfig
 
     public function getDockerOutputProcess(): string
     {
-        return $this->get(keyOrPath: self::KeyOutputProcess);
+        $value = $this->get(keyOrPath: self::KeyOutputProcess);
+        assert(is_string($value));
+        return $value;
     }
 
     protected function getServiceProvider(): string
