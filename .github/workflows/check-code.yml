@@ -27,7 +27,7 @@ jobs:
         phpVersion: [ "8.1", "8.2", "8.3" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@59e60b0bf283c13b2a5e1dc70641e62730d81bc0
     with:
-      composerRequireDev: "orchestra/testbench:^v7"
+      composerRequireDev: "laravel/framework:^9"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
@@ -38,7 +38,7 @@ jobs:
         phpVersion: [ "8.1", "8.2", "8.3" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@59e60b0bf283c13b2a5e1dc70641e62730d81bc0
     with:
-      composerRequireDev: "orchestra/testbench:^v8"
+      composerRequireDev: "laravel/framework:^10"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
@@ -49,7 +49,7 @@ jobs:
         phpVersion: [ "8.2", "8.3" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@59e60b0bf283c13b2a5e1dc70641e62730d81bc0
     with:
-      composerRequireDev: "orchestra/testbench:^v9"
+      composerRequireDev: "laravel/framework:^11"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
@@ -60,7 +60,7 @@ jobs:
         phpVersion: [ "8.1", "8.2", "8.3" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@59e60b0bf283c13b2a5e1dc70641e62730d81bc0
     with:
-      composerRequireDev: "orchestra/testbench:^v7"
+      composerRequireDev: "laravel/framework:^9"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
@@ -71,7 +71,7 @@ jobs:
         phpVersion: [ "8.1", "8.2", "8.3" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@59e60b0bf283c13b2a5e1dc70641e62730d81bc0
     with:
-      composerRequireDev: "orchestra/testbench:^v8"
+      composerRequireDev: "laravel/framework:^10"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
@@ -82,7 +82,7 @@ jobs:
         phpVersion: [ "8.2", "8.3" ]
     uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@59e60b0bf283c13b2a5e1dc70641e62730d81bc0
     with:
-      composerRequireDev: "orchestra/testbench:^v9"
+      composerRequireDev: "laravel/framework:^11"
       phpVersion: "${{ matrix.phpVersion }}"
       gistID: ${{ vars.GIST_ID }}
       gistOnPhpVersion: "8.2"
