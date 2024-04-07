@@ -133,7 +133,7 @@ class MakeExpectationCommand extends Command
                 ),
             );
 
-            if ($assertFileState !== null) {
+            if ($assertFileState instanceof AssertFileStateEntity) {
                 $methodName = $method->getName();
 
                 $assertFileState->constructorComments[] = sprintf(
@@ -162,8 +162,8 @@ class MakeExpectationCommand extends Command
             }
         }
 
-        if ($assertFileState !== null) {
-            if ($assertFileState->constructor !== null) {
+        if ($assertFileState instanceof AssertFileStateEntity) {
+            if ($assertFileState->constructor instanceof Method) {
                 $assertFileState->constructor->addComment(implode(PHP_EOL, $assertFileState->constructorComments));
                 $assertFileState->constructor->addBody(implode(PHP_EOL, $assertFileState->constructorBodies));
             }
@@ -481,9 +481,10 @@ class MakeExpectationCommand extends Command
      */
     private function getInputClass(string $basePath, Filesystem $filesystem): ?string
     {
-        /** @phpstan-var class-string|string $class */
-        $class = (string) $this->input->getArgument('class');
+        $class = $this->input->getArgument('class');
+        assert(is_string($class), 'Class must be a string');
 
+        /** @phpstan-var class-string|string $class */
         if (str_ends_with($class, '.php')) {
             $fullPath = $basePath . '/' . $class;
 

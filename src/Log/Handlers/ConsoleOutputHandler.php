@@ -9,16 +9,22 @@ use Illuminate\Console\View\Components\Factory;
 use LaraStrict\Log\Managers\ConsoleOutputManager;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
+use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @internal
+ * @phpstan-import-type LevelName from Logger
+ * @phpstan-import-type Level from Logger
  */
 final class ConsoleOutputHandler extends AbstractProcessingHandler
 {
+    /**
+     * @phpstan-param Level|LevelName|LogLevel::* $level
+     */
     public function __construct(
         private readonly ConsoleOutputManager $manager,
-        $level = Logger::DEBUG,
+        string|int $level = Logger::DEBUG,
         bool $bubble = true
     ) {
         parent::__construct($level, $bubble);

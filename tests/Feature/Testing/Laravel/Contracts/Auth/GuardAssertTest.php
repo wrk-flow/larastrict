@@ -77,10 +77,10 @@ class GuardAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'validate',
-                createAssert: static fn () => new GuardAssert(validate: [new GuardValidateExpectation(return: 1)]),
+                createAssert: static fn () => new GuardAssert(validate: [new GuardValidateExpectation(return: true)]),
                 call: static fn (GuardAssert $assert) => $assert->validate(),
                 checkResult: true,
-                expectedResult: 1
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'validate',

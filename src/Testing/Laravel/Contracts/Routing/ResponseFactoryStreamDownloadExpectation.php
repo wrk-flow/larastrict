@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 
 use Closure;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class ResponseFactoryStreamDownloadExpectation
 {
@@ -12,7 +13,7 @@ final class ResponseFactoryStreamDownloadExpectation
      * @param Closure(mixed, mixed, array, mixed, self):void|null $hook
      */
     public function __construct(
-        public readonly mixed $return,
+        public readonly StreamedResponse $return,
         public readonly mixed $name = null,
         public readonly array $headers = [],
         public readonly mixed $disposition = 'attachment',

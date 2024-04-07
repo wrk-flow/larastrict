@@ -151,7 +151,7 @@ class TestingContainer implements Container
 
     public function call($callback, array $parameters = [], $defaultMethod = null)
     {
-        if ($this->call === null) {
+        if (! $this->call instanceof Closure) {
             return null;
         }
 

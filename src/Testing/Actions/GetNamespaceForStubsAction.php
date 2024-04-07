@@ -47,15 +47,18 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
         return new NamespaceEntity($folder, $baseNamespace);
     }
 
-    protected function getComposerJsonData(string $basePath): mixed
+    protected function getComposerJsonData(string $basePath): array
     {
-        return json_decode($this->filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
+        $json = json_decode($this->filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
+        assert(is_array($json));
+        return $json;
     }
 
     private function getComposerDevAutoLoad(array $composer): array
     {
-        if (isset($composer[self::ComposerAutoLoadDev])
-            && isset($composer[self::ComposerAutoLoadDev][self::ComposerPsr4])) {
+        if (isset($composer[self::ComposerAutoLoadDev][self::ComposerPsr4]) && is_array(
+            $composer[self::ComposerAutoLoadDev][self::ComposerPsr4]
+        )) {
             return $composer[self::ComposerAutoLoadDev][self::ComposerPsr4];
         }
 

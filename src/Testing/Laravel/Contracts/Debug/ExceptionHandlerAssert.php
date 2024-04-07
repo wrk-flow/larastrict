@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Laravel\Contracts\Debug;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Http\Request;
 use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class ExceptionHandlerAssert extends AbstractExpectationCallsMap implements ExceptionHandler
@@ -44,11 +42,6 @@ class ExceptionHandlerAssert extends AbstractExpectationCallsMap implements Exce
         Assert::assertEquals($expectation->e, $e, $message);
     }
 
-    /**
-     * Determine if the exception should be reported.
-     *
-     * @return bool
-     */
     public function shouldReport(Throwable $e)
     {
         $expectation = $this->getExpectation(ExceptionHandlerShouldReportExpectation::class);
@@ -59,12 +52,6 @@ class ExceptionHandlerAssert extends AbstractExpectationCallsMap implements Exce
         return $expectation->return;
     }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param Request $request
-     * @return Response
-     */
     public function render($request, Throwable $e)
     {
         $expectation = $this->getExpectation(ExceptionHandlerRenderExpectation::class);

@@ -2,7 +2,13 @@
     "name": "wrkflow/larastrict",
     "type": "project",
     "description": "Package to improve Laravel framework with features to support more strict typed Laravel.",
-    "keywords": ["framework", "laravel", "php", "strictphp", "strict"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "php",
+        "strictphp",
+        "strict"
+    ],
     "license": "MIT",
     "homepage": "https://github.com/wrk-flow/larastrict",
     "authors": [
@@ -21,31 +27,34 @@
     "require-dev": {
         "ext-pdo": "*",
         "ext-sqlite3": "*",
-        "mockery/mockery": "^1.5.0",
-        "nette/php-generator": "v4.0.5",
-        "nikic/php-parser": "v4.15.2",
-        "nunomaduro/larastan": "2.2.9",
-        "orchestra/testbench": "^v7.13.0",
-        "phpstan/phpdoc-parser": "^1.13",
-        "phpstan/phpstan": "1.9.4",
-        "phpstan/phpstan-deprecation-rules": "^1.0.0",
+        "larastrict/conventions": "v0.1.0",
+        "mockery/mockery": "^1.6",
+        "nette/php-generator": "^v4.1",
+        "orchestra/testbench": "^v7",
         "phpstan/phpstan-mockery": "^1.1.0",
-        "phpstan/phpstan-phpunit": "^1.1.1",
-        "phpunit/phpunit": "^9.5.27",
-        "rector/rector": "0.15.1",
-        "symplify/easy-coding-standard": "11.1.20"
+        "phpstan/phpdoc-parser": "^1.13",
+        "nikic/php-parser": "^v4.15.2"
     },
     "scripts": {
         "post-autoload-dump": [
             "@php ./vendor/bin/testbench package:discover --ansi"
         ],
-        "check": "composer lint && composer test && composer lint:stan",
+        "analyse": "./vendor/bin/phpstan",
+        "check": [
+            "@lint",
+            "@test",
+            "@analyse"
+        ],
+        "lint": [
+            "@lint:fix",
+            "@lint:upgrade"
+        ],
         "lint:check": "./vendor/bin/ecs",
         "lint:fix": "./vendor/bin/ecs --fix",
         "lint:stan": "./vendor/bin/phpstan",
-        "lint:upgrade:check": "vendor/bin/rector process --dry-run",
         "lint:upgrade": "vendor/bin/rector process",
-        "lint": "composer lint:upgrade && composer lint:fix && composer lint:stan",
+        "lint:upgrade:check": "vendor/bin/rector process --dry-run",
+        "lint:stan:b": "./vendor/bin/phpstan -b",
         "test": "./vendor/bin/phpunit",
         "test:stubs": "STUBS_GENERATE=true ./vendor/bin/phpunit",
         "test:coverage": "./vendor/bin/phpunit --coverage-text"
@@ -78,7 +87,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

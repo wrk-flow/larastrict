@@ -1,6 +1,26 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\$createState of method LaraStrict\\\\Context\\\\Services\\\\ContextService\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: LaraStrict\\\\Context\\\\Values\\\\BoolContextValue, Closure\\(Illuminate\\\\Contracts\\\\Container\\\\Container\\)\\: LaraStrict\\\\Context\\\\Values\\\\BoolContextValue given\\.$#"
+			count: 1
+			path: src/Context/Services/ContextService.php
+
+		-
+			message: "#^Parameter \\#1 \\$ of closure expects TModel of Illuminate\\\\Database\\\\Eloquent\\\\Model, mixed given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
+			message: "#^Parameter \\#1 \\$ of closure expects array\\<int\\|string\\>, array\\<int\\<0, max\\>, mixed\\> given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:chunk\\(\\) expects callable\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, int\\)\\: mixed, Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, TModel\\>\\)\\: void given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
 			message: "#^Access to an undefined property LaraStrict\\\\Http\\\\Resources\\\\JsonResource\\:\\:\\$preserveKeys\\.$#"
 			count: 1
 			path: src/Http/Resources/JsonResource.php
@@ -14,6 +34,16 @@ parameters:
 			message: "#^Method LaraStrict\\\\Http\\\\Resources\\\\JsonResourceCollection\\:\\:toArray\\(\\) return type with generic interface Illuminate\\\\Contracts\\\\Support\\\\Arrayable does not specify its types\\: TKey, TValue$#"
 			count: 1
 			path: src/Http/Resources/JsonResourceCollection.php
+
+		-
+			message: "#^Method LaraStrict\\\\Log\\\\Channels\\\\ConsoleOutputChannel\\:\\:getLevel\\(\\) should return 100\\|200\\|250\\|300\\|400\\|500\\|550\\|600\\|'ALERT'\\|'alert'\\|'CRITICAL'\\|'critical'\\|'DEBUG'\\|'debug'\\|'EMERGENCY'\\|'emergency'\\|'ERROR'\\|'error'\\|'INFO'\\|'info'\\|'NOTICE'\\|'notice'\\|'WARNING'\\|'warning' but returns int\\|string\\.$#"
+			count: 1
+			path: src/Log/Channels/ConsoleOutputChannel.php
+
+		-
+			message: "#^Parameter \\$getValue of method LaraStrict\\\\Cache\\\\Contracts\\\\CacheMeServiceContract\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity, Closure\\(Illuminate\\\\Contracts\\\\Foundation\\\\Application\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity given\\.$#"
+			count: 1
+			path: src/Providers/Actions/GetAppServiceProviderForClassAction.php
 
 		-
 			message: "#^Cannot cast array\\|string to string\\.$#"
@@ -43,11 +73,36 @@ parameters:
 		# forward compatibility
 
 		-
+			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\IsContext\\:\\:is\\(\\) should return Closure\\(mixed, mixed, mixed, mixed, mixed\\)\\: bool but returns Closure\\(bool\\)\\: bool\\.$#"
+			count: 1
+			path: tests/Feature/Context/Services/IsContext.php
+
+		-
+			message: "#^Parameter \\$createState of method LaraStrict\\\\Context\\\\Contracts\\\\ContextServiceContract\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue, Closure\\(string\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue given\\.$#"
+			count: 1
+			path: tests/Feature/Context/Services/TestDependencyContext.php
+
+		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with false and 'Hook should be…' will always evaluate to false\\.$#"
 			count: 1
 			path: tests/Feature/Testing/Commands/MakeExpectationCommandRealTest.php
 
 		-
+			message: "#^Call to method LaraStrict\\\\Testing\\\\Laravel\\\\Contracts\\\\View\\\\FactoryAssert\\:\\:exists\\(\\) with 'test' will always evaluate to false\\.$#"
+			count: 2
+			path: tests/Feature/Testing/Laravel/Contracts/View/FactoryAssertTest.php
+
+		-
 			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
 			count: 1
 			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
+
+		-
+			message: "#^Parameter \\$createState of method LaraStrict\\\\Testing\\\\Context\\\\Contracts\\\\ContextServiceContractAssert\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue, Closure\\(string\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue given\\.$#"
+			count: 2
+			path: tests/Unit/Testing/Context/Contracts/ContextServiceContractAssertTest.php
+
+		-
+			message: "#^Parameter \\$is of method LaraStrict\\\\Testing\\\\Context\\\\Contracts\\\\ContextServiceContractAssert\\:\\:is\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: bool, Closure\\(string\\)\\: true given\\.$#"
+			count: 1
+			path: tests/Unit/Testing/Context/Contracts/ContextServiceContractAssertTest.php

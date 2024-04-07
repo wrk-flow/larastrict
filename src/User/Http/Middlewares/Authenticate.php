@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\User\Http\Middlewares;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Factory as Auth;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\Request;
@@ -44,6 +45,7 @@ class Authenticate extends Middleware
         if ($request->expectsJson() === false) {
             return route('login');
         }
+        return null;
     }
 
     protected function autoLoginFirstUserOnLocalIfNeeded(Request $request, array $guards): void
@@ -63,7 +65,7 @@ class Authenticate extends Middleware
 
             $user = $this->getUserForAutoLoginActionContract->execute($autoLogin);
 
-            if ($user !== null) {
+            if ($user instanceof Authenticatable) {
                 $guardInstance->setUser($user);
             }
 

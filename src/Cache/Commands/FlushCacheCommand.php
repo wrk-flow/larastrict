@@ -17,7 +17,7 @@ class FlushCacheCommand extends Command
     {
         $tagOrKey = $this->argument('tagOrKey');
 
-        if (is_string($tagOrKey) === false) {
+        if (! is_string($tagOrKey)) {
             $this->info('Only string value is supported');
             return;
         }

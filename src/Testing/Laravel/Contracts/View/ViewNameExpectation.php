@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\View;
 final class ViewNameExpectation
 {
     public function __construct(
-        public readonly mixed $return
+        public readonly string $return
     ) {
     }
 }

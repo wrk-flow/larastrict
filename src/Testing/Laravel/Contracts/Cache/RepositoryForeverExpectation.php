@@ -9,10 +9,10 @@ use Closure;
 final class RepositoryForeverExpectation
 {
     /**
-     * @param Closure(mixed, mixed, self):void|null $hook
+     * @param Closure(bool, mixed, self):void|null $hook
      */
     public function __construct(
-        public readonly mixed $return,
+        public readonly bool $return,
         public readonly mixed $key,
         public readonly mixed $value,
         public readonly ?Closure $hook = null,

@@ -97,7 +97,7 @@ class DockerServiceProviderTest extends TestCase
 
         $event = new ScheduledTaskStarting(task: new Event(mutex: $eventMutex, command: 'test'));
 
-        if ($setDockerOutput !== null) {
+        if ($setDockerOutput instanceof Closure) {
             $setDockerOutput($event);
         }
 

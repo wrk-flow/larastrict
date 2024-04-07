@@ -22,6 +22,7 @@ class UrlGenerator implements UrlGeneratorContract
 
     public function to($path, $extra = [], $secure = null): string
     {
+        assert(is_array($extra));
         return $this->createUrl(path: $path, parameters: $extra, secure: $secure);
     }
 
@@ -37,11 +38,13 @@ class UrlGenerator implements UrlGeneratorContract
 
     public function route($name, $parameters = [], $absolute = true): string
     {
+        assert(is_array($parameters));
         return $this->createUrl(path: 'route/' . $name, parameters: $parameters, absolute: $absolute);
     }
 
     public function action($action, $parameters = [], $absolute = true): string
     {
+        assert(is_array($parameters));
         $actionString = is_array($action) ? implode('-', $action) : $action;
 
         return $this->createUrl(path: 'action/' . $actionString, parameters: $parameters, absolute: $absolute);

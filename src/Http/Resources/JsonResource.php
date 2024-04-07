@@ -36,7 +36,7 @@ abstract class JsonResource extends BaseJsonResource
 
     protected function getContainer(): Container
     {
-        if ($this->container === null) {
+        if (! $this->container instanceof \Illuminate\Contracts\Container\Container) {
             return LaravelContainer::getInstance();
         }
 

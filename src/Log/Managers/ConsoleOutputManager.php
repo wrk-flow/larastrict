@@ -15,7 +15,6 @@ use Illuminate\Log\LogManager;
 use Illuminate\Support\Env;
 use LaraStrict\Docker\Config\DockerConfig;
 use LaraStrict\Log\Channels\ConsoleOutputChannel;
-use RuntimeException;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -55,9 +54,9 @@ class ConsoleOutputManager
     {
         $this->currentOutput = $currentOutput;
 
-        $this->outputStyle = $currentOutput === null
-            ? null
-            : new OutputStyle(new StringInput(''), $currentOutput);
+        $this->outputStyle = $currentOutput instanceof OutputInterface
+            ? new OutputStyle(new StringInput(''), $currentOutput)
+            : null;
         $this->outputFactory = $this->outputStyle instanceof OutputStyle === false
             ? null
             : new Factory($this->outputStyle);
@@ -160,13 +159,7 @@ class ConsoleOutputManager
      */
     protected function getLogManager(): LogManager
     {
-        $logManager = $this->container->make('log');
-
-        if ($logManager instanceof LogManager === false) {
-            throw new RuntimeException('Log manager must be instance of ' . LogManager::class);
-        }
-
-        return $logManager;
+        return $this->container->make('log');
     }
 
     /**

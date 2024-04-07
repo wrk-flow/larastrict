@@ -52,10 +52,10 @@ class ViewAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'getData',
-                createAssert: static fn () => new ViewAssert(getData: [new ViewGetDataExpectation(return: 'test')]),
+                createAssert: static fn () => new ViewAssert(getData: [new ViewGetDataExpectation(return: ['test'])]),
                 call: static fn (ViewAssert $assert) => $assert->getData(),
                 checkResult: true,
-                expectedResult: 'test'
+                expectedResult: ['test']
             ),
             new AssertExpectationEntity(
                 methodName: 'render',

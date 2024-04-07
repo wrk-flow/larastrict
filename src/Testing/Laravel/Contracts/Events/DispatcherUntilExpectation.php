@@ -6,9 +6,12 @@ namespace LaraStrict\Testing\Laravel\Contracts\Events;
 
 final class DispatcherUntilExpectation
 {
+    /**
+     * @param array<mixed>|null    $return
+     */
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $event,
+        public readonly array|null $return,
+        public readonly string|object $event,
         public readonly mixed $payload = [],
     ) {
     }

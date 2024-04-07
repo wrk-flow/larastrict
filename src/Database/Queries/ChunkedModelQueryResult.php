@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
+ * @todo deprecate in favor of Generator
  */
 class ChunkedModelQueryResult
 {
@@ -98,9 +99,9 @@ class ChunkedModelQueryResult
         $this->onChunk(
             function (Collection $collection) use ($closure, &$processed): void {
                 foreach ($collection as $entry) {
-                    $wrappedEntry = $this->onEntryTransform === null
-                        ? $entry
-                        : call_user_func($this->onEntryTransform, $entry);
+                    $wrappedEntry = $this->onEntryTransform instanceof Closure
+                        ? call_user_func($this->onEntryTransform, $entry)
+                        : $entry;
 
                     $closure($wrappedEntry);
                     ++$processed;

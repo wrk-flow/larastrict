@@ -30,7 +30,7 @@ final class RunJobActionTest extends TestCase
     }
 
     /**
-     * @return array<string|int, array{0: Closure(static,Job,mixed):void}>
+     * @return array<string|int, array{0: AssertClosure}>
      */
     public function data(): array
     {

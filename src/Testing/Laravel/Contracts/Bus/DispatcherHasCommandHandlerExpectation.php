@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Bus;
 final class DispatcherHasCommandHandlerExpectation
 {
     public function __construct(
-        public readonly mixed $return,
+        public readonly bool $return,
         public readonly mixed $command,
     ) {
     }

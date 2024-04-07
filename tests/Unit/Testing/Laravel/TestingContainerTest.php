@@ -97,7 +97,7 @@ class TestingContainerTest extends TestCase
     public function testBindingResolutionException(
         bool $setMake,
         string $expectedMessage,
-        mixed $value = null
+        ?object $value = null
     ): void {
         $container = new TestingContainer();
 

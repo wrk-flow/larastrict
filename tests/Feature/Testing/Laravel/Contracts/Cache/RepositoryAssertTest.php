@@ -59,38 +59,38 @@ class RepositoryAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'put',
                 createAssert: static fn () => new RepositoryAssert(put: [
-                    new RepositoryPutExpectation(return: 'Test', key: '123', value: 'Rock'),
+                    new RepositoryPutExpectation(return: true, key: '123', value: 'Rock'),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->put(key: '123', value: 'Rock'),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'put',
                 createAssert: static fn () => new RepositoryAssert(put: [
-                    new RepositoryPutExpectation(return: 'Test', key: '123', value: 'Rock', ttl: 123),
+                    new RepositoryPutExpectation(return: true, key: '123', value: 'Rock', ttl: 123),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->put(key: '123', value: 'Rock', ttl: 123),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'add',
                 createAssert: static fn () => new RepositoryAssert(add: [
-                    new RepositoryAddExpectation(return: 'Test', key: '123', value: 'Rock'),
+                    new RepositoryAddExpectation(return: true, key: '123', value: 'Rock'),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->add(key: '123', value: 'Rock'),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'add',
                 createAssert: static fn () => new RepositoryAssert(add: [
-                    new RepositoryAddExpectation(return: 'Test', key: '123', value: 'Rock', ttl: 123),
+                    new RepositoryAddExpectation(return: true, key: '123', value: 'Rock', ttl: 123),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->add(key: '123', value: 'Rock', ttl: 123),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'increment',
@@ -131,11 +131,11 @@ class RepositoryAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'forever',
                 createAssert: static fn () => new RepositoryAssert(forever: [
-                    new RepositoryForeverExpectation(return: 'Test', key: '123', value: 'Rock'),
+                    new RepositoryForeverExpectation(return: true, key: '123', value: 'Rock'),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->forever(key: '123', value: 'Rock'),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'remember',
@@ -190,11 +190,11 @@ class RepositoryAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'forget',
                 createAssert: static fn () => new RepositoryAssert(forget: [
-                    new RepositoryForgetExpectation(return: 'Test', key: '123'),
+                    new RepositoryForgetExpectation(return: true, key: '123'),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->forget(key: '123'),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: true
             ),
             new AssertExpectationEntity(
                 methodName: 'getStore',

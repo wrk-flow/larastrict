@@ -107,7 +107,7 @@ trait CreateRequest
             )
         );
 
-        if ($user !== null) {
+        if ($user instanceof Authenticatable) {
             $request->setUserResolver(static fn () => $user);
         }
 

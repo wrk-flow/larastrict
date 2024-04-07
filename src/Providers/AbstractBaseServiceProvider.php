@@ -38,7 +38,7 @@ abstract class AbstractBaseServiceProvider extends EventServiceProvider
 
     public function getAppServiceProvider(): AppServiceProviderEntity
     {
-        if ($this->appServiceProvider === null) {
+        if (! $this->appServiceProvider instanceof AppServiceProviderEntity) {
             $action = $this->app->make($this->getCreateAppServiceProviderActionClass());
             assert($action instanceof CreateAppServiceProviderActionContract);
 

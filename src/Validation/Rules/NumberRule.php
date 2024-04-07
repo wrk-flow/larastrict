@@ -11,6 +11,10 @@ class NumberRule implements Rule
 {
     public function passes($attribute, $value): bool
     {
+        if (is_string($value) === false && is_numeric($value) === false) {
+            return false;
+        }
+
         if (self::isNumericInt($value)) {
             $intVal = (int) $value;
             return $intVal !== PHP_INT_MAX && $intVal !== PHP_INT_MIN;

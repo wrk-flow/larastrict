@@ -66,11 +66,12 @@ class TestServiceProviderTest extends TestCase
         $this->app()
             ->register(LaraStrictServiceProvider::class);
 
-        $this->assertInstanceOf(
-            expected: SleepService::class,
-            actual: $this->app()
-                ->make(SleepServiceContract::class)
-        );
+        $service = $this->app()
+            ->make(SleepServiceContract::class);
+
+        // larastan will resolve this as NoSleepService - does not support dynamic env change.
+        /** @phpstan-ignore-next-line  */
+        $this->assertTrue($service instanceof SleepService);
     }
 
     protected function getPackageProviders($app)
@@ -80,8 +81,10 @@ class TestServiceProviderTest extends TestCase
 
     protected function setEnv(string|EnvironmentType $environment): void
     {
-        $config = $this->app()
+        $config = $this
+            ->app()
             ->get(Repository::class);
+
         assert($config instanceof Repository);
         $config->set('app.env', $environment);
     }

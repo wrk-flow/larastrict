@@ -20,8 +20,10 @@ class JsonResourceCollection extends AnonymousResourceCollection
 
     public function toArray($request)
     {
-        return $this->collection->map(function (JsonResource $resource) use ($request) {
-            if ($this->container !== null) {
+        return $this->collection->map(function (mixed $resource) use ($request) {
+            assert($resource instanceof JsonResource);
+
+            if ($this->container instanceof Container) {
                 $resource->setContainer($this->container);
             }
 

@@ -45,7 +45,7 @@ class ContextEventsService
                     'event' => $event,
                 ]);
 
-                if ($value === null) {
+                if (($value instanceof ContextValueContract) === false) {
                     return;
                 }
 

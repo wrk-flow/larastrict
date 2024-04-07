@@ -51,7 +51,7 @@ class BootViewComposersPipeTest extends TestCase
                     },
                     viewFactory: $viewFactory,
                     factoryComposerExpectation: new FactoryComposerExpectation(
-                        return: null,
+                        return: [],
                         views: ['test'],
                         callback: Composer::class,
                     ),
@@ -77,7 +77,7 @@ class BootViewComposersPipeTest extends TestCase
     ): void {
         $pipe = new BootViewComposersPipe(viewFactory: $viewFactory);
 
-        if ($factoryComposerExpectation !== null) {
+        if ($factoryComposerExpectation instanceof FactoryComposerExpectation) {
             $viewFactory->addExpectation($factoryComposerExpectation);
         }
 

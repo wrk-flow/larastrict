@@ -36,7 +36,7 @@ abstract class AbstractExpectationCallsMap
     }
 
     /**
-     * @template TExpectation
+     * @template TExpectation of object
      *
      * @param class-string<TExpectation> $class
      * @param array<TExpectation|null>        $expectations
