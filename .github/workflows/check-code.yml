@@ -20,20 +20,72 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  code:
-    name: "Code check"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@7562253bdc3769847417e3476b501e7126f5d2c0
-    secrets: inherit
-
-  tests:
-    name: "Run tests"
+  code_l9:
+    name: "Code check - Laravel 9"
     strategy:
       matrix:
         phpVersion: [ "8.1", "8.2", "8.3" ]
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@7562253bdc3769847417e3476b501e7126f5d2c0
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@2bfd2e2fdf3fa3cf0cdf1b2c6d0379f91066084e
     with:
-      gistID: ${{ vars.GIST_ID }}
-      gistOnPhpVersion: "8.2"
+      composerRequireDev: "orchestra/testbench:^v7"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
+
+  code_l10:
+    name: "Code check - Laravel 10"
+    strategy:
+      matrix:
+        phpVersion: [ "8.1", "8.2", "8.3" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@2bfd2e2fdf3fa3cf0cdf1b2c6d0379f91066084e
+    with:
+      composerRequireDev: "orchestra/testbench:^v8"
+      phpVersion: "${{ matrix.phpVersion }}"
+    secrets: inherit
+
+  code_l11:
+    name: "Code check - Laravel 11"
+    strategy:
+      matrix:
+        phpVersion: [ "8.2", "8.3" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@2bfd2e2fdf3fa3cf0cdf1b2c6d0379f91066084e
+    with:
+      composerRequireDev: "orchestra/testbench:^v9"
+      phpVersion: "${{ matrix.phpVersion }}"
+    secrets: inherit
+
+  tests_l9:
+    name: "Code check - Laravel 9"
+    strategy:
+      matrix:
+        phpVersion: [ "8.1", "8.2", "8.3" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@2bfd2e2fdf3fa3cf0cdf1b2c6d0379f91066084e
+    with:
+      composerRequireDev: "orchestra/testbench:^v7"
+      phpVersion: "${{ matrix.phpVersion }}"
+    secrets: inherit
+
+  tests_l10:
+    name: "Code check - Laravel 10"
+    strategy:
+      matrix:
+        phpVersion: [ "8.1", "8.2", "8.3" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@2bfd2e2fdf3fa3cf0cdf1b2c6d0379f91066084e
+    with:
+      composerRequireDev: "orchestra/testbench:^v8"
+      phpVersion: "${{ matrix.phpVersion }}"
+    secrets: inherit
+
+  tests_l11:
+    name: "Code check - Laravel 11"
+    strategy:
+      matrix:
+        phpVersion: [ "8.2", "8.3" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@2bfd2e2fdf3fa3cf0cdf1b2c6d0379f91066084e
+    with:
+      composerRequireDev: "orchestra/testbench:^v9"
+      phpVersion: "${{ matrix.phpVersion }}"
+      gistID: ${{ vars.GIST_ID }}
+      gistOnPhpVersion: "8.2"
+    secrets: inherit
+
 
