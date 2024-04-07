@@ -29,9 +29,10 @@
         "ext-sqlite3": "*",
         "larastrict/conventions": "v0.1.1",
         "mockery/mockery": "^1.6",
-        "nette/php-generator": "^v4.1",
+        "nette/php-generator": "^v4.1.4",
         "orchestra/testbench": "^v7.41 | ^v8.0 | ^v9.0",
-        "phpstan/phpstan-mockery": "^1.1.0"
+        "phpstan/phpstan-mockery": "^1.1.0",
+        "phpstan/phpstan-phpunit": "^v1.3.16"
     },
     "scripts": {
         "post-autoload-dump": [

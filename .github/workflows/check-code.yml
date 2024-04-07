@@ -54,7 +54,7 @@ jobs:
     secrets: inherit
 
   tests_l9:
-    name: "Code check - Laravel 9"
+    name: "Tests - Laravel 9"
     strategy:
       matrix:
         phpVersion: [ "8.1", "8.2", "8.3" ]
@@ -65,7 +65,7 @@ jobs:
     secrets: inherit
 
   tests_l10:
-    name: "Code check - Laravel 10"
+    name: "Tests - Laravel 10"
     strategy:
       matrix:
         phpVersion: [ "8.1", "8.2", "8.3" ]
@@ -76,7 +76,7 @@ jobs:
     secrets: inherit
 
   tests_l11:
-    name: "Code check - Laravel 11"
+    name: "Tests - Laravel 11"
     strategy:
       matrix:
         phpVersion: [ "8.2", "8.3" ]
