@@ -184,4 +184,9 @@ class TestingContainer implements Container
     {
         return false;
     }
+
+    public function bindMethod($method, $callback)
+    {
+
+    }
 }
