@@ -18,10 +18,6 @@ final class BooleanRule implements ValidationRule
 
     private function passes(mixed $value): bool
     {
-        if (is_array($value) === false) {
-            return false;
-        }
-
         return in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true);
     }
 }
