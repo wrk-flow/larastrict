@@ -33,7 +33,7 @@
         "orchestra/testbench": "^v7",
         "phpstan/phpstan-mockery": "^1.1.0",
         "phpstan/phpdoc-parser": "^1.13",
-        "nikic/php-parser": "^v4.15.2"
+        "nikic/php-parser": "^v4.19"
     },
     "scripts": {
         "post-autoload-dump": [
