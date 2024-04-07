@@ -20,8 +20,8 @@
     "require": {
         "php": ">=8.1",
         "h4kuna/serialize-polyfill": "^0.2.4",
-        "laravel/framework": "^v9.52.16 | ^v10.48.4 | ^v11.2.0",
-        "psr/log": "^2 | ^3",
+        "laravel/framework": "^v10.48.4 | ^v11.2.0",
+        "psr/log": "^3",
         "psr/simple-cache": "^3.0"
     },
     "require-dev": {
@@ -30,7 +30,7 @@
         "larastrict/conventions": "v0.1.1",
         "mockery/mockery": "^1.6",
         "nette/php-generator": "^v4.1.4",
-        "orchestra/testbench": "^v7.41 | ^v8.22.2 | ^v9.0.3",
+        "orchestra/testbench": "^v8.22.2 | ^v9.0.3",
         "phpstan/phpstan-mockery": "^1.1.0",
         "phpstan/phpstan-phpunit": "^v1.3.16"
     },
@@ -39,6 +39,7 @@
             "@php ./vendor/bin/testbench package:discover --ansi"
         ],
         "analyse": "./vendor/bin/phpstan",
+        "analyse:b": "./vendor/bin/phpstan -b",
         "check": [
             "@lint",
             "@test",
@@ -50,10 +51,8 @@
         ],
         "lint:check": "./vendor/bin/ecs",
         "lint:fix": "./vendor/bin/ecs --fix",
-        "lint:stan": "./vendor/bin/phpstan",
         "lint:upgrade": "vendor/bin/rector process",
         "lint:upgrade:check": "vendor/bin/rector process --dry-run",
-        "lint:stan:b": "./vendor/bin/phpstan -b",
         "test": "./vendor/bin/phpunit",
         "test:stubs": "STUBS_GENERATE=true ./vendor/bin/phpunit",
         "test:coverage": "./vendor/bin/phpunit --coverage-text"

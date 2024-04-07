@@ -35,10 +35,6 @@ parameters:
 			count: 1
 			path: src/Http/Resources/JsonResourceCollection.php
 
-		-
-			message: "#^Method LaraStrict\\\\Log\\\\Channels\\\\ConsoleOutputChannel\\:\\:getLevel\\(\\) should return 100\\|200\\|250\\|300\\|400\\|500\\|550\\|600\\|'ALERT'\\|'alert'\\|'CRITICAL'\\|'critical'\\|'DEBUG'\\|'debug'\\|'EMERGENCY'\\|'emergency'\\|'ERROR'\\|'error'\\|'INFO'\\|'info'\\|'NOTICE'\\|'notice'\\|'WARNING'\\|'warning' but returns int\\|string\\.$#"
-			count: 1
-			path: src/Log/Channels/ConsoleOutputChannel.php
 
 		-
 			message: "#^Parameter \\$getValue of method LaraStrict\\\\Cache\\\\Contracts\\\\CacheMeServiceContract\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity, Closure\\(Illuminate\\\\Contracts\\\\Foundation\\\\Application\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity given\\.$#"

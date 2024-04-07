@@ -8,29 +8,30 @@ use Illuminate\Console\OutputStyle;
 use Illuminate\Console\View\Components\Factory;
 use LaraStrict\Log\Managers\ConsoleOutputManager;
 use Monolog\Handler\AbstractProcessingHandler;
-use Monolog\Logger;
+use Monolog\Level;
+use Monolog\LogRecord;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @internal
- * @phpstan-import-type LevelName from Logger
- * @phpstan-import-type Level from Logger
  */
 final class ConsoleOutputHandler extends AbstractProcessingHandler
 {
     /**
-     * @phpstan-param Level|LevelName|LogLevel::* $level
+     * @param int|string|Level|LogLevel::* $level The minimum logging level at which this handler will be triggered
+     *
+     * @phpstan-param value-of<Level::VALUES>|value-of<Level::NAMES>|Level|LogLevel::* $level
      */
     public function __construct(
         private readonly ConsoleOutputManager $manager,
-        string|int $level = Logger::DEBUG,
+        string|int|Level $level = Level::Debug,
         bool $bubble = true
     ) {
         parent::__construct($level, $bubble);
     }
 
-    protected function write(array $record): void
+    protected function write(LogRecord $record): void
     {
         $consoleOutputFactory = $this->manager->getOutputFactory();
         $outputStyle = $this->manager->getOutputStyle();
@@ -43,27 +44,27 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
             return;
         }
 
-        $context = $record['context'];
+        $context = $record->context;
         $hasContext = $context !== [];
-        $message = $record['message'];
+        $message = $record->message;
 
         switch ($record['level']) {
-            case Logger::NOTICE:
-            case Logger::INFO:
+            case Level::Notice:
+            case Level::Info:
                 $consoleOutputFactory->info($message);
                 break;
-            case Logger::WARNING:
+            case Level::Warning:
                 $consoleOutputFactory->warn($message);
                 break;
-            case Logger::ALERT:
-            case Logger::EMERGENCY:
-            case Logger::CRITICAL:
+            case Level::Alert:
+            case Level::Emergency:
+            case Level::Critical:
                 $consoleOutputFactory->alert($message);
                 break;
-            case Logger::ERROR:
+            case Level::Error:
                 $consoleOutputFactory->error($message);
                 break;
-            case Logger::DEBUG:
+            case Level::Debug:
                 if ($outputStyle->getVerbosity() <= OutputInterface::VERBOSITY_NORMAL) {
                     return;
                 }

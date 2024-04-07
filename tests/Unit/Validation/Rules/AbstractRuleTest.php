@@ -4,41 +4,48 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Translation\PotentiallyTranslatedString;
+use LaraStrict\Testing\Laravel\Contracts\Translation\TranslatorAssert;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @todo move to testing package
+ */
 abstract class AbstractRuleTest extends TestCase
 {
     /**
-     * @dataProvider testPassesData
+     * @dataProvider passesData
      */
     public function testPasses(RuleExpectation $expectation): void
     {
         $rule = $this->createRule();
 
-        $this->assertEquals($expectation->expectedIsValid, $rule->passes('test', $expectation->value));
+        $failed = false;
+        $fail = function (string $message) use (&$failed): PotentiallyTranslatedString {
+            $failed = true;
+            $this->assertEquals($this->getExpectedMessage(), str_replace(':attribute', 'test', $message));
+            return new PotentiallyTranslatedString($message, new TranslatorAssert());
+        };
+
+        $rule->validate('test', $expectation->value, $fail);
+
+        $this->assertEquals($expectation->expectedIsValid, $failed === false);
     }
 
-    public function testMessage(): void
-    {
-        $rule = $this->createRule();
-
-        $this->assertEquals($this->getExpectedMessage(), str_replace(':attribute', 'test', $rule->message()));
-    }
-
-    abstract public function createRule(): Rule;
+    abstract public function createRule(): ValidationRule;
 
     /**
      * @return array<RuleExpectation>
      */
-    abstract protected function testData(): array;
+    abstract protected function data(): array;
 
     abstract protected function getExpectedMessage(): string;
 
-    protected function testPassesData(): array
+    protected function passesData(): array
     {
         $data = [];
-        foreach ($this->testData() as $index => $entity) {
+        foreach ($this->data() as $index => $entity) {
             $data[$index . ' with value: ' . $entity->value] = [$entity];
         }
 

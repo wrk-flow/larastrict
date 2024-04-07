@@ -7,13 +7,11 @@ namespace LaraStrict\Log\Channels;
 use Illuminate\Log\LogManager;
 use LaraStrict\Log\Handlers\ConsoleOutputHandler;
 use LaraStrict\Log\Managers\ConsoleOutputManager;
+use Monolog\Level;
 use Monolog\Logger;
-use Psr\Log\LogLevel;
 
 /**
  * @internal
- * @phpstan-import-type LevelName from Logger
- * @phpstan-import-type Level from Logger
  */
 final class ConsoleOutputChannel extends LogManager
 {
@@ -22,7 +20,6 @@ final class ConsoleOutputChannel extends LogManager
      */
     public function __invoke(array $config): Logger
     {
-
         $handler = new ConsoleOutputHandler(
             manager: $this->app->make(ConsoleOutputManager::class),
             level: self::getLevel($config),
@@ -36,21 +33,21 @@ final class ConsoleOutputChannel extends LogManager
     }
 
     /**
-     * @param array<string, mixed> $config
-     *
-     * @phpstan-return Level|LevelName|LogLevel::*
+     * @param array<string, mixed>                                                     $config
      */
-    private static function getLevel(array $config): int|string
+    private static function getLevel(array $config): Level
     {
         if (array_key_exists('level', $config)) {
             $level = $config['level'];
 
-            if (is_string($level) || is_int($level)) {
-                return $level;
+            if (is_string($level) || is_int($level) || $level instanceof Level) {
+                // TODO: I have no clue hot to make PHPStan happy here
+                // @phpstan-ignore-next-line
+                return Logger::toMonologLevel($level);
             }
         }
 
-        return Logger::DEBUG;
+        return Level::Debug;
     }
 
     /**

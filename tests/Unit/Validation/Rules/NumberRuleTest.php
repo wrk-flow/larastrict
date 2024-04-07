@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\ValidationRule;
 use LaraStrict\Validation\Rules\NumberRule;
 
 class NumberRuleTest extends AbstractRuleTest
 {
-    public function createRule(): Rule
+    public function createRule(): ValidationRule
     {
         return new NumberRule();
     }
 
-    protected function testData(): array
+    protected function data(): array
     {
         return [
             new RuleExpectation('test', false),

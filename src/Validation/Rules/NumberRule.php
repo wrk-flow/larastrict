@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace LaraStrict\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 use LaraStrict\Core\Helpers\Value;
 
-class NumberRule implements Rule
+final class NumberRule implements ValidationRule
 {
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        if (self::passes($value) === false) {
+            $fail('Given :attribute is not a valid number or it exceeds int/float limits.');
+        }
+    }
+
+    private static function passes(mixed $value): bool
     {
         if (is_string($value) === false && is_numeric($value) === false) {
             return false;
@@ -27,11 +35,6 @@ class NumberRule implements Rule
         }
 
         return str_contains((string) $value, 'E+') === false;
-    }
-
-    public function message(): string
-    {
-        return 'Given :attribute is not a valid number or it exceeds int/float limits.';
     }
 
     /**
