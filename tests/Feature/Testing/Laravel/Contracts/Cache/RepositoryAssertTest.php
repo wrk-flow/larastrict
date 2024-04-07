@@ -34,7 +34,7 @@ class RepositoryAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $store = new NullStore();
         return [

@@ -7,14 +7,14 @@ namespace Tests\LaraStrict\Unit\Validation\Rules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use LaraStrict\Validation\Rules\RemoteUrlRule;
 
-final class RemoteUrlRuleTest extends AbstractRuleTest
+final class RemoteUrlRuleTest extends AbstractRuleTestCase
 {
     public function createRule(): ValidationRule
     {
         return new RemoteUrlRule();
     }
 
-    protected function data(): array
+    protected static function data(): array
     {
         return [
             // Domains

@@ -6,12 +6,13 @@ namespace Tests\LaraStrict\Feature\Database\Queries;
 
 use Closure;
 use Illuminate\Database\Eloquent\Scope;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Database\Models\Scopes\TestScope;
 use Tests\LaraStrict\Feature\TestCase;
 
 class AbstractEloquentQueryTest extends TestCase
 {
-    public function dataScopes(): array
+    public static function dataScopes(): array
     {
         return [
             'empty' => [
@@ -40,9 +41,8 @@ class AbstractEloquentQueryTest extends TestCase
 
     /**
      * @param Closure(static $assert, class-string<TestSqlQueryContract> $class):void $assert
-     *
-     * @dataProvider dataScopes
      */
+    #[DataProvider('dataScopes')]
     public function testScopes(Closure $assert): void
     {
         $assert($this, TestSqlQuery::class);
@@ -61,8 +61,8 @@ class AbstractEloquentQueryTest extends TestCase
 
     /**
      * @param Closure(static $assert, class-string<TestSqlQueryContract> $class):void $assert
-     * @dataProvider dataScopes
      */
+    #[DataProvider('dataScopes')]
     public function testChunkScopes(Closure $assert): void
     {
         $assert($this, TestChunkSqlQuery::class);

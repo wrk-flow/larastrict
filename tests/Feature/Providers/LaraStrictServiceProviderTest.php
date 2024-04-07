@@ -18,7 +18,7 @@ use LaraStrict\Testing\Actions\GetNamespaceForStubsAction;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Providers\Concerns\AssertProviderBindings;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 use Tests\LaraStrict\Feature\TestCase;
 
 class LaraStrictServiceProviderTest extends TestCase
@@ -42,8 +42,8 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBootResolveFactory(): void
     {
-        /** @var Test $result */
-        $result = Test::factory(1)->make()->first();
+        /** @var TestModel $result */
+        $result = TestModel::factory(1)->make()->first();
 
         $this->assertNotNull($result);
         $this->assertEquals($result->test, 1);

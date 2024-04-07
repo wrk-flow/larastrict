@@ -13,6 +13,10 @@ class TestRunAppServiceProviderAction implements RunAppServiceProviderPipesActio
 {
     public bool $executed = false;
 
+    /**
+     * @param non-empty-string $expectedServiceName
+     * @param non-empty-string $expectServiceRootDirToEndWith
+     */
     public function __construct(
         public readonly array $expectedPipes,
         public readonly string $expectedServiceName,

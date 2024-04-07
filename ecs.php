@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use LaraStrict\Conventions\ExtensionFiles;
 use PhpCsFixer\Fixer\ClassNotation\ClassAttributesSeparationFixer;
 use PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer;
 use Symplify\EasyCodingStandard\Config\ECSConfig;
@@ -11,7 +12,7 @@ return ECSConfig::configure()
     ->withRootFiles()
     ->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
     ->withSets([
-        __DIR__ . '/vendor/larastrict/conventions/extension-ecs.php'
+        ExtensionFiles::Ecs
     ])
     ->withSkip([
         // We want to leave the relative constant path usage

@@ -22,7 +22,7 @@ class BootViewComposersPipeTest extends TestCase
     use TestData;
     final public const ServiceName = 'Test';
 
-    public function data(): array
+    public static function data(): array
     {
         $app = new TestingApplication();
         $viewFactory = new FactoryAssert();

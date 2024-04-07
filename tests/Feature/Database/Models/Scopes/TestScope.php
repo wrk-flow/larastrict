@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Feature\Database\Models\Scopes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use LaraStrict\Database\Scopes\AbstractScope;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 class TestScope extends AbstractScope
 {
@@ -18,6 +18,6 @@ class TestScope extends AbstractScope
 
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->where(Test::AttributeTest, $this->value);
+        $builder->where(TestModel::AttributeTest, $this->value);
     }
 }

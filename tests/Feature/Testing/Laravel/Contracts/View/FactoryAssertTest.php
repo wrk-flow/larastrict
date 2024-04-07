@@ -30,7 +30,7 @@ class FactoryAssertTest extends TestCase
         'data' => 2,
     ];
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $view = new ViewAssert();
 

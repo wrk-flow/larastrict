@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use LaraStrict\Conventions\ExtensionFiles;
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\Config\RectorConfig;
+use Rector\PHPUnit\Set\PHPUnitSetList;
 
 // SKIP laravel
 $laravelClasses = [
@@ -13,7 +15,7 @@ $laravelClasses = [
 ];
 
 return RectorConfig::configure()
-    ->withSets([__DIR__.'/vendor/larastrict/conventions/extension-rector.php'])
+    ->withSets([ExtensionFiles::Rector])
     ->withRootFiles()
     ->withPaths([__DIR__ . '/src', __DIR__ . '/tests'])
     ->withSkip([

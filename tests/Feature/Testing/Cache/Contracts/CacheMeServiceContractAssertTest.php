@@ -15,7 +15,7 @@ use LaraStrict\Testing\Cache\Contracts\CacheMeServiceContractSetExpectation;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use PHPUnit\Framework\TestCase;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 class CacheMeServiceContractAssertTest extends TestCase
 {
@@ -23,7 +23,7 @@ class CacheMeServiceContractAssertTest extends TestCase
     private const Return = 'test';
     private const Key = 'key';
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $closure = static fn () => 'test';
         return [
@@ -121,12 +121,12 @@ class CacheMeServiceContractAssertTest extends TestCase
                 createAssert: static fn () => new CacheMeServiceContractAssert(
                     observeAndFlush: [new CacheMeServiceContractObserveAndFlushExpectation(
                         tags: [self::Key],
-                        modelClass: Test::class,
+                        modelClass: TestModel::class,
                     )]
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->observeAndFlush(
                     tags: [self::Key],
-                    modelClass: Test::class,
+                    modelClass: TestModel::class,
                 ),
                 checkResult: false,
             ),
@@ -135,12 +135,12 @@ class CacheMeServiceContractAssertTest extends TestCase
                 createAssert: static fn () => new CacheMeServiceContractAssert(
                     observeAndFlush: [new CacheMeServiceContractObserveAndFlushExpectation(
                         tags: static fn () => 'test',
-                        modelClass: Test::class,
+                        modelClass: TestModel::class,
                     )]
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->observeAndFlush(
                     tags: $closure,
-                    modelClass: Test::class,
+                    modelClass: TestModel::class,
                 ),
                 checkResult: false,
             ),

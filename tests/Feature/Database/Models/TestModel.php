@@ -14,7 +14,7 @@ use LaraStrict\Database\Models\Casts\FloatCast;
  * @property int $test
  * @property Carbon|null $deleted_at
  */
-class Test extends Model
+class TestModel extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -28,6 +28,8 @@ class Test extends Model
     final public const AttributeFloat1DecimalsNonNull = 'float_1_decimals_non_null';
     final public const AttributeFloat3DecimalsNonNull = 'float_3_decimals_non_null';
     final public const AttributeFloat4DecimalsNonNull = 'float_4_decimals_non_null';
+
+    protected $table = 'tests';
 
     protected $casts = [
         self::AttributeFloatNonNull => FloatCast::NonNull,

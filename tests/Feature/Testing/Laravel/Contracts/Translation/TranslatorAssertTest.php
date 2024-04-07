@@ -18,7 +18,7 @@ class TranslatorAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         return [
             new AssertExpectationEntity(

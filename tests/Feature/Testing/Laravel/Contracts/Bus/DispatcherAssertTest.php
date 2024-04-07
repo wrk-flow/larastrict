@@ -21,7 +21,7 @@ class DispatcherAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $testJob = new TestJob();
         return [

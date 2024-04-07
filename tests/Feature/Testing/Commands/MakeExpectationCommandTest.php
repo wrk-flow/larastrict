@@ -10,6 +10,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Testing\PendingCommand;
 use LogicException;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\MultiFunctionContract;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods;
@@ -58,9 +59,7 @@ class MakeExpectationCommandTest extends TestCase
         return __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.php.stub';
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testWithoutAutoloadDev(
         string $classOrFilePath,
         bool $useClass,
@@ -81,9 +80,7 @@ class MakeExpectationCommandTest extends TestCase
         $this->assertCommand(0, $classOrFilePath);
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testWithAutoloadDevButOnlyOneEntry(
         string $classOrFilePath,
         bool $useClass,
@@ -106,9 +103,7 @@ class MakeExpectationCommandTest extends TestCase
         $this->assertCommand(0, $classOrFilePath, 'one');
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testWithAutoloadDevTwoEntrySelectionSecond(
         string $classOrFilePath,
         bool $useClass,
@@ -167,7 +162,7 @@ class MakeExpectationCommandTest extends TestCase
         );
     }
 
-    public function data(): array
+    public static function data(): array
     {
         return [
             'with class 1' => [TestAction::class, true, 'TestAction'],

@@ -25,9 +25,9 @@
         "psr/simple-cache": "^3.0"
     },
     "require-dev": {
+        "larastrict/conventions": "v1.0.0",
         "ext-pdo": "*",
         "ext-sqlite3": "*",
-        "larastrict/conventions": "v0.1.1",
         "mockery/mockery": "^1.6",
         "nette/php-generator": "^v4.1.4",
         "orchestra/testbench": "^v8.22.2 | ^v9.0.3",

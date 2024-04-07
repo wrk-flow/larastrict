@@ -7,14 +7,14 @@ namespace Tests\LaraStrict\Unit\Validation\Rules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use LaraStrict\Validation\Rules\NumberRule;
 
-class NumberRuleTest extends AbstractRuleTest
+class NumberRuleTest extends AbstractRuleTestCase
 {
     public function createRule(): ValidationRule
     {
         return new NumberRule();
     }
 
-    protected function data(): array
+    protected static function data(): array
     {
         return [
             new RuleExpectation('test', false),

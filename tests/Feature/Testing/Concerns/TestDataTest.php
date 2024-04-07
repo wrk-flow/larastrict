@@ -11,17 +11,11 @@ class TestDataTest extends TestCase
 {
     use TestData;
 
-    public function data(): array
+    public static function data(): array
     {
         return [
-            'can use $app when using $testCase parameter' => [
-                static fn (self $testCase) => $testCase->assert(expectAppNull: false),
-            ],
-            '$app is null when using $this' => [
-                fn () => $this->assert(expectAppNull: true),
-            ],
-            [
-                fn () => $this->assert(expectAppNull: true),
+            'can use $app when using $self parameter' => [
+                static fn (self $self) => $self->assert(expectAppNull: false),
             ],
         ];
     }
@@ -29,9 +23,9 @@ class TestDataTest extends TestCase
     private function assert(bool $expectAppNull): void
     {
         $this->assertEquals(
-            $expectAppNull,
-            null === $this->app,
-            'Using $this in closure references test case without app initialized.'
+            expected: $expectAppNull,
+            actual: null === $this->app,
+            message: 'Using $this in closure references test case without app initialized.'
         );
     }
 }

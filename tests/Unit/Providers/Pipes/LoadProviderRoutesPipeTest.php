@@ -14,20 +14,19 @@ use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingApplicationRoutes;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use stdClass;
 
 class LoadProviderRoutesPipeTest extends TestCase
 {
-    public function invalidNumericRoutes(): array
+    public static function invalidNumericRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
-    /**
-     * @dataProvider invalidNumericRoutes
-     */
+    #[DataProvider('invalidNumericRoutes')]
     public function testNumericIndexMustHaveStringValue(mixed $customRoute): void
     {
         $this->assertInvalidRoutes(
@@ -36,9 +35,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider invalidStringRoutes
-     */
+    #[DataProvider('invalidStringRoutes')]
     public function testStringIndexMustHaveClosureOrString(mixed $customRoute): void
     {
         $this->assertInvalidRoutes([
@@ -46,12 +43,12 @@ class LoadProviderRoutesPipeTest extends TestCase
         ], 'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class);
     }
 
-    public function invalidStringRoutes(): array
+    public static function invalidStringRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
-    public function invalidRoutesClasses(): array
+    public static function invalidRoutesClasses(): array
     {
         return [
             [[InvalidCustomRouteAction::class],
@@ -63,9 +60,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidRoutesClasses
-     */
+    #[DataProvider('invalidRoutesClasses')]
     public function testInvalidRoutesClasses(array $customRoutes, string $expectedMessage): void
     {
         $container = new TestingContainer(

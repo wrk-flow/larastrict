@@ -7,15 +7,15 @@ namespace Tests\LaraStrict\Feature\Database\Models;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Test>
+ * @extends Factory<TestModel>
  */
-class TestFactory extends Factory
+class TestModelFactory extends Factory
 {
     public function definition()
     {
         return [
-            Test::AttributeTest => 1,
-            Test::AttributeDeletedAt => null,
+            TestModel::AttributeTest => 1,
+            TestModel::AttributeDeletedAt => null,
         ];
     }
 }

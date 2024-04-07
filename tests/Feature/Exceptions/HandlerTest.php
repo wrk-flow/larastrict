@@ -19,7 +19,7 @@ class HandlerTest extends TestCase
 {
     use TestData;
 
-    public function data(): array
+    public static function data(): array
     {
         return [
             'non http interface returns Server error' => [

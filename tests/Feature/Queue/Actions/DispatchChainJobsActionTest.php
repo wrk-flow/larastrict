@@ -9,6 +9,7 @@ use LaraStrict\Queue\Actions\DispatchChainJobsAction;
 use LaraStrict\Testing\Queue\Contracts\DispatchJobActionContractAssert;
 use LaraStrict\Testing\Queue\Contracts\DispatchJobActionContractExpectation;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DispatchChainJobsActionTest extends TestCase
@@ -22,7 +23,7 @@ final class DispatchChainJobsActionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataOneJob(): array
+    public static function dataOneJob(): array
     {
         return [
             'returns true on dispatch' => [
@@ -36,9 +37,8 @@ final class DispatchChainJobsActionTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataOneJob
      */
+    #[DataProvider('dataOneJob')]
     public function testOneJob(Closure $assert): void
     {
         $assert($this);
@@ -56,7 +56,7 @@ final class DispatchChainJobsActionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataChainJob(): array
+    public static function dataChainJob(): array
     {
         return [
             'returns true on dispatch' => [
@@ -70,9 +70,8 @@ final class DispatchChainJobsActionTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataChainJob
      */
+    #[DataProvider('dataChainJob')]
     public function testChainJob(Closure $assert): void
     {
         $assert($this);

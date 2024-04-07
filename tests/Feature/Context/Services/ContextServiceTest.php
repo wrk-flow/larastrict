@@ -20,7 +20,7 @@ class ContextServiceTest extends TestCase
 {
     use TestData;
 
-    public function data(): array
+    public static function data(): array
     {
         return [
             [

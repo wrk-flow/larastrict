@@ -7,7 +7,8 @@ namespace Tests\LaraStrict\Feature\Database\Scopes;
 use Closure;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use LaraStrict\Database\Scopes\OrderByValuesScope;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 use Tests\LaraStrict\Feature\TestCase;
 
 class OrderByValuesScopeTest extends TestCase
@@ -15,7 +16,7 @@ class OrderByValuesScopeTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
@@ -38,9 +39,8 @@ class OrderByValuesScopeTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -50,10 +50,10 @@ class OrderByValuesScopeTest extends TestCase
     {
         $values = ['1', 2, 's33'];
         $scope = $direction === null
-            ? new OrderByValuesScope($values, Test::AttributeTest)
-            : new OrderByValuesScope($values, Test::AttributeTest, $direction);
+            ? new OrderByValuesScope($values, TestModel::AttributeTest)
+            : new OrderByValuesScope($values, TestModel::AttributeTest, $direction);
 
-        $query = Test::query()
+        $query = TestModel::query()
             ->withoutGlobalScope(new SoftDeletingScope())
             ->withGlobalScope('test', $scope);
 
@@ -68,7 +68,7 @@ class OrderByValuesScopeTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataInvalid(): array
+    public static function dataInvalid(): array
     {
         return [
             [
@@ -86,9 +86,8 @@ class OrderByValuesScopeTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataInvalid
      */
+    #[DataProvider('dataInvalid')]
     public function testInvalid(Closure $assert): void
     {
         $assert($this);
@@ -97,6 +96,6 @@ class OrderByValuesScopeTest extends TestCase
     public function assertInvalid(string $direction): void
     {
         $this->expectExceptionMessage('Direction must be ASC or DESC');
-        new OrderByValuesScope([], Test::AttributeTest, $direction);
+        new OrderByValuesScope([], TestModel::AttributeTest, $direction);
     }
 }

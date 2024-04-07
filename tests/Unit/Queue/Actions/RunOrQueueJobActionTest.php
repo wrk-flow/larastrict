@@ -13,6 +13,7 @@ use LaraStrict\Testing\Queue\Contracts\DispatchJobActionContractExpectation;
 use LaraStrict\Testing\Queue\Contracts\RunJobActionContractAssert;
 use LaraStrict\Testing\Queue\Contracts\RunJobActionContractExpectation;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Console\Input\ArrayInput;
 use Tests\LaraStrict\Feature\Queue\Actions\TestCommand;
 use Tests\LaraStrict\Feature\Queue\Actions\WithoutCommandJob;
@@ -23,7 +24,7 @@ final class RunOrQueueJobActionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataNoCommand(): array
+    public static function dataNoCommand(): array
     {
         $job = new WithoutCommandJob('Test');
 
@@ -99,9 +100,8 @@ final class RunOrQueueJobActionTest extends TestCase
 
     /**
      * @param Closure():void $assert
-     *
-     * @dataProvider dataNoCommand
      */
+    #[DataProvider('dataNoCommand')]
     public function testNoCommand(Closure $assert): void
     {
         $assert();
@@ -110,10 +110,10 @@ final class RunOrQueueJobActionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataWithCommand(): array
+    public static function dataWithCommand(): array
     {
         $job = new WithoutCommandJob('Test');
-        $command = $this->makeCommand([]);
+        $command = self::makeCommand([]);
 
         return [
             'queue not set, runs the job' => [
@@ -178,9 +178,8 @@ final class RunOrQueueJobActionTest extends TestCase
 
     /**
      * @param Closure():void $assert
-     *
-     * @dataProvider dataWithCommand
      */
+    #[DataProvider('dataWithCommand')]
     public function testWithCommand(Closure $assert): void
     {
         $assert();
@@ -189,10 +188,10 @@ final class RunOrQueueJobActionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataWithCommandAndQueue(): array
+    public static function dataWithCommandAndQueue(): array
     {
         $job = new WithoutCommandJob('Test');
-        $command = $this->makeCommand([
+        $command = self::makeCommand([
             '--queue' => true,
         ]);
 
@@ -259,9 +258,8 @@ final class RunOrQueueJobActionTest extends TestCase
 
     /**
      * @param Closure():void $assert
-     *
-     * @dataProvider dataWithCommandAndQueue
      */
+    #[DataProvider('dataWithCommandAndQueue')]
     public function testWithCommandAndQueue(Closure $assert): void
     {
         $assert();

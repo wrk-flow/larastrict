@@ -74,3 +74,11 @@ For MakeExpectationCommand we are using stubs. If you want to generate the stub 
 ## Fixes
 
 - `nikic/php-parser` - on `v4.13.0` enum with value named Array fails to be parsed, `v4.14.0` works
+
+## Maintaining multiple Laravel versions
+
+- When dropping support for Laravel version, find any `Remove when dropping support for Laravel x` notes and remove the code.
+- When you want to support lower Laravel version (PHPStan), you can copy the typehints (etc) to our implementation. Add `@todo Remove when dropping support for Laravel` comment, or you can update phpstan `
+  ignoreErrors:` and add same comment.
+- Current local installation always install the highest version of the package. If you want to test lower version run `composer update --prefer-lowest`
+

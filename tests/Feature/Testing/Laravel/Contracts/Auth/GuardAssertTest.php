@@ -22,7 +22,7 @@ class GuardAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $user = new User();
         return [

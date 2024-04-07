@@ -7,6 +7,7 @@ namespace LaraStrict\Testing\Concerns;
 use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LogicException;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 trait AssertExpectations
 {
@@ -14,20 +15,16 @@ trait AssertExpectations
 
     abstract public function expectExceptionMessage(string $message): void;
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testEmpty(AssertExpectationEntity $expectation): void
     {
         $this->assertBadCall($expectation->methodName);
-        $assert = $this->createEmptyAssert();
+        $assert = self::createEmptyAssert();
 
         $this->callExpectation($expectation, $assert);
     }
 
-    /**
-     * @dataProvider data
-     */
+    #[DataProvider('data')]
     public function testCallsWithSecondFails(AssertExpectationEntity $expectation): void
     {
         /** @var AbstractExpectationCallsMap $assert */
@@ -44,10 +41,10 @@ trait AssertExpectations
         $this->callExpectation($expectation, $assert);
     }
 
-    public function data(): array
+    public static function data(): array
     {
         $data = [];
-        foreach ($this->generateData() as $index => $test) {
+        foreach (self::generateData() as $index => $test) {
             $data[$test->methodName . ' #' . $index] = [$test];
         }
 
@@ -57,7 +54,7 @@ trait AssertExpectations
     /**
      * @return array<AssertExpectationEntity>
      */
-    abstract protected function generateData(): array;
+    abstract static protected function generateData(): array;
 
     abstract protected function createEmptyAssert(): AbstractExpectationCallsMap;
 

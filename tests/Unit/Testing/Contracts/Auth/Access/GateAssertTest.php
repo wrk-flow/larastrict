@@ -34,7 +34,7 @@ class GateAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    public function generateData(): array
+    public static function generateData(): array
     {
         $authorizeResponse = new Response(true);
 

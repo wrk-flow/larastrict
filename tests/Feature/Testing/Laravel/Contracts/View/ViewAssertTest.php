@@ -24,7 +24,7 @@ class ViewAssertTest extends TestCase
         'data' => 2,
     ];
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         return [
             new AssertExpectationEntity(

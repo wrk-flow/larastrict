@@ -18,7 +18,7 @@ class AuthenticateTest extends TestCase
     use CreateRequest;
     use TestData;
 
-    public function data(): array
+    public static function data(): array
     {
         return [
             'empty string' => [

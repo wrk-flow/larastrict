@@ -11,11 +11,12 @@ use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Core\Services\SleepService;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Core\Services\NoSleepService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 class TestServiceProviderTest extends TestCase
 {
-    public function makeExpectationCommandData(): array
+    public static function makeExpectationCommandData(): array
     {
         return [
             'production value' => [EnvironmentType::Production->value, false],
@@ -30,9 +31,7 @@ class TestServiceProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider makeExpectationCommandData
-     */
+    #[DataProvider('makeExpectationCommandData')]
     public function testMakeExpectationCommand(string|EnvironmentType $environment, bool $has): void
     {
         $this->setEnv($environment);

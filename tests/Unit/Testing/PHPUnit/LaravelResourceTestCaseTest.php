@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LaraStrict\Testing\PHPUnit\ResourceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
 
 /**
@@ -15,7 +16,7 @@ use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
  */
 class LaravelResourceTestCaseTest extends ResourceTestCase
 {
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
@@ -42,8 +43,8 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);

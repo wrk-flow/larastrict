@@ -33,7 +33,7 @@ class ResponseFactoryAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $response = new Response();
         $redirectResponse = new RedirectResponse('https://larastrict.com');

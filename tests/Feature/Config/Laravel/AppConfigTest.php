@@ -6,6 +6,7 @@ namespace Tests\LaraStrict\Feature\Config\Laravel;
 
 use LaraStrict\Config\Laravel\AppConfig;
 use LaraStrict\Enums\EnvironmentType;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class AppConfigTest extends AbstractConfigTestCase
 {
@@ -108,9 +109,7 @@ class AppConfigTest extends AbstractConfigTestCase
         );
     }
 
-    /**
-     * @dataProvider environmentDefaultData
-     */
+    #[DataProvider('environmentDefaultData')]
     public function testGetEnvironmentDefaultInvalidValues(mixed $value): void
     {
         $this->setEnv($value);
@@ -123,9 +122,7 @@ class AppConfigTest extends AbstractConfigTestCase
         $this->assertEquals(EnvironmentType::Testing, $this->config->getEnvironment());
     }
 
-    /**
-     * @dataProvider environmentTypeData
-     */
+    #[DataProvider('environmentTypeData')]
     public function testGetEnvironmentType(string|EnvironmentType $value, string|EnvironmentType $expectedValue): void
     {
         $this->setEnv($value);
@@ -133,12 +130,12 @@ class AppConfigTest extends AbstractConfigTestCase
         $this->assertEquals($expectedValue, $this->config->getEnvironment());
     }
 
-    protected function environmentDefaultData(): array
+    public static function environmentDefaultData(): array
     {
         return [[''], [null], [0], [1]];
     }
 
-    protected function environmentTypeData(): array
+    public static function environmentTypeData(): array
     {
         return [
             ['production', EnvironmentType::Production],

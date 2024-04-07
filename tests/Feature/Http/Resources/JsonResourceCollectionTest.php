@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use LaraStrict\Http\Resources\JsonResourceCollection;
 use LaraStrict\Http\Resources\MessageResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class JsonResourceCollectionTest extends TestCase
@@ -25,7 +26,7 @@ class JsonResourceCollectionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function data(): array
+    public static function data(): array
     {
         // Preserve keys changes keys using mergeData, not input/output array
         $input = [
@@ -81,9 +82,8 @@ class JsonResourceCollectionTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);

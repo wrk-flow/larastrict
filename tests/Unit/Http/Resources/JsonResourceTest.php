@@ -7,6 +7,7 @@ namespace Tests\LaraStrict\Unit\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LaraStrict\Testing\PHPUnit\ResourceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Http\Resources\LaraStrictResource;
 use Tests\LaraStrict\Feature\Http\Resources\TestAction;
 use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
@@ -22,7 +23,7 @@ class JsonResourceTest extends ResourceTestCase
     private const KeyInstance = 'instance';
     private const KeyTest = 'test';
 
-    public function data(): array
+    public static function data(): array
     {
         $container = new TestingContainer(
             makeAlwaysBinding: static fn () => new TestAction(value: '1')
@@ -35,50 +36,53 @@ class JsonResourceTest extends ResourceTestCase
 
         return [
             'sets container to larastrict resource' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laraStrictResource,
                     expected: self::expected(instance: '1'),
                     container: $container
                 ),
             ],
             'sets laravel container to larastrict resource if not provided' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laraStrictResource,
                     expected: self::expected(instance: 'injected')
                 ),
             ],
             'collection sets container to larastrict resource' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laraStrictCollection,
                     expected: self::expectedCollection(instance: '1'),
                     container: $container
                 ),
             ],
             'collection sets laravel container to larastrict resource if not provided' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laraStrictCollection,
                     expected: self::expectedCollection(instance: 'injected')
                 ),
             ],
             'does not container to normal resource if provided' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laravelResource,
                     expected: self::expected(instance: null),
                     container: $container
                 ),
             ],
             'does not container to normal resource if not provided' => [
-                fn (self $self) => $this->assert(object: $laravelResource, expected: self::expected(instance: null)),
+                static fn(self $self) => $self->assert(
+                    object: $laravelResource,
+                    expected: self::expected(instance: null)
+                ),
             ],
             'collection does not container to normal resource if provided' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laravelResource,
                     expected: self::expected(instance: null),
                     container: $container
                 ),
             ],
             'collection does not container to normal resource if not provided' => [
-                fn (self $self) => $this->assert(
+                static fn(self $self) => $self->assert(
                     object: $laravelCollection,
                     expected: self::expectedCollection(instance: null)
                 ),
@@ -88,9 +92,8 @@ class JsonResourceTest extends ResourceTestCase
 
     /**
      * @param callable(self):void $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(callable $assert): void
     {
         $assert($this);

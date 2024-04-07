@@ -11,6 +11,7 @@ use Illuminate\Console\Scheduling\Event;
 use Illuminate\Contracts\Events\Dispatcher;
 use LaraStrict\Docker\Config\DockerConfig;
 use LaraStrict\Docker\DockerServiceProvider;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 use const true;
 
@@ -26,7 +27,7 @@ class DockerServiceProviderTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataEnsureOutput(): array
+    public static function dataEnsureOutput(): array
     {
         return [
             'will change because it contains default value' => [
@@ -64,9 +65,8 @@ class DockerServiceProviderTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataEnsureOutput
      */
+    #[DataProvider('dataEnsureOutput')]
     public function testEnsureOutput(Closure $assert): void
     {
         $assert($this);

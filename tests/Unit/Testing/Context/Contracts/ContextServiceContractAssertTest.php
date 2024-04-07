@@ -26,7 +26,7 @@ class ContextServiceContractAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    public function generateData(): array
+    public static function generateData(): array
     {
         $context = new TestNoDependencyContext('test');
         $value = new TestValue('test');
@@ -63,23 +63,23 @@ class ContextServiceContractAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'get',
-                createAssert: fn () => new ContextServiceContractAssert(get: [
+                createAssert: static fn() => new ContextServiceContractAssert(get: [
                     new ContextServiceContractGetExpectation(
                         return: $value,
                         context: $context,
-                        hook: function (
+                        hook: static function (
                             AbstractContext $context,
                             Closure $createState,
                             ContextServiceContractGetExpectation $expectation
                         ) use ($value): void {
-                            $this->assertSame($value, $createState('test'));
+                            self::assertSame($value, $createState('test'));
                         }
                     ),
                 ]),
-                call: fn (ContextServiceContractAssert $assert) => $assert->get(
+                call: static fn(ContextServiceContractAssert $assert) => $assert->get(
                     context: $context,
-                    createState: function (string $string) use ($value): TestValue {
-                        $this->assertEquals(expected: 'test', actual: $string);
+                    createState: static function (string $string) use ($value): TestValue {
+                        self::assertEquals(expected: 'test', actual: $string);
                         return $value;
                     }
                 ),
@@ -95,10 +95,10 @@ class ContextServiceContractAssertTest extends TestCase
                         runCreateState: static fn (Closure $createState): TestValue => $createState('test')
                     ),
                 ]),
-                call: fn (ContextServiceContractAssert $assert) => $assert->get(
+                call: static fn(ContextServiceContractAssert $assert) => $assert->get(
                     context: $context,
-                    createState: function (string $string) use ($value): TestValue {
-                        $this->assertEquals(expected: 'test', actual: $string);
+                    createState: static function (string $string) use ($value): TestValue {
+                        self::assertEquals(expected: 'test', actual: $string);
                         return $value;
                     }
                 ),
@@ -107,25 +107,25 @@ class ContextServiceContractAssertTest extends TestCase
             ),
             new AssertExpectationEntity(
                 methodName: 'is',
-                createAssert: fn () => new ContextServiceContractAssert(is: [
+                createAssert: static fn() => new ContextServiceContractAssert(is: [
                     new ContextServiceContractIsExpectation(
                         return: $boolValue,
                         context: $isContext,
                         is: static function () {
                         },
-                        hook: function (
+                        hook: static function (
                             AbstractContext $context,
                             Closure $is,
                             ContextServiceContractIsExpectation $expectation
                         ): void {
-                            $this->assertTrue(condition: $is('test'));
+                            self::assertTrue(condition: $is('test'));
                         }
                     ),
                 ]),
-                call: fn (ContextServiceContractAssert $assert) => $assert->is(
+                call: static fn(ContextServiceContractAssert $assert) => $assert->is(
                     context: $isContext,
-                    is: function (string $string): bool {
-                        $this->assertEquals(expected: 'test', actual: $string);
+                    is: static function (string $string): bool {
+                        self::assertEquals(expected: 'test', actual: $string);
                         return true;
                     }
                 ),

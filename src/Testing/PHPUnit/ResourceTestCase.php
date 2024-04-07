@@ -41,7 +41,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    abstract public function data(): array;
+    abstract static public function data(): array;
 
     /**
      * @param TEntity|callable():TEntity         $object
