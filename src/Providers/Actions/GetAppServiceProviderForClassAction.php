@@ -9,10 +9,11 @@ use Illuminate\Support\ServiceProvider;
 use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
 use LaraStrict\Providers\AbstractServiceProvider;
+use LaraStrict\Providers\Contracts\GetAppServiceProviderForClassActionContract;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 use LogicException;
 
-class GetAppServiceProviderForClassAction
+class GetAppServiceProviderForClassAction implements GetAppServiceProviderForClassActionContract
 {
     public function __construct(
         private readonly CacheMeServiceContract $cacheMeService,
