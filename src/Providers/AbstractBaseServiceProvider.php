@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace LaraStrict\Providers;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\ServiceProvider;
 use LaraStrict\Contracts\AppServiceProviderPipeContract;
 use LaraStrict\Contracts\CreateAppServiceProviderActionContract;
 use LaraStrict\Contracts\RunAppServiceProviderPipesActionContract;
@@ -12,9 +13,20 @@ use LaraStrict\Providers\Actions\CreateAppServiceProviderAction;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 use LogicException;
 
-abstract class AbstractBaseServiceProvider extends EventServiceProvider
+/**
+ * From Laravel 10+ the EventServiceProvider cant be used anymore, it was designed to be used only once
+ * within app/Providers/EventServiceProvider.php. We are using $listen shortcut so let's use similar implementation.
+ */
+abstract class AbstractBaseServiceProvider extends ServiceProvider
 {
     protected AppServiceProviderEntity|null $appServiceProvider = null;
+
+    /**
+     * The event handler mappings for the application.
+     *
+     * @var array<string, array<int, string>>
+     */
+    protected array $listen = [];
 
     public function register(): void
     {
@@ -24,12 +36,22 @@ abstract class AbstractBaseServiceProvider extends EventServiceProvider
         assert($runPipes instanceof RunAppServiceProviderPipesActionContract);
 
         $runPipes->execute($this->getAppServiceProvider(), $this->registerPipes());
+
+        $this->booting(function () {
+            $events = $this->app->make(Dispatcher::class);
+            assert($events instanceof Dispatcher);
+
+            // Taken from vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/EventServiceProvider.php
+            foreach ($this->listen as $event => $listeners) {
+                foreach (array_unique($listeners, SORT_REGULAR) as $listener) {
+                    $events->listen($event, $listener);
+                }
+            }
+        });
     }
 
     public function boot(): void
     {
-        parent::boot();
-
         $runPipes = $this->app->make(RunAppServiceProviderPipesActionContract::class);
         assert($runPipes instanceof RunAppServiceProviderPipesActionContract);
 
