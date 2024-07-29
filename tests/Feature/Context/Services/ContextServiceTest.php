@@ -76,7 +76,7 @@ class ContextServiceTest extends TestCase
             cacheMeManager: new CacheMeServiceContractAssert(get: [
                 new CacheMeServiceContractGetExpectation(
                     key: $expectedCacheKey,
-                    tags: ['context'],
+                    tags: [],
                     minutes: 3600,
                     strategy: CacheMeStrategy::Memory,
                     callGetValueHook: $callHook
