@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :boom: BREAKING CHANGES
 - due to [`d9e2469`](https://github.com/wrk-flow/larastrict/commit/d9e24693289f8731e28e63c55c884a638874db10) - Fix deleting cache in context and drop tags usage by default *(commit by [@pionl](https://github.com/pionl))*:
 
-  Drop default tag for context cache - Laravel offical recommendation is not to use tags with redis
+  Drop default tag for context cache - Laravel official recommendation is not to use tags with redis
 
 
 ### :bug: Bug Fixes
@@ -65,7 +65,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### :boom: BREAKING CHANGES
 - due to [`dcb79f3`](https://github.com/wrk-flow/larastrict/commit/dcb79f34653cfbb32a5d1dbd13c726704b665457) - OrderByValuesScope is now from ASC to DESC order of given values *(commit by [@pionl](https://github.com/pionl))*:
 
-  Values must be ordered from prefered order to last wanted order (now it was incorrectly used)
+  Values must be ordered from preferred order to last wanted order (now it was incorrectly used)
 
 
 ### :bug: Bug Fixes
@@ -515,7 +515,7 @@ Due the changes the expectation logic has been changed and you need to update yo
 
 ### :bug: Bug Fixes
 - [`36197b4`](https://github.com/wrk-flow/larastrict/commit/36197b4f0163bc26d6daa563836f3efe87681e50) - **Testing**: Fix artisan usage with larastrict commands *(commit by [@pionl](https://github.com/pionl))*
-- [`0cd12fe`](https://github.com/wrk-flow/larastrict/commit/0cd12fe9abbb3cc3ebeb6f82aea51b0f47467cdb) - **Testing**: Update dependencies and fix phpstan warnning on latest testbench version *(commit by [@pionl](https://github.com/pionl))*
+- [`0cd12fe`](https://github.com/wrk-flow/larastrict/commit/0cd12fe9abbb3cc3ebeb6f82aea51b0f47467cdb) - **Testing**: Update dependencies and fix phpstan warning on latest testbench version *(commit by [@pionl](https://github.com/pionl))*
 
 
 ## [v0.0.15] - 2022-10-13
@@ -625,7 +625,7 @@ Due the changes the expectation logic has been changed and you need to update yo
 
 ## [v0.0.2] - 2022-09-27
 ### :sparkles: New Features
-- [`428e83c`](https://github.com/wrk-flow/larastrict/commit/428e83cf24bd94a5e952acd7736fbd264f73f9b7) - Add ablity to register custom route with action class for reusability *(commit by [@pionl](https://github.com/pionl))*
+- [`428e83c`](https://github.com/wrk-flow/larastrict/commit/428e83cf24bd94a5e952acd7736fbd264f73f9b7) - Add ability to register custom route with action class for reusability *(commit by [@pionl](https://github.com/pionl))*
 
 
 [v0.0.2]: https://github.com/wrk-flow/larastrict/compare/v0.0.1...v0.0.2
