@@ -19,8 +19,6 @@ use LaraStrict\Core\Services\ImplementsService;
 
 class ContextService implements ContextServiceContract
 {
-    protected const TAG = 'context';
-
     public function __construct(
         private readonly CacheMeServiceContract $cacheMeManager,
         private readonly ImplementsService $implementsService
@@ -31,7 +29,11 @@ class ContextService implements ContextServiceContract
     {
         $fullCacheKey = $this->getCacheKey($context);
 
-        $this->cacheMeManager->delete(key: $fullCacheKey, strategy: $this->cacheStrategy($context));
+        $this->cacheMeManager->delete(
+            key: $fullCacheKey,
+            tags: $this->getTags($context),
+            strategy: $this->cacheStrategy($context)
+        );
     }
 
     /**
@@ -99,7 +101,7 @@ class ContextService implements ContextServiceContract
 
     protected function getTags(AbstractContext $context): array
     {
-        $tags = [self::TAG];
+        $tags = [];
 
         if ($this->implementsService->check($context, UseCacheWithTags::class) === false) {
             return $tags;
