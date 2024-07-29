@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.83] - 2024-07-29
+### :boom: BREAKING CHANGES
+- due to [`d9e2469`](https://github.com/wrk-flow/larastrict/commit/d9e24693289f8731e28e63c55c884a638874db10) - Fix deleting cache in context and drop tags usage by default *(commit by [@pionl](https://github.com/pionl))*:
+
+  Drop default tag for context cache - Laravel offical recommendation is not to use tags with redis
+
+
+### :bug: Bug Fixes
+- [`d9e2469`](https://github.com/wrk-flow/larastrict/commit/d9e24693289f8731e28e63c55c884a638874db10) - **Context**: Fix deleting cache in context and drop tags usage by default *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.82] - 2024-03-08
 ### :sparkles: New Features
 - [`64d2322`](https://github.com/wrk-flow/larastrict/commit/64d232225b102a8f2cfdc5d427d4f38a5995cd6e) - **Database**: Improve phpstan support for scopes *(commit by [@pionl](https://github.com/pionl))*
@@ -703,3 +714,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.80]: https://github.com/wrk-flow/larastrict/compare/v0.0.79...v0.0.80
 [v0.0.81]: https://github.com/wrk-flow/larastrict/compare/v0.0.80...v0.0.81
 [v0.0.82]: https://github.com/wrk-flow/larastrict/compare/v0.0.81...v0.0.82
+[v0.0.83]: https://github.com/wrk-flow/larastrict/compare/v0.0.82...v0.0.83
