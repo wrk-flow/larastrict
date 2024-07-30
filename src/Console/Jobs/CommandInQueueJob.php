@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Console\Jobs;
 
+use h4kuna\Serialize\Serialize;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Psr\Log\LoggerInterface;
@@ -31,7 +32,7 @@ class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
         }
 
         ksort($parameters);
-        $this->parametersKey = md5(serialize($parameters));
+        $this->parametersKey = md5(Serialize::encode($parameters));
     }
 
     public function handle(Kernel $kernel, ConsoleOutput $consoleOutput, LoggerInterface $logger): void
