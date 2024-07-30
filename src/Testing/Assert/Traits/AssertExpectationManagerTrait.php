@@ -5,17 +5,25 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Assert\Traits;
 
 use LaraStrict\Testing\Assert\AssertExpectationManager;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\PostCondition;
 
 trait AssertExpectationManagerTrait
 {
-    protected function setUp(): void
+    /**
+     * @before
+     */
+    #[Before]
+    protected function beforeStartAssertExpectationManager()
     {
-        parent::setUp();
-
         AssertExpectationManager::getInstance()->reset();
     }
 
-    protected function assertPostConditions(): void
+    /**
+     * @postCondition
+     */
+    #[PostCondition]
+    protected function postConditionStartAssertExpectationManager(): void
     {
         $manager = AssertExpectationManager::getInstance();
 
@@ -23,14 +31,5 @@ trait AssertExpectationManagerTrait
             $this->addToAssertionCount(1);
             $manager->assertCalled();
         }
-
-        parent::assertPostConditions();
-    }
-
-    protected function tearDown(): void
-    {
-        AssertExpectationManager::getInstance()->reset();
-
-        parent::tearDown();
     }
 }

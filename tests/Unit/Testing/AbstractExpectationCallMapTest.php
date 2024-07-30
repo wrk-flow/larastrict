@@ -4,32 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Testing;
 
+use LaraStrict\Testing\Assert\AssertExpectationManager;
 use LaraStrict\Testing\Assert\AssertExpectationTestCase;
-use Throwable;
+use PHPUnit\Framework\AssertionFailedError;
 
 class AbstractExpectationCallMapTest extends AssertExpectationTestCase
 {
     private ?string $expectManagerExceptionMessage = null;
 
-    protected function assertPostConditions(): void
-    {
-        if ($this->expectManagerExceptionMessage === null) {
-            parent::assertPostConditions();
-            return;
-        }
-
-        // Wrap parent call to
-        try {
-            parent::assertPostConditions();
-        } catch (Throwable $throwable) {
-            $this->assertEquals($this->expectManagerExceptionMessage, $throwable->getMessage());
-        }
-    }
-
     public function testSupportsNullableArray(): void
     {
         $this->expectExceptionMessage(
-            'Expectation for [Tests\LaraStrict\Unit\Testing\TestExpectationCallMap@execute] not set for a n (3) call'
+            'Expectation for [Tests\LaraStrict\Unit\Testing\TestExpectationCallMap@execute] not set for a n (3) call',
         );
 
         $testExpectation1 = new TestExpectation(0);
@@ -116,6 +102,25 @@ class AbstractExpectationCallMapTest extends AssertExpectationTestCase
         $map = new TestExpectationCallMap();
         $map->setExpectations(TestExpectation::class, [null, $testExpectation1]);
         $map->execute($testExpectation1);
+    }
+
+    /**
+     * aaa prefix is for sort hook above
+     *
+     * @postCondition
+     */
+    protected function aaaPostConditions(): void
+    {
+        if ($this->expectManagerExceptionMessage === null) {
+            return;
+        }
+
+        try {
+            AssertExpectationManager::getInstance()->assertCalled();
+        } catch (AssertionFailedError $assertionFailedError) {
+            $this->assertEquals($this->expectManagerExceptionMessage, $assertionFailedError->getMessage());
+        }
+        AssertExpectationManager::getInstance()->reset();
     }
 
     protected function expectCalledTwice(): void

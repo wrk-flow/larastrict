@@ -18,11 +18,7 @@ final class AssertExpectationManager
 
     public static function getInstance(): self
     {
-        if (self::$singleton === null) {
-            self::$singleton = new self();
-        }
-
-        return self::$singleton;
+        return self::$singleton ??= new self();
     }
 
     public static function resetSingleton(): void
