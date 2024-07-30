@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.84] - 2024-07-30
+### :sparkles: New Features
+- [`7468a7c`](https://github.com/wrk-flow/larastrict/commit/7468a7c3a7207df2204ae36938e478053a251148) - **SqlTestEnable**: add fake connector for sql lite *(commit by [@h4kuna](https://github.com/h4kuna))*
+- [`52fc7fa`](https://github.com/wrk-flow/larastrict/commit/52fc7fadb1fc44b14b29957d2bae9e07b8aa780d) - **Testing**: use native hooks instead of method overwrite *(commit by [@h4kuna](https://github.com/h4kuna))*
+- [`c6384f8`](https://github.com/wrk-flow/larastrict/commit/c6384f82fb9f3a46108c7d64712c0431d6613758) - **Database**: add ChunkWriteService *(commit by [@h4kuna](https://github.com/h4kuna))*
+- [`7709c76`](https://github.com/wrk-flow/larastrict/commit/7709c76b1fe700acfa4d548e8131e3788906cf24) - **serialize**: add dependency on h4kuna/serialize *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.83] - 2024-07-29
 ### :boom: BREAKING CHANGES
 - due to [`d9e2469`](https://github.com/wrk-flow/larastrict/commit/d9e24693289f8731e28e63c55c884a638874db10) - Fix deleting cache in context and drop tags usage by default *(commit by [@pionl](https://github.com/pionl))*:
@@ -715,3 +723,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.81]: https://github.com/wrk-flow/larastrict/compare/v0.0.80...v0.0.81
 [v0.0.82]: https://github.com/wrk-flow/larastrict/compare/v0.0.81...v0.0.82
 [v0.0.83]: https://github.com/wrk-flow/larastrict/compare/v0.0.82...v0.0.83
+[v0.0.84]: https://github.com/wrk-flow/larastrict/compare/v0.0.83...v0.0.84
