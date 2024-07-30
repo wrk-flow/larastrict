@@ -18,6 +18,8 @@
         "psr/simple-cache": "^3.0"
     },
     "require-dev": {
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
         "mockery/mockery": "^1.5.0",
         "nette/php-generator": "v4.0.5",
         "nikic/php-parser": "v4.15.2",
