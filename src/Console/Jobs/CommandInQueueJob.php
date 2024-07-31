@@ -32,7 +32,7 @@ class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
         }
 
         ksort($parameters);
-        $this->parametersKey = md5(Serialize::encode($parameters));
+        $this->parametersKey = md5(Serialize::encode($parameters, self::class));
     }
 
     public function handle(Kernel $kernel, ConsoleOutput $consoleOutput, LoggerInterface $logger): void
