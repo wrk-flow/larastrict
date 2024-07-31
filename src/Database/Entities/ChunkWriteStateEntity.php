@@ -10,7 +10,7 @@ class ChunkWriteStateEntity
 {
     /**
      * @param class-string<Model>|null $modelClass
-     * @param array<array<string, string|int|bool|float>> $toWrite
+     * @param array<array<string, scalar|null>> $toWrite
      */
     public function __construct(
         public int $batchSize = 0,
