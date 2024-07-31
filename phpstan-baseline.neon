@@ -51,3 +51,10 @@ parameters:
 			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
 			count: 1
 			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
+
+		# forward compatibility
+		-
+			message: "#^Attribute class PHPUnit\\\\Framework\\\\Attributes\\\\BeforeClass does not exist\\.$#"
+			count: 1
+			path: tests/Unit/Database/Services/ChunkWriteServiceTest.php
+		# forward compatibility

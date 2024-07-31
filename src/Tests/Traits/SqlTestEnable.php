@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\SQLiteConnection;
 use PDO;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\BeforeClass;
 
 trait SqlTestEnable
 {
     /**
      * @beforeClass
      */
+    #[BeforeClass]
     final public static function beforeClassSqlTestEnable(): void
     {
         $resolver = new ConnectionResolver([
