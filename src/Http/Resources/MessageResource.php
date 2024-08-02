@@ -7,16 +7,11 @@ namespace LaraStrict\Http\Resources;
 use LaraStrict\Http\Enums\HttpMessage;
 
 /**
- * @property HttpMessage|string $resource
+ * @extends JsonResource<HttpMessage|string>
  */
 class MessageResource extends JsonResource
 {
     public static $wrap = null;
-
-    public function __construct(HttpMessage|string|null $resource)
-    {
-        parent::__construct($resource);
-    }
 
     /**
      * @return array

@@ -8,15 +8,10 @@ use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
 use LaraStrict\Http\Resources\JsonResource;
 
 /**
- * @property BaseJsonResource $resource
+ * @extends JsonResource<BaseJsonResource>
  */
 class ResourceArrayResource extends JsonResource
 {
-    public function __construct(?BaseJsonResource $resource)
-    {
-        parent::__construct($resource);
-    }
-
     /**
      * @return array<string, array<array<string, mixed>>>
      */

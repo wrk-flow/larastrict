@@ -7,15 +7,10 @@ namespace Tests\LaraStrict\Feature\Http\Resources;
 use LaraStrict\Http\Resources\JsonResource;
 
 /**
- * @property TestEntity $resource
+ * @extends JsonResource<TestEntity>
  */
 class LaraStrictResource extends JsonResource
 {
-    public function __construct(?TestEntity $resource)
-    {
-        parent::__construct($resource);
-    }
-
     public function toArray($request): array
     {
         return [

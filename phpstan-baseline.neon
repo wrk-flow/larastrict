@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to an undefined property LaraStrict\\\\Http\\\\Resources\\\\JsonResource\\:\\:\\$preserveKeys\\.$#"
+			message: "#^Access to an undefined property LaraStrict\\\\Http\\\\Resources\\\\JsonResource\\<TResource\\>\\:\\:\\$preserveKeys\\.$#"
 			count: 1
 			path: src/Http/Resources/JsonResource.php
 

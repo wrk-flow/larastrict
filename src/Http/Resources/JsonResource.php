@@ -6,20 +6,42 @@ namespace LaraStrict\Http\Resources;
 
 use Illuminate\Container\Container as LaravelContainer;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
+use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Support\Collection as SupportCollection;
 
+/**
+ * @template TResource
+ *
+ * @property TResource $resource
+ */
 abstract class JsonResource extends BaseJsonResource
 {
     private ?Container $container = null;
 
-    public function setContainer(Container $container): self
+    /**
+     * When created in your code base, it non-null, but Laravel for "collection" uses null.
+     *
+     * @param TResource $resource
+     */
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+    }
+
+    final public function setContainer(Container $container): static
     {
         $this->container = $container;
 
         return $this;
     }
 
+    /**
+     * @param array<TResource>|Collection<array-key, TResource>|SupportCollection<array-key, TResource>|Paginator<TResource>|AbstractPaginator<TResource> $resource
+     */
     public static function collection($resource): JsonResourceCollection
     {
         return tap(
@@ -34,7 +56,7 @@ abstract class JsonResource extends BaseJsonResource
         );
     }
 
-    protected function getContainer(): Container
+    final protected function getContainer(): Container
     {
         if ($this->container === null) {
             return LaravelContainer::getInstance();
@@ -49,7 +71,7 @@ abstract class JsonResource extends BaseJsonResource
      *
      * @return array<string|int, mixed>
      */
-    protected function resourceArray(Request $request, BaseJsonResource $resource): array
+    final protected function resourceArray(Request $request, BaseJsonResource $resource): array
     {
         if ($resource instanceof self || $resource instanceof JsonResourceCollection) {
             $resource->setContainer($this->getContainer());
@@ -66,7 +88,7 @@ abstract class JsonResource extends BaseJsonResource
      *
      * @return TInstance
      */
-    protected function instance(string $class, array $parameters = []): object
+    final protected function instance(string $class, array $parameters = []): object
     {
         return $this
             ->getContainer()
