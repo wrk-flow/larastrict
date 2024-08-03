@@ -7,16 +7,19 @@ namespace LaraStrict\Validation\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
 final class RemoteUrlRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if ($this->passes($value) === false) {
+        if (self::passes($value) === false) {
             $fail('Given :attribute is not a valid url (public IP or domain on http/s protocol)');
         }
     }
 
-    private function passes(mixed $value): bool
+    public static function passes(mixed $value): bool
     {
         if (is_string($value) === false) {
             return false;

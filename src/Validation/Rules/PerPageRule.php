@@ -7,10 +7,13 @@ namespace LaraStrict\Validation\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
 final class PerPageRule implements ValidationRule
 {
     public function __construct(
-        private readonly int $max = 100
+        private readonly int $max = 100,
     ) {
     }
 
@@ -21,7 +24,7 @@ final class PerPageRule implements ValidationRule
         }
     }
 
-    private function passes(mixed $value): bool
+    public function passes(mixed $value): bool
     {
         return is_numeric($value) && $value > 0 && $value <= $this->max;
     }

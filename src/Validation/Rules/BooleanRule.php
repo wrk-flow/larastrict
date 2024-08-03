@@ -7,6 +7,9 @@ namespace LaraStrict\Validation\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
 final class BooleanRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -16,7 +19,7 @@ final class BooleanRule implements ValidationRule
         }
     }
 
-    private function passes(mixed $value): bool
+    public static function passes(mixed $value): bool
     {
         return in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true);
     }

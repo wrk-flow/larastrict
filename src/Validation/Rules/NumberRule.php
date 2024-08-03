@@ -8,6 +8,9 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use LaraStrict\Core\Helpers\Value;
 
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
 final class NumberRule implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
@@ -17,7 +20,7 @@ final class NumberRule implements ValidationRule
         }
     }
 
-    private static function passes(mixed $value): bool
+    public static function passes(mixed $value): bool
     {
         if (is_string($value) === false && is_numeric($value) === false) {
             return false;
