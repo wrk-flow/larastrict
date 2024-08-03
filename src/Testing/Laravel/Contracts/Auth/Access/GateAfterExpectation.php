@@ -9,7 +9,7 @@ use Closure;
 final class GateAfterExpectation
 {
     public function __construct(
-        public readonly Closure $callback
+        public readonly Closure $callback,
     ) {
     }
 }

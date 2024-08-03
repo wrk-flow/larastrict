@@ -43,7 +43,7 @@ final class ChunkWriteService implements ChunkWriteServiceContract
             throw new LogicException(sprintf(
                 'Batch insert must contain items with same class <%s> got <%s>',
                 $state->modelClass,
-                $modelClass
+                $modelClass,
             ));
         }
 
@@ -55,7 +55,7 @@ final class ChunkWriteService implements ChunkWriteServiceContract
         if ($state->attributesCount !== 0 && $state->attributesCount !== $attributesCount) {
             throw new LogicException('Batch insert must contain items with same attributes count' . print_r(
                 $attributes,
-                true
+                true,
             ));
         }
 

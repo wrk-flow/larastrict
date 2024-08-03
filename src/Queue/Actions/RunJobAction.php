@@ -14,13 +14,13 @@ use LaraStrict\Queue\Jobs\Job;
 class RunJobAction implements RunJobActionContract
 {
     public function __construct(
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 
     public function execute(Job $job, ?Command $command = null, string $method = null): mixed
     {
-        if ($command !== null && $job instanceof UsesCommandInterface) {
+        if ($command instanceof Command && $job instanceof UsesCommandInterface) {
             $job->setCommand($command);
         }
 

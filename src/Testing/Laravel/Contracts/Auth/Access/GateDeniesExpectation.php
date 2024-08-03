@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth\Access;
 final class GateDeniesExpectation
 {
     public function __construct(
-        public readonly mixed $return,
+        public readonly bool $return,
         public readonly mixed $ability,
         public readonly mixed $arguments = [],
     ) {

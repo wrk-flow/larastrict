@@ -18,7 +18,7 @@ class ResourceArrayResource extends JsonResource
     }
 
     /**
-     * @return array<string, array<array<string, mixed>>>
+     * @return array<string, array<int|string, mixed>>
      */
     public function toArray($request)
     {

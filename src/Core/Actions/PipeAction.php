@@ -27,6 +27,6 @@ class PipeAction
             }
         }
 
-        return $default === null ? null : $default();
+        return $default instanceof Closure ? $default() : null;
     }
 }

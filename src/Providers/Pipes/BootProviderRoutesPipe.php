@@ -75,7 +75,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
             'api' . $versionFileSuffix,
             $serviceFileName,
             sprintf('api/%s%s', $versionRoutePrefix, $urlPrefix),
-            'api'
+            'api',
         );
     }
 
@@ -84,7 +84,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         string $fileSuffix,
         string $serviceFileName,
         string $urlPrefix,
-        ?string $middleware = null
+        ?string $middleware = null,
     ): bool {
         $path = $this->getRouteFilePath($dir, $serviceFileName, $fileSuffix);
 
@@ -121,7 +121,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
             if (is_numeric($key)) {
                 if (is_string($value) === false) {
                     throw new LogicException(
-                        'Custom route with numeric key expects file suffix name (value as string)'
+                        'Custom route with numeric key expects file suffix name (value as string)',
                     );
                 }
 
@@ -129,14 +129,14 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
                     $class = $this->container->make($value);
                     if ($class instanceof RegisterNamedCustomRouteActionContract === false) {
                         throw new LogicException(
-                            'To build custom route with class you need to implement ' . RegisterNamedCustomRouteActionContract::class
+                            'To build custom route with class you need to implement ' . RegisterNamedCustomRouteActionContract::class,
                         );
                     }
 
                     $routeEntity = new CustomRouteEntity(
                         path: $this->getRouteFilePath($dir, $serviceFileName, $class->getFileSuffix()),
                         serviceName: $serviceFileName,
-                        urlPrefix: $urlPrefix
+                        urlPrefix: $urlPrefix,
                     );
 
                     if ($class->execute($routeEntity, $this->makeRoute())) {
@@ -152,7 +152,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
             $routeEntity = new CustomRouteEntity(
                 path: $this->getRouteFilePath($dir, $serviceFileName, $key),
                 serviceName: $serviceFileName,
-                urlPrefix: $urlPrefix
+                urlPrefix: $urlPrefix,
             );
 
             if (is_callable($value)) {
@@ -161,14 +161,14 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
                 $class = $this->container->make($value);
                 if ($class instanceof RegisterCustomRouteActionContract === false) {
                     throw new LogicException(
-                        'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class
+                        'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class,
                     );
                 }
 
                 $result = $class->execute($routeEntity, $this->makeRoute());
             } else {
                 throw new LogicException(
-                    'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class
+                    'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class,
                 );
             }
 
@@ -184,7 +184,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         AppServiceProviderEntity $appServiceProvider,
         string $dir,
         string $serviceFileName,
-        string $urlPrefix
+        string $urlPrefix,
     ): bool {
         // Force the user to use versioned api or un-versioned api routes
         if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes === false) {

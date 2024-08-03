@@ -14,7 +14,6 @@ use Throwable;
 class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
 {
     private array $parameters = [];
-
     private readonly string $parametersKey;
 
     /**
@@ -23,7 +22,7 @@ class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
     public function __construct(
         private readonly string $command,
         array $parameters = [],
-        public int $uniqueFor = 1800
+        public int $uniqueFor = 1800,
     ) {
         parent::__construct();
         // Calling command in kernel requires key => value structure.

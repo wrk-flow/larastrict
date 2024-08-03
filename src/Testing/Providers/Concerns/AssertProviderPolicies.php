@@ -34,7 +34,7 @@ trait AssertProviderPolicies
         Application $application,
         string $policy,
         string $expectedPolicyClass,
-        string|bool|null $expectToExtendClass = false
+        string|bool|null $expectToExtendClass = false,
     ): object {
         $gate = $application->get(Gate::class);
         assert($gate instanceof Gate);
@@ -51,7 +51,7 @@ trait AssertProviderPolicies
         if ($expectToExtendClass === null) {
             Assert::assertTrue(
                 condition: $parentClass === false,
-                message: sprintf('Policy (%s) does should not extend any class', $policy)
+                message: sprintf('Policy (%s) does should not extend any class', $policy),
             );
             return $policyInstance;
         }
@@ -60,7 +60,7 @@ trait AssertProviderPolicies
         Assert::assertEquals(
             expected: $expectToExtendClass,
             actual: $parentClass->getName(),
-            message: sprintf('Policy (%s)does not extend expected class', $policy)
+            message: sprintf('Policy (%s)does not extend expected class', $policy),
         );
 
         return $policyInstance;
@@ -78,7 +78,7 @@ trait AssertProviderPolicies
         Assert::assertInstanceOf(
             expected: $expectedPolicyClass,
             actual: $policy,
-            message: 'Policy does not match expected class'
+            message: 'Policy does not match expected class',
         );
 
         return $policy;

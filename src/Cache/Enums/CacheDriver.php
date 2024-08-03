@@ -7,7 +7,6 @@ namespace LaraStrict\Cache\Enums;
 enum CacheDriver: string
 {
     case Array = 'array';
-    case Apc = 'apc';
     case File = 'file';
     case Memcached = 'memcached';
     case null = 'null';

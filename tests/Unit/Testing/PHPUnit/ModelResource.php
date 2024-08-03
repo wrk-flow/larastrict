@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Unit\Testing\PHPUnit;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 /**
- * @property Test $resource
+ * @property TestModel $resource
  */
 class ModelResource extends JsonResource
 {
-    public function __construct(?Test $resource)
+    public function __construct(?TestModel $resource)
     {
         parent::__construct($resource);
     }

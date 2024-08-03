@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Bus;
 final class DispatcherMapExpectation
 {
     public function __construct(
-        public readonly array $map
+        public readonly array $map,
     ) {
     }
 }

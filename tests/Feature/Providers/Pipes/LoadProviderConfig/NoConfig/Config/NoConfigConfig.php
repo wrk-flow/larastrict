@@ -11,7 +11,9 @@ class NoConfigConfig extends AbstractProviderConfig
 {
     public function getValue(): string
     {
-        return $this->get(keyOrPath: ['no-key'], default: 'this is default value');
+        $value = $this->get(keyOrPath: ['no-key'], default: 'this is default value');
+        assert(is_string($value));
+        return $value;
     }
 
     protected function getServiceProvider(): string

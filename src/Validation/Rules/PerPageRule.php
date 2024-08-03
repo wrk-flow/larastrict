@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace LaraStrict\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class PerPageRule implements Rule
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
+final class PerPageRule implements ValidationRule
 {
     public function __construct(
-        private readonly int $max = 100
+        private readonly int $max = 100,
     ) {
     }
 
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        return is_numeric($value) && $value > 0 && $value <= $this->max;
+        if ($this->passes($value) === false) {
+            $fail('Not a valid :attribute. Must be between 1 - ' . $this->max);
+        }
     }
 
-    public function message()
+    public function passes(mixed $value): bool
     {
-        return 'Not a valid :attribute. Must be between 1 - ' . $this->max;
+        return is_numeric($value) && $value > 0 && $value <= $this->max;
     }
 }

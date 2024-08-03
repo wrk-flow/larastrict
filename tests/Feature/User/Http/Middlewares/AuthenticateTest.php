@@ -18,7 +18,7 @@ class AuthenticateTest extends TestCase
     use CreateRequest;
     use TestData;
 
-    public function data(): array
+    public static function data(): array
     {
         return [
             'empty string' => [
@@ -71,13 +71,13 @@ class AuthenticateTest extends TestCase
             ],
             server: $value === null ? [] : [
                 'HTTP_Auto-Login' => $value,
-            ]
+            ],
         );
 
         $this->app()
             ->bind(
                 GetUserForAutoLoginActionContract::class,
-                static fn () => new GetUserForAutoLoginTestAction($expectedValue)
+                static fn () => new GetUserForAutoLoginTestAction($expectedValue),
             );
 
         /** @var Authenticate $middleware */

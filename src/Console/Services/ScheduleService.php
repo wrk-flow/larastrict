@@ -22,7 +22,7 @@ class ScheduleService implements ScheduleServiceContract
 {
     public function __construct(
         private readonly LaravelSchedule $schedule,
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 
@@ -35,7 +35,7 @@ class ScheduleService implements ScheduleServiceContract
         string $command,
         array $keyedParameters = [],
         int $uniqueFor = 1800,
-        string $queue = 'default'
+        string $queue = 'default',
     ): CallbackEvent {
         $job = new CommandInQueueJob($command, $keyedParameters, $uniqueFor);
         $job->queue = $queue;

@@ -12,7 +12,7 @@ final class RepositoryForgetExpectation
      * @param Closure(mixed, self):void|null $hook
      */
     public function __construct(
-        public readonly mixed $return,
+        public readonly bool $return,
         public readonly mixed $key,
         public readonly ?Closure $hook = null,
     ) {

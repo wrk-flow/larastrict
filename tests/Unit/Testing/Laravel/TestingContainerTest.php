@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Container\ContextualBindingBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestAction;
 
@@ -16,24 +17,21 @@ class TestingContainerTest extends TestCase
     final public const Args = ['arg1'];
     final public const Abstract = 'test';
 
-    public function make(): array
+    public static function make(): array
     {
         $action = new TestAction();
 
         return [
             'supports given object' => [$action, $action],
-            'supports make via closure' => [function (array $arguments, string $abstract) use ($action) {
-                $this->assertEquals(self::Args, $arguments);
-                $this->assertEquals(self::Abstract, $abstract);
-
+            'supports make via closure' => [static function (array $arguments, string $abstract) use ($action) {
+                self::assertEquals(self::Args, $arguments);
+                self::assertEquals(self::Abstract, $abstract);
                 return $action;
             }, $action],
         ];
     }
 
-    /**
-     * @dataProvider make
-     */
+    #[DataProvider('make')]
     public function testMakeConstructSupportsObjectOrClosure(object $make, object $expectedResult): void
     {
         $container = new TestingContainer([
@@ -43,9 +41,7 @@ class TestingContainerTest extends TestCase
         $this->assertMake($container, $expectedResult);
     }
 
-    /**
-     * @dataProvider make
-     */
+    #[DataProvider('make')]
     public function testMakeSupportsObjectOrClosure(object $make, object $expectedResult): void
     {
         $container = new TestingContainer();
@@ -54,9 +50,7 @@ class TestingContainerTest extends TestCase
         $this->assertMake($container, $expectedResult);
     }
 
-    /**
-     * @dataProvider make
-     */
+    #[DataProvider('make')]
     public function testAlwaysBindingConstructSupportsObjectOrClosure(object $make, object $expectedResult): void
     {
         $container = new TestingContainer(makeAlwaysBinding: $make);
@@ -64,9 +58,7 @@ class TestingContainerTest extends TestCase
         $this->assertMake($container, $expectedResult);
     }
 
-    /**
-     * @dataProvider make
-     */
+    #[DataProvider('make')]
     public function testAlwaysBindingSupportsObjectOrClosure(object $make, object $expectedResult): void
     {
         $container = new TestingContainer();
@@ -75,7 +67,7 @@ class TestingContainerTest extends TestCase
         $this->assertMake($container, $expectedResult);
     }
 
-    public function makeException(): array
+    public static function makeException(): array
     {
         $messageNull = 'Binding not set ' . self::Abstract;
         $messageClosureNull = 'Failed to resolve ' . self::Abstract;
@@ -91,13 +83,11 @@ class TestingContainerTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider makeException
-     */
+    #[DataProvider('makeException')]
     public function testBindingResolutionException(
         bool $setMake,
         string $expectedMessage,
-        mixed $value = null
+        ?object $value = null,
     ): void {
         $container = new TestingContainer();
 
@@ -307,7 +297,7 @@ class TestingContainerTest extends TestCase
         $this->assertEquals(
             $this->defaultContainer(),
             $container,
-            'container that should not be changed if not implemented'
+            'container that should not be changed if not implemented',
         );
     }
 }

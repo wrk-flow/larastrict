@@ -10,6 +10,7 @@ use LaraStrict\Queue\Actions\RunJobAction;
 use LaraStrict\Queue\Exceptions\MethodInJobIsNotDefinedException;
 use LaraStrict\Queue\Jobs\Job;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 /**
@@ -18,7 +19,6 @@ use Tests\LaraStrict\Feature\TestCase;
 final class RunJobActionTest extends TestCase
 {
     private RunJobAction $runJobAction;
-
     private Command $command;
 
     protected function setUp(): void
@@ -30,9 +30,9 @@ final class RunJobActionTest extends TestCase
     }
 
     /**
-     * @return array<string|int, array{0: Closure(static,Job,mixed):void}>
+     * @return array<string|int, array{0: AssertClosure}>
      */
-    public function data(): array
+    public static function data(): array
     {
         return [
             'with command' => [
@@ -65,9 +65,8 @@ final class RunJobActionTest extends TestCase
 
     /**
      * @param AssertClosure $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function testWithoutCommandJob(Closure $assert): void
     {
         $assert($this, new WithoutCommandJob('hello world!'), 'hello world!');
@@ -79,16 +78,15 @@ final class RunJobActionTest extends TestCase
         $this->expectExceptionMessage(sprintf(
             'Given job <%s> does not contain desired method <%s>',
             WithoutCommandJob::class,
-            'handleJob'
+            'handleJob',
         ));
         $this->runJobAction->execute(job: new WithoutCommandJob('hello world!'), method: 'handleJob');
     }
 
     /**
      * @param AssertClosure $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function testCommandJob(Closure $assert): void
     {
         $assert($this, new CommandJob(), $this->command);

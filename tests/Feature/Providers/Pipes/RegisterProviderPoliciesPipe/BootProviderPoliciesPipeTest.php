@@ -18,7 +18,7 @@ class BootProviderPoliciesPipeTest extends TestCase
         $gate = $this->app()
             ->make(Gate::class);
 
-        $policy = $gate->getPolicyFor(Test::class);
+        $policy = $gate->getPolicyFor(TestEntity::class);
         $this->assertInstanceOf(TestPolicy::class, $policy);
     }
 }

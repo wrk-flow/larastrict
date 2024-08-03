@@ -16,7 +16,7 @@ class DeletedResourceTest extends TestCase
             expected: [
                 'message' => 'deleted',
             ],
-            actual: (new DeletedResource())->toArray(new Request())
+            actual: (new DeletedResource())->toArray(new Request()),
         );
     }
 }

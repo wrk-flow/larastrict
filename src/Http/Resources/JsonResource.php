@@ -30,13 +30,13 @@ abstract class JsonResource extends BaseJsonResource
                     && property_exists(static::class, 'preserveKeys')) {
                     $collection->preserveKeys = (new static(null))->preserveKeys === true;
                 }
-            }
+            },
         );
     }
 
     protected function getContainer(): Container
     {
-        if ($this->container === null) {
+        if (! $this->container instanceof \Illuminate\Contracts\Container\Container) {
             return LaravelContainer::getInstance();
         }
 

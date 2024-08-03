@@ -25,8 +25,8 @@ class AbstractProviderTranslationsTest extends TestCase
             sprintf(
                 'Provider <%s> must use <%s>',
                 TranslationServiceProvider::class,
-                AbstractServiceProvider::class
-            )
+                AbstractServiceProvider::class,
+            ),
         );
         $this->app()
             ->make(InvalidServiceProviderTranslations::class);

@@ -16,7 +16,7 @@ class LoadProviderTranslations implements AppServiceProviderPipeContract
         if ($appServiceProvider->serviceProvider instanceof HasTranslations) {
             $appServiceProvider->serviceProvider->laraLoadTranslationsFrom(
                 path: $appServiceProvider->serviceRootDir . '/Translations',
-                namespace: $appServiceProvider->serviceName
+                namespace: $appServiceProvider->serviceName,
             );
         }
 

@@ -22,7 +22,7 @@ class ExceptionHandlerAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $exception = new Exception();
         $request = new Request();
@@ -33,12 +33,12 @@ class ExceptionHandlerAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'report',
                 createAssert: static fn () => new ExceptionHandlerAssert(
-                    report: [new ExceptionHandlerReportExpectation($exception)]
+                    report: [new ExceptionHandlerReportExpectation($exception)],
                 ),
                 call: static fn (ExceptionHandlerAssert $assert) => $assert->report($exception),
             ),
-            $this->shouldReportAssert(expectedReturn: true),
-            $this->shouldReportAssert(expectedReturn: false),
+            self::shouldReportAssert(expectedReturn: true),
+            self::shouldReportAssert(expectedReturn: false),
             new AssertExpectationEntity(
                 methodName: 'render',
                 createAssert: static fn () => new ExceptionHandlerAssert(
@@ -46,11 +46,11 @@ class ExceptionHandlerAssertTest extends TestCase
                         return: $response,
                         request: $request,
                         e: $exception,
-                    )]
+                    )],
                 ),
                 call: static fn (ExceptionHandlerAssert $assert) => $assert->render($request, $exception),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'renderForConsole',
@@ -58,7 +58,7 @@ class ExceptionHandlerAssertTest extends TestCase
                     renderForConsole: [new ExceptionHandlerRenderForConsoleExpectation(
                         output: $output,
                         e: $exception,
-                    )]
+                    )],
                 ),
                 call: static fn (ExceptionHandlerAssert $assert) => $assert->renderForConsole($output, $exception),
             ),
@@ -70,18 +70,18 @@ class ExceptionHandlerAssertTest extends TestCase
         return new ExceptionHandlerAssert();
     }
 
-    protected function shouldReportAssert(bool $expectedReturn): AssertExpectationEntity
+    private static function shouldReportAssert(bool $expectedReturn): AssertExpectationEntity
     {
         $exception = new Exception();
 
         return new AssertExpectationEntity(
             methodName: 'shouldReport',
             createAssert: static fn () => new ExceptionHandlerAssert(
-                shouldReport: [new ExceptionHandlerShouldReportExpectation(return: $expectedReturn, e: $exception)]
+                shouldReport: [new ExceptionHandlerShouldReportExpectation(return: $expectedReturn, e: $exception)],
             ),
             call: static fn (ExceptionHandlerAssert $assert) => $assert->shouldReport($exception),
             checkResult: true,
-            expectedResult: $expectedReturn
+            expectedResult: $expectedReturn,
         );
     }
 }

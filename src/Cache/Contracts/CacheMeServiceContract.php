@@ -26,7 +26,7 @@ interface CacheMeServiceContract
         array $tags = [],
         int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        bool $log = true
+        bool $log = true,
     ): mixed;
 
     /**
@@ -38,7 +38,7 @@ interface CacheMeServiceContract
         array $tags = [],
         int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        bool $log = true
+        bool $log = true,
     ): void;
 
     /**
@@ -52,7 +52,7 @@ interface CacheMeServiceContract
     public function delete(
         string $key,
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void;
 
     /**

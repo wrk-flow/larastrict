@@ -11,11 +11,12 @@ use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Core\Services\SleepService;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Core\Services\NoSleepService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 class TestServiceProviderTest extends TestCase
 {
-    public function makeExpectationCommandData(): array
+    public static function makeExpectationCommandData(): array
     {
         return [
             'production value' => [EnvironmentType::Production->value, false],
@@ -30,9 +31,7 @@ class TestServiceProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider makeExpectationCommandData
-     */
+    #[DataProvider('makeExpectationCommandData')]
     public function testMakeExpectationCommand(string|EnvironmentType $environment, bool $has): void
     {
         $this->setEnv($environment);
@@ -51,11 +50,12 @@ class TestServiceProviderTest extends TestCase
     {
         $this->app()
             ->register(LaraStrictServiceProvider::class);
-
-        $this->assertInstanceOf(
+        // larastan will resolve this as NoSleepService - does not support dynamic env change.
+        /** @phpstan-ignore-next-line  */
+        self::assertInstanceOf(
             expected: NoSleepService::class,
             actual: $this->app()
-                ->make(SleepServiceContract::class)
+                ->make(SleepServiceContract::class),
         );
     }
 
@@ -66,11 +66,10 @@ class TestServiceProviderTest extends TestCase
         $this->app()
             ->register(LaraStrictServiceProvider::class);
 
-        $this->assertInstanceOf(
-            expected: SleepService::class,
-            actual: $this->app()
-                ->make(SleepServiceContract::class)
-        );
+        $service = $this->app()
+            ->make(SleepServiceContract::class);
+
+        $this->assertTrue($service instanceof SleepService);
     }
 
     protected function getPackageProviders($app)
@@ -80,8 +79,10 @@ class TestServiceProviderTest extends TestCase
 
     protected function setEnv(string|EnvironmentType $environment): void
     {
-        $config = $this->app()
+        $config = $this
+            ->app()
             ->get(Repository::class);
+
         assert($config instanceof Repository);
         $config->set('app.env', $environment);
     }

@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use LaraStrict\Http\Resources\JsonResourceCollection;
 use LaraStrict\Http\Resources\MessageResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class JsonResourceCollectionTest extends TestCase
@@ -25,7 +26,7 @@ class JsonResourceCollectionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function data(): array
+    public static function data(): array
     {
         // Preserve keys changes keys using mergeData, not input/output array
         $input = [
@@ -47,7 +48,7 @@ class JsonResourceCollectionTest extends TestCase
                     laravelCollection: MessageJsonResource::collection($input),
                     laraStrictCollection: MessageResource::collection($input),
                     expectedPreserveKeys: false,
-                    expectedOutput: $output
+                    expectedOutput: $output,
                 ),
             ],
             'preserve keys true' => [
@@ -55,7 +56,7 @@ class JsonResourceCollectionTest extends TestCase
                     laravelCollection: PreserveKeysJsonResource::collection($input),
                     laraStrictCollection: PreserveKeysLaraStrictResource::collection($input),
                     expectedPreserveKeys: true,
-                    expectedOutput: $output
+                    expectedOutput: $output,
                 ),
             ],
             'preserve keys false by default - no container' => [
@@ -64,7 +65,7 @@ class JsonResourceCollectionTest extends TestCase
                     laraStrictCollection: MessageResource::collection($input),
                     expectedPreserveKeys: false,
                     expectedOutput: $output,
-                    setContainer: false
+                    setContainer: false,
                 ),
             ],
             'preserve keys true - no container' => [
@@ -73,7 +74,7 @@ class JsonResourceCollectionTest extends TestCase
                     laraStrictCollection: PreserveKeysLaraStrictResource::collection($input),
                     expectedPreserveKeys: true,
                     expectedOutput: $output,
-                    setContainer: false
+                    setContainer: false,
                 ),
             ],
         ];
@@ -81,9 +82,8 @@ class JsonResourceCollectionTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -94,14 +94,14 @@ class JsonResourceCollectionTest extends TestCase
         JsonResourceCollection $laraStrictCollection,
         bool $expectedPreserveKeys,
         array $expectedOutput,
-        bool $setContainer = true
+        bool $setContainer = true,
     ): void {
         // preserveKeys was added Laravel v9.45.0
         if (property_exists($laravelCollection, 'preserveKeys')) {
             $this->assertEquals(
                 expected: $expectedPreserveKeys,
                 actual: $laravelCollection->preserveKeys,
-                message: 'Laravel preserve keys'
+                message: 'Laravel preserve keys',
             );
         }
 
@@ -109,14 +109,14 @@ class JsonResourceCollectionTest extends TestCase
             $this->assertEquals(
                 expected: $expectedPreserveKeys,
                 actual: $laraStrictCollection->preserveKeys,
-                message: 'LaraStrict preserve keys'
+                message: 'LaraStrict preserve keys',
             );
         }
 
         $this->assertEquals(
             expected: $expectedOutput,
             actual: $laravelCollection->toArray($this->request),
-            message: 'Laravel toArray'
+            message: 'Laravel toArray',
         );
 
         $this->assertEquals(
@@ -124,7 +124,7 @@ class JsonResourceCollectionTest extends TestCase
             actual: $laraStrictCollection
                 ->setContainer($setContainer ? new TestingContainer() : null)
                 ->toArray($this->request),
-            message: 'LaraStrict toArray'
+            message: 'LaraStrict toArray',
         );
     }
 }

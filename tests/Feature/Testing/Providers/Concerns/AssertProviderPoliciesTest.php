@@ -33,13 +33,13 @@ class AssertProviderPoliciesTest extends TestCase
             application: $this->app(),
             policy: TestPolicy::class,
             expectedPolicyClass: TestPolicy::class,
-            expectToExtendClass: MyOtherPolicy::class
+            expectToExtendClass: MyOtherPolicy::class,
         );
         $this->assertPolicy(
             application: $this->app(),
             policy: MyOtherPolicyContract::class,
             expectedPolicyClass: MyOtherPolicy::class,
-            expectToExtendClass: null
+            expectToExtendClass: null,
         );
     }
 }

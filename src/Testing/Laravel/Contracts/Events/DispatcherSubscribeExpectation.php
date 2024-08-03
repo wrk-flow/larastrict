@@ -7,7 +7,7 @@ namespace LaraStrict\Testing\Laravel\Contracts\Events;
 final class DispatcherSubscribeExpectation
 {
     public function __construct(
-        public readonly mixed $subscriber
+        public readonly mixed $subscriber,
     ) {
     }
 }

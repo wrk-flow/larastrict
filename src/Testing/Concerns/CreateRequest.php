@@ -36,7 +36,7 @@ trait CreateRequest
         string $accept = 'application/json',
         array $cookies = [],
         array $files = [],
-        array $server = []
+        array $server = [],
     ): object {
         $urlGenerator = $application->make(UrlGenerator::class);
         assert($urlGenerator instanceof UrlGenerator);
@@ -103,11 +103,11 @@ trait CreateRequest
         $request->setContainer(
             new TestingContainer(
                 makeBindings: $makeBindings,
-                makeAlwaysBinding: static fn (array $parameters, string $class) => new $class(...$parameters)
-            )
+                makeAlwaysBinding: static fn (array $parameters, string $class) => new $class(...$parameters),
+            ),
         );
 
-        if ($user !== null) {
+        if ($user instanceof Authenticatable) {
             $request->setUserResolver(static fn () => $user);
         }
 

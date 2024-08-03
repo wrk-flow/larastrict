@@ -12,7 +12,7 @@ final class GuardIdExpectation
      * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly mixed $return,
+        public readonly int|string|null $return,
         public readonly ?Closure $hook = null,
     ) {
     }

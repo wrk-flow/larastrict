@@ -23,17 +23,18 @@ final class FloatCast implements CastsAttributes
 
     public function __construct(
         private readonly int $decimals = 2,
-        private readonly bool $nonNull = false
+        private readonly bool $nonNull = false,
     ) {
     }
 
     public function get($model, string $key, $value, array $attributes)
     {
-        if ($value === null || $value === '') {
+        if ($value === null || $value === '' || is_numeric($value) === false || is_string($value) === false) {
             return $this->nonNull ? 0.0 : null;
         }
 
         return (float) $value;
+
     }
 
     public function set($model, string $key, $value, array $attributes): ?string

@@ -14,7 +14,7 @@ abstract class AbstractProviderTranslations extends AbstractTranslations
 
     public function __construct(
         Translator $translator,
-        GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction
+        GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction,
     ) {
         parent::__construct($translator);
 

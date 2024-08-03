@@ -22,7 +22,7 @@ trait AssertEventListeners
         object $event,
         array $contractMap,
         ?array $expectedListenerResults = null,
-        bool $disableWildcard = true
+        bool $disableWildcard = true,
     ): void {
         $shouldBuildResults = $expectedListenerResults === null;
 
@@ -61,7 +61,7 @@ trait AssertEventListeners
             Assert::assertArrayHasKey(
                 $contract,
                 $currentListenersMap,
-                sprintf('Listener not %s registered for event: %s', $contract, $event::class)
+                sprintf('Listener not %s registered for event: %s', $contract, $event::class),
             );
 
             $asserts[] = $assert;

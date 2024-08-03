@@ -55,7 +55,7 @@ class LoadProviderRoutesPipeTest extends TestCase
                 $this->assertArrayHasKey('service', $context);
                 $this->assertStringContainsString(
                     'tests/Feature/Providers/Pipes/LoadProviderRoutesPipe',
-                    $context['dir']
+                    $context['dir'],
                 );
                 $this->assertEquals(RoutableWithNoFilesServiceProvider::class, $context['service']);
 

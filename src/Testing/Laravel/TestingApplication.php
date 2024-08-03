@@ -27,7 +27,7 @@ class TestingApplication extends TestingContainer implements Application
         public MaintenanceMode $maintenanceMode = new MaintenanceMode(),
         array $makeBindings = [],
         Closure|null $makeAlwaysBinding = null,
-        public string $basePath = 'base'
+        public string $basePath = 'base',
     ) {
         parent::__construct($makeBindings, $makeAlwaysBinding);
     }
@@ -168,7 +168,22 @@ class TestingApplication extends TestingContainer implements Application
     {
     }
 
-    protected function addPath(mixed $path): string
+    public function langPath($path = '')
+    {
+        return 'lang/' . $this->addPath($path);
+    }
+
+    public function publicPath($path = '')
+    {
+        return 'public/' . $this->addPath($path);
+    }
+
+    public function hasDebugModeEnabled()
+    {
+        return false;
+    }
+
+    protected function addPath(string $path): string
     {
         return $path !== '' ? DIRECTORY_SEPARATOR . $path : '';
     }

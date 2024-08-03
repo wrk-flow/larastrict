@@ -46,7 +46,7 @@ abstract class AbstractConfigTestCase extends TestCase
         mixed $expectedDefaultValue,
         array $keys,
         array $overridesExpectationMap,
-        Closure $getValue
+        Closure $getValue,
     ): void {
         $this->assertGetValue($expectedDefaultValue, $getValue, '');
 

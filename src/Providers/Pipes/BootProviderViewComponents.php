@@ -13,7 +13,7 @@ use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 class BootProviderViewComponents implements AppServiceProviderPipeContract
 {
     public function __construct(
-        private readonly BladeCompiler $bladeCompiler
+        private readonly BladeCompiler $bladeCompiler,
     ) {
     }
 

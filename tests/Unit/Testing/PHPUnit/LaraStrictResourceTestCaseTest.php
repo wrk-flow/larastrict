@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LaraStrict\Testing\PHPUnit\ResourceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Http\Resources\LaraStrictResource;
 use Tests\LaraStrict\Feature\Http\Resources\TestAction;
 use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
@@ -17,7 +18,7 @@ use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
  */
 class LaraStrictResourceTestCaseTest extends ResourceTestCase
 {
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
@@ -31,8 +32,8 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -44,7 +45,7 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
         $this->assertEquals(
             expected: self::expected(value: 'test', instance: '1'),
-            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1'))
+            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1')),
         );
     }
 
@@ -54,7 +55,7 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
         $this->assertEquals(
             expected: [self::expected(value: 'test', instance: '1')],
-            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1'))
+            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1')),
         );
     }
 
@@ -81,7 +82,7 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
     protected static function createContainer(string $instance): TestingContainer
     {
         return new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction($instance)
+            makeAlwaysBinding: static fn () => new TestAction($instance),
         );
     }
 

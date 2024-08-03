@@ -13,7 +13,7 @@ class GroupByScope extends AbstractScope
      * @param array<string> $groups
      */
     public function __construct(
-        private readonly array $groups
+        private readonly array $groups,
     ) {
     }
 

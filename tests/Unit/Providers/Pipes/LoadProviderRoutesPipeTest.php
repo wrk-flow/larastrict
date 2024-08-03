@@ -14,31 +14,28 @@ use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingApplicationRoutes;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use stdClass;
 
 class LoadProviderRoutesPipeTest extends TestCase
 {
-    public function invalidNumericRoutes(): array
+    public static function invalidNumericRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
-    /**
-     * @dataProvider invalidNumericRoutes
-     */
+    #[DataProvider('invalidNumericRoutes')]
     public function testNumericIndexMustHaveStringValue(mixed $customRoute): void
     {
         $this->assertInvalidRoutes(
             [$customRoute],
-            'Custom route with numeric key expects file suffix name (value as string)'
+            'Custom route with numeric key expects file suffix name (value as string)',
         );
     }
 
-    /**
-     * @dataProvider invalidStringRoutes
-     */
+    #[DataProvider('invalidStringRoutes')]
     public function testStringIndexMustHaveClosureOrString(mixed $customRoute): void
     {
         $this->assertInvalidRoutes([
@@ -46,12 +43,12 @@ class LoadProviderRoutesPipeTest extends TestCase
         ], 'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class);
     }
 
-    public function invalidStringRoutes(): array
+    public static function invalidStringRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
-    public function invalidRoutesClasses(): array
+    public static function invalidRoutesClasses(): array
     {
         return [
             [[InvalidCustomRouteAction::class],
@@ -63,20 +60,18 @@ class LoadProviderRoutesPipeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider invalidRoutesClasses
-     */
+    #[DataProvider('invalidRoutesClasses')]
     public function testInvalidRoutesClasses(array $customRoutes, string $expectedMessage): void
     {
         $container = new TestingContainer(
             [
                 InvalidCustomRouteAction::class => new InvalidCustomRouteAction(),
-            ]
+            ],
         );
         $this->assertInvalidRoutes(
             customRoutes: $customRoutes,
             expectedExceptionMessage: $expectedMessage,
-            container: $container
+            container: $container,
         );
     }
 
@@ -85,7 +80,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         $this->assertInvalidRoutes(
             customRoutes: [InvalidCustomRouteAction::class],
             app: (new TestingApplicationRoutes())
-                ->setRoutesAreCached()
+                ->setRoutesAreCached(),
         );
     }
 
@@ -94,7 +89,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         $this->assertInvalidRoutes(
             customRoutes: [InvalidCustomRouteAction::class],
             expectedExceptionMessage: 'Binding not set ' . InvalidCustomRouteAction::class,
-            app: (new TestingApplicationRoutes())
+            app: (new TestingApplicationRoutes()),
         );
     }
 
@@ -102,7 +97,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         array $customRoutes,
         ?string $expectedExceptionMessage = null,
         TestingContainer $container = new TestingContainer(),
-        TestingApplication $app = new TestingApplication()
+        TestingApplication $app = new TestingApplication(),
     ): bool {
         if ($expectedExceptionMessage !== null) {
             $this->expectExceptionMessage($expectedExceptionMessage);
@@ -111,11 +106,11 @@ class LoadProviderRoutesPipeTest extends TestCase
         $pipe = new BootProviderRoutesPipe($container, new NullLogger());
         $serviceProvider = new class(
             $app,
-            $customRoutes
+            $customRoutes,
         ) extends AbstractServiceProvider implements HasCustomRoutes, HasRoutes {
             public function __construct(
                 TestingApplication $app,
-                private readonly array $customRoutes
+                private readonly array $customRoutes,
             ) {
                 parent::__construct($app);
             }

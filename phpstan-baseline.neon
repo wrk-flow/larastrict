@@ -1,6 +1,31 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\$createState of method LaraStrict\\\\Context\\\\Services\\\\ContextService\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: LaraStrict\\\\Context\\\\Values\\\\BoolContextValue, Closure\\(Illuminate\\\\Contracts\\\\Container\\\\Container\\)\\: LaraStrict\\\\Context\\\\Values\\\\BoolContextValue given\\.$#"
+			count: 1
+			path: src/Context/Services/ContextService.php
+
+		-
+			message: "#^Parameter \\#1 of closure expects TModel of Illuminate\\\\Database\\\\Eloquent\\\\Model, mixed given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
+			message: "#^Parameter \\#1 of closure expects array\\<int\\|string\\>, array\\<int\\<0, max\\>, mixed\\> given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:chunk\\(\\) expects callable\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, int\\)\\: mixed, Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, TModel\\>\\)\\: void given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:chunkById\\(\\) expects callable\\(Illuminate\\\\Support\\\\Collection\\<int, TModel\\>, int\\)\\: mixed, Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, TModel\\>\\)\\: void given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
 			message: "#^Access to an undefined property LaraStrict\\\\Http\\\\Resources\\\\JsonResource\\:\\:\\$preserveKeys\\.$#"
 			count: 1
 			path: src/Http/Resources/JsonResource.php
@@ -16,6 +41,11 @@ parameters:
 			path: src/Http/Resources/JsonResourceCollection.php
 
 		-
+			message: "#^Parameter \\$getValue of method LaraStrict\\\\Cache\\\\Contracts\\\\CacheMeServiceContract\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity, Closure\\(Illuminate\\\\Contracts\\\\Foundation\\\\Application\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity given\\.$#"
+			count: 1
+			path: src/Providers/Actions/GetAppServiceProviderForClassAction.php
+
+		-
 			message: "#^Cannot cast array\\|string to string\\.$#"
 			count: 1
 			path: src/Testing/Actions/GetNamespaceForStubsAction.php
@@ -25,22 +55,20 @@ parameters:
 			count: 1
 			path: src/Testing/Actions/ParsePhpDocAction.php
 
-		# forward compatibility
-		-
-			message: "#^Attribute class PHPUnit\\\\Framework\\\\Attributes\\\\Before does not exist\\.$#"
-			count: 1
-			path: src/Testing/Assert/AssertExpectationTestCase.php
-
-		-
-			message: "#^Attribute class PHPUnit\\\\Framework\\\\Attributes\\\\PostCondition does not exist\\.$#"
-			count: 1
-			path: src/Testing/Assert/AssertExpectationTestCase.php
-
 		-
 			message: "#^Method LaraStrict\\\\Testing\\\\Assert\\\\AssertExpectationTestCase\\:\\:beforeStartAssertExpectationManager\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Testing/Assert/AssertExpectationTestCase.php
-		# forward compatibility
+
+		-
+			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\IsContext\\:\\:is\\(\\) should return Closure\\(mixed, mixed, mixed, mixed, mixed\\)\\: bool but returns Closure\\(bool\\)\\: bool\\.$#"
+			count: 1
+			path: tests/Feature/Context/Services/IsContext.php
+
+		-
+			message: "#^Parameter \\$createState of method LaraStrict\\\\Context\\\\Contracts\\\\ContextServiceContract\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue, Closure\\(string\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue given\\.$#"
+			count: 1
+			path: tests/Feature/Context/Services/TestDependencyContext.php
 
 		-
 			message: "#^Call to method PHPUnit\\\\Framework\\\\Assert\\:\\:assertTrue\\(\\) with false and 'Hook should be…' will always evaluate to false\\.$#"
@@ -48,6 +76,21 @@ parameters:
 			path: tests/Feature/Testing/Commands/MakeExpectationCommandRealTest.php
 
 		-
+			message: "#^Call to method LaraStrict\\\\Testing\\\\Laravel\\\\Contracts\\\\View\\\\FactoryAssert\\:\\:exists\\(\\) with 'test' will always evaluate to false\\.$#"
+			count: 2
+			path: tests/Feature/Testing/Laravel/Contracts/View/FactoryAssertTest.php
+
+		-
 			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Translations\\\\InvalidServiceProviderTranslations\\:\\:getProviderClass\\(\\) should return class\\-string\\<LaraStrict\\\\Providers\\\\AbstractServiceProvider\\> but returns string\\.$#"
 			count: 1
 			path: tests/Feature/Translations/InvalidServiceProviderTranslations.php
+
+		-
+			message: "#^Parameter \\$createState of method LaraStrict\\\\Testing\\\\Context\\\\Contracts\\\\ContextServiceContractAssert\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue, Closure\\(string\\)\\: Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\TestValue given\\.$#"
+			count: 2
+			path: tests/Unit/Testing/Context/Contracts/ContextServiceContractAssertTest.php
+
+		-
+			message: "#^Parameter \\$is of method LaraStrict\\\\Testing\\\\Context\\\\Contracts\\\\ContextServiceContractAssert\\:\\:is\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: bool, Closure\\(string\\)\\: true given\\.$#"
+			count: 1
+			path: tests/Unit/Testing/Context/Contracts/ContextServiceContractAssertTest.php
