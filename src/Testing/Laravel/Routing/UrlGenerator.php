@@ -100,7 +100,7 @@ class UrlGenerator implements UrlGeneratorContract
         string $path,
         array $parameters = [],
         mixed $secure = null,
-        bool $absolute = true
+        bool $absolute = true,
     ): string {
         $paramsString = $parameters === []
             ? ''

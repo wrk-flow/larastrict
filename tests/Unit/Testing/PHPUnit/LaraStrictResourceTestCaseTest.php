@@ -45,7 +45,7 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
         $this->assertEquals(
             expected: self::expected(value: 'test', instance: '1'),
-            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1'))
+            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1')),
         );
     }
 
@@ -55,7 +55,7 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
         $this->assertEquals(
             expected: [self::expected(value: 'test', instance: '1')],
-            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1'))
+            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1')),
         );
     }
 
@@ -82,7 +82,7 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
     protected static function createContainer(string $instance): TestingContainer
     {
         return new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction($instance)
+            makeAlwaysBinding: static fn () => new TestAction($instance),
         );
     }
 

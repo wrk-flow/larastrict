@@ -16,9 +16,7 @@ abstract class AbstractInScope extends AbstractScope
     final public const BOOLEAN_OR = 'or';
 
     private string $boolean = self::BOOLEAN_AND;
-
     private readonly bool $not;
-
     private readonly string $table;
 
     /**
@@ -29,7 +27,7 @@ abstract class AbstractInScope extends AbstractScope
         private array $values,
         string|bool|null $booleanOrTableOrNot = null,
         string $table = '',
-        bool $not = false
+        bool $not = false,
     ) {
         if (is_bool($booleanOrTableOrNot)) {
             $not = $booleanOrTableOrNot;

@@ -23,6 +23,6 @@ interface RunOrQueueJobActionContract
         Job $job,
         ?Command $command = null,
         ?Closure $setupBeforeRun = null,
-        ?bool $shouldQueue = null
+        ?bool $shouldQueue = null,
     ): mixed;
 }

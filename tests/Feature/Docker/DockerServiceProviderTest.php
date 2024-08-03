@@ -33,13 +33,13 @@ class DockerServiceProviderTest extends TestCase
             'will change because it contains default value' => [
                 static fn (self $self) => $self->assertEnsureOutput(
                     isInDockerEnvironment: true,
-                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => '/proc/1/fd/1'
+                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => '/proc/1/fd/1',
                 ),
             ],
             'will do nothing because is not in docker env' => [
                 static fn (self $self) => $self->assertEnsureOutput(
                     isInDockerEnvironment: false,
-                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => $event->task->getDefaultOutput()
+                    expectedDockerOutput: static fn (ScheduledTaskStarting $event) => $event->task->getDefaultOutput(),
                 ),
             ],
             'will do nothing because task output was changed by user using appendOutputTo' => [

@@ -60,7 +60,7 @@ class LaraStrictServiceProviderTest extends TestCase
                 GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
                 ImplementsService::class => ImplementsService::class,
                 ScheduleServiceContract::class => ScheduleService::class,
-            ]
+            ],
         );
     }
 
@@ -75,7 +75,7 @@ class LaraStrictServiceProviderTest extends TestCase
                 GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
                 ImplementsService::class => ImplementsService::class,
                 SleepServiceContract::class => SleepServiceContract::class,
-            ]
+            ],
         );
     }
 }

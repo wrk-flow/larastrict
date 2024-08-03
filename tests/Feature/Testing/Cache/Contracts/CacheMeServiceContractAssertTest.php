@@ -20,6 +20,7 @@ use Tests\LaraStrict\Feature\Database\Models\TestModel;
 class CacheMeServiceContractAssertTest extends TestCase
 {
     use AssertExpectations;
+
     private const Return = 'test';
     private const Key = 'key';
 
@@ -30,14 +31,14 @@ class CacheMeServiceContractAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'get',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
-                    get: [new CacheMeServiceContractGetExpectation(key: self::Key)]
+                    get: [new CacheMeServiceContractGetExpectation(key: self::Key)],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->get(
                     key: self::Key,
-                    getValue: static fn () => self::Return
+                    getValue: static fn () => self::Return,
                 ),
                 checkResult: true,
-                expectedResult: 'test'
+                expectedResult: 'test',
             ),
             new AssertExpectationEntity(
                 methodName: 'set',
@@ -47,8 +48,8 @@ class CacheMeServiceContractAssertTest extends TestCase
                         value: self::Return,
                         tags: [self::Return],
                         minutes: 230,
-                        strategy: CacheMeStrategy::Memory
-                    )]
+                        strategy: CacheMeStrategy::Memory,
+                    )],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->set(
                     key: self::Key,
@@ -62,7 +63,7 @@ class CacheMeServiceContractAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'set',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
-                    set: [new CacheMeServiceContractSetExpectation(key: self::Key, value: self::Return)]
+                    set: [new CacheMeServiceContractSetExpectation(key: self::Key, value: self::Return)],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->set(
                     key: self::Key,
@@ -73,7 +74,7 @@ class CacheMeServiceContractAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'flush',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
-                    flush: [new CacheMeServiceContractFlushExpectation()]
+                    flush: [new CacheMeServiceContractFlushExpectation()],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->flush(),
                 checkResult: false,
@@ -83,19 +84,19 @@ class CacheMeServiceContractAssertTest extends TestCase
                 createAssert: static fn () => new CacheMeServiceContractAssert(
                     flush: [new CacheMeServiceContractFlushExpectation(
                         tags: [self::Return],
-                        strategy: CacheMeStrategy::Memory
-                    )]
+                        strategy: CacheMeStrategy::Memory,
+                    )],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->flush(
                     tags: [self::Return],
-                    strategy: CacheMeStrategy::Memory
+                    strategy: CacheMeStrategy::Memory,
                 ),
                 checkResult: false,
             ),
             new AssertExpectationEntity(
                 methodName: 'delete',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
-                    delete: [new CacheMeServiceContractDeleteExpectation(key: self::Key)]
+                    delete: [new CacheMeServiceContractDeleteExpectation(key: self::Key)],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->delete(key: self::Key),
                 checkResult: false,
@@ -106,13 +107,13 @@ class CacheMeServiceContractAssertTest extends TestCase
                     delete: [new CacheMeServiceContractDeleteExpectation(
                         key: self::Key,
                         tags: [self::Return],
-                        strategy: CacheMeStrategy::Memory
-                    )]
+                        strategy: CacheMeStrategy::Memory,
+                    )],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->delete(
                     key: self::Key,
                     tags: [self::Return],
-                    strategy: CacheMeStrategy::Memory
+                    strategy: CacheMeStrategy::Memory,
                 ),
                 checkResult: false,
             ),
@@ -122,7 +123,7 @@ class CacheMeServiceContractAssertTest extends TestCase
                     observeAndFlush: [new CacheMeServiceContractObserveAndFlushExpectation(
                         tags: [self::Key],
                         modelClass: TestModel::class,
-                    )]
+                    )],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->observeAndFlush(
                     tags: [self::Key],
@@ -136,7 +137,7 @@ class CacheMeServiceContractAssertTest extends TestCase
                     observeAndFlush: [new CacheMeServiceContractObserveAndFlushExpectation(
                         tags: static fn () => 'test',
                         modelClass: TestModel::class,
-                    )]
+                    )],
                 ),
                 call: static fn (CacheMeServiceContractAssert $assert) => $assert->observeAndFlush(
                     tags: $closure,

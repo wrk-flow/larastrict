@@ -22,13 +22,13 @@ class ModelResourceTestCaseTest extends ModelResourceTestCase
             [
                 static fn (self $self) => $self->assert(
                     object: self::create(value: 1),
-                    expected: self::expect(value: 1)
+                    expected: self::expect(value: 1),
                 ),
             ],
             [
                 static fn (self $self) => $self->assert(
                     object: self::create(value: 2),
-                    expected: self::expect(value: 2)
+                    expected: self::expect(value: 2),
                 ),
             ],
         ];

@@ -48,7 +48,7 @@ class ContextServiceContractAssertTest extends TestCase
                 ]),
                 call: static fn (ContextServiceContractAssert $assert) => $assert->set(
                     context: $context,
-                    value: $value
+                    value: $value,
                 ),
             ),
             new AssertExpectationEntity(
@@ -58,7 +58,7 @@ class ContextServiceContractAssertTest extends TestCase
                 ]),
                 call: static fn (ContextServiceContractAssert $assert) => $assert->setWithoutCache(
                     context: $context,
-                    value: $value
+                    value: $value,
                 ),
             ),
             new AssertExpectationEntity(
@@ -70,10 +70,10 @@ class ContextServiceContractAssertTest extends TestCase
                         hook: static function (
                             AbstractContext $context,
                             Closure $createState,
-                            ContextServiceContractGetExpectation $expectation
+                            ContextServiceContractGetExpectation $expectation,
                         ) use ($value): void {
                             self::assertSame($value, $createState('test'));
-                        }
+                        },
                     ),
                 ]),
                 call: static fn(ContextServiceContractAssert $assert) => $assert->get(
@@ -81,10 +81,10 @@ class ContextServiceContractAssertTest extends TestCase
                     createState: static function (string $string) use ($value): TestValue {
                         self::assertEquals(expected: 'test', actual: $string);
                         return $value;
-                    }
+                    },
                 ),
                 checkResult: true,
-                expectedResult: $value
+                expectedResult: $value,
             ),
             new AssertExpectationEntity(
                 methodName: 'get',
@@ -92,7 +92,7 @@ class ContextServiceContractAssertTest extends TestCase
                     new ContextServiceContractGetExpectation(
                         return: $value,
                         context: $context,
-                        runCreateState: static fn (Closure $createState): TestValue => $createState('test')
+                        runCreateState: static fn (Closure $createState): TestValue => $createState('test'),
                     ),
                 ]),
                 call: static fn(ContextServiceContractAssert $assert) => $assert->get(
@@ -100,10 +100,10 @@ class ContextServiceContractAssertTest extends TestCase
                     createState: static function (string $string) use ($value): TestValue {
                         self::assertEquals(expected: 'test', actual: $string);
                         return $value;
-                    }
+                    },
                 ),
                 checkResult: true,
-                expectedResult: $value
+                expectedResult: $value,
             ),
             new AssertExpectationEntity(
                 methodName: 'is',
@@ -116,10 +116,10 @@ class ContextServiceContractAssertTest extends TestCase
                         hook: static function (
                             AbstractContext $context,
                             Closure $is,
-                            ContextServiceContractIsExpectation $expectation
+                            ContextServiceContractIsExpectation $expectation,
                         ): void {
                             self::assertTrue(condition: $is('test'));
-                        }
+                        },
                     ),
                 ]),
                 call: static fn(ContextServiceContractAssert $assert) => $assert->is(
@@ -127,10 +127,10 @@ class ContextServiceContractAssertTest extends TestCase
                     is: static function (string $string): bool {
                         self::assertEquals(expected: 'test', actual: $string);
                         return true;
-                    }
+                    },
                 ),
                 checkResult: true,
-                expectedResult: $boolValue
+                expectedResult: $boolValue,
             ),
             new AssertExpectationEntity(
                 methodName: 'getCacheKey',
@@ -139,7 +139,7 @@ class ContextServiceContractAssertTest extends TestCase
                 ]),
                 call: static fn (ContextServiceContractAssert $assert) => $assert->getCacheKey(context: $context),
                 checkResult: true,
-                expectedResult: 'key'
+                expectedResult: 'key',
             ),
         ];
     }

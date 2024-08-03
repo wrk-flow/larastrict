@@ -13,7 +13,7 @@ use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 class BootProviderPoliciesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
-        private readonly Gate $gate
+        private readonly Gate $gate,
     ) {
     }
 

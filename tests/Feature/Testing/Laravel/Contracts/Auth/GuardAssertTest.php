@@ -31,56 +31,56 @@ class GuardAssertTest extends TestCase
                 createAssert: static fn () => new GuardAssert(check: [new GuardCheckExpectation(return: false)]),
                 call: static fn (GuardAssert $assert) => $assert->check(),
                 checkResult: true,
-                expectedResult: false
+                expectedResult: false,
             ),
             new AssertExpectationEntity(
                 methodName: 'check',
                 createAssert: static fn () => new GuardAssert(check: [new GuardCheckExpectation(return: true)]),
                 call: static fn (GuardAssert $assert) => $assert->check(),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'guest',
                 createAssert: static fn () => new GuardAssert(guest: [new GuardGuestExpectation(return: false)]),
                 call: static fn (GuardAssert $assert) => $assert->guest(),
                 checkResult: true,
-                expectedResult: false
+                expectedResult: false,
             ),
             new AssertExpectationEntity(
                 methodName: 'guest',
                 createAssert: static fn () => new GuardAssert(guest: [new GuardGuestExpectation(return: true)]),
                 call: static fn (GuardAssert $assert) => $assert->guest(),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'user',
                 createAssert: static fn () => new GuardAssert(user: [new GuardUserExpectation(return: $user)]),
                 call: static fn (GuardAssert $assert) => $assert->user(),
                 checkResult: true,
-                expectedResult: $user
+                expectedResult: $user,
             ),
             new AssertExpectationEntity(
                 methodName: 'user',
                 createAssert: static fn () => new GuardAssert(user: [new GuardUserExpectation(return: null)]),
                 call: static fn (GuardAssert $assert) => $assert->user(),
                 checkResult: true,
-                expectedResult: null
+                expectedResult: null,
             ),
             new AssertExpectationEntity(
                 methodName: 'id',
                 createAssert: static fn () => new GuardAssert(id: [new GuardIdExpectation(return: 1)]),
                 call: static fn (GuardAssert $assert) => $assert->id(),
                 checkResult: true,
-                expectedResult: 1
+                expectedResult: 1,
             ),
             new AssertExpectationEntity(
                 methodName: 'validate',
                 createAssert: static fn () => new GuardAssert(validate: [new GuardValidateExpectation(return: true)]),
                 call: static fn (GuardAssert $assert) => $assert->validate(),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'validate',
@@ -89,7 +89,7 @@ class GuardAssertTest extends TestCase
                 ]),
                 call: static fn (GuardAssert $assert) => $assert->validate(credentials: ['s']),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'hasUser',
@@ -98,14 +98,14 @@ class GuardAssertTest extends TestCase
                 ]),
                 call: static fn (GuardAssert $assert) => $assert->hasUser(),
                 checkResult: true,
-                expectedResult: false
+                expectedResult: false,
             ),
             new AssertExpectationEntity(
                 methodName: 'hasUser',
                 createAssert: static fn () => new GuardAssert(hasUser: [new GuardHasUserExpectation(return: true)]),
                 call: static fn (GuardAssert $assert) => $assert->hasUser(),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'setUser',

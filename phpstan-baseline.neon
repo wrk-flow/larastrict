@@ -6,17 +6,22 @@ parameters:
 			path: src/Context/Services/ContextService.php
 
 		-
-			message: "#^Parameter \\#1 \\$ of closure expects TModel of Illuminate\\\\Database\\\\Eloquent\\\\Model, mixed given\\.$#"
+			message: "#^Parameter \\#1 of closure expects TModel of Illuminate\\\\Database\\\\Eloquent\\\\Model, mixed given\\.$#"
 			count: 1
 			path: src/Database/Queries/ChunkedModelQueryResult.php
 
 		-
-			message: "#^Parameter \\#1 \\$ of closure expects array\\<int\\|string\\>, array\\<int\\<0, max\\>, mixed\\> given\\.$#"
+			message: "#^Parameter \\#1 of closure expects array\\<int\\|string\\>, array\\<int\\<0, max\\>, mixed\\> given\\.$#"
 			count: 1
 			path: src/Database/Queries/ChunkedModelQueryResult.php
 
 		-
 			message: "#^Parameter \\#2 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:chunk\\(\\) expects callable\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, Illuminate\\\\Database\\\\Eloquent\\\\Model\\>, int\\)\\: mixed, Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, TModel\\>\\)\\: void given\\.$#"
+			count: 1
+			path: src/Database/Queries/ChunkedModelQueryResult.php
+
+		-
+			message: "#^Parameter \\#2 \\$callback of method Illuminate\\\\Database\\\\Eloquent\\\\Builder\\<Illuminate\\\\Database\\\\Eloquent\\\\Model\\>\\:\\:chunkById\\(\\) expects callable\\(Illuminate\\\\Support\\\\Collection\\<int, TModel\\>, int\\)\\: mixed, Closure\\(Illuminate\\\\Database\\\\Eloquent\\\\Collection\\<int, TModel\\>\\)\\: void given\\.$#"
 			count: 1
 			path: src/Database/Queries/ChunkedModelQueryResult.php
 
@@ -35,7 +40,6 @@ parameters:
 			count: 1
 			path: src/Http/Resources/JsonResourceCollection.php
 
-
 		-
 			message: "#^Parameter \\$getValue of method LaraStrict\\\\Cache\\\\Contracts\\\\CacheMeServiceContract\\:\\:get\\(\\) expects Closure\\(mixed, mixed, mixed, mixed, mixed, mixed\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity, Closure\\(Illuminate\\\\Contracts\\\\Foundation\\\\Application\\)\\: LaraStrict\\\\Providers\\\\Entities\\\\AppServiceProviderEntity given\\.$#"
 			count: 1
@@ -51,22 +55,10 @@ parameters:
 			count: 1
 			path: src/Testing/Actions/ParsePhpDocAction.php
 
-		# forward compatibility
-		-
-			message: "#^Attribute class PHPUnit\\\\Framework\\\\Attributes\\\\Before does not exist\\.$#"
-			count: 1
-			path: src/Testing/Assert/AssertExpectationTestCase.php
-
-		-
-			message: "#^Attribute class PHPUnit\\\\Framework\\\\Attributes\\\\PostCondition does not exist\\.$#"
-			count: 1
-			path: src/Testing/Assert/AssertExpectationTestCase.php
-
 		-
 			message: "#^Method LaraStrict\\\\Testing\\\\Assert\\\\AssertExpectationTestCase\\:\\:beforeStartAssertExpectationManager\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: src/Testing/Assert/AssertExpectationTestCase.php
-		# forward compatibility
 
 		-
 			message: "#^Method Tests\\\\LaraStrict\\\\Feature\\\\Context\\\\Services\\\\IsContext\\:\\:is\\(\\) should return Closure\\(mixed, mixed, mixed, mixed, mixed\\)\\: bool but returns Closure\\(bool\\)\\: bool\\.$#"

@@ -14,7 +14,7 @@ use LaraStrict\Queue\Jobs\Job;
 class RunJobAction implements RunJobActionContract
 {
     public function __construct(
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 

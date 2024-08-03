@@ -12,7 +12,7 @@ use LaraStrict\Providers\Entities\AppServiceProviderEntity;
 final class RunAppServiceProviderPipesAction implements RunAppServiceProviderPipesActionContract
 {
     public function __construct(
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 

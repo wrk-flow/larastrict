@@ -27,7 +27,7 @@ class TestingApplication extends TestingContainer implements Application
         public MaintenanceMode $maintenanceMode = new MaintenanceMode(),
         array $makeBindings = [],
         Closure|null $makeAlwaysBinding = null,
-        public string $basePath = 'base'
+        public string $basePath = 'base',
     ) {
         parent::__construct($makeBindings, $makeAlwaysBinding);
     }

@@ -23,7 +23,7 @@ final class FloatCast implements CastsAttributes
 
     public function __construct(
         private readonly int $decimals = 2,
-        private readonly bool $nonNull = false
+        private readonly bool $nonNull = false,
     ) {
     }
 

@@ -30,7 +30,7 @@ abstract class JsonResource extends BaseJsonResource
                     && property_exists(static::class, 'preserveKeys')) {
                     $collection->preserveKeys = (new static(null))->preserveKeys === true;
                 }
-            }
+            },
         );
     }
 

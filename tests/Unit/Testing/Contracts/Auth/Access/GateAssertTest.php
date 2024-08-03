@@ -87,7 +87,7 @@ class GateAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'before',
                 createAssert: static fn () => new GateAssert(before: [new GateBeforeExpectation(
-                    callback: $callback
+                    callback: $callback,
                 )]),
                 call: static fn (GateAssert $assert) => $assert->before($callback),
                 checkResult: true,
@@ -96,7 +96,7 @@ class GateAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'after',
                 createAssert: static fn () => new GateAssert(after: [new GateAfterExpectation(
-                    callback: $callback
+                    callback: $callback,
                 )]),
                 call: static fn (GateAssert $assert) => $assert->after($callback),
                 checkResult: true,
@@ -107,7 +107,7 @@ class GateAssertTest extends TestCase
                 createAssert: static fn () => new GateAssert(allows: [new GateAllowsExpectation(
                     return: true,
                     ability: 'test',
-                    arguments: ['test']
+                    arguments: ['test'],
                 )]),
                 call: static fn (GateAssert $assert) => $assert->allows('test', ['test']),
                 checkResult: true,
@@ -118,7 +118,7 @@ class GateAssertTest extends TestCase
                 createAssert: static fn () => new GateAssert(denies: [new GateDeniesExpectation(
                     return: false,
                     ability: 'test',
-                    arguments: ['test']
+                    arguments: ['test'],
                 )]),
                 call: static fn (GateAssert $assert) => $assert->denies('test', ['test']),
                 checkResult: true,
@@ -151,7 +151,7 @@ class GateAssertTest extends TestCase
                 createAssert: static fn () => new GateAssert(authorize: [new GateAuthorizeExpectation(
                     return: $authorizeResponse,
                     ability: 's',
-                    arguments: ['test']
+                    arguments: ['test'],
                 )]),
                 call: static fn (GateAssert $assert) => $assert->authorize('s', ['test']),
                 checkResult: true,

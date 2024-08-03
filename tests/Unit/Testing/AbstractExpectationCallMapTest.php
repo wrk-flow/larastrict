@@ -7,6 +7,7 @@ namespace Tests\LaraStrict\Unit\Testing;
 use LaraStrict\Testing\Assert\AssertExpectationManager;
 use LaraStrict\Testing\Assert\AssertExpectationTestCase;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\PostCondition;
 
 class AbstractExpectationCallMapTest extends AssertExpectationTestCase
 {
@@ -106,9 +107,8 @@ class AbstractExpectationCallMapTest extends AssertExpectationTestCase
 
     /**
      * aaa prefix is for sort hook above
-     *
-     * @postCondition
      */
+    #[PostCondition()]
     protected function aaaPostConditions(): void
     {
         if ($this->expectManagerExceptionMessage === null) {

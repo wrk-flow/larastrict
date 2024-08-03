@@ -26,7 +26,7 @@ class JsonResourceTest extends ResourceTestCase
     public static function data(): array
     {
         $container = new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction(value: '1')
+            makeAlwaysBinding: static fn () => new TestAction(value: '1'),
         );
         $entity = new TestEntity(value: self::Value);
         $laraStrictResource = new LaraStrictResource($entity);
@@ -39,52 +39,52 @@ class JsonResourceTest extends ResourceTestCase
                 static fn(self $self) => $self->assert(
                     object: $laraStrictResource,
                     expected: self::expected(instance: '1'),
-                    container: $container
+                    container: $container,
                 ),
             ],
             'sets laravel container to larastrict resource if not provided' => [
                 static fn(self $self) => $self->assert(
                     object: $laraStrictResource,
-                    expected: self::expected(instance: 'injected')
+                    expected: self::expected(instance: 'injected'),
                 ),
             ],
             'collection sets container to larastrict resource' => [
                 static fn(self $self) => $self->assert(
                     object: $laraStrictCollection,
                     expected: self::expectedCollection(instance: '1'),
-                    container: $container
+                    container: $container,
                 ),
             ],
             'collection sets laravel container to larastrict resource if not provided' => [
                 static fn(self $self) => $self->assert(
                     object: $laraStrictCollection,
-                    expected: self::expectedCollection(instance: 'injected')
+                    expected: self::expectedCollection(instance: 'injected'),
                 ),
             ],
             'does not container to normal resource if provided' => [
                 static fn(self $self) => $self->assert(
                     object: $laravelResource,
                     expected: self::expected(instance: null),
-                    container: $container
+                    container: $container,
                 ),
             ],
             'does not container to normal resource if not provided' => [
                 static fn(self $self) => $self->assert(
                     object: $laravelResource,
-                    expected: self::expected(instance: null)
+                    expected: self::expected(instance: null),
                 ),
             ],
             'collection does not container to normal resource if provided' => [
                 static fn(self $self) => $self->assert(
                     object: $laravelResource,
                     expected: self::expected(instance: null),
-                    container: $container
+                    container: $container,
                 ),
             ],
             'collection does not container to normal resource if not provided' => [
                 static fn(self $self) => $self->assert(
                     object: $laravelCollection,
-                    expected: self::expectedCollection(instance: null)
+                    expected: self::expectedCollection(instance: null),
                 ),
             ],
         ];

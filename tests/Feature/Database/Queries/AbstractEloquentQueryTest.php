@@ -19,21 +19,21 @@ class AbstractEloquentQueryTest extends TestCase
                 static fn (self $self, string $class) => $self->assertScopes(
                     expectedSql: 'select * from "tests" where "tests"."deleted_at" is null',
                     scopes: [],
-                    class: $class
+                    class: $class,
                 ),
             ],
             'null' => [
                 static fn (self $self, string $class) => $self->assertScopes(
                     expectedSql: 'select * from "tests" where "tests"."deleted_at" is null',
                     scopes: [null],
-                    class: $class
+                    class: $class,
                 ),
             ],
             'null and test scope' => [
                 static fn (self $self, string $class) => $self->assertScopes(
                     expectedSql: 'select * from "tests" where "test" = ? and "tests"."deleted_at" is null',
                     scopes: [new TestScope(), null],
-                    class: $class
+                    class: $class,
                 ),
             ],
         ];

@@ -19,6 +19,7 @@ use Throwable;
 class GetPublicExceptionMessageActionTest extends TestCase
 {
     use TestData;
+
     final public const TranslationKey = 'exceptions.' . TranslatableException::class;
 
     public static function data(): array
@@ -30,14 +31,14 @@ class GetPublicExceptionMessageActionTest extends TestCase
             [
                 static fn (self $self) => $self->assert(
                     exception: new PublicException('should_not_be_visible'),
-                    expectedResult: 'My message'
+                    expectedResult: 'My message',
                 ),
             ],
             [
                 static fn (self $self) => $self->assert(
                     exception: new TranslatableException('should_not_be_visible'),
                     expectedResult: 'My message',
-                    returnTranslation: true
+                    returnTranslation: true,
                 ),
             ],
             [
@@ -49,7 +50,7 @@ class GetPublicExceptionMessageActionTest extends TestCase
                             'key' => self::TranslationKey,
                         ]],
                     ],
-                    returnTranslation: false
+                    returnTranslation: false,
                 ),
             ],
         ];
@@ -59,7 +60,7 @@ class GetPublicExceptionMessageActionTest extends TestCase
         Throwable $exception,
         ?string $expectedResult,
         array $expectedWarningMessages = [],
-        ?bool $returnTranslation = null
+        ?bool $returnTranslation = null,
     ): void {
         $logger = new Logger();
         $translationKey = self::TranslationKey;
@@ -70,17 +71,17 @@ class GetPublicExceptionMessageActionTest extends TestCase
                     key: $translationKey,
                     replace: [
                         'key' => 'test',
-                    ]
+                    ],
                 ),
-            ]
+            ],
         );
         $action = new GetPublicExceptionMessageAction(
             container: new TestingContainer(
                 makeBindings: [
                     Translator::class => $translatorAssert,
                     LoggerInterface::class => $logger,
-                ]
-            )
+                ],
+            ),
         );
 
         $result = $action->execute(exception: $exception);

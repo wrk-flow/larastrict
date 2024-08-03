@@ -14,7 +14,7 @@ class PrioritizeByIdScope extends AbstractScope
      */
     public function __construct(
         private readonly array $ids,
-        private readonly ?string $idColumn = null
+        private readonly ?string $idColumn = null,
     ) {
     }
 

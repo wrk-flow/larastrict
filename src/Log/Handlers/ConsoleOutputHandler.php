@@ -26,7 +26,7 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
     public function __construct(
         private readonly ConsoleOutputManager $manager,
         string|int|Level $level = Level::Debug,
-        bool $bubble = true
+        bool $bubble = true,
     ) {
         parent::__construct($level, $bubble);
     }

@@ -103,7 +103,7 @@ abstract class AbstractExpectationCallsMap
             $caller['class'] ?? static::class,
             $caller['function'],
             $reason,
-            $callStep ?? $this->_currentDebugStep
+            $callStep ?? $this->_currentDebugStep,
         );
     }
 }

@@ -35,11 +35,8 @@ class ConsoleOutputManager
     private const KeyLoggingOutputStack = 'larastrict_console_output_stack';
 
     private ?string $previousDefaultDriver = null;
-
     private ?OutputStyle $outputStyle = null;
-
     private ?Factory $outputFactory = null;
-
     private ?OutputInterface $currentOutput = null;
 
     public function __construct(
@@ -96,7 +93,7 @@ class ConsoleOutputManager
         $this->getLogManager()
             ->extend(
                 driver: self::KeyDriver,
-                callback: fn (Application $app, array $config) => (new ConsoleOutputChannel($app))($config)
+                callback: fn (Application $app, array $config) => (new ConsoleOutputChannel($app))($config),
             );
 
         // First we need to define our custom console logging channel with custom driver
@@ -106,7 +103,7 @@ class ConsoleOutputManager
             config: [
                 'driver' => self::KeyDriver,
                 'level' => 'debug',
-            ]
+            ],
         );
 
         $isRunningInDocker = $this->dockerConfig->isInDockerEnvironment();
@@ -132,12 +129,12 @@ class ConsoleOutputManager
                         config: [
                             'driver' => 'stack',
                             'channels' => [self::KeyLoggingConsoleOutput, $this->previousDefaultDriver],
-                        ]
+                        ],
                     );
 
                     $logManager->setDefaultDriver(name: self::KeyLoggingOutputStack);
                 }
-            }
+            },
         );
 
         // We are able to detect
@@ -150,7 +147,7 @@ class ConsoleOutputManager
                     $this->getLogManager()
                         ->setDefaultDriver(name: $this->previousDefaultDriver);
                 }
-            }
+            },
         );
     }
 

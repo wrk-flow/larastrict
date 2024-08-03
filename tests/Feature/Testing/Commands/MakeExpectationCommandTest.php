@@ -28,7 +28,6 @@ class MakeExpectationCommandTest extends TestCase
     final public const TestFileName = 'app/TestAction.php';
 
     private MockInterface $fileSystem;
-
     private static ?bool $stubsGenerated = null;
 
     protected function setUp(): void
@@ -74,7 +73,7 @@ class MakeExpectationCommandTest extends TestCase
             $expectedPath,
             $fileName,
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath);
@@ -97,7 +96,7 @@ class MakeExpectationCommandTest extends TestCase
             $fileName,
             'one',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'one');
@@ -120,7 +119,7 @@ class MakeExpectationCommandTest extends TestCase
             $fileName,
             'two',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
@@ -138,14 +137,14 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: 'Test',
             expectedMessage: 'Provided class does not exists [Test]',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
     public function testMethodDoesNotExistsDefaultValue(): void
     {
         $this->expectExceptionMessage(
-            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public'
+            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public',
         );
         $this->assertCommand(expectedResult: 1, class: NoMethods::class, expectComposerJson: false);
     }
@@ -158,7 +157,7 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: self::TestFileName,
             expectedMessage: 'File does not exists at [' . self::TestFileName . ']',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
@@ -218,7 +217,7 @@ class MakeExpectationCommandTest extends TestCase
     {
         return static fn (string $path) => str_contains(
             $path,
-            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName
+            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName,
         );
     }
 
@@ -254,8 +253,8 @@ class MakeExpectationCommandTest extends TestCase
                 ->withArgs(
                     static fn (string $path): bool => str_contains(
                         $path,
-                        '/vendor/orchestra/testbench-core/laravel/composer.json'
-                    )
+                        '/vendor/orchestra/testbench-core/laravel/composer.json',
+                    ),
                 )
                 ->andReturnUsing(static function (string $path) use ($variantPrefix): string {
                     if ($variantPrefix !== null) {

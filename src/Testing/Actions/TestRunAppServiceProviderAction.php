@@ -37,7 +37,7 @@ class TestRunAppServiceProviderAction implements RunAppServiceProviderPipesActio
             Assert::assertArrayHasKey(
                 AppServiceProviderPipeContract::class,
                 $implements,
-                'Pipe <' . $pipeClass . '> must implement ' . AppServiceProviderPipeContract::class
+                'Pipe <' . $pipeClass . '> must implement ' . AppServiceProviderPipeContract::class,
             );
         }
 

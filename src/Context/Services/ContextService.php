@@ -21,7 +21,7 @@ class ContextService implements ContextServiceContract
 {
     public function __construct(
         private readonly CacheMeServiceContract $cacheMeManager,
-        private readonly ImplementsService $implementsService
+        private readonly ImplementsService $implementsService,
     ) {
     }
 
@@ -32,7 +32,7 @@ class ContextService implements ContextServiceContract
         $this->cacheMeManager->delete(
             key: $fullCacheKey,
             tags: $this->getTags($context),
-            strategy: $this->cacheStrategy($context)
+            strategy: $this->cacheStrategy($context),
         );
     }
 
@@ -73,7 +73,7 @@ class ContextService implements ContextServiceContract
             getValue: $createState,
             tags: $this->getTags($context),
             seconds: $context->getCacheTtl(),
-            strategy: $this->cacheStrategy($context)
+            strategy: $this->cacheStrategy($context),
         );
     }
 
@@ -82,8 +82,8 @@ class ContextService implements ContextServiceContract
         return $this->get(
             context: $context,
             createState: static fn (Container $container): BoolContextValue => new BoolContextValue(
-                (bool) $container->call($is)
-            )
+                (bool) $container->call($is),
+            ),
         );
     }
 

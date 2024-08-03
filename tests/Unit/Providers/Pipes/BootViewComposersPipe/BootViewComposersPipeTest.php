@@ -20,6 +20,7 @@ use Tests\LaraStrict\Unit\Testing\Laravel\Composer;
 class BootViewComposersPipeTest extends TestCase
 {
     use TestData;
+
     final public const ServiceName = 'Test';
 
     public static function data(): array
@@ -32,7 +33,7 @@ class BootViewComposersPipeTest extends TestCase
                     app: $app,
                     serviceProvider: new class(
                         $app,
-                        $viewFactory
+                        $viewFactory,
                     ) extends AbstractServiceProvider implements HasViewComposers {
                         public function __construct(
                             TestingApplication $app,

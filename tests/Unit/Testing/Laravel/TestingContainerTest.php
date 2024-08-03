@@ -87,7 +87,7 @@ class TestingContainerTest extends TestCase
     public function testBindingResolutionException(
         bool $setMake,
         string $expectedMessage,
-        ?object $value = null
+        ?object $value = null,
     ): void {
         $container = new TestingContainer();
 
@@ -297,7 +297,7 @@ class TestingContainerTest extends TestCase
         $this->assertEquals(
             $this->defaultContainer(),
             $container,
-            'container that should not be changed if not implemented'
+            'container that should not be changed if not implemented',
         );
     }
 }

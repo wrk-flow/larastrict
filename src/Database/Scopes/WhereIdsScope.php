@@ -13,7 +13,7 @@ class WhereIdsScope extends AbstractInScope
         private readonly ?string $key = null,
         string|bool|null $booleanOrTableOrNot = null,
         string $table = '',
-        bool $not = false
+        bool $not = false,
     ) {
         parent::__construct($ids, $booleanOrTableOrNot, $table, $not);
     }

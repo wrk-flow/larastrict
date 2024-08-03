@@ -25,7 +25,7 @@ class TestDataTest extends TestCase
         $this->assertEquals(
             expected: $expectAppNull,
             actual: null === $this->app,
-            message: 'Using $this in closure references test case without app initialized.'
+            message: 'Using $this in closure references test case without app initialized.',
         );
     }
 }

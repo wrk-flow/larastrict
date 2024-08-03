@@ -34,7 +34,7 @@ class CreateRequestTest extends TestCase
             data: $data,
             makeBindings: [
                 CustomAction::class => $customAction,
-            ]
+            ],
         );
         $this->assertEquals($data, $request->validated());
         $this->assertTrue($request->acceptsJson());

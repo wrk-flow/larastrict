@@ -28,7 +28,7 @@ final class ConsoleOutputChannel extends LogManager
 
         return new Logger(
             name: $this->parseChannel($config),
-            handlers: [$this->prepareHandler($handler, $config)]
+            handlers: [$this->prepareHandler($handler, $config)],
         );
     }
 

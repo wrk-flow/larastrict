@@ -90,7 +90,7 @@ final class RunOrQueueJobActionTest extends TestCase
                             Assert::assertSame($job, $givenJob, 'Job should be same');
                             $setupBeforeRunCalled = true;
                         },
-                        shouldQueue: false
+                        shouldQueue: false,
                     ),
                 );
                 Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be trigered');
@@ -168,7 +168,7 @@ final class RunOrQueueJobActionTest extends TestCase
                             Assert::assertSame($job, $givenJob, 'Job should be same');
                             $setupBeforeRunCalled = true;
                         },
-                        shouldQueue: false
+                        shouldQueue: false,
                     ),
                 );
                 Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be trigered');
@@ -248,7 +248,7 @@ final class RunOrQueueJobActionTest extends TestCase
                             Assert::assertSame($job, $givenJob, 'Job should be same');
                             $setupBeforeRunCalled = true;
                         },
-                        shouldQueue: false
+                        shouldQueue: false,
                     ),
                 );
                 Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be trigered');
@@ -284,7 +284,7 @@ final class RunOrQueueJobActionTest extends TestCase
                     return: true,
                     job: $job,
                 ),
-            ])
+            ]),
         );
     }
 

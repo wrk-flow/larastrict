@@ -50,11 +50,12 @@ class TestServiceProviderTest extends TestCase
     {
         $this->app()
             ->register(LaraStrictServiceProvider::class);
-
-        $this->assertInstanceOf(
+        // larastan will resolve this as NoSleepService - does not support dynamic env change.
+        /** @phpstan-ignore-next-line  */
+        self::assertInstanceOf(
             expected: NoSleepService::class,
             actual: $this->app()
-                ->make(SleepServiceContract::class)
+                ->make(SleepServiceContract::class),
         );
     }
 
@@ -68,8 +69,6 @@ class TestServiceProviderTest extends TestCase
         $service = $this->app()
             ->make(SleepServiceContract::class);
 
-        // larastan will resolve this as NoSleepService - does not support dynamic env change.
-        /** @phpstan-ignore-next-line  */
         $this->assertTrue($service instanceof SleepService);
     }
 

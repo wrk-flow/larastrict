@@ -15,8 +15,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class TestNoDates extends Model
 {
+    /** @use HasFactory<TestModelFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     final public const CREATED_AT = null;
     final public const UPDATED_AT = null;
     final public const AttributeTest = 'test';

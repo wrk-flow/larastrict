@@ -16,8 +16,11 @@ use LaraStrict\Database\Models\Casts\FloatCast;
  */
 class TestModel extends Model
 {
+    /** @use HasFactory<TestModelFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     final public const AttributeTest = 'test';
     final public const AttributeDeletedAt = 'deleted_at';
     final public const AttributeFloatNonNull = 'float_non_null';
@@ -30,7 +33,6 @@ class TestModel extends Model
     final public const AttributeFloat4DecimalsNonNull = 'float_4_decimals_non_null';
 
     protected $table = 'tests';
-
     protected $casts = [
         self::AttributeFloatNonNull => FloatCast::NonNull,
         self::AttributeFloat => FloatCast::class,
@@ -41,6 +43,5 @@ class TestModel extends Model
         self::AttributeFloat3DecimalsNonNull => FloatCast::ThreeDecimalsNonNull,
         self::AttributeFloat4DecimalsNonNull => FloatCast::FourDecimalsNonNull,
     ];
-
     protected $fillable = [self::AttributeTest];
 }

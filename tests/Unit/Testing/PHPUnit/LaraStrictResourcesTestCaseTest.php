@@ -50,7 +50,7 @@ class LaraStrictResourcesTestCaseTest extends ResourceTestCase
                 ],
             ],
             container: new TestingContainer(
-                makeAlwaysBinding: static fn () => new TestAction($instance)
+                makeAlwaysBinding: static fn () => new TestAction($instance),
             ),
         );
     }
@@ -63,7 +63,7 @@ class LaraStrictResourcesTestCaseTest extends ResourceTestCase
     protected static function createContainer(string $value): TestingContainer
     {
         return new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction($value)
+            makeAlwaysBinding: static fn () => new TestAction($value),
         );
     }
 }

@@ -84,7 +84,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     protected function resourceArray(
         ?BaseJsonResource $resource,
         ?TestingContainer $container = null,
-        Request $request = null
+        Request $request = null,
     ): ?array {
         if (! $resource instanceof BaseJsonResource) {
             return null;
@@ -100,7 +100,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
         return new LogicException(sprintf(
             'Container can only be set on %s or %s.',
             LaraStrictJsonResource::class,
-            JsonResourceCollection::class
+            JsonResourceCollection::class,
         ));
     }
 

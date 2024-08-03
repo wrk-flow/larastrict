@@ -31,7 +31,7 @@ class LoadProviderRoutesPipeTest extends TestCase
     {
         $this->assertInvalidRoutes(
             [$customRoute],
-            'Custom route with numeric key expects file suffix name (value as string)'
+            'Custom route with numeric key expects file suffix name (value as string)',
         );
     }
 
@@ -66,12 +66,12 @@ class LoadProviderRoutesPipeTest extends TestCase
         $container = new TestingContainer(
             [
                 InvalidCustomRouteAction::class => new InvalidCustomRouteAction(),
-            ]
+            ],
         );
         $this->assertInvalidRoutes(
             customRoutes: $customRoutes,
             expectedExceptionMessage: $expectedMessage,
-            container: $container
+            container: $container,
         );
     }
 
@@ -80,7 +80,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         $this->assertInvalidRoutes(
             customRoutes: [InvalidCustomRouteAction::class],
             app: (new TestingApplicationRoutes())
-                ->setRoutesAreCached()
+                ->setRoutesAreCached(),
         );
     }
 
@@ -89,7 +89,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         $this->assertInvalidRoutes(
             customRoutes: [InvalidCustomRouteAction::class],
             expectedExceptionMessage: 'Binding not set ' . InvalidCustomRouteAction::class,
-            app: (new TestingApplicationRoutes())
+            app: (new TestingApplicationRoutes()),
         );
     }
 
@@ -97,7 +97,7 @@ class LoadProviderRoutesPipeTest extends TestCase
         array $customRoutes,
         ?string $expectedExceptionMessage = null,
         TestingContainer $container = new TestingContainer(),
-        TestingApplication $app = new TestingApplication()
+        TestingApplication $app = new TestingApplication(),
     ): bool {
         if ($expectedExceptionMessage !== null) {
             $this->expectExceptionMessage($expectedExceptionMessage);
@@ -106,11 +106,11 @@ class LoadProviderRoutesPipeTest extends TestCase
         $pipe = new BootProviderRoutesPipe($container, new NullLogger());
         $serviceProvider = new class(
             $app,
-            $customRoutes
+            $customRoutes,
         ) extends AbstractServiceProvider implements HasCustomRoutes, HasRoutes {
             public function __construct(
                 TestingApplication $app,
-                private readonly array $customRoutes
+                private readonly array $customRoutes,
             ) {
                 parent::__construct($app);
             }

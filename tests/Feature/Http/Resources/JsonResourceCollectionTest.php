@@ -48,7 +48,7 @@ class JsonResourceCollectionTest extends TestCase
                     laravelCollection: MessageJsonResource::collection($input),
                     laraStrictCollection: MessageResource::collection($input),
                     expectedPreserveKeys: false,
-                    expectedOutput: $output
+                    expectedOutput: $output,
                 ),
             ],
             'preserve keys true' => [
@@ -56,7 +56,7 @@ class JsonResourceCollectionTest extends TestCase
                     laravelCollection: PreserveKeysJsonResource::collection($input),
                     laraStrictCollection: PreserveKeysLaraStrictResource::collection($input),
                     expectedPreserveKeys: true,
-                    expectedOutput: $output
+                    expectedOutput: $output,
                 ),
             ],
             'preserve keys false by default - no container' => [
@@ -65,7 +65,7 @@ class JsonResourceCollectionTest extends TestCase
                     laraStrictCollection: MessageResource::collection($input),
                     expectedPreserveKeys: false,
                     expectedOutput: $output,
-                    setContainer: false
+                    setContainer: false,
                 ),
             ],
             'preserve keys true - no container' => [
@@ -74,7 +74,7 @@ class JsonResourceCollectionTest extends TestCase
                     laraStrictCollection: PreserveKeysLaraStrictResource::collection($input),
                     expectedPreserveKeys: true,
                     expectedOutput: $output,
-                    setContainer: false
+                    setContainer: false,
                 ),
             ],
         ];
@@ -94,14 +94,14 @@ class JsonResourceCollectionTest extends TestCase
         JsonResourceCollection $laraStrictCollection,
         bool $expectedPreserveKeys,
         array $expectedOutput,
-        bool $setContainer = true
+        bool $setContainer = true,
     ): void {
         // preserveKeys was added Laravel v9.45.0
         if (property_exists($laravelCollection, 'preserveKeys')) {
             $this->assertEquals(
                 expected: $expectedPreserveKeys,
                 actual: $laravelCollection->preserveKeys,
-                message: 'Laravel preserve keys'
+                message: 'Laravel preserve keys',
             );
         }
 
@@ -109,14 +109,14 @@ class JsonResourceCollectionTest extends TestCase
             $this->assertEquals(
                 expected: $expectedPreserveKeys,
                 actual: $laraStrictCollection->preserveKeys,
-                message: 'LaraStrict preserve keys'
+                message: 'LaraStrict preserve keys',
             );
         }
 
         $this->assertEquals(
             expected: $expectedOutput,
             actual: $laravelCollection->toArray($this->request),
-            message: 'Laravel toArray'
+            message: 'Laravel toArray',
         );
 
         $this->assertEquals(
@@ -124,7 +124,7 @@ class JsonResourceCollectionTest extends TestCase
             actual: $laraStrictCollection
                 ->setContainer($setContainer ? new TestingContainer() : null)
                 ->toArray($this->request),
-            message: 'LaraStrict toArray'
+            message: 'LaraStrict toArray',
         );
     }
 }

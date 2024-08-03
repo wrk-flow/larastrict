@@ -22,7 +22,7 @@ class ExceptionHandlerAssert extends AbstractExpectationCallsMap implements Exce
         array $report = [],
         array $shouldReport = [],
         array $render = [],
-        array $renderForConsole = []
+        array $renderForConsole = [],
     ) {
         parent::__construct();
         $this->setExpectations(ExceptionHandlerReportExpectation::class, $report);

@@ -43,14 +43,14 @@ class FloatCastTest extends TestCase
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
                     value: null,
                     expected: 0.0,
-                    nonNull: true
+                    nonNull: true,
                 ),
             ],
             'non null set to true, empty string' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
                     value: '',
                     expected: 0.0,
-                    nonNull: true
+                    nonNull: true,
                 ),
             ],
             'non null set to true, decimals' => [
@@ -82,7 +82,7 @@ class FloatCastTest extends TestCase
     public function assertEnsureThatFloatIsReturned(
         ?string $value,
         ?float $expected,
-        bool $nonNull = false
+        bool $nonNull = false,
     ): void {
         $cast = $nonNull === false ? new FloatCast() : new FloatCast(nonNull: $nonNull);
         $this->assertSame(
@@ -224,7 +224,7 @@ class FloatCastTest extends TestCase
     public function assertConvertFloatToModelDecimalValue(
         float|string|null $value,
         ?string $expected,
-        FloatCast $cast
+        FloatCast $cast,
     ): void {
         $this->assertSame(
             expected: $expected,

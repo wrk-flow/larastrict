@@ -15,7 +15,7 @@ class RunOrQueueJobAction implements RunOrQueueJobActionContract
 {
     public function __construct(
         private readonly RunJobActionContract $runJobAction,
-        private readonly DispatchJobActionContract $dispatchJobAction
+        private readonly DispatchJobActionContract $dispatchJobAction,
     ) {
     }
 

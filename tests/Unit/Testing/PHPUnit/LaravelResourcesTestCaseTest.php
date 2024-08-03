@@ -22,13 +22,13 @@ class LaravelResourcesTestCaseTest extends ResourceTestCase
             'ok - value 1' => [
                 static fn (self $testCase) => $testCase->assert(
                     object: [new TestEntity(value: 'test')],
-                    expected: [self::expect(value: 'test')]
+                    expected: [self::expect(value: 'test')],
                 ),
             ],
             'ok - value 2' => [
                 static fn (self $testCase) => $testCase->assert(
                     object: [new TestEntity(value: 'test22')],
-                    expected: [self::expect(value: 'test22')]
+                    expected: [self::expect(value: 'test22')],
                 ),
             ],
             'fail while setting container' => [

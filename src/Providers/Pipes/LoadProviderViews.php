@@ -16,7 +16,7 @@ class LoadProviderViews implements AppServiceProviderPipeContract
         if ($appServiceProvider->serviceProvider instanceof HasViews) {
             $appServiceProvider->serviceProvider->laraLoadViewsFrom(
                 $appServiceProvider->serviceRootDir . '/Views',
-                $appServiceProvider->serviceName
+                $appServiceProvider->serviceName,
             );
         }
 

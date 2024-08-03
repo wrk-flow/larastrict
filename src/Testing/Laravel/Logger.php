@@ -10,21 +10,13 @@ use Stringable;
 class Logger implements LoggerInterface
 {
     public array $emergency = [];
-
     public array $alert = [];
-
     public array $critical = [];
-
     public array $error = [];
-
     public array $warning = [];
-
     public array $notice = [];
-
     public array $info = [];
-
     public array $debug = [];
-
     public array $log = [];
 
     public function emergency(Stringable|string $message, array $context = []): void

@@ -27,7 +27,7 @@ class ChunkedModelQueryResult
     public function __construct(
         public readonly string $modelClass,
         public readonly Builder $query,
-        public readonly bool $chunkById = true
+        public readonly bool $chunkById = true,
     ) {
     }
 
@@ -82,7 +82,7 @@ class ChunkedModelQueryResult
 
                 $closure($keys);
             },
-            count: $count
+            count: $count,
         );
     }
 
@@ -107,7 +107,7 @@ class ChunkedModelQueryResult
                     ++$processed;
                 }
             },
-            $count
+            $count,
         );
 
         return $processed;

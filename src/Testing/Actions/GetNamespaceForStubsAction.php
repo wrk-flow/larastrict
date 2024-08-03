@@ -57,7 +57,7 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
     private function getComposerDevAutoLoad(array $composer): array
     {
         if (isset($composer[self::ComposerAutoLoadDev][self::ComposerPsr4]) && is_array(
-            $composer[self::ComposerAutoLoadDev][self::ComposerPsr4]
+            $composer[self::ComposerAutoLoadDev][self::ComposerPsr4],
         )) {
             return $composer[self::ComposerAutoLoadDev][self::ComposerPsr4];
         }

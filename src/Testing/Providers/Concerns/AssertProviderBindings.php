@@ -17,7 +17,7 @@ trait AssertProviderBindings
     public function assertBindings(
         Application $application,
         array $expectedMap,
-        ?string $registerServiceProvider = null
+        ?string $registerServiceProvider = null,
     ): void {
         if ($registerServiceProvider !== null) {
             $application->register($registerServiceProvider);

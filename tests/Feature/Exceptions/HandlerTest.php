@@ -27,7 +27,7 @@ class HandlerTest extends TestCase
                     exception: new Exception('Test'),
                     expectedResult: [
                         'message' => 'Server Error',
-                    ]
+                    ],
                 ),
             ],
             'message exception returns message' => [
@@ -35,7 +35,7 @@ class HandlerTest extends TestCase
                     exception: new PublicException('Test'),
                     expectedResult: [
                         'message' => 'My message',
-                    ]
+                    ],
                 ),
             ],
             'translatable exception returns message' => [
@@ -43,7 +43,7 @@ class HandlerTest extends TestCase
                     exception: new TranslatableException('Test'),
                     expectedResult: [
                         'message' => 'My message is a test',
-                    ]
+                    ],
                 ),
             ],
         ];

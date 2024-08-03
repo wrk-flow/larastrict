@@ -95,7 +95,7 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
                     throw new LogicException(sprintf(
                         'Tagged implementation for %s must be instance of %s',
                         $service::class,
-                        $class
+                        $class,
                     ));
                 }
 

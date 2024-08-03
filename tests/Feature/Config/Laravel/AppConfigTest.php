@@ -35,7 +35,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 0 => $expectationDefault,
                 1 => '1',
             ],
-            getValue: fn () => $this->config->getVersion()
+            getValue: fn () => $this->config->getVersion(),
         );
     }
 
@@ -48,7 +48,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 'base64:test' => 'base64:test',
                 '' => '',
             ],
-            getValue: fn () => $this->config->getKey()
+            getValue: fn () => $this->config->getKey(),
         );
     }
 
@@ -62,7 +62,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 '' => '',
                 'null' => '',
             ],
-            getValue: fn () => $this->config->getName()
+            getValue: fn () => $this->config->getName(),
         );
     }
 
@@ -76,7 +76,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 '' => '',
                 'null' => '',
             ],
-            getValue: fn () => $this->config->getUrl()
+            getValue: fn () => $this->config->getUrl(),
         );
     }
 
@@ -90,7 +90,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 '' => null,
                 'null' => null,
             ],
-            getValue: fn () => $this->config->getAssetUrl()
+            getValue: fn () => $this->config->getAssetUrl(),
         );
     }
 
@@ -105,7 +105,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 'null' => false,
                 '' => false,
             ],
-            getValue: fn () => $this->config->isInDebugMode()
+            getValue: fn () => $this->config->isInDebugMode(),
         );
     }
 

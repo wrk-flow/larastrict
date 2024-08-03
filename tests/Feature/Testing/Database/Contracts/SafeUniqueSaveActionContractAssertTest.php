@@ -67,7 +67,7 @@ class SafeUniqueSaveActionContractAssertTest extends TestCase
         array $expectations,
         TestModel|TestNoDates $model,
         string $expectedResult,
-        ?int $expectedId = null
+        ?int $expectedId = null,
     ): void {
         $assert = new SafeUniqueSaveActionContractAssert($expectations);
 

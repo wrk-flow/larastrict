@@ -19,7 +19,6 @@ use Tests\LaraStrict\Feature\TestCase;
 final class RunJobActionTest extends TestCase
 {
     private RunJobAction $runJobAction;
-
     private Command $command;
 
     protected function setUp(): void
@@ -79,7 +78,7 @@ final class RunJobActionTest extends TestCase
         $this->expectExceptionMessage(sprintf(
             'Given job <%s> does not contain desired method <%s>',
             WithoutCommandJob::class,
-            'handleJob'
+            'handleJob',
         ));
         $this->runJobAction->execute(job: new WithoutCommandJob('hello world!'), method: 'handleJob');
     }

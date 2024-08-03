@@ -59,7 +59,7 @@ class OrderByValuesScopeTest extends TestCase
 
         $this->assertEquals(
             expected: 'select * from "tests" order by FIELD(`test`, ?, ?, ?) ' . $expectedDirection,
-            actual: $query->toSql()
+            actual: $query->toSql(),
         );
 
         $this->assertEquals(expected: $values, actual: $query->getBindings());

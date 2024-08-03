@@ -10,9 +10,7 @@ use LaraStrict\Queue\Jobs\Job;
 abstract class AbstractUniqueJob extends Job implements ShouldBeUnique
 {
     public int $tries = 30;
-
     public int $uniqueFor = 10;
-
     public int $maxExceptions = 1;
 
     abstract public function uniqueId(): string;

@@ -12,7 +12,7 @@ final class TestListenerCallsContractTestExpectation
      * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly ?Closure $hook = null
+        public readonly ?Closure $hook = null,
     ) {
     }
 }
