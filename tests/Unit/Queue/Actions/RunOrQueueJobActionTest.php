@@ -92,7 +92,7 @@ final class RunOrQueueJobActionTest extends TestCase
                         shouldQueue: false
                     ),
                 );
-                Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be trigered');
+                Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be triggered');
             }],
         ];
     }
@@ -171,7 +171,7 @@ final class RunOrQueueJobActionTest extends TestCase
                         shouldQueue: false
                     ),
                 );
-                Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be trigered');
+                Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be triggered');
             }],
         ];
     }
@@ -252,7 +252,7 @@ final class RunOrQueueJobActionTest extends TestCase
                         shouldQueue: false
                     ),
                 );
-                Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be trigered');
+                Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be triggered');
             }],
         ];
     }

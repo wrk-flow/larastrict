@@ -16,7 +16,7 @@ use LaraStrict\Console\Jobs\CommandInQueueJob;
  * - Adds ability to force all commands in queue
  * - Force logging of output to running process.
  * - Ensure jobs are unique.
- * @interal
+ * @internal
  */
 class ScheduleService implements ScheduleServiceContract
 {
