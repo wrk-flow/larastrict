@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.85] - 2024-08-06
+### :bug: Bug Fixes
+- [`faa4bae`](https://github.com/wrk-flow/larastrict/commit/faa4baef78d757c8f9b7e7228effd8c9b57bc879) - **ChunkWriteStateEntity**: phpdoc *(commit by [@h4kuna](https://github.com/h4kuna))*
+- [`9816cf3`](https://github.com/wrk-flow/larastrict/commit/9816cf31a11d1e691c10721b3e9359c61904e951) - **CommandInQueue**: update caseId *(commit by [@h4kuna](https://github.com/h4kuna))*
+- [`096ffce`](https://github.com/wrk-flow/larastrict/commit/096ffcec09383d4eb5fcca62467f2022e7a90ba5) - **SqlTestEnable**: add Attribute from PhpUnit *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.84] - 2024-07-30
 ### :sparkles: New Features
 - [`7468a7c`](https://github.com/wrk-flow/larastrict/commit/7468a7c3a7207df2204ae36938e478053a251148) - **SqlTestEnable**: add fake connector for sql lite *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -724,3 +731,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.82]: https://github.com/wrk-flow/larastrict/compare/v0.0.81...v0.0.82
 [v0.0.83]: https://github.com/wrk-flow/larastrict/compare/v0.0.82...v0.0.83
 [v0.0.84]: https://github.com/wrk-flow/larastrict/compare/v0.0.83...v0.0.84
+[v0.0.85]: https://github.com/wrk-flow/larastrict/compare/v0.0.84...v0.0.85
