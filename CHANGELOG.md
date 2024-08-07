@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.86] - 2024-08-07
+### :boom: BREAKING CHANGES
+- due to [`a1a54e3`](https://github.com/wrk-flow/larastrict/commit/a1a54e33e569c487b4a5d425aef38ceba8fc5beb) - Provide @template for JsonResource $resource for better type safe *(commit by [@pionl](https://github.com/pionl))*:
+
+  PHPStan will now throw an error if you pass incorrect value to __construct or Resource::collection  
+  - made setContainer/getContainer/resourceArray/instance final
+
+
+### :sparkles: New Features
+- [`a1a54e3`](https://github.com/wrk-flow/larastrict/commit/a1a54e33e569c487b4a5d425aef38ceba8fc5beb) - **PHPStan**: Provide @template for JsonResource $resource for better type safe *(commit by [@pionl](https://github.com/pionl))*
+
+
 ## [v0.0.85] - 2024-08-06
 ### :bug: Bug Fixes
 - [`faa4bae`](https://github.com/wrk-flow/larastrict/commit/faa4baef78d757c8f9b7e7228effd8c9b57bc879) - **ChunkWriteStateEntity**: phpdoc *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -732,3 +744,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.83]: https://github.com/wrk-flow/larastrict/compare/v0.0.82...v0.0.83
 [v0.0.84]: https://github.com/wrk-flow/larastrict/compare/v0.0.83...v0.0.84
 [v0.0.85]: https://github.com/wrk-flow/larastrict/compare/v0.0.84...v0.0.85
+[v0.0.86]: https://github.com/wrk-flow/larastrict/compare/v0.0.85...v0.0.86
