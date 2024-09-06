@@ -67,6 +67,9 @@ class Logger implements LoggerInterface
         $this->debug[] = [$message, $context];
     }
 
+    /**
+     * @param string $level
+     */
     public function log($level, Stringable|string $message, array $context = []): void
     {
         $this->log[] = [$message, $context];
