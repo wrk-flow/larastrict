@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.87] - 2024-09-09
+### :sparkles: New Features
+- [`f85f6c5`](https://github.com/wrk-flow/larastrict/commit/f85f6c501ca77eb44277ac507aa1d054be623577) - **SqlTestEnable**: add method assertSql() *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.86] - 2024-08-07
 ### :boom: BREAKING CHANGES
 - due to [`a1a54e3`](https://github.com/wrk-flow/larastrict/commit/a1a54e33e569c487b4a5d425aef38ceba8fc5beb) - Provide @template for JsonResource $resource for better type safe *(commit by [@pionl](https://github.com/pionl))*:
@@ -745,3 +750,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.84]: https://github.com/wrk-flow/larastrict/compare/v0.0.83...v0.0.84
 [v0.0.85]: https://github.com/wrk-flow/larastrict/compare/v0.0.84...v0.0.85
 [v0.0.86]: https://github.com/wrk-flow/larastrict/compare/v0.0.85...v0.0.86
+[v0.0.87]: https://github.com/wrk-flow/larastrict/compare/v0.0.86...v0.0.87
