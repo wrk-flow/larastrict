@@ -5,12 +5,16 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Unit\Database\Services;
 
 use Closure;
+use LaraStrict\Database\Contracts\ChunkWriteServiceContract;
 use LaraStrict\Database\Entities\ChunkWriteStateEntity;
 use LaraStrict\Database\Services\ChunkWriteService;
 use LaraStrict\Tests\Traits\SqlTestEnable;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @phpstan-import-type TData from ChunkWriteServiceContract
+ */
 final class ChunkWriteServiceTest extends TestCase
 {
     use SqlTestEnable;
@@ -38,6 +42,14 @@ final class ChunkWriteServiceTest extends TestCase
                     );
                 },
             ],
+            [
+                static function (self $self) {
+                    $self->assert(
+                        new ChunkWriteStateEntity(32768, TestModel::class, 3, 2),
+                        [new TestModel(), new TestModel(), new TestModel()],
+                    );
+                },
+            ],
         ];
     }
 
@@ -50,7 +62,10 @@ final class ChunkWriteServiceTest extends TestCase
         $assert($this);
     }
 
-    public function assert(ChunkWriteStateEntity $expected, Closure $data): void
+    /**
+     * @param Closure(): TData|TData $data
+     */
+    public function assert(ChunkWriteStateEntity $expected, Closure|iterable $data): void
     {
         $state = (new ChunkWriteService())->write($data);
         Assert::assertEquals($expected, $state);
