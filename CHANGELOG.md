@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.88] - 2024-10-17
+### :sparkles: New Features
+- [`9e21547`](https://github.com/wrk-flow/larastrict/commit/9e2154795e1e53df37818b85185654e33bba2404) - **ChunkWriteService**: support iterable directly *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.87] - 2024-09-09
 ### :sparkles: New Features
 - [`f85f6c5`](https://github.com/wrk-flow/larastrict/commit/f85f6c501ca77eb44277ac507aa1d054be623577) - **SqlTestEnable**: add method assertSql() *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -751,3 +756,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.85]: https://github.com/wrk-flow/larastrict/compare/v0.0.84...v0.0.85
 [v0.0.86]: https://github.com/wrk-flow/larastrict/compare/v0.0.85...v0.0.86
 [v0.0.87]: https://github.com/wrk-flow/larastrict/compare/v0.0.86...v0.0.87
+[v0.0.88]: https://github.com/wrk-flow/larastrict/compare/v0.0.87...v0.0.88
