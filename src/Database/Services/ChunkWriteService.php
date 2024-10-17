@@ -12,11 +12,12 @@ use LogicException;
 
 final class ChunkWriteService implements ChunkWriteServiceContract
 {
-    public function write(Closure $closure, int $batchSize = 0): ChunkWriteStateEntity
+    public function write(Closure|iterable $closure, int $batchSize = 0): ChunkWriteStateEntity
     {
         $writeState = new ChunkWriteStateEntity(batchSize: $batchSize);
 
-        foreach ($closure() as $model) {
+        $source = $closure instanceof Closure ? $closure() : $closure;
+        foreach ($source as $model) {
             $this->add($model, $writeState);
         }
 
