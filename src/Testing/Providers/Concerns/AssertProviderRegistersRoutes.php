@@ -44,14 +44,14 @@ trait AssertProviderRegistersRoutes
         foreach ($expectUrlsByMethod as $method => $urls) {
             $registeredUrls = $routes->get($method);
 
-            $currentUrls = [];
+            $expectedUrls = [];
             foreach ($urls as $index => $value) {
                 $url = is_callable($value) ? $index : $value;
-                $currentUrls[] = $url;
+                $expectedUrls[] = $url;
             }
 
             if ($onlyGiven) {
-                Assert::assertEquals(array_keys($registeredUrls), $currentUrls);
+                Assert::assertEquals($expectedUrls, array_keys($registeredUrls));
             }
 
             $errorMessage = 'Not found in: ' . implode(', ', array_keys($registeredUrls));

@@ -21,7 +21,7 @@ use LaraStrict\Providers\Entities\CustomRouteEntity;
 use LogicException;
 use Psr\Log\LoggerInterface;
 
-class BootProviderRoutesPipe implements AppServiceProviderPipeContract
+final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
         private readonly Container $container,
@@ -44,7 +44,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         $next($appServiceProvider);
     }
 
-    protected function loadRoutes(AppServiceProviderEntity $appServiceProvider): void
+    private function loadRoutes(AppServiceProviderEntity $appServiceProvider): void
     {
         $dir = $appServiceProvider->serviceRootDir;
         $serviceFileName = $appServiceProvider->serviceFileName;
@@ -65,7 +65,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         }
     }
 
-    protected function loadApiRoute(string $dir, string $serviceFileName, string $urlPrefix, ?int $version = null): bool
+    private function loadApiRoute(string $dir, string $serviceFileName, string $urlPrefix, ?float $version = null): bool
     {
         $versionFileSuffix = $version === null ? '' : '_v' . $version;
         $versionRoutePrefix = $version === null ? '' : 'v' . $version . '/';
@@ -79,7 +79,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         );
     }
 
-    protected function registerRoute(
+    private function registerRoute(
         string $dir,
         string $fileSuffix,
         string $serviceFileName,
@@ -100,12 +100,12 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         return true;
     }
 
-    protected function getRouteFilePath(string $dir, string $serviceFileName, string $fileSuffix): string
+    private function getRouteFilePath(string $dir, string $serviceFileName, string $fileSuffix): string
     {
         return $dir . sprintf('/Http/routes/%s_%s.php', $serviceFileName, $fileSuffix);
     }
 
-    protected function tryToLoadCustomRoutes(
+    private function tryToLoadCustomRoutes(
         AppServiceProviderEntity $appServiceProvider,
         string $dir,
         string $serviceFileName,
@@ -180,18 +180,19 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         return $didLoadRoutes;
     }
 
-    protected function tryToLoadApiRoutes(
+    private function tryToLoadApiRoutes(
         AppServiceProviderEntity $appServiceProvider,
         string $dir,
         string $serviceFileName,
         string $urlPrefix
     ): bool {
-        // Force the user to use versioned api or un-versioned api routes
+        // Support using old non-versioned apis with versioned apis
+        $didLoadRoutes = $this->loadApiRoute($dir, $serviceFileName, $urlPrefix);
+
         if ($appServiceProvider->serviceProvider instanceof HasVersionedApiRoutes === false) {
-            return $this->loadApiRoute($dir, $serviceFileName, $urlPrefix);
+            return $didLoadRoutes;
         }
 
-        $didLoadRoutes = false;
         foreach ($appServiceProvider->serviceProvider->apiVersions() as $version) {
             if ($this->loadApiRoute($dir, $serviceFileName, $urlPrefix, $version)) {
                 $didLoadRoutes = true;
@@ -201,7 +202,7 @@ class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         return $didLoadRoutes;
     }
 
-    protected function makeRoute(): RouteRegistrar
+    private function makeRoute(): RouteRegistrar
     {
         return $this->container->make(RouteRegistrar::class);
     }

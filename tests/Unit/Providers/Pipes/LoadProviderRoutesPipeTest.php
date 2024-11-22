@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use stdClass;
 
-class LoadProviderRoutesPipeTest extends TestCase
+final class LoadProviderRoutesPipeTest extends TestCase
 {
     public function invalidNumericRoutes(): array
     {

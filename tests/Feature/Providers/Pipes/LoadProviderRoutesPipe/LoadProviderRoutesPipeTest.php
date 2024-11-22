@@ -78,10 +78,10 @@ class LoadProviderRoutesPipeTest extends TestCase
         ], WithApiServiceProvider::class, true);
     }
 
-    public function testWithVersionedApiOnly(): void
+    public function testWithVersionedApi(): void
     {
         $this->assertRoutes($this->app(), [
-            'GET' => ['api/v1/test/1-api', 'api/v2/test/2-api'],
+            'GET' => ['api/test/api', 'api/v1/test/1-api', 'api/v1.1/test/1.1-api', 'api/v2/test/2-api'],
         ], WithVersionedApiServiceProvider::class, true);
     }
 
