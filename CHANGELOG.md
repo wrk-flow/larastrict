@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.90] - 2024-11-25
+### :sparkles: New Features
+- [`37e88ad`](https://github.com/wrk-flow/larastrict/commit/37e88ad3fc1f866d234f01cb7635dfbb5261a2ab) - **AbstractEloquentQuery**: support throwable parameter for findOrFail *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.89] - 2024-11-22
 ### :sparkles: New Features
 - [`a646777`](https://github.com/wrk-flow/larastrict/commit/a6467775d50141c31c1a65171242ef4ce8f4a356) - **Http**: support API versions with float + load also non-versioned routes file *(commit by [@pionl](https://github.com/pionl))*
@@ -763,3 +768,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.87]: https://github.com/wrk-flow/larastrict/compare/v0.0.86...v0.0.87
 [v0.0.88]: https://github.com/wrk-flow/larastrict/compare/v0.0.87...v0.0.88
 [v0.0.89]: https://github.com/wrk-flow/larastrict/compare/v0.0.88...v0.0.89
+[v0.0.90]: https://github.com/wrk-flow/larastrict/compare/v0.0.89...v0.0.90
