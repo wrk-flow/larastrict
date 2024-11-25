@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace LaraStrict\Database\Queries;
 
 use Closure;
-use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Arr;
 use LaraStrict\Database\Scopes\OrderScope;
+use Throwable;
 
 /**
  * You must implement abstract public function execute.
@@ -45,7 +45,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     abstract protected function getModelClass(): string;
 
     /**
-     * @param array<int, Scope|null>           $scopes
+     * @param array<int, Scope|null> $scopes
      * @param array<OrderScope> $orderBy
      *
      * @return ChunkedModelQueryResult<TModel>
@@ -150,13 +150,13 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     }
 
     /**
-     * @param array<int, Scope|null>                            $scopes
-     * @param Closure(int|string):Exception|null $customException Creates a custom exceptions if model does not exists.
-     *                                                            Receives $id argument.
-     *
+     * @template TException of Throwable
+     * @param array<int, Scope|null>                        $scopes
+     * @param Closure(int|string):TException|TException|null  $customException Creates a custom exceptions if model does
+     *                                                          not exists. Receives $id argument.
      * @return TModel
      */
-    protected function findOrFail(string|int $key, array $scopes = [], Closure $customException = null): Model
+    protected function findOrFail(string|int $key, array $scopes = [], Closure|Throwable $customException = null): Model
     {
         try {
             /** @var TModel $model */
@@ -167,8 +167,9 @@ abstract class AbstractEloquentQuery extends AbstractQuery
         } catch (ModelNotFoundException $modelNotFoundException) {
             if ($customException === null) {
                 throw $modelNotFoundException;
+            } elseif ($customException instanceof Throwable) {
+                throw $customException;
             }
-
             throw $customException($key);
         }
     }
@@ -213,6 +214,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
         $class = $this->getModelClass();
         /** @var Builder<TModel> $query */
         $query = $class::query();
+
         return $this->getScopedQuery($query, $scopes);
     }
 }
