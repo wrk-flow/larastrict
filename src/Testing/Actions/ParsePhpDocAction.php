@@ -46,7 +46,8 @@ class ParsePhpDocAction
         if ($returnTags !== []) {
             $name = (string) $returnTags[0]->type;
             $returnType = match ($name) {
-                '$this', 'self', 'static' => PhpType::Self,
+                '$this', 'static' => PhpType::Static,
+                'self' => PhpType::Self,
                 'void' => PhpType::Void,
                 default => PhpType::Mixed,
             };
