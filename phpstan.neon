@@ -32,4 +32,6 @@ parameters:
             count: 1
             path: src/Database/Models/Casts/FloatCast.php
             reportUnmatched: false
+        # forward compatibility
+        - "#^Attribute class PHPUnit\\\\Framework\\\\Attributes\\\\.*?does not exist\\.$#"
 
