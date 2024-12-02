@@ -6,6 +6,7 @@ namespace LaraStrict\Database\Scopes;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use JetBrains\PhpStorm\Deprecated;
 
 /**
  * Adds whereIn or where condition for given values.
@@ -26,10 +27,11 @@ abstract class AbstractInScope extends AbstractScope
      *                                              'or' value
      */
     public function __construct(
-        private array $values,
+        private array|int|float|string|bool|null $values,
+        #[Deprecated(reason: 'Use right parameter instead of this magic.')]
         string|bool|null $booleanOrTableOrNot = null,
         string $table = '',
-        bool $not = false
+        bool $not = false,
     ) {
         if (is_bool($booleanOrTableOrNot)) {
             $not = $booleanOrTableOrNot;
@@ -49,8 +51,12 @@ abstract class AbstractInScope extends AbstractScope
     public function apply(Builder $builder, Model $model): void
     {
         $column = $this->table === '' ? $this->getColumn($model) : $this->table . '.' . $this->getColumn($model);
-        if (count($this->values) === 1) {
-            $builder->where($column, $this->not ? '<>' : '=', reset($this->values), $this->boolean);
+        if (is_array($this->values) && count($this->values) === 1) {
+            $this->values = reset($this->values);
+        }
+
+        if (is_array($this->values) === false) {
+            $builder->where($column, $this->not ? '!=' : '=', $this->values, $this->boolean);
 
             return;
         }
