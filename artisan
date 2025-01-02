@@ -2,8 +2,10 @@
 <?php
 
 use Illuminate\Foundation\PackageManifest;
+use LaraStrict\Testing\Actions\GetDevBasePathForAssertsAction;
 use LaraStrict\Testing\Actions\GetDevBasePathForStubs;
 use LaraStrict\Testing\Actions\GetDevNamespaceForStubsAction;
+use LaraStrict\Testing\Contracts\GetBasePathForAssertsActionContract;
 use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 
@@ -52,6 +54,7 @@ foreach ($packageManifest->providers() as $provider) {
 $app->register(\LaraStrict\Core\LaraStrictServiceProvider::class);
 
 $app->bind(GetBasePathForStubsActionContract::class, GetDevBasePathForStubs::class);
+$app->bind(GetBasePathForAssertsActionContract::class, GetDevBasePathForAssertsAction::class);
 $app->bind(GetNamespaceForStubsActionContract::class, GetDevNamespaceForStubsAction::class);
 
 $status = $kernel->handle(

@@ -33,7 +33,7 @@ class GetDevNamespaceForStubsActionTest extends TestCase
      */
     public function testNamespace(string $class, string $expectedBaseNamespace, string $expectedFolder): void
     {
-        $result = (new GetDevNamespaceForStubsAction())->execute(new Command(), 'test', $class);
+        $result = (new GetDevNamespaceForStubsAction())->execute(new Command(), $class);
         $this->assertEquals($expectedFolder, $result->folder);
         $this->assertEquals($expectedBaseNamespace, $result->baseNamespace);
     }

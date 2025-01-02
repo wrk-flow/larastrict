@@ -48,14 +48,14 @@ class MakeExpectationCommandTest extends TestCase
         }
     }
 
-    public function getExpectedPath(string $expectedPath, string $expectedFileName): string
+    private function getExpectedPath(string $expectedPath, string $expectedFileName): string
     {
         return $expectedPath . DIRECTORY_SEPARATOR . $expectedFileName . '.php';
     }
 
-    public function getStubFilePath(?string $variantPrefix, string $expectedFileName): string
+    private function getStubFilePath(?string $variantPrefix, string $expectedFileName): string
     {
-        return __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.php.stub';
+        return __DIR__ . '/../../../Stubs/Commands/MakeExpectationCommand/' . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.stub.php';
     }
 
     /**
@@ -75,7 +75,7 @@ class MakeExpectationCommandTest extends TestCase
             $expectedPath,
             $fileName,
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath);
@@ -100,7 +100,7 @@ class MakeExpectationCommandTest extends TestCase
             $fileName,
             'one',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'one');
@@ -125,7 +125,7 @@ class MakeExpectationCommandTest extends TestCase
             $fileName,
             'two',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
@@ -143,14 +143,14 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: 'Test',
             expectedMessage: 'Provided class does not exists [Test]',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
     public function testMethodDoesNotExistsDefaultValue(): void
     {
         $this->expectExceptionMessage(
-            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public'
+            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public',
         );
         $this->assertCommand(expectedResult: 1, class: NoMethods::class, expectComposerJson: false);
     }
@@ -163,7 +163,7 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: self::TestFileName,
             expectedMessage: 'File does not exists at [' . self::TestFileName . ']',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
@@ -221,9 +221,9 @@ class MakeExpectationCommandTest extends TestCase
 
     protected function expectClassFileExistsArgClosure(): Closure
     {
-        return static fn (string $path) => str_contains(
+        return static fn(string $path) => str_contains(
             $path,
-            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName
+            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName,
         );
     }
 
@@ -242,6 +242,15 @@ class MakeExpectationCommandTest extends TestCase
                 ->once()
                 ->withArgs($this->expectClassFileExistsArgClosure())
                 ->andReturn(file_get_contents($realPath));
+            $this->fileSystem->shouldReceive('isFile')
+                ->once()
+                ->withArgs($this->expectClassFileExistsArgClosure())
+                ->andReturn(true);
+
+            $this->fileSystem->shouldReceive('dirname')
+                ->once()
+                ->withArgs($this->expectClassFileExistsArgClosure())
+                ->andReturn(dirname($realPath));
         }
     }
 
@@ -254,23 +263,46 @@ class MakeExpectationCommandTest extends TestCase
         bool $expectComposerJson = true,
     ): void {
         if ($expectComposerJson) {
+            if ($variantPrefix !== null) {
+                $composerPath = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . $variantPrefix . '.composer.json';
+            } else {
+                $composerPath = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . 'composer.json';
+            }
+
+            $expectedComposerCheck = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . 'composer.json';
+
+            // We are checking if the composer we detect exists
+            // our implementation expets always composer.json file
+            $this->fileSystem->shouldReceive('isFile')
+                ->once()
+                ->with(function($arg) use ($expectedComposerCheck) {
+                    $x = 1;
+                })
+                ->andReturn(true);
+
             $this->fileSystem->shouldReceive('get')
                 ->once()
-                ->withArgs(
-                    static fn (string $path): bool => str_contains(
-                        $path,
-                        '/vendor/orchestra/testbench-core/laravel/composer.json'
-                    )
-                )
-                ->andReturnUsing(static function (string $path) use ($variantPrefix): string {
-                    if ($variantPrefix !== null) {
-                        $variantPrefix = __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . $variantPrefix . '.composer.json';
+                ->with($expectedComposerCheck)
+                ->andReturnUsing(static function(string $path) use ($composerPath): string {
+                    $fileGetContents = file_get_contents($composerPath);
+                    if ($fileGetContents === false) {
+                        throw new LogicException('File not loaded' . $composerPath);
                     }
 
-                    $filePath = $variantPrefix ?? $path;
-                    $fileGetContents = file_get_contents($filePath);
+                    return $fileGetContents;
+                });
+
+            //Transform real testbanch composer to our expectation composer
+            $this->fileSystem->shouldReceive('get')
+                ->once()
+                ->withArgs(static fn(string $path): bool => str_contains(
+                    $path,
+                    '/vendor/orchestra/testbench-core/laravel/composer.json',
+                ))
+                ->andReturnUsing(static function(string $path) use ($composerPath): string {
+                    $fileGetContents = file_get_contents($composerPath);
                     if ($fileGetContents === false) {
-                        throw new LogicException('File not loaded' . $filePath);
+                        throw new LogicException('File not loaded' . $composerPath);
                     }
 
                     return $fileGetContents;
@@ -328,15 +360,14 @@ class MakeExpectationCommandTest extends TestCase
         ]);
 
         $this->fileSystem->shouldReceive('ensureDirectoryExists')
-            ->once()
-            ->withArgs(static fn (string $path): bool => str_contains($path, $expectedPath));
+            ->withArgs(static fn(string $path): bool => str_contains($path, $expectedPath));
 
         $this->fileSystem->shouldReceive('put')
             ->times(count($expectationVariants))
-            ->withArgs(function (string $path, string $contents) use (
+            ->withArgs(function(string $path, string $contents) use (
                 $expectedPath,
                 $variantPrefix,
-                $expectationVariants
+                $expectationVariants,
             ): bool {
                 $expectedExpectationFileName = null;
                 foreach ($expectationVariants as $expectationVariant) {
@@ -360,16 +391,17 @@ class MakeExpectationCommandTest extends TestCase
 
                 $expectedResult = file_get_contents($stubFile);
                 $this->assertEquals($expectedResult, $contents);
+
                 return true;
             });
 
         if ($checkAssert) {
             $this->fileSystem->shouldReceive('put')
                 ->once()
-                ->withArgs(function (string $path, string $contents) use (
+                ->withArgs(function(string $path, string $contents) use (
                     $expectedPath,
                     $expectedFileName,
-                    $variantPrefix
+                    $variantPrefix,
                 ): bool {
                     $filePath = $this->getExpectedPath($expectedPath, $expectedFileName . 'Assert');
                     $this->assertStringContainsString($filePath, $path);
@@ -380,6 +412,7 @@ class MakeExpectationCommandTest extends TestCase
 
                     $expectedResult = file_get_contents($stubFile);
                     $this->assertEquals($expectedResult, $contents);
+
                     return true;
                 });
         }
