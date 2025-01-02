@@ -23,32 +23,35 @@ class WhereIdsScopeTest extends TestCase
         return [
             [
                 static function (self $self) {
-                    $self->assert(new WhereIdsScope(1), 'select * from "test_models" where "id" = ?');
+                    $self->assert(new WhereIdsScope(1), 'select * from "test_models" where "test_models"."id" = ?');
                 },
             ],
             [
                 static function (self $self) {
-                    $self->assert(new WhereIdsScope([1]), 'select * from "test_models" where "id" = ?');
+                    $self->assert(new WhereIdsScope([1]), 'select * from "test_models" where "test_models"."id" = ?');
                 },
             ],
             [
                 static function (self $self) {
                     $self->assert(
                         new WhereIdsScope([1], not: true),
-                        'select * from "test_models" where "id" != ?',
+                        'select * from "test_models" where "test_models"."id" != ?',
                     );
                 },
             ],
             [
                 static function (self $self) {
-                    $self->assert(new WhereIdsScope([1, 2]), 'select * from "test_models" where "id" in (?, ?)');
+                    $self->assert(
+                        new WhereIdsScope([1, 2]),
+                        'select * from "test_models" where "test_models"."id" in (?, ?)'
+                    );
                 },
             ],
             [
                 static function (self $self) {
                     $self->assert(
                         new WhereIdsScope([1, 2], 'foo'),
-                        'select * from "test_models" where "foo" in (?, ?)',
+                        'select * from "test_models" where "test_models"."foo" in (?, ?)',
                     );
                 },
             ],
@@ -64,7 +67,7 @@ class WhereIdsScopeTest extends TestCase
                 static function (self $self) {
                     $self->assert(
                         new WhereIdsScope([1, 2], not: true),
-                        'select * from "test_models" where "id" not in (?, ?)',
+                        'select * from "test_models" where "test_models"."id" not in (?, ?)',
                     );
                 },
             ],

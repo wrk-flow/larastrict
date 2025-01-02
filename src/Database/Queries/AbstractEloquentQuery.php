@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Arr;
 use LaraStrict\Database\Scopes\OrderScope;
+use LaraStrict\Database\Scopes\WhereIdsScope;
 use Throwable;
 
 /**
@@ -151,17 +152,31 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @template TException of Throwable
-     * @param array<int, Scope|null>                        $scopes
-     * @param Closure(int|string):TException|TException|null  $customException Creates a custom exceptions if model does
+     * @param array<int, Scope|null> $scopes
+     * @param Closure(int|string):TException|TException|null $customException Creates a custom exceptions if model does
      *                                                          not exists. Receives $id argument.
      * @return TModel
      */
     protected function findOrFail(string|int $key, array $scopes = [], Closure|Throwable $customException = null): Model
     {
+        $scopes[] = new WhereIdsScope($key);
+
+        return $this->firstOrFail($scopes, $customException);
+    }
+
+    /**
+     * @template TException of Throwable
+     * @param array<int, Scope|null> $scopes
+     * @param Closure(int|string):TException|TException|null $customException Creates a custom exceptions if model does
+     *                                                          not exists. Receives $id argument.
+     * @return TModel
+     */
+    protected function firstOrFail(array $scopes = [], Closure|Throwable $customException = null): Model
+    {
         try {
             /** @var TModel $model */
             $model = $this->getQuery($scopes)
-                ->findOrFail($key);
+                ->firstOrFail();
 
             return $model;
         } catch (ModelNotFoundException $modelNotFoundException) {
@@ -170,7 +185,8 @@ abstract class AbstractEloquentQuery extends AbstractQuery
             } elseif ($customException instanceof Throwable) {
                 throw $customException;
             }
-            throw $customException($key);
+
+            throw $customException($modelNotFoundException->getMessage());
         }
     }
 

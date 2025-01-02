@@ -50,7 +50,9 @@ abstract class AbstractInScope extends AbstractScope
 
     public function apply(Builder $builder, Model $model): void
     {
-        $column = $this->table === '' ? $this->getColumn($model) : $this->table . '.' . $this->getColumn($model);
+        $table = $this->table === '' ? $model->getTable() : $this->table;
+        $column = sprintf('%s.', $table) . $this->getColumn($model);
+
         if (is_array($this->values) && count($this->values) === 1) {
             $this->values = reset($this->values);
         }
