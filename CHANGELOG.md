@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.0.93] - 2025-01-30
+### :sparkles: New Features
+- [`d142e59`](https://github.com/wrk-flow/larastrict/commit/d142e59877eed2138740fbf8bec080240444d720) - **NumberRule**: remove space like a thousand delimiter *(commit by [@h4kuna](https://github.com/h4kuna))*
+
+
 ## [v0.0.92] - 2025-01-02
 ### :sparkles: New Features
 - [`17aa39a`](https://github.com/wrk-flow/larastrict/commit/17aa39a4fa2b3adafe96889dfc4048ef83436a2e) - **AbstractEloquentQuery**: add method firstOrFail *(commit by [@h4kuna](https://github.com/h4kuna))*
@@ -781,3 +786,4 @@ Due the changes the expectation logic has been changed and you need to update yo
 [v0.0.90]: https://github.com/wrk-flow/larastrict/compare/v0.0.89...v0.0.90
 [v0.0.91]: https://github.com/wrk-flow/larastrict/compare/v0.0.90...v0.0.91
 [v0.0.92]: https://github.com/wrk-flow/larastrict/compare/v0.0.91...v0.0.92
+[v0.0.93]: https://github.com/wrk-flow/larastrict/compare/v0.0.92...v0.0.93
