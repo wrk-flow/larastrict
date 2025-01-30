@@ -11,18 +11,20 @@ class NumberRule implements Rule
 {
     public function passes($attribute, $value): bool
     {
+        if (is_string($value)) {
+            $value = preg_replace('#\s+#', '', $value);
+        }
+
         if (self::isNumericInt($value)) {
             $intVal = (int) $value;
             return $intVal !== PHP_INT_MAX && $intVal !== PHP_INT_MIN;
+        } elseif (is_scalar($value) === false) {
+            return false;
         }
 
         $value = Value::toFloat((string) $value);
 
-        if ($value === null) {
-            return false;
-        }
-
-        return str_contains((string) $value, 'E+') === false;
+        return $value !== null && (str_contains((string) $value, 'E+') === false);
     }
 
     public function message(): string

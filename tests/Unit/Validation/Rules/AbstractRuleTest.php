@@ -39,9 +39,18 @@ abstract class AbstractRuleTest extends TestCase
     {
         $data = [];
         foreach ($this->testData() as $index => $entity) {
-            $data[$index . ' with value: ' . $entity->value] = [$entity];
+            $data[$index . ' with value: ' . self::convertToString($entity->value)] = [$entity];
         }
 
         return $data;
+    }
+
+    private static function convertToString(mixed $value): string
+    {
+        if (is_array($value)) {
+            return 'array';
+        }
+
+        return (string) $value;
     }
 }
