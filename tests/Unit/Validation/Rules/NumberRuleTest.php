@@ -19,6 +19,8 @@ class NumberRuleTest extends AbstractRuleTest
         return [
             new RuleExpectation('test', false),
             new RuleExpectation('234', true),
+            new RuleExpectation(" -  1\t234. 065 ", true),
+            new RuleExpectation('  1 234. 065 ', true),
             new RuleExpectation('-234', true),
             new RuleExpectation(234, true),
             new RuleExpectation(-234, true),
@@ -47,6 +49,8 @@ class NumberRuleTest extends AbstractRuleTest
             new RuleExpectation('-,', false),
             new RuleExpectation('.', false),
             new RuleExpectation('', false),
+            new RuleExpectation(null, false),
+            new RuleExpectation([], false),
             new RuleExpectation('9223372036854775807', false),
             new RuleExpectation('9223372036854775807.5', false),
             new RuleExpectation('922337203685477580703434355.5', false),
