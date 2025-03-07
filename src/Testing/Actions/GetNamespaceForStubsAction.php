@@ -5,26 +5,27 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Actions;
 
 use Illuminate\Console\Command;
-use Illuminate\Filesystem\Filesystem;
+use LaraStrict\Testing\Constants\ComposerConstants;
 use LaraStrict\Testing\Constants\StubConstants;
+use LaraStrict\Testing\Contracts\GetBasePathForStubsActionContract;
 use LaraStrict\Testing\Contracts\GetNamespaceForStubsActionContract;
 use LaraStrict\Testing\Entities\NamespaceEntity;
+use LaraStrict\Testing\Services\ComposerJsonDataService;
 use LogicException;
 
 class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 {
-    final public const ComposerAutoLoadDev = 'autoload-dev';
-    final public const ComposerPsr4 = 'psr-4';
-
     public function __construct(
-        private readonly Filesystem $filesystem,
+        private readonly ComposerJsonDataService $getComposerJsonDataAction,
+        private readonly GetBasePathForStubsActionContract $getBasePathAction,
     ) {
     }
 
-    public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity
+    public function execute(Command $command, string $inputClass): NamespaceEntity
     {
+        $basePath = $this->getBasePathAction->execute();
         // Ask for which namespace which to use for "tests"
-        $composer = $this->getComposerJsonData($basePath);
+        $composer = $this->getComposerJsonDataAction->data($basePath);
         $autoLoad = $this->getComposerDevAutoLoad($composer);
         if ($autoLoad !== []) {
             if (count($autoLoad) === 1) {
@@ -47,16 +48,10 @@ class GetNamespaceForStubsAction implements GetNamespaceForStubsActionContract
         return new NamespaceEntity($folder, $baseNamespace);
     }
 
-    protected function getComposerJsonData(string $basePath): mixed
-    {
-        return json_decode($this->filesystem->get($basePath . '/composer.json'), true, 512, JSON_THROW_ON_ERROR);
-    }
-
     private function getComposerDevAutoLoad(array $composer): array
     {
-        if (isset($composer[self::ComposerAutoLoadDev])
-            && isset($composer[self::ComposerAutoLoadDev][self::ComposerPsr4])) {
-            return $composer[self::ComposerAutoLoadDev][self::ComposerPsr4];
+        if (isset($composer[ComposerConstants::AutoLoadDev][ComposerConstants::Psr4])) {
+            return $composer[ComposerConstants::AutoLoadDev][ComposerConstants::Psr4];
         }
 
         return [];

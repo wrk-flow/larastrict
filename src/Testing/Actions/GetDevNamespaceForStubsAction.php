@@ -11,7 +11,8 @@ use LaraStrict\Testing\Entities\NamespaceEntity;
 
 class GetDevNamespaceForStubsAction implements GetNamespaceForStubsActionContract
 {
-    public function execute(Command $command, string $basePath, string $inputClass): NamespaceEntity
+
+    public function execute(Command $command, string $inputClass): NamespaceEntity
     {
         // We want to place Laravel assert / expectations to Laravel Folder.
 
