@@ -14,7 +14,7 @@ class FlushCacheCommand extends Command
 
     public function handle(CacheMeService $cacheMeService): void
     {
-        $tagOrKey = $this->argument('tagOrKey');
+        $tagOrKey = $this->input->getArgument('tagOrKey');
 
         if (! is_string($tagOrKey)) {
             $this->info('Only string value is supported');

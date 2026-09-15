@@ -53,7 +53,7 @@ class ChunkedModelQueryResult
     /**
      * Loads a chunk of models using closure.
      *
-     * @param Closure(Collection<int|string,TModel>):void $closure closure that will receive a collection of models
+     * @param Closure(collection-of<TModel>):void $closure closure that will receive a collection of models
      */
     public function onChunk(Closure $closure, ?int $count = null): bool
     {
@@ -61,11 +61,14 @@ class ChunkedModelQueryResult
 
         $this->query->applyScopes();
 
-        if ($this->chunkById) {
-            return $this->query->chunkById($count, $closure);
-        }
+        $callback = static function (Collection $models, int $_page) use ($closure): void {
+            /** @var collection-of<TModel> $models */
+            $closure($models);
+        };
 
-        return $this->query->chunk($count, $closure);
+        return $this->chunkById
+            ? $this->query->chunkById($count, $callback)
+            : $this->query->chunk($count, $callback);
     }
 
     /**
@@ -104,6 +107,7 @@ class ChunkedModelQueryResult
         $this->onChunk(
             function (Collection $collection) use ($closure, &$processed): void {
                 foreach ($collection as $entry) {
+                    /** @var TModel $entry */
                     $wrappedEntry = $this->onEntryTransform instanceof Closure
                         ? call_user_func($this->onEntryTransform, $entry)
                         : $entry;

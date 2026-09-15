@@ -55,10 +55,12 @@ class TestServiceProviderTest extends TestCase
     {
         $this->app()
             ->register(LaraStrictServiceProvider::class);
+        $service = $this->app()
+            ->get(SleepServiceContract::class);
+
         self::assertInstanceOf(
             NoSleepService::class,
-            $this->app()
-                ->make(SleepServiceContract::class),
+            $service,
         );
     }
 
@@ -70,9 +72,9 @@ class TestServiceProviderTest extends TestCase
             ->register(LaraStrictServiceProvider::class);
 
         $service = $this->app()
-            ->make(SleepServiceContract::class);
+            ->get(SleepServiceContract::class);
 
-        $this->assertTrue($service instanceof SleepService);
+        self::assertInstanceOf(SleepService::class, $service);
     }
 
     protected function getPackageProviders($app)

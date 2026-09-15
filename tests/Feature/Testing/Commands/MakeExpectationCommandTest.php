@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Commands;
 
 use Closure;
-use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Testing\PendingCommand;
 use LogicException;
@@ -70,7 +69,7 @@ class MakeExpectationCommandTest extends TestCase
         $this->expectClass($useClass, $fileName);
 
         $expectedPath = ['tests'];
-        $this->expectResultFile(
+        $assertGeneratedFiles = $this->expectResultFile(
             $expectedPath,
             $fileName,
             checkAssert: $checkAssert,
@@ -78,6 +77,7 @@ class MakeExpectationCommandTest extends TestCase
         );
 
         $this->assertCommand(0, $classOrFilePath);
+        $assertGeneratedFiles();
     }
 
     /**
@@ -95,7 +95,7 @@ class MakeExpectationCommandTest extends TestCase
 
         $expectedPath = ['app', 'tests'];
 
-        $this->expectResultFile(
+        $assertGeneratedFiles = $this->expectResultFile(
             $expectedPath,
             $fileName,
             'one',
@@ -104,6 +104,7 @@ class MakeExpectationCommandTest extends TestCase
         );
 
         $this->assertCommand(0, $classOrFilePath, 'one');
+        $assertGeneratedFiles();
     }
 
     /**
@@ -121,7 +122,7 @@ class MakeExpectationCommandTest extends TestCase
 
         $expectedPath = ['src', 'tests', 'Integration'];
 
-        $this->expectResultFile(
+        $assertGeneratedFiles = $this->expectResultFile(
             $expectedPath,
             $fileName,
             'two',
@@ -130,6 +131,7 @@ class MakeExpectationCommandTest extends TestCase
         );
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
+        $assertGeneratedFiles();
     }
 
     public function testMissingClass(): void
@@ -317,7 +319,7 @@ class MakeExpectationCommandTest extends TestCase
         ?string $variantPrefix = null,
         bool $checkAssert = false,
         array $expectationVariants = [],
-    ): void {
+    ): Closure {
         if ($expectationVariants === []) {
             $expectationVariants = [$expectedFileName . 'Expectation'];
         }
@@ -339,57 +341,85 @@ class MakeExpectationCommandTest extends TestCase
             ->once()
             ->withArgs(static fn (string $path): bool => str_contains($path, $expectedPath));
 
+        /** @var array<string, string> $writtenFiles */
+        $writtenFiles = [];
+
         $this->fileSystem->shouldReceive('put')
             ->times(count($expectationVariants))
-            ->withArgs(function (string $path, string $contents) use (
-                $expectedPath,
-                $variantPrefix,
-                $expectationVariants
-            ): bool {
-                $expectedExpectationFileName = null;
-                foreach ($expectationVariants as $expectationVariant) {
-                    $expectedExpectationFileName = $expectationVariant;
-                    $filePath = $this->getExpectedPath($expectedPath, $expectedExpectationFileName);
-
-                    if (str_contains($path, $filePath)) {
-                        break;
-                    }
-
-                    $expectedExpectationFileName = null;
-                }
-
-                if ($expectedExpectationFileName === null) {
-                    throw new Exception('Unknown variant');
-                }
-
-                $stubFile = $this->getStubFilePath($variantPrefix, $expectedExpectationFileName);
-
-                $this->generateStubsIfNeeded($stubFile, $contents);
-
-                $expectedResult = file_get_contents($stubFile);
-                $this->assertEquals($expectedResult, $contents);
+            ->withArgs(static function (string $path, string $contents) use (&$writtenFiles): bool {
+                $writtenFiles[$path] = $contents;
                 return true;
             });
 
         if ($checkAssert) {
             $this->fileSystem->shouldReceive('put')
                 ->once()
-                ->withArgs(function (string $path, string $contents) use (
-                    $expectedPath,
-                    $expectedFileName,
-                    $variantPrefix
-                ): bool {
-                    $filePath = $this->getExpectedPath($expectedPath, $expectedFileName . 'Assert');
-                    $this->assertStringContainsString($filePath, $path);
-
-                    $stubFile = $this->getStubFilePath($variantPrefix, $expectedFileName . 'Assert');
-
-                    $this->generateStubsIfNeeded($stubFile, $contents);
-
-                    $expectedResult = file_get_contents($stubFile);
-                    $this->assertEquals($expectedResult, $contents);
+                ->withArgs(static function (string $path, string $contents) use (&$writtenFiles): bool {
+                    $writtenFiles[$path] = $contents;
                     return true;
                 });
         }
+
+        return function () use (
+            &$writtenFiles,
+            $checkAssert,
+            $expectedFileName,
+            $expectedPath,
+            $expectationVariants,
+            $variantPrefix,
+        ): void {
+            $expectedFiles = $expectationVariants;
+            if ($checkAssert) {
+                $expectedFiles[] = $expectedFileName . 'Assert';
+            }
+
+            foreach ($expectedFiles as $expectedFile) {
+                $expectedPathAndFile = $this->getExpectedPath($expectedPath, $expectedFile);
+                $matchingPaths = array_filter(
+                    array_keys($writtenFiles),
+                    static fn (string $path): bool => str_contains($path, $expectedPathAndFile),
+                );
+                self::assertCount(1, $matchingPaths, 'Generated file not found: ' . $expectedPathAndFile);
+
+                $matchingPath = array_values($matchingPaths)[0];
+                $contents = $writtenFiles[$matchingPath];
+                $stubFile = $this->getStubFilePath($variantPrefix, $expectedFile);
+                $this->generateStubsIfNeeded($stubFile, $contents);
+
+                $expectedResult = file_get_contents($stubFile);
+                self::assertIsString($expectedResult);
+
+                if ($expectedFile === 'MultiFunctionContractAssert') {
+                    $this->assertMultiFunctionContractAssertEquals($expectedResult, $contents);
+                } else {
+                    self::assertSame($expectedResult, $contents);
+                }
+
+                unset($writtenFiles[$matchingPath]);
+            }
+
+            self::assertSame([], $writtenFiles, 'Unexpected generated files remain.');
+        };
+    }
+
+    private function assertMultiFunctionContractAssertEquals(string $expected, string $actual): void
+    {
+        $normalize = static function (string $contents): array {
+            $contents = str_replace(
+                [
+                    ': MultiFunctionContract',
+                    ': \\Tests\\LaraStrict\\Feature\\Testing\\Commands\\MakeExpectationCommand\\MultiFunctionContract',
+                ],
+                ': self',
+                $contents,
+            );
+
+            return array_values(array_filter(
+                token_get_all($contents),
+                static fn (array|string $token): bool => ! is_array($token) || $token[0] !== T_WHITESPACE,
+            ));
+        };
+
+        self::assertSame($normalize($expected), $normalize($actual));
     }
 }

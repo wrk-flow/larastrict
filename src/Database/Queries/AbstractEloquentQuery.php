@@ -101,8 +101,11 @@ abstract class AbstractEloquentQuery extends AbstractQuery
      */
     protected function getAll(array $scopes = []): Collection
     {
-        return $this->getQuery($scopes)
+        /** @var Collection<int, TModel> $models */
+        $models = $this->getQuery($scopes)
             ->get();
+
+        return $models;
     }
 
     /**

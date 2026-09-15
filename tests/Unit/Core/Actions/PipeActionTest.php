@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Core\Actions;
 
+use Closure;
 use LaraStrict\Core\Actions\PipeAction;
 use PHPUnit\Framework\TestCase;
 
@@ -20,10 +21,7 @@ class PipeActionTest extends TestCase
     public function testDefault(): void
     {
         $this->assertNull(
-            $this->action->execute([
-                static fn () => null,
-                static fn () => null,
-            ]),
+            $this->action->execute($this->getNullPipes()),
             'Should receive null when default closure is not set',
         );
 
@@ -56,5 +54,16 @@ class PipeActionTest extends TestCase
             ], static fn () => 'test'),
             'Should receive test from default closure',
         );
+    }
+
+    /**
+     * @return array<Closure():mixed>
+     */
+    private function getNullPipes(): array
+    {
+        return [
+            static fn () => null,
+            static fn () => null,
+        ];
     }
 }

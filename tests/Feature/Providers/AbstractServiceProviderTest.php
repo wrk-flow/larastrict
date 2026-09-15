@@ -53,9 +53,15 @@ class AbstractServiceProviderTest extends TestCase
         $viewFactory = $this->app()
             ->make(Factory::class);
 
-        // The package registers this namespaced view during the test bootstrap.
-        // @phpstan-ignore argument.type
-        $result = $viewFactory->make('Providers::layout');
+        $serviceProvider = $this->app()
+            ->getProvider(TestServiceProvider::class);
+        self::assertInstanceOf(TestServiceProvider::class, $serviceProvider);
+
+        $view = $serviceProvider->getAppServiceProvider()
+            ->serviceName . '::layout';
+        self::assertTrue($viewFactory->exists($view));
+
+        $result = $viewFactory->file(__DIR__ . '/Views/layout.blade.php');
         $this->assertEquals('Renders inline component' . PHP_EOL . ' and class component', $result->render());
     }
 

@@ -37,9 +37,11 @@ trait AssertProviderRegistersRoutes
 
         $routes = $router->getRoutes();
         if ($expectUrlsByMethod === []) {
-            // Preserve one PHPUnit assertion for the intentionally empty expectation.
-            // @phpstan-ignore staticMethod.alreadyNarrowedType
-            Assert::assertTrue(true);
+            $registeredRoutes = array_filter(
+                $routes->getRoutes(),
+                static fn (Route $route): bool => ! str_starts_with((string) $route->getName(), 'storage.local'),
+            );
+            Assert::assertSame([], $registeredRoutes);
             return;
         }
 

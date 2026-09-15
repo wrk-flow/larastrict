@@ -21,21 +21,6 @@ concurrency:
 
 jobs:
 
-  code_l10:
-    name: "Code check - Laravel 10"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
-    with:
-      composerRequireDev: "laravel/framework:^10"
-      phpVersion: "8.3"
-    secrets: inherit
-  code_l11:
-    name: "Code check - Laravel 11"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
-    with:
-      composerRequireDev: "laravel/framework:^11"
-      phpVersion: "8.3"
-    secrets: inherit
-
   code_l12:
     name: "Code check - Laravel 12"
     strategy:
@@ -56,24 +41,6 @@ jobs:
     with:
       composerRequireDev: "laravel/framework:^13"
       phpVersion: "${{ matrix.phpVersion }}"
-    secrets: inherit
-
-  tests_l10:
-    name: "Tests - Laravel 10"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
-    with:
-      composerRequireDev: "laravel/framework:^10"
-      phpVersion: "8.3"
-    secrets: inherit
-
-  tests_l11:
-    name: "Tests - Laravel 11"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
-    with:
-      composerRequireDev: "laravel/framework:^11"
-      phpVersion: "8.3"
-      gistID: ${{ vars.GIST_ID }}
-      gistOnPhpVersion: "8.3"
     secrets: inherit
 
   tests_l12:
