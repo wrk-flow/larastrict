@@ -15,6 +15,7 @@ abstract class AbstractUniqueLongJob extends AbstractUniqueJob
 
     /**
      * Calculate the number of seconds to wait before retrying the job.
+     * @return array<array-key, mixed>
      */
     public function backoff(): array
     {

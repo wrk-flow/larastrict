@@ -10,20 +10,20 @@ use LaraStrict\Core\Helpers\Value;
 /**
  * @implements CastsAttributes<float, null|int|string|float>
  */
-final class FloatCast implements CastsAttributes
+final readonly class FloatCast implements CastsAttributes
 {
     // Laravel casts supports creating cast with arguments.
-    public const OneDecimal = self::class . ':1';
-    public const OneDecimalNonNull = self::class . ':1,true';
-    public const ThreeDecimals = self::class . ':3';
-    public const ThreeDecimalsNonNull = self::class . ':3,true';
-    public const FourDecimals = self::class . ':4';
-    public const FourDecimalsNonNull = self::class . ':4,true';
-    public const NonNull = self::class . ':2,true';
+    public const string OneDecimal = self::class . ':1';
+    public const string OneDecimalNonNull = self::class . ':1,true';
+    public const string ThreeDecimals = self::class . ':3';
+    public const string ThreeDecimalsNonNull = self::class . ':3,true';
+    public const string FourDecimals = self::class . ':4';
+    public const string FourDecimalsNonNull = self::class . ':4,true';
+    public const string NonNull = self::class . ':2,true';
 
     public function __construct(
-        private readonly int $decimals = 2,
-        private readonly bool $nonNull = false,
+        private int $decimals = 2,
+        private bool $nonNull = false,
     ) {
     }
 

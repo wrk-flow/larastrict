@@ -16,7 +16,7 @@ final class DispatchChainJobsActionTest extends TestCase
 {
     public function testEmptyJobs(): void
     {
-        $action = $this->makeAction(expectation: null);
+        $action = $this->makeAction(null);
         $this->assertFalse($action->execute([]));
     }
 
@@ -27,10 +27,10 @@ final class DispatchChainJobsActionTest extends TestCase
     {
         return [
             'returns true on dispatch' => [
-                static fn (self $self) => $self->assertOneJob(expected: true),
+                static fn (self $self) => $self->assertOneJob(true),
             ],
             'returns false on dispatch' => [
-                static fn (self $self) => $self->assertOneJob(expected: false),
+                static fn (self $self) => $self->assertOneJob(false),
             ],
         ];
     }
@@ -46,11 +46,11 @@ final class DispatchChainJobsActionTest extends TestCase
 
     public function assertOneJob(bool $expected): void
     {
-        $job = new WithoutCommandJob(name: 'Hello');
+        $job = new WithoutCommandJob('Hello');
 
-        $action = $this->makeAction(new DispatchJobActionContractExpectation(return: $expected, job: $job));
+        $action = $this->makeAction(new DispatchJobActionContractExpectation($expected, $job));
 
-        Assert::assertEquals(expected: $expected, actual: $action->execute([$job]));
+        Assert::assertEquals($expected, $action->execute([$job]));
     }
 
     /**
@@ -60,10 +60,10 @@ final class DispatchChainJobsActionTest extends TestCase
     {
         return [
             'returns true on dispatch' => [
-                static fn (self $self) => $self->assertChainJob(expected: true),
+                static fn (self $self) => $self->assertChainJob(true),
             ],
             'returns false on dispatch' => [
-                static fn (self $self) => $self->assertChainJob(expected: false),
+                static fn (self $self) => $self->assertChainJob(false),
             ],
         ];
     }
@@ -79,12 +79,12 @@ final class DispatchChainJobsActionTest extends TestCase
 
     public function assertChainJob(bool $expected): void
     {
-        $job = new WithoutCommandJob(name: 'Hello');
-        $job2 = new WithoutCommandJob(name: 'Hello2');
+        $job = new WithoutCommandJob('Hello');
+        $job2 = new WithoutCommandJob('Hello2');
 
-        $action = $this->makeAction(new DispatchJobActionContractExpectation(return: $expected, job: $job));
+        $action = $this->makeAction(new DispatchJobActionContractExpectation($expected, $job));
 
-        Assert::assertEquals(expected: $expected, actual: $action->execute([$job, $job2]));
+        Assert::assertEquals($expected, $action->execute([$job, $job2]));
 
         Assert::assertEquals([serialize($job2)], $job->chained, 'Job should be changed');
         Assert::assertEquals('default', $job->chainQueue, 'Job should be changed');

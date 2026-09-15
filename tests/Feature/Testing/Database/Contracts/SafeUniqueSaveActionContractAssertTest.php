@@ -63,6 +63,9 @@ class SafeUniqueSaveActionContractAssertTest extends TestCase
         $this->assertExecute($expectations, $model, $expectedResult, 1);
     }
 
+    /**
+     * @param list<SafeUniqueSaveActionContractExpectation|null> $expectations
+     */
     protected function assertExecute(
         array $expectations,
         TestModel|TestNoDates $model,

@@ -19,6 +19,7 @@ interface CacheMeServiceContract
      * @param Closure(mixed...):T $getValue method is called with dependency injection
      * @phpstan-param Closure(mixed,mixed,mixed,mixed,mixed,mixed):T $getValue
      * @return T
+     * @param list<string> $tags
      */
     public function get(
         string $key,
@@ -31,6 +32,7 @@ interface CacheMeServiceContract
 
     /**
      * Stores given value to cache.
+     * @param list<string> $tags
      */
     public function set(
         string $key,
@@ -43,11 +45,13 @@ interface CacheMeServiceContract
 
     /**
      * Flush cache for given tags (optional).
+     * @param list<string> $tags
      */
     public function flush(array $tags = [], CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository): void;
 
     /**
      * Deletes exact key within the tags.
+     * @param list<string> $tags
      */
     public function delete(
         string $key,
@@ -58,7 +62,7 @@ interface CacheMeServiceContract
     /**
      * Adds a observe functions for created/deleted/updated and flushes the cache.
      *
-     * @param array|Closure       $tags If closure, model is passed to the closure. Closure should return an array
+     * @param list<string>|Closure(Model):list<string> $tags If closure, model is passed to the closure. Closure should return a list
      * of tags to use. If empty, no flush will be done.
      * @param class-string<Model> $modelClass
      */

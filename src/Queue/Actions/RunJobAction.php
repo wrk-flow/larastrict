@@ -18,7 +18,7 @@ class RunJobAction implements RunJobActionContract
     ) {
     }
 
-    public function execute(Job $job, ?Command $command = null, string $method = null): mixed
+    public function execute(Job $job, ?Command $command = null, ?string $method = null): mixed
     {
         if ($command instanceof Command && $job instanceof UsesCommandInterface) {
             $job->setCommand($command);

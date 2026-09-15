@@ -17,8 +17,11 @@ class ParsePhpDocAction
 
     public function __construct(Container $container)
     {
+        // This optional integration necessarily depends on PHPStan's non-public parser API.
+        // @phpstan-ignore phpstanApi.classConstant
         if (class_exists(PhpDocStringResolver::class)) {
             try {
+                // @phpstan-ignore phpstanApi.classConstant
                 $this->phpDocStringResolver = $container->make(PhpDocStringResolver::class);
             } catch (BindingResolutionException) {
                 // Package phpstan/phpdoc-parser not installed
@@ -28,6 +31,7 @@ class ParsePhpDocAction
 
     public function execute(ReflectionMethod $method): PhpDocEntity
     {
+        // @phpstan-ignore phpstanApi.class
         if (! $this->phpDocStringResolver instanceof PhpDocStringResolver) {
             return new PhpDocEntity();
         }
@@ -38,6 +42,8 @@ class ParsePhpDocAction
             return new PhpDocEntity();
         }
 
+        // This optional integration necessarily depends on PHPStan's non-public parser API.
+        // @phpstan-ignore phpstanApi.method
         $doc = $this->phpDocStringResolver->resolve($comment);
 
         $returnTags = $doc->getReturnTagValues();

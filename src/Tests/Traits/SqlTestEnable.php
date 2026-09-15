@@ -25,6 +25,9 @@ trait SqlTestEnable
         Model::setConnectionResolver($resolver);
     }
 
+    /**
+     * @param array<array-key, mixed> $expectedBindings
+     */
     final protected static function assertQuerySql(
         string $expectedSql,
         array $expectedBindings,
@@ -41,9 +44,8 @@ trait SqlTestEnable
             Assert::fail('Failed asserting that query was executed.');
         } catch (QueryException $queryException) {
             $expected = preg_replace('#\s+#', ' ', $sql);
-            preg_match('#\(SQL: (?<sql>.*)\)$#', $queryException->getMessage(), $matches);
 
-            Assert::assertSame($expected, $matches['sql']);
+            Assert::assertSame($expected, $queryException->getRawSql());
         }
     }
 }

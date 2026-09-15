@@ -37,12 +37,19 @@ trait AssertProviderRegistersRoutes
 
         $routes = $router->getRoutes();
         if ($expectUrlsByMethod === []) {
+            // Preserve one PHPUnit assertion for the intentionally empty expectation.
+            // @phpstan-ignore staticMethod.alreadyNarrowedType
             Assert::assertTrue(true);
             return;
         }
 
         foreach ($expectUrlsByMethod as $method => $urls) {
             $registeredUrls = $routes->get($method);
+
+            // Laravel 12 registers this framework route when local storage serving is enabled.
+            if (($registeredUrls['storage/{path}'] ?? null)?->getName() === 'storage.local') {
+                unset($registeredUrls['storage/{path}']);
+            }
 
             $expectedUrls = [];
             foreach ($urls as $index => $value) {

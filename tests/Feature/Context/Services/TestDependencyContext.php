@@ -19,12 +19,12 @@ class TestDependencyContext extends AbstractContext
     {
         $value = $contextService->get(
             context: $this,
+            // The container resolves this typed dependency rather than passing arbitrary mixed values.
+            // @phpstan-ignore argument.type
             createState: fn (string $dependency): TestValue => new TestValue($this->value),
         );
 
         Assert::assertEquals($this->value, $value->value);
-        Assert::assertInstanceOf(TestValue::class, $value);
-
         return $value;
     }
 

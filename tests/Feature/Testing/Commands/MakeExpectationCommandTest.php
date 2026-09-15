@@ -25,7 +25,7 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnU
 
 class MakeExpectationCommandTest extends TestCase
 {
-    final public const TestFileName = 'app/TestAction.php';
+    final public const string TestFileName = 'app/TestAction.php';
 
     private MockInterface $fileSystem;
     private static ?bool $stubsGenerated = null;
@@ -39,9 +39,7 @@ class MakeExpectationCommandTest extends TestCase
 
     public function generateStubsIfNeeded(string $stubFile, string $contents): void
     {
-        if (self::$stubsGenerated === null) {
-            self::$stubsGenerated = (bool) getenv('STUBS_GENERATE');
-        }
+        self::$stubsGenerated ??= (bool) getenv('STUBS_GENERATE');
 
         if (self::$stubsGenerated) {
             file_put_contents($stubFile, $contents);
@@ -58,6 +56,9 @@ class MakeExpectationCommandTest extends TestCase
         return __DIR__ . DIRECTORY_SEPARATOR . 'MakeExpectationCommand' . DIRECTORY_SEPARATOR . ($variantPrefix ? ($variantPrefix . '.') : '') . $expectedFileName . '.php.stub';
     }
 
+    /**
+     * @param list<string> $expectationVariants
+     */
     #[DataProvider('data')]
     public function testWithoutAutoloadDev(
         string $classOrFilePath,
@@ -79,6 +80,9 @@ class MakeExpectationCommandTest extends TestCase
         $this->assertCommand(0, $classOrFilePath);
     }
 
+    /**
+     * @param list<string> $expectationVariants
+     */
     #[DataProvider('data')]
     public function testWithAutoloadDevButOnlyOneEntry(
         string $classOrFilePath,
@@ -102,6 +106,9 @@ class MakeExpectationCommandTest extends TestCase
         $this->assertCommand(0, $classOrFilePath, 'one');
     }
 
+    /**
+     * @param list<string> $expectationVariants
+     */
     #[DataProvider('data')]
     public function testWithAutoloadDevTwoEntrySelectionSecond(
         string $classOrFilePath,
@@ -161,6 +168,9 @@ class MakeExpectationCommandTest extends TestCase
         );
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function data(): array
     {
         return [
@@ -297,6 +307,10 @@ class MakeExpectationCommandTest extends TestCase
             ->assertExitCode($expectedResult);
     }
 
+    /**
+     * @param list<string> $expectationVariants
+     * @param list<string> $expectedBasePathParts
+     */
     protected function expectResultFile(
         array $expectedBasePathParts,
         string $expectedFileName,

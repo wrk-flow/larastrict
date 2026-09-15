@@ -7,15 +7,18 @@ namespace LaraStrict\Testing\Cache\Contracts;
 use LaraStrict\Cache\Constants\CacheExpirations;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
 
-final class CacheMeServiceContractSetExpectation
+final readonly class CacheMeServiceContractSetExpectation
 {
+    /**
+     * @param array<array-key, mixed> $tags
+     */
     public function __construct(
-        public readonly string $key,
-        public readonly mixed $value,
-        public readonly array $tags = [],
-        public readonly int $minutes = CacheExpirations::Day,
-        public readonly CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        public readonly bool $log = true,
+        public string $key,
+        public mixed $value,
+        public array $tags = [],
+        public int $minutes = CacheExpirations::Day,
+        public CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
+        public bool $log = true,
     ) {
     }
 }

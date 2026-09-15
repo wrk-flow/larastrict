@@ -11,6 +11,7 @@ use Illuminate\Console\Scheduling\Schedule as LaravelSchedule;
 use Illuminate\Container\Container;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Jobs\CommandInQueueJob;
+use Symfony\Component\Console\Command\Command;
 
 /**
  * - Adds ability to force all commands in queue
@@ -26,6 +27,9 @@ class ScheduleService implements ScheduleServiceContract
     ) {
     }
 
+    /**
+     * @param array<array-key, mixed> $parameters
+     */
     public function command(string $command, array $parameters = []): Event
     {
         return $this->schedule->command($command, $parameters);
@@ -43,8 +47,15 @@ class ScheduleService implements ScheduleServiceContract
         $event = $this->schedule->job($job);
 
         // Ensure that php artisan schedule:list will return correct data
-        $name = class_exists($command) ? $this->container->make($command)
-            ->getName() : $event->command;
+        if (class_exists($command)) {
+            $resolvedCommand = $this->container->make($command);
+            assert($resolvedCommand instanceof Command);
+            $name = $resolvedCommand->getName();
+        } else {
+            $name = $event->command;
+        }
+
+        assert(is_string($name));
 
         $event->command = Application::formatCommandString($name);
         $event->description = 'queued ' . $name;

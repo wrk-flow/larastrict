@@ -33,6 +33,7 @@ class TranslatorAssert extends AbstractExpectationCallsMap implements Translator
      * @param  string  $key
      * @param  string|null  $locale
      * @return mixed
+     * @param array<array-key, mixed> $replace
      */
     public function get($key, array $replace = [], $locale = null)
     {
@@ -54,9 +55,10 @@ class TranslatorAssert extends AbstractExpectationCallsMap implements Translator
      * Get a translation according to an integer value.
      *
      * @param  string  $key
-     * @param Countable|int|array $number
+     * @param Countable|int|array<array-key, mixed> $number
      * @param  string|null  $locale
      * @return string
+     * @param array<array-key, mixed> $replace
      */
     public function choice($key, $number, array $replace = [], $locale = null)
     {

@@ -13,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 class GetDevNamespaceForStubsActionTest extends TestCase
 {
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function data(): array
     {
         return [

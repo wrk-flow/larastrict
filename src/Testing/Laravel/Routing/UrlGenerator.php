@@ -28,6 +28,9 @@ class UrlGenerator implements UrlGeneratorContract
         return $this->createUrl(path: $path, parameters: $extra, secure: $secure);
     }
 
+    /**
+     * @param array<array-key, mixed> $parameters
+     */
     public function secure($path, $parameters = []): string
     {
         return $this->to(path: $path, extra: $parameters);
@@ -65,17 +68,42 @@ class UrlGenerator implements UrlGeneratorContract
      *
      * @param  string  $name
      * @param DateTimeInterface|DateInterval|int $expiration
-     * @param  array  $parameters
+     * @param  array<array-key, mixed>  $parameters
      * @param  bool  $absolute
      *
      * @return string
      */
     public function temporarySignedRoute($name, $expiration, $parameters = [], $absolute = true)
     {
+        // Keep validating direct calls that bypass the interface contract.
+        // @phpstan-ignore-next-line
         assert(is_array($parameters));
         return $this->createUrl(path: 'temporary-signed-route/' . $name, parameters: $parameters, absolute: $absolute);
     }
 
+    /**
+     * @param array<array-key, mixed> $query
+     */
+    public function query($path, $query = [], $extra = [], $secure = null): string
+    {
+        // Keep validating direct calls that bypass the interface contract.
+        // @phpstan-ignore-next-line
+        assert(is_array($query));
+        assert(is_array($extra));
+
+        [$path, $existingQuery] = array_pad(explode('?', $path, 2), 2, '');
+        parse_str($existingQuery, $existingParameters);
+
+        return $this->createUrl(
+            path: $path,
+            parameters: array_merge($existingParameters, $query, $extra),
+            secure: $secure,
+        );
+    }
+
+    /**
+     * @param array<array-key, string>|string $action
+     */
     public function action($action, $parameters = [], $absolute = true): string
     {
         assert(is_array($parameters));
@@ -96,6 +124,9 @@ class UrlGenerator implements UrlGeneratorContract
         return $this;
     }
 
+    /**
+     * @param array<array-key, mixed> $parameters
+     */
     private function createUrl(
         string $path,
         array $parameters = [],

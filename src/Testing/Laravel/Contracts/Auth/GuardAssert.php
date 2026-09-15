@@ -107,6 +107,7 @@ class GuardAssert extends AbstractExpectationCallsMap implements Guard
      * Validate a user's credentials.
      *
      * @return bool
+     * @param array<array-key, mixed> $credentials
      */
     public function validate(array $credentials = [])
     {

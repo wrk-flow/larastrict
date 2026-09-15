@@ -33,10 +33,7 @@ final class NumberRule implements ValidationRule
         if (self::isNumericInt($value)) {
             $intVal = (int) $value;
             return $intVal !== PHP_INT_MAX && $intVal !== PHP_INT_MIN;
-        } elseif (is_scalar($value) === false) {
-            return false;
         }
-
         $value = Value::toFloat((string) $value);
 
         return $value !== null && (str_contains((string) $value, 'E+') === false);

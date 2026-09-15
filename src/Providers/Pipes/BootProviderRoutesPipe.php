@@ -21,11 +21,11 @@ use LaraStrict\Providers\Entities\CustomRouteEntity;
 use LogicException;
 use Psr\Log\LoggerInterface;
 
-final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
+final readonly class BootProviderRoutesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
-        private readonly Container $container,
-        private readonly LoggerInterface $logger,
+        private Container $container,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -157,6 +157,8 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
 
             if (is_callable($value)) {
                 $result = $value($routeEntity, $this->makeRoute());
+            // Invalid values are covered by runtime tests although the public PHPDoc narrows this union.
+            // @phpstan-ignore function.alreadyNarrowedType
             } elseif (is_string($value) && class_exists($value)) {
                 $class = $this->container->make($value);
                 if ($class instanceof RegisterCustomRouteActionContract === false) {

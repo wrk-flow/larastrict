@@ -18,7 +18,7 @@ class PipeAction
      *
      * @return T|null
      */
-    public function execute(array $closures, Closure $default = null): mixed
+    public function execute(array $closures, ?Closure $default = null): mixed
     {
         foreach ($closures as $closure) {
             $result = $closure();

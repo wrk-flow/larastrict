@@ -16,6 +16,9 @@ use LaraStrict\Queue\Contracts\RunOrQueueJobActionContract;
 
 class QueueServiceProvider extends AbstractServiceProvider
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $singletons = [
         DispatchJobActionContract::class => DispatchJobAction::class,
         RunJobActionContract::class => RunJobAction::class,

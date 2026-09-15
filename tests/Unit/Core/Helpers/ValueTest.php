@@ -16,6 +16,9 @@ final class ValueTest extends TestCase
         $this->assertSame($expected, Value::toFloat($actual));
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function provideValueToFloat(): array
     {
         return [

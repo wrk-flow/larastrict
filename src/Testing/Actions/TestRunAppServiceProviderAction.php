@@ -16,6 +16,7 @@ class TestRunAppServiceProviderAction implements RunAppServiceProviderPipesActio
     /**
      * @param non-empty-string $expectedServiceName
      * @param non-empty-string $expectServiceRootDirToEndWith
+     * @param array<array-key, mixed> $expectedPipes
      */
     public function __construct(
         public readonly array $expectedPipes,

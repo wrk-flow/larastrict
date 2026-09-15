@@ -31,67 +31,63 @@ final class RunOrQueueJobActionTest extends TestCase
         return [
             'dispatches job' => [
                 static fn () => Assert::assertEquals(
-                    expected: null,
-                    actual: self::makeAction(
-                        expectedDispatchJob: true,
-                        expectedRunJob: false,
-                        expectedCommand: null,
-                        job: $job,
-                    )->execute(job: $job),
+                    null,
+                    self::makeAction(
+                        true,
+                        false,
+                        null,
+                        $job,
+                    )->execute($job),
                 ),
             ],
             'setupBeforeRun passed but not used, dispatches job' => [
                 static fn () => Assert::assertEquals(
-                    expected: null,
-                    actual: self::makeAction(
-                        expectedDispatchJob: true,
-                        expectedRunJob: false,
-                        expectedCommand: null,
-                        job: $job,
-                    )->execute(job: $job, setupBeforeRun: static function (Job $job): never {
+                    null,
+                    self::makeAction(
+                        true,
+                        false,
+                        null,
+                        $job,
+                    )->execute($job, null, static function (Job $job): never {
                         Assert::fail('setupBeforeRun should not be called');
                     }),
                 ),
             ],
             '$shouldQueue=true does nothing, dispatches job' => [
                 static fn () => Assert::assertEquals(
-                    expected: null,
-                    actual: self::makeAction(
-                        expectedDispatchJob: true,
-                        expectedRunJob: false,
-                        expectedCommand: null,
-                        job: $job,
-                    )->execute(job: $job, shouldQueue: true),
+                    null,
+                    self::makeAction(
+                        true,
+                        false,
+                        null,
+                        $job,
+                    )->execute($job, null, null, true),
                 ),
             ],
             '$shouldQueue=false forces the job tu run' => [
                 static fn () => Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: null,
-                        job: $job,
-                    )->execute(job: $job, shouldQueue: false),
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        null,
+                        $job,
+                    )->execute($job, null, null, false),
                 ),
             ],
             '$shouldQueue=false forces the job tu run, setupBeforeRun called' => [static function () use ($job) {
                 $setupBeforeRunCalled = false;
                 Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: null,
-                        job: $job,
-                    )->execute(
-                        job: $job,
-                        setupBeforeRun: static function (Job $givenJob) use ($job, &$setupBeforeRunCalled) {
-                            Assert::assertSame($job, $givenJob, 'Job should be same');
-                            $setupBeforeRunCalled = true;
-                        },
-                        shouldQueue: false,
-                    ),
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        null,
+                        $job,
+                    )->execute($job, null, static function (Job $givenJob) use ($job, &$setupBeforeRunCalled) {
+                        Assert::assertSame($job, $givenJob, 'Job should be same');
+                        $setupBeforeRunCalled = true;
+                    }, false),
                 );
                 Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be triggered');
             }],
@@ -118,35 +114,35 @@ final class RunOrQueueJobActionTest extends TestCase
         return [
             'queue not set, runs the job' => [
                 static fn () => Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: $command,
-                        job: $job,
-                    )->execute(job: $job, command: $command),
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        $command,
+                        $job,
+                    )->execute($job, $command),
                 ),
             ],
             '$shouldQueue=true forces to dispatches job' => [
                 static fn () => Assert::assertEquals(
-                    expected: null,
-                    actual: self::makeAction(
-                        expectedDispatchJob: true,
-                        expectedRunJob: false,
-                        expectedCommand: $command,
-                        job: $job,
-                    )->execute(job: $job, shouldQueue: true, command: $command),
+                    null,
+                    self::makeAction(
+                        true,
+                        false,
+                        $command,
+                        $job,
+                    )->execute($job, $command, null, true),
                 ),
             ],
             '$shouldQueue=false does nothing, runs the job' => [
                 static fn () => Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: $command,
-                        job: $job,
-                    )->execute(job: $job, shouldQueue: false, command: $command),
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        $command,
+                        $job,
+                    )->execute($job, $command, null, false),
                 ),
             ],
             '$shouldQueue=false forces the job tu run, setupBeforeRun called' => [static function () use (
@@ -155,20 +151,20 @@ final class RunOrQueueJobActionTest extends TestCase
             ) {
                 $setupBeforeRunCalled = false;
                 Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: $command,
-                        job: $job,
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        $command,
+                        $job,
                     )->execute(
-                        job: $job,
-                        command: $command,
-                        setupBeforeRun: static function (Job $givenJob) use ($job, &$setupBeforeRunCalled) {
+                        $job,
+                        $command,
+                        static function (Job $givenJob) use ($job, &$setupBeforeRunCalled) {
                             Assert::assertSame($job, $givenJob, 'Job should be same');
                             $setupBeforeRunCalled = true;
                         },
-                        shouldQueue: false,
+                        false,
                     ),
                 );
                 Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be triggered');
@@ -198,35 +194,35 @@ final class RunOrQueueJobActionTest extends TestCase
         return [
             'queue set, dispatches the queue' => [
                 static fn () => Assert::assertEquals(
-                    expected: null,
-                    actual: self::makeAction(
-                        expectedDispatchJob: true,
-                        expectedRunJob: false,
-                        expectedCommand: $command,
-                        job: $job,
-                    )->execute(job: $job, command: $command),
+                    null,
+                    self::makeAction(
+                        true,
+                        false,
+                        $command,
+                        $job,
+                    )->execute($job, $command),
                 ),
             ],
             '$shouldQueue=true forces to dispatches job' => [
                 static fn () => Assert::assertEquals(
-                    expected: null,
-                    actual: self::makeAction(
-                        expectedDispatchJob: true,
-                        expectedRunJob: false,
-                        expectedCommand: $command,
-                        job: $job,
-                    )->execute(job: $job, shouldQueue: true, command: $command),
+                    null,
+                    self::makeAction(
+                        true,
+                        false,
+                        $command,
+                        $job,
+                    )->execute($job, $command, null, true),
                 ),
             ],
             '$shouldQueue=false does nothing, runs the job' => [
                 static fn () => Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: $command,
-                        job: $job,
-                    )->execute(job: $job, shouldQueue: false, command: $command),
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        $command,
+                        $job,
+                    )->execute($job, $command, null, false),
                 ),
             ],
             '$shouldQueue=false forces the job tu run, setupBeforeRun called' => [static function () use (
@@ -235,20 +231,20 @@ final class RunOrQueueJobActionTest extends TestCase
             ) {
                 $setupBeforeRunCalled = false;
                 Assert::assertEquals(
-                    expected: 'Test',
-                    actual: self::makeAction(
-                        expectedDispatchJob: false,
-                        expectedRunJob: true,
-                        expectedCommand: $command,
-                        job: $job,
+                    'Test',
+                    self::makeAction(
+                        false,
+                        true,
+                        $command,
+                        $job,
                     )->execute(
-                        job: $job,
-                        command: $command,
-                        setupBeforeRun: static function (Job $givenJob) use ($job, &$setupBeforeRunCalled) {
+                        $job,
+                        $command,
+                        static function (Job $givenJob) use ($job, &$setupBeforeRunCalled) {
                             Assert::assertSame($job, $givenJob, 'Job should be same');
                             $setupBeforeRunCalled = true;
                         },
-                        shouldQueue: false,
+                        false,
                     ),
                 );
                 Assert::assertTrue($setupBeforeRunCalled, 'setupBeforeRun should be triggered');
@@ -272,17 +268,17 @@ final class RunOrQueueJobActionTest extends TestCase
         Job $job,
     ): RunOrQueueJobAction {
         return new RunOrQueueJobAction(
-            runJobAction: new RunJobActionContractAssert([
+            new RunJobActionContractAssert([
                 $expectedRunJob === false ? null : new RunJobActionContractExpectation(
-                    return: 'Test',
-                    job: $job,
-                    command: $expectedCommand,
+                    'Test',
+                    $job,
+                    $expectedCommand,
                 ),
             ]),
-            dispatchJobAction: new DispatchJobActionContractAssert([
+            new DispatchJobActionContractAssert([
                 $expectedDispatchJob === false ? null : new DispatchJobActionContractExpectation(
-                    return: true,
-                    job: $job,
+                    true,
+                    $job,
                 ),
             ]),
         );

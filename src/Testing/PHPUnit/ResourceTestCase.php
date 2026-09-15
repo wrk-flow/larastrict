@@ -6,7 +6,6 @@ namespace LaraStrict\Testing\PHPUnit;
 
 use Closure;
 use Exception;
-use Illuminate\Contracts\Container\Container;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource as BaseJsonResource;
 use LaraStrict\Http\Resources\JsonResource as LaraStrictJsonResource;
@@ -57,7 +56,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
 
         $resource = $this->createResource(is_callable($object) ? $object() : $object);
 
-        $this->tryToSetContainer(container: $container, resource: $resource);
+        $this->tryToSetContainer($container, $resource);
 
         if ($expected instanceof Throwable) {
             $this->expectExceptionObject($expected);
@@ -65,7 +64,7 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
 
         $result = $resource->resolve($this->getRequest());
 
-        $this->assertEquals(expected: $expected, actual: $result);
+        $this->assertEquals($expected, $result);
     }
 
     /**
@@ -84,13 +83,13 @@ abstract class ResourceTestCase extends AssertExpectationTestCase
     protected function resourceArray(
         ?BaseJsonResource $resource,
         ?TestingContainer $container = null,
-        Request $request = null,
+        ?Request $request = null,
     ): ?array {
         if (! $resource instanceof BaseJsonResource) {
             return null;
         }
 
-        $this->tryToSetContainer(container: $container, resource: $resource);
+        $this->tryToSetContainer($container, $resource);
 
         return (array) $resource->toArray($request ?? $this->getRequest());
     }

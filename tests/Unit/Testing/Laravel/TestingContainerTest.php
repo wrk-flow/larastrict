@@ -14,9 +14,12 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestAction;
 
 class TestingContainerTest extends TestCase
 {
-    final public const Args = ['arg1'];
-    final public const Abstract = 'test';
+    final public const array Args = ['arg1'];
+    final public const string Abstract = 'test';
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function make(): array
     {
         $action = new TestAction();
@@ -67,6 +70,9 @@ class TestingContainerTest extends TestCase
         $this->assertMake($container, $expectedResult);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function makeException(): array
     {
         $messageNull = 'Binding not set ' . self::Abstract;

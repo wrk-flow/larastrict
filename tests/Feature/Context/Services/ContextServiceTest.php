@@ -45,7 +45,11 @@ class ContextServiceTest extends TestCase
                     assert: static fn (BoolContextValue $value) => $self->assertEquals(true, $value->isValid()),
                     callHook: static fn (Closure $getValue) => $getValue(
                         new TestingContainer(
-                            call: static fn (Closure $getValue): bool => $getValue(true),
+                            call: static function (Closure $getValue): bool {
+                                $result = $getValue(true);
+                                assert(is_bool($result));
+                                return $result;
+                            },
                         ),
                     ),
                     expectedCacheKey: 'Tests\LaraStrict\Feature\Context\Services\IsContext-1',
@@ -57,7 +61,11 @@ class ContextServiceTest extends TestCase
                     assert: static fn (BoolContextValue $value) => $self->assertEquals(false, $value->isValid()),
                     callHook: static fn (Closure $getValue) => $getValue(
                         new TestingContainer(
-                            call: static fn (Closure $getValue): bool => $getValue(false),
+                            call: static function (Closure $getValue): bool {
+                                $result = $getValue(false);
+                                assert(is_bool($result));
+                                return $result;
+                            },
                         ),
                     ),
                     expectedCacheKey: 'Tests\LaraStrict\Feature\Context\Services\IsContext-1',

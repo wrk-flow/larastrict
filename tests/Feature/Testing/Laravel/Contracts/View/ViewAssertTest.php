@@ -18,10 +18,10 @@ class ViewAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    final public const Data = [
+    final public const array Data = [
         'data' => 1,
     ];
-    final public const MergeData = [
+    final public const array MergeData = [
         'data' => 2,
     ];
 

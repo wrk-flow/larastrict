@@ -6,18 +6,19 @@ namespace LaraStrict\Testing\Laravel\Contracts\Translation;
 
 use Closure;
 
-final class TranslatorChoiceExpectation
+final readonly class TranslatorChoiceExpectation
 {
     /**
-     * @param Closure(mixed, mixed, array, mixed, self):void|null $hook
+     * @param Closure(mixed, mixed, array<array-key, mixed>, mixed, self):void|null $hook
+     * @param array<array-key, mixed> $replace
      */
     public function __construct(
-        public readonly string $return,
-        public readonly mixed $key,
-        public readonly mixed $number,
-        public readonly array $replace = [],
-        public readonly mixed $locale = null,
-        public readonly ?Closure $hook = null,
+        public string $return,
+        public mixed $key,
+        public mixed $number,
+        public array $replace = [],
+        public mixed $locale = null,
+        public ?Closure $hook = null,
     ) {
     }
 }

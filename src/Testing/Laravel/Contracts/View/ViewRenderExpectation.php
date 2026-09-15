@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class ViewRenderExpectation
+final readonly class ViewRenderExpectation
 {
     public function __construct(
-        public readonly string $return,
+        public string $return,
     ) {
     }
 }

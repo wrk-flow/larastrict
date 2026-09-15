@@ -42,7 +42,7 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBootResolveFactory(): void
     {
-        /** @var TestModel $result */
+        /** @var TestModel|null $result */
         $result = TestModel::factory(1)->make()->first();
 
         $this->assertNotNull($result);

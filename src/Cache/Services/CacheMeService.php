@@ -32,6 +32,7 @@ class CacheMeService implements CacheMeServiceContract
      * Stores in memory and uses the default cache.
      *
      * @param ?int $minutes - deprecated use $seconds
+     * @param list<string> $tags
      */
     public function get(
         string $key,
@@ -108,6 +109,7 @@ class CacheMeService implements CacheMeServiceContract
 
     /**
      * Stores given value to cache stores with given strategy.
+     * @param list<string> $tags
      */
     public function set(
         string $key,
@@ -131,6 +133,7 @@ class CacheMeService implements CacheMeServiceContract
      * Flush cache for given tags (optional).
      *
      * Beware that this will cause queue flush too if using redis!
+     * @param list<string> $tags
      */
     public function flush(
         array $tags = [],
@@ -152,6 +155,7 @@ class CacheMeService implements CacheMeServiceContract
 
     /**
      * Deletes exact key within the tags.
+     * @param list<string> $tags
      */
     public function delete(
         string $key,
@@ -174,27 +178,30 @@ class CacheMeService implements CacheMeServiceContract
      *
      * @template T of Model
      *
-     * @param array|Closure(T):void $tags If closure, model is passed to the closure. Closure should return an array
+     * @param list<string>|Closure(T):list<string> $tags If closure, model is passed to the closure. Closure should return a list
      * of tags to use. If empty, no flush will be done.
      * @param class-string<T>       $modelClass
      */
     public function observeAndFlush(array|Closure $tags, string $modelClass): void
     {
-        $modelClass::created(function ($model) use ($tags): void {
+        $modelClass::created(function (mixed $model) use ($tags, $modelClass): void {
+            assert($model instanceof $modelClass);
             $this->tryToFlushWithModel($model, $tags);
         });
-        $modelClass::deleted(function ($model) use ($tags): void {
+        $modelClass::deleted(function (mixed $model) use ($tags, $modelClass): void {
+            assert($model instanceof $modelClass);
             $this->tryToFlushWithModel($model, $tags);
         });
-        $modelClass::updated(function ($model) use ($tags): void {
+        $modelClass::updated(function (mixed $model) use ($tags, $modelClass): void {
+            assert($model instanceof $modelClass);
             $this->tryToFlushWithModel($model, $tags);
         });
 
         $uses = class_uses($modelClass);
         if (is_array($uses) && array_key_exists(SoftDeletes::class, $uses)) {
-            /** @var SoftDeletes $modelClass */
             /* @phpstan-ignore-next-line */
-            $modelClass::restored(function ($model) use ($tags): void {
+            $modelClass::restored(function (mixed $model) use ($tags, $modelClass): void {
+                assert($model instanceof $modelClass);
                 $this->tryToFlushWithModel($model, $tags);
             });
         }
@@ -203,7 +210,8 @@ class CacheMeService implements CacheMeServiceContract
     /**
      * Returns store for accessing data. Key-ed by CacheDriver.
      *
-     * @return array<CacheContract>
+     * @return list<CacheContract>
+     * @param list<string> $tags
      */
     protected function repositories(
         array $tags = [],
@@ -243,7 +251,8 @@ class CacheMeService implements CacheMeServiceContract
     }
 
     /**
-     * @param array<int,CacheContract> $repositories
+     * @param list<CacheContract> $repositories
+     * @param list<string> $tags
      */
     protected function store(
         array $repositories,
@@ -272,14 +281,17 @@ class CacheMeService implements CacheMeServiceContract
     }
 
     /**
+     * @template T of Model
+     *
      * Flushes the cache with given model and tags.
      *
-     * @param array|Closure $tags If closure, model is passed to the closure. Closure should return an array
+     * @param T $model
+     * @param list<string>|Closure(T):list<string> $tags If closure, model is passed to the closure. Closure should return a list
      * of tags to use. If empty, no flush will be done.
      */
     protected function tryToFlushWithModel(Model $model, array|Closure $tags): void
     {
-        if (is_callable($tags)) {
+        if ($tags instanceof Closure) {
             $tags = $tags($model);
         }
 

@@ -9,6 +9,9 @@ use LaraStrict\Providers\AbstractServiceProvider;
 
 class ProviderPolicyServiceProvider extends AbstractServiceProvider implements HasPolicies
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $bindings = [
         MyOtherPolicyContract::class => MyOtherPolicy::class,
     ];

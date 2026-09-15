@@ -20,19 +20,19 @@ class OrderByValuesScopeTest extends TestCase
     {
         return [
             [
-                static fn (self $self) => $self->assert(direction: 'ASC', expectedDirection: 'ASC'),
+                static fn (self $self) => $self->assert('ASC', 'ASC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: 'DESC', expectedDirection: 'DESC'),
+                static fn (self $self) => $self->assert('DESC', 'DESC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: 'desc', expectedDirection: 'DESC'),
+                static fn (self $self) => $self->assert('desc', 'DESC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: 'asc', expectedDirection: 'ASC'),
+                static fn (self $self) => $self->assert('asc', 'ASC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: null, expectedDirection: 'ASC'),
+                static fn (self $self) => $self->assert(null, 'ASC'),
             ],
         ];
     }
@@ -58,11 +58,11 @@ class OrderByValuesScopeTest extends TestCase
             ->withGlobalScope('test', $scope);
 
         $this->assertEquals(
-            expected: 'select * from "tests" order by FIELD(`test`, ?, ?, ?) ' . $expectedDirection,
-            actual: $query->toSql(),
+            'select * from "tests" order by FIELD(`test`, ?, ?, ?) ' . $expectedDirection,
+            $query->toSql(),
         );
 
-        $this->assertEquals(expected: $values, actual: $query->getBindings());
+        $this->assertEquals($values, $query->getBindings());
     }
 
     /**
@@ -72,14 +72,14 @@ class OrderByValuesScopeTest extends TestCase
     {
         return [
             [
-                static fn (self $self) => $self->assertInvalid(direction: 'invalid'),
+                static fn (self $self) => $self->assertInvalid('invalid'),
             ],
             [
-                static fn (self $self) => $self->assertInvalid(direction: 'asio'),
+                static fn (self $self) => $self->assertInvalid('asio'),
             ],
 
             [
-                static fn (self $self) => $self->assertInvalid(direction: 'descio'),
+                static fn (self $self) => $self->assertInvalid('descio'),
             ],
         ];
     }

@@ -51,8 +51,11 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         $this->setExpectations(MultiFunctionContractNoParamsExpectation::class, $noParams);
     }
 
-    function self(string $first, int $second, bool $third): self
-    {
+    function self(
+        string $first,
+        int $second,
+        bool $third,
+    ): \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\MultiFunctionContract {
         $_expectation = $this->getExpectation(MultiFunctionContractSelfExpectation::class);
         $_message = $this->getDebugMessage();
 
@@ -82,8 +85,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $this;
     }
 
     /**
@@ -105,8 +106,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $this;
     }
 
     /**
@@ -124,8 +123,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $_expectation->return;
     }
 
     /**
@@ -143,8 +140,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $_expectation->return;
     }
 
     /**
@@ -162,8 +157,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $_expectation->return;
     }
 
     /**
@@ -181,8 +174,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $_expectation->return;
     }
 
     /**
@@ -200,8 +191,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $this;
     }
 
     /**
@@ -219,8 +208,6 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
-
-        return $_expectation->return;
     }
 
     function noReturn($first, $second, $third)

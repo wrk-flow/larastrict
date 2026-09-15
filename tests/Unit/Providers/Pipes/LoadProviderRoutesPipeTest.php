@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Providers\Pipes;
 
+use Closure;
+use Illuminate\Routing\RouteRegistrar;
 use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\RegisterCustomRouteActionContract;
 use LaraStrict\Contracts\RegisterNamedCustomRouteActionContract;
 use LaraStrict\Providers\AbstractServiceProvider;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\CustomRouteEntity;
 use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingApplicationRoutes;
@@ -21,6 +24,9 @@ use stdClass;
 
 final class LoadProviderRoutesPipeTest extends TestCase
 {
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function invalidNumericRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
@@ -43,11 +49,17 @@ final class LoadProviderRoutesPipeTest extends TestCase
         ], 'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function invalidStringRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function invalidRoutesClasses(): array
     {
         return [
@@ -60,6 +72,9 @@ final class LoadProviderRoutesPipeTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<array-key, mixed> $customRoutes
+     */
     #[DataProvider('invalidRoutesClasses')]
     public function testInvalidRoutesClasses(array $customRoutes, string $expectedMessage): void
     {
@@ -93,6 +108,9 @@ final class LoadProviderRoutesPipeTest extends TestCase
         );
     }
 
+    /**
+     * @param array<array-key, mixed> $customRoutes
+     */
     protected function assertInvalidRoutes(
         array $customRoutes,
         ?string $expectedExceptionMessage = null,
@@ -104,10 +122,12 @@ final class LoadProviderRoutesPipeTest extends TestCase
         }
 
         $pipe = new BootProviderRoutesPipe($container, new NullLogger());
-        $serviceProvider = new class(
-            $app,
-            $customRoutes,
-        ) extends AbstractServiceProvider implements HasCustomRoutes, HasRoutes {
+        // Invalid route values are passed deliberately to verify the runtime exception.
+        // @phpstan-ignore argument.type
+        $serviceProvider = new class($app, $customRoutes) extends AbstractServiceProvider implements HasCustomRoutes, HasRoutes {
+            /**
+             * @param array<int|string, class-string<RegisterCustomRouteActionContract>|string|Closure(CustomRouteEntity, RouteRegistrar):bool> $customRoutes
+             */
             public function __construct(
                 TestingApplication $app,
                 private readonly array $customRoutes,

@@ -8,7 +8,7 @@ use Closure;
 use LaraStrict\Context\Contexts\AbstractContext;
 use LaraStrict\Context\Contracts\ContextValueContract;
 
-final class ContextServiceContractGetExpectation
+final readonly class ContextServiceContractGetExpectation
 {
     /**
      * @param Closure(AbstractContext, Closure, self):void|null $hook
@@ -18,10 +18,10 @@ final class ContextServiceContractGetExpectation
      *                                                          given $expectation->return value.
      */
     public function __construct(
-        public readonly ContextValueContract $return,
-        public readonly AbstractContext $context,
-        public readonly ?Closure $hook = null,
-        public readonly ?Closure $runCreateState = null,
+        public ContextValueContract $return,
+        public AbstractContext $context,
+        public ?Closure $hook = null,
+        public ?Closure $runCreateState = null,
     ) {
     }
 }

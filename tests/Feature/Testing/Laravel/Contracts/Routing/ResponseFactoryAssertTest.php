@@ -40,7 +40,8 @@ class ResponseFactoryAssertTest extends TestCase
         $binaryFileResponse = new BinaryFileResponse(__FILE__);
         $streamResponse = new StreamedResponse();
         $jsonResponse = new JsonResponse();
-        $assertStreamCallback = static function ($callback) {
+        $assertStreamCallback = static function (mixed $callback) {
+            assert(is_callable($callback));
             self::assertEquals('stream', $callback());
         };
         $streamCallback = static fn () => 'stream';

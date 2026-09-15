@@ -48,6 +48,9 @@ class ModelResourceTestCaseTest extends ModelResourceTestCase
         return new ModelResource($object);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     private static function expect(int $value): array
     {
         return [

@@ -30,117 +30,97 @@ class ContextServiceContractAssertTest extends TestCase
     {
         $context = new TestNoDependencyContext('test');
         $value = new TestValue('test');
-        $boolValue = new BoolContextValue(is: true);
+        $boolValue = new BoolContextValue(true);
 
-        $isContext = new IsContext(id: 1);
+        $isContext = new IsContext(1);
         return [
             new AssertExpectationEntity(
-                methodName: 'delete',
-                createAssert: static fn () => new ContextServiceContractAssert(delete: [
-                    new ContextServiceContractDeleteExpectation(context: $context),
+                'delete',
+                static fn () => new ContextServiceContractAssert([
+                    new ContextServiceContractDeleteExpectation($context),
                 ]),
-                call: static fn (ContextServiceContractAssert $assert) => $assert->delete(context: $context),
+                static fn (ContextServiceContractAssert $assert) => $assert->delete($context),
             ),
             new AssertExpectationEntity(
-                methodName: 'set',
-                createAssert: static fn () => new ContextServiceContractAssert(set: [
-                    new ContextServiceContractSetExpectation(context: $context, value: $value),
+                'set',
+                static fn () => new ContextServiceContractAssert([], [
+                    new ContextServiceContractSetExpectation($context, $value),
                 ]),
-                call: static fn (ContextServiceContractAssert $assert) => $assert->set(
-                    context: $context,
-                    value: $value,
+                static fn (ContextServiceContractAssert $assert) => $assert->set(
+                    $context,
+                    $value,
                 ),
             ),
             new AssertExpectationEntity(
-                methodName: 'setWithoutCache',
-                createAssert: static fn () => new ContextServiceContractAssert(setWithoutCache: [
-                    new ContextServiceContractSetWithoutCacheExpectation(context: $context, value: $value),
+                'setWithoutCache',
+                static fn () => new ContextServiceContractAssert([], [], [
+                    new ContextServiceContractSetWithoutCacheExpectation($context, $value),
                 ]),
-                call: static fn (ContextServiceContractAssert $assert) => $assert->setWithoutCache(
-                    context: $context,
-                    value: $value,
+                static fn (ContextServiceContractAssert $assert) => $assert->setWithoutCache(
+                    $context,
+                    $value,
                 ),
             ),
-            new AssertExpectationEntity(
-                methodName: 'get',
-                createAssert: static fn() => new ContextServiceContractAssert(get: [
-                    new ContextServiceContractGetExpectation(
-                        return: $value,
-                        context: $context,
-                        hook: static function (
-                            AbstractContext $context,
-                            Closure $createState,
-                            ContextServiceContractGetExpectation $expectation,
-                        ) use ($value): void {
-                            self::assertSame($value, $createState('test'));
-                        },
-                    ),
-                ]),
-                call: static fn(ContextServiceContractAssert $assert) => $assert->get(
-                    context: $context,
-                    createState: static function (string $string) use ($value): TestValue {
-                        self::assertEquals(expected: 'test', actual: $string);
-                        return $value;
+            new AssertExpectationEntity('get', static fn() => new ContextServiceContractAssert([], [], [], [
+                new ContextServiceContractGetExpectation(
+                    $value,
+                    $context,
+                    static function (
+                        AbstractContext $context,
+                        Closure $createState,
+                        ContextServiceContractGetExpectation $expectation,
+                    ) use ($value): void {
+                        self::assertSame($value, $createState('test'));
                     },
                 ),
-                checkResult: true,
-                expectedResult: $value,
-            ),
-            new AssertExpectationEntity(
-                methodName: 'get',
-                createAssert: static fn () => new ContextServiceContractAssert(get: [
-                    new ContextServiceContractGetExpectation(
-                        return: $value,
-                        context: $context,
-                        runCreateState: static fn (Closure $createState): TestValue => $createState('test'),
-                    ),
-                ]),
-                call: static fn(ContextServiceContractAssert $assert) => $assert->get(
-                    context: $context,
-                    createState: static function (string $string) use ($value): TestValue {
-                        self::assertEquals(expected: 'test', actual: $string);
-                        return $value;
+            ]), static fn(ContextServiceContractAssert $assert) => $assert->get(
+                $context,
+                // The container-style callback deliberately declares its injected argument.
+                // @phpstan-ignore argument.type
+                static function (string $string) use ($value): TestValue {
+                    self::assertEquals('test', $string);
+                    return $value;
+                },
+            ), true, false, $value),
+            new AssertExpectationEntity('get', static fn () => new ContextServiceContractAssert([], [], [], [
+                new ContextServiceContractGetExpectation($value, $context, null, static function (Closure $createState): TestValue {
+                    $result = $createState('test');
+                    assert($result instanceof TestValue);
+                    return $result;
+                }),
+            ]), static fn(ContextServiceContractAssert $assert) => $assert->get(
+                $context,
+                // @phpstan-ignore argument.type
+                static function (string $string) use ($value): TestValue {
+                    self::assertEquals('test', $string);
+                    return $value;
+                },
+            ), true, false, $value),
+            new AssertExpectationEntity('is', static fn() => new ContextServiceContractAssert([], [], [], [], [
+                new ContextServiceContractIsExpectation(
+                    $boolValue,
+                    $isContext,
+                    static function () {
+                    },
+                    static function (
+                        AbstractContext $context,
+                        Closure $is,
+                        ContextServiceContractIsExpectation $expectation,
+                    ): void {
+                        self::assertTrue($is('test'));
                     },
                 ),
-                checkResult: true,
-                expectedResult: $value,
-            ),
-            new AssertExpectationEntity(
-                methodName: 'is',
-                createAssert: static fn() => new ContextServiceContractAssert(is: [
-                    new ContextServiceContractIsExpectation(
-                        return: $boolValue,
-                        context: $isContext,
-                        is: static function () {
-                        },
-                        hook: static function (
-                            AbstractContext $context,
-                            Closure $is,
-                            ContextServiceContractIsExpectation $expectation,
-                        ): void {
-                            self::assertTrue(condition: $is('test'));
-                        },
-                    ),
-                ]),
-                call: static fn(ContextServiceContractAssert $assert) => $assert->is(
-                    context: $isContext,
-                    is: static function (string $string): bool {
-                        self::assertEquals(expected: 'test', actual: $string);
-                        return true;
-                    },
-                ),
-                checkResult: true,
-                expectedResult: $boolValue,
-            ),
-            new AssertExpectationEntity(
-                methodName: 'getCacheKey',
-                createAssert: static fn () => new ContextServiceContractAssert(getCacheKey: [
-                    new ContextServiceContractGetCacheKeyExpectation(return: 'key', context: $context),
-                ]),
-                call: static fn (ContextServiceContractAssert $assert) => $assert->getCacheKey(context: $context),
-                checkResult: true,
-                expectedResult: 'key',
-            ),
+            ]), static fn(ContextServiceContractAssert $assert) => $assert->is(
+                $isContext,
+                // @phpstan-ignore argument.type
+                static function (string $string): bool {
+                    self::assertEquals('test', $string);
+                    return true;
+                },
+            ), true, false, $boolValue),
+            new AssertExpectationEntity('getCacheKey', static fn () => new ContextServiceContractAssert([], [], [], [], [], [
+                new ContextServiceContractGetCacheKeyExpectation('key', $context),
+            ]), static fn (ContextServiceContractAssert $assert) => $assert->getCacheKey($context), true, false, 'key'),
         ];
     }
 

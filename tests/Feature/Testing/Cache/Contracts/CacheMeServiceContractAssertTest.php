@@ -21,8 +21,8 @@ class CacheMeServiceContractAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    private const Return = 'test';
-    private const Key = 'key';
+    private const string Return = 'test';
+    private const string Key = 'key';
 
     protected static function generateData(): array
     {

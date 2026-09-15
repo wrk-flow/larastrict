@@ -6,10 +6,10 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth\Access;
 
 use Closure;
 
-final class GateBeforeExpectation
+final readonly class GateBeforeExpectation
 {
     public function __construct(
-        public readonly Closure $callback,
+        public Closure $callback,
     ) {
     }
 }

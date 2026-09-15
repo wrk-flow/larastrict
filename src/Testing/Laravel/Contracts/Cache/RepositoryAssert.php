@@ -83,7 +83,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
      *
      * @template TCacheValue
      *
-     * @param  array|string  $key
+     * @param  array<array-key, mixed>|string  $key
      * @param TCacheValue|Closure():TCacheValue $default
      * @return (TCacheValue is null ? mixed : TCacheValue)
      */
@@ -434,7 +434,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
      *
-     * @param iterable               $values A list of key => value pairs for a multiple-set operation.
+     * @param iterable<mixed>               $values A list of key => value pairs for a multiple-set operation.
      * @param null|int|DateInterval $ttl Optional. The TTL value of this item. If no value is sent and
      * the driver supports TTL then the library may set a default value
      * for it or let the driver take care of that.

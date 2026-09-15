@@ -14,6 +14,9 @@ class CreatedResource extends MessageResource
         parent::__construct(HttpMessage::Created);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [

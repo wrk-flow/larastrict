@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class SleepServiceTest extends TestCase
 {
-    private const MinMilliseconds = 100;
+    private const int MinMilliseconds = 100;
 
     public function testSleep(): void
     {

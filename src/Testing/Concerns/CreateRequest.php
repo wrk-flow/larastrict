@@ -28,6 +28,7 @@ trait CreateRequest
      * @param array<string, string|int|float|bool> $server
      *
      * @return TRequest
+     * @param array<array-key, mixed> $data
      */
     public function createAndValidateRequest(
         Application $application,
@@ -39,7 +40,6 @@ trait CreateRequest
         array $server = [],
     ): object {
         $urlGenerator = $application->make(UrlGenerator::class);
-        assert($urlGenerator instanceof UrlGenerator);
 
         $uri = $urlGenerator->to('');
         $symfonyRequest = SymfonyRequest::create(
@@ -58,7 +58,10 @@ trait CreateRequest
 
         $application->instance('request', $request);
 
-        return $application->make($requestClass);
+        $formRequest = $application->make($requestClass);
+        assert($formRequest instanceof $requestClass);
+
+        return $formRequest;
     }
 
     /**
@@ -70,10 +73,11 @@ trait CreateRequest
      * @param array<string, string|int|float|bool>                    $cookies
      * @param array<string, array<UploadedFile>|UploadedFile>         $files
      * @param array<string, string|int|float|bool>                    $server
-     * @param array<string, object|Closure(array $makeBindings, class-string $abstract):(object|null)|null> $makeBindings A map of closures that will create.
+     * @param array<string, object|Closure(array<array-key, mixed> $makeBindings, class-string $abstract):(object|null)|null> $makeBindings A map of closures that will create.
      * Receives make $parameters and
      * $abstract string
      * @return T
+     * @param array<array-key, mixed> $data
      */
     protected function createFormRequest(
         string $requestClass,
@@ -84,7 +88,7 @@ trait CreateRequest
         array $files = [],
         array $server = [],
         array $makeBindings = [],
-        Authenticatable $user = null,
+        ?Authenticatable $user = null,
     ): Request {
         $symfonyRequest = SymfonyRequest::create(
             uri: 'https://testing',

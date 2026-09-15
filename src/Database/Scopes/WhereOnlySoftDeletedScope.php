@@ -19,7 +19,10 @@ class WhereOnlySoftDeletedScope extends AbstractScope
             );
         }
 
+        $column = $model->getQualifiedDeletedAtColumn();
+        assert(is_string($column));
+
         $builder->withoutGlobalScope(SoftDeletingScope::class)
-            ->whereNotNull($model->getQualifiedDeletedAtColumn());
+            ->whereNotNull($column);
     }
 }

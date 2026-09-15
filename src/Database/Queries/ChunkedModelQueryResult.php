@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace LaraStrict\Database\Queries;
 
 use Closure;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,6 +26,9 @@ class ChunkedModelQueryResult
      */
     public function __construct(
         public readonly string $modelClass,
+        /**
+         * @var Builder<TModel>
+         */
         public readonly Builder $query,
         public readonly bool $chunkById = true,
     ) {
@@ -50,7 +53,7 @@ class ChunkedModelQueryResult
     /**
      * Loads a chunk of models using closure.
      *
-     * @param Closure(Collection<int,TModel>):void $closure closure that will receive a collection of models
+     * @param Closure(Collection<int|string,TModel>):void $closure closure that will receive a collection of models
      */
     public function onChunk(Closure $closure, ?int $count = null): bool
     {
@@ -68,7 +71,7 @@ class ChunkedModelQueryResult
     /**
      * Loads a chunk of models and calls $closure with only ids. Ideal to combine with SelectScope.
      *
-     * @param Closure(array<int|string>):void $closure
+     * @param Closure(list<int|string>):void $closure
      */
     public function onKeys(Closure $closure, ?int $count = null): bool
     {
@@ -77,7 +80,9 @@ class ChunkedModelQueryResult
                 $keys = [];
                 /** @var Model $model */
                 foreach ($collection as $model) {
-                    $keys[] = $model->getKey();
+                    $key = $model->getKey();
+                    assert(is_int($key) || is_string($key));
+                    $keys[] = $key;
                 }
 
                 $closure($keys);
@@ -89,7 +94,7 @@ class ChunkedModelQueryResult
     /**
      * Loads a chunk of models and with closure that will receive each model from the chunks.
      *
-     * @param Closure(TModel): void $closure closure that will receive a model from all the chunks
+     * @param Closure(mixed): void $closure closure that will receive a model or transformed entry from all chunks
      *
      * @return int number of processed entries
      */

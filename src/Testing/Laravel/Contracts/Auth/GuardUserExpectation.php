@@ -7,14 +7,14 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth;
 use Closure;
 use Illuminate\Contracts\Auth\Authenticatable;
 
-final class GuardUserExpectation
+final readonly class GuardUserExpectation
 {
     /**
-     * @param Closure(Authenticatable|null):void|null $hook
+     * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly Authenticatable|null $return,
-        public readonly ?Closure $hook = null,
+        public Authenticatable|null $return,
+        public ?Closure $hook = null,
     ) {
     }
 }

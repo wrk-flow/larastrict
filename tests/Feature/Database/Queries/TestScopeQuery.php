@@ -14,7 +14,7 @@ use Tests\LaraStrict\Feature\Database\Models\TestModel;
 class TestScopeQuery extends AbstractTestQuery
 {
     /**
-     * @param array<AbstractScope> $scopes
+     * @param list<AbstractScope> $scopes
      *
      * @return Collection<int, TestModel>
      */

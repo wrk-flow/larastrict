@@ -7,18 +7,18 @@ namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 
-final class ResponseFactoryRedirectToIntendedExpectation
+final readonly class ResponseFactoryRedirectToIntendedExpectation
 {
     /**
      * @param Closure(mixed, mixed, mixed, mixed, self):void|null $hook
      */
     public function __construct(
-        public readonly RedirectResponse $return,
-        public readonly mixed $default = '/',
-        public readonly mixed $status = 302,
-        public readonly mixed $headers = [],
-        public readonly mixed $secure = null,
-        public readonly ?Closure $hook = null,
+        public RedirectResponse $return,
+        public mixed $default = '/',
+        public mixed $status = 302,
+        public mixed $headers = [],
+        public mixed $secure = null,
+        public ?Closure $hook = null,
     ) {
     }
 }

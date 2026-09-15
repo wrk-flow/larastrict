@@ -13,10 +13,10 @@ class UpdatedResourceTest extends TestCase
     public function test(): void
     {
         $this->assertEquals(
-            expected: [
+            [
                 'message' => 'updated',
             ],
-            actual: (new UpdatedResource())->toArray(new Request()),
+            (new UpdatedResource())->toArray(new Request()),
         );
     }
 }

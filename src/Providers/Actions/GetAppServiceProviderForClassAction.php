@@ -26,6 +26,8 @@ class GetAppServiceProviderForClassAction
     {
         return $this->cacheMeService->get(
             key: 'app-service-provider-' . $providerClass,
+            // Laravel's container resolves the declared callback parameter.
+            // @phpstan-ignore argument.type
             getValue: static function (Application $application) use ($providerClass): AppServiceProviderEntity {
                 // TODO add ability to cache getProvider (laravel patch)
                 $serviceProvider = $application->getProvider($providerClass);

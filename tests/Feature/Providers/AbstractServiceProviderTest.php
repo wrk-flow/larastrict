@@ -53,6 +53,8 @@ class AbstractServiceProviderTest extends TestCase
         $viewFactory = $this->app()
             ->make(Factory::class);
 
+        // The package registers this namespaced view during the test bootstrap.
+        // @phpstan-ignore argument.type
         $result = $viewFactory->make('Providers::layout');
         $this->assertEquals('Renders inline component' . PHP_EOL . ' and class component', $result->render());
     }
@@ -64,7 +66,9 @@ class AbstractServiceProviderTest extends TestCase
 
         $action = $this->app()
             ->make(DITestImplementationAction::class);
-        $this->assertInstanceOf(DITestImplementationAction::class, $action);
+        // Keep the runtime assertion for an incorrectly configured container.
+        // @phpstan-ignore method.alreadyNarrowedType
+        $this->assertSame(DITestImplementationAction::class, $action::class);
     }
 
     public function testGiveTaggedImplementationFailsOnIncorrectService(): void

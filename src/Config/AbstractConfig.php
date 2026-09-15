@@ -41,6 +41,9 @@ abstract class AbstractConfig
         $this->config->set($this->getPath($keyOrPath), $value);
     }
 
+    /**
+     * @param array<array-key, string> $keyOrPath
+     */
     protected function getPath(array|string $keyOrPath): string
     {
         if (is_array($keyOrPath)) {

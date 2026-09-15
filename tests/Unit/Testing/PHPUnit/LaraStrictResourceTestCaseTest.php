@@ -22,10 +22,10 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
     {
         return [
             [
-                static fn (self $testCase) => $testCase->myAssert(value: 'test', instance: '2'),
+                static fn (self $testCase) => $testCase->myAssert('test', '2'),
             ],
             [
-                static fn (self $testCase) => $testCase->myAssert(value: 'test22', instance: '1'),
+                static fn (self $testCase) => $testCase->myAssert('test22', '1'),
             ],
         ];
     }
@@ -41,36 +41,36 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
     public function testResourceArray(): void
     {
-        $resource = $this->createResource(new TestEntity(value: 'test'));
+        $resource = $this->createResource(new TestEntity('test'));
 
         $this->assertEquals(
-            expected: self::expected(value: 'test', instance: '1'),
-            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1')),
+            self::expected('test', '1'),
+            $this->resourceArray($resource, $this->createContainer('1')),
         );
     }
 
     public function testResourceArrayCollection(): void
     {
-        $resource = LaraStrictResource::collection([new TestEntity(value: 'test')]);
+        $resource = LaraStrictResource::collection([new TestEntity('test')]);
 
         $this->assertEquals(
-            expected: [self::expected(value: 'test', instance: '1')],
-            actual: $this->resourceArray(resource: $resource, container: $this->createContainer(instance: '1')),
+            [self::expected('test', '1')],
+            $this->resourceArray($resource, $this->createContainer('1')),
         );
     }
 
     public function testResourceArrayNull(): void
     {
-        $this->assertNull($this->resourceArray(resource: null, container: $this->createContainer(instance: '1')));
-        $this->assertNull($this->resourceArray(resource: null));
+        $this->assertNull($this->resourceArray(null, $this->createContainer('1')));
+        $this->assertNull($this->resourceArray(null));
     }
 
     protected function myAssert(string $value, string $instance): void
     {
         $this->assert(
-            object: new TestEntity(value: $value),
-            expected: self::expected($value, $instance),
-            container: $this->createContainer($instance),
+            new TestEntity($value),
+            self::expected($value, $instance),
+            $this->createContainer($instance),
         );
     }
 
@@ -81,11 +81,12 @@ class LaraStrictResourceTestCaseTest extends ResourceTestCase
 
     protected static function createContainer(string $instance): TestingContainer
     {
-        return new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction($instance),
-        );
+        return new TestingContainer([], static fn () => new TestAction($instance));
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected static function expected(string $value, string $instance): array
     {
         return [

@@ -15,7 +15,7 @@ class TestDataTest extends TestCase
     {
         return [
             'can use $app when using $self parameter' => [
-                static fn (self $self) => $self->assert(expectAppNull: false),
+                static fn (self $self) => $self->assert(false),
             ],
         ];
     }
@@ -23,9 +23,9 @@ class TestDataTest extends TestCase
     private function assert(bool $expectAppNull): void
     {
         $this->assertEquals(
-            expected: $expectAppNull,
-            actual: null === $this->app,
-            message: 'Using $this in closure references test case without app initialized.',
+            $expectAppNull,
+            null === $this->app,
+            'Using $this in closure references test case without app initialized.',
         );
     }
 }

@@ -20,42 +20,41 @@ class GetPublicExceptionMessageActionTest extends TestCase
 {
     use TestData;
 
-    final public const TranslationKey = 'exceptions.' . TranslatableException::class;
+    final public const string TranslationKey = 'exceptions.' . TranslatableException::class;
 
     public static function data(): array
     {
         return [
             [
-                static fn (self $self) => $self->assert(exception: new Exception('Test'), expectedResult: null),
+                static fn (self $self) => $self->assert(new Exception('Test'), null),
             ],
             [
                 static fn (self $self) => $self->assert(
-                    exception: new PublicException('should_not_be_visible'),
-                    expectedResult: 'My message',
+                    new PublicException('should_not_be_visible'),
+                    'My message',
                 ),
             ],
             [
-                static fn (self $self) => $self->assert(
-                    exception: new TranslatableException('should_not_be_visible'),
-                    expectedResult: 'My message',
-                    returnTranslation: true,
-                ),
+                static fn (self $self) => $self->assert(new TranslatableException('should_not_be_visible'), 'My message', [], true),
             ],
             [
                 static fn (self $self) => $self->assert(
-                    exception: new TranslatableException('should_not_be_visible'),
-                    expectedResult: '',
-                    expectedWarningMessages: [
+                    new TranslatableException('should_not_be_visible'),
+                    '',
+                    [
                         ['Missing translation for exception under given key', [
                             'key' => self::TranslationKey,
                         ]],
                     ],
-                    returnTranslation: false,
+                    false,
                 ),
             ],
         ];
     }
 
+    /**
+     * @param array<array-key, mixed> $expectedWarningMessages
+     */
     public function assert(
         Throwable $exception,
         ?string $expectedResult,
@@ -65,29 +64,29 @@ class GetPublicExceptionMessageActionTest extends TestCase
         $logger = new Logger();
         $translationKey = self::TranslationKey;
         $translatorAssert = new TranslatorAssert(
-            get: [
+            [
                 $returnTranslation === null ? null : new TranslatorGetExpectation(
-                    return: $returnTranslation ? 'My message' : $translationKey,
-                    key: $translationKey,
-                    replace: [
+                    $returnTranslation ? 'My message' : $translationKey,
+                    $translationKey,
+                    [
                         'key' => 'test',
                     ],
                 ),
             ],
         );
         $action = new GetPublicExceptionMessageAction(
-            container: new TestingContainer(
-                makeBindings: [
+            new TestingContainer(
+                [
                     Translator::class => $translatorAssert,
                     LoggerInterface::class => $logger,
                 ],
             ),
         );
 
-        $result = $action->execute(exception: $exception);
+        $result = $action->execute($exception);
 
-        $this->assertEquals(expected: $expectedResult, actual: $result);
-        $this->assertEquals(expected: $expectedWarningMessages, actual: $logger->warning);
+        $this->assertEquals($expectedResult, $result);
+        $this->assertEquals($expectedWarningMessages, $logger->warning);
         $translatorAssert->assertCalled();
     }
 }

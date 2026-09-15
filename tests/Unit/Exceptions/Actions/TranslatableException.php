@@ -14,6 +14,9 @@ class TranslatableException extends Exception implements TranslatableHttpExcepti
         return 401;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getHeaders(): array
     {
         return [];

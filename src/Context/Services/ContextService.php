@@ -81,6 +81,8 @@ class ContextService implements ContextServiceContract
     {
         return $this->get(
             context: $context,
+            // Laravel's container resolves the declared callback parameter.
+            // @phpstan-ignore argument.type
             createState: static fn (Container $container): BoolContextValue => new BoolContextValue(
                 (bool) $container->call($is),
             ),
@@ -99,6 +101,9 @@ class ContextService implements ContextServiceContract
             : CacheMeStrategy::Memory;
     }
 
+    /**
+     * @return list<string>
+     */
     protected function getTags(AbstractContext $context): array
     {
         $tags = [];
@@ -107,7 +112,7 @@ class ContextService implements ContextServiceContract
             return $tags;
         }
 
-        /** @var UseCacheWithTags $context */
-        return array_merge($context->tags(), $tags);
+        /** @var AbstractContext&UseCacheWithTags $context */
+        return array_values(array_merge($context->tags(), $tags));
     }
 }

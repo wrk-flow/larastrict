@@ -55,6 +55,9 @@ class LaravelResourcesTestCaseTest extends ResourceTestCase
         return LaravelResource::collection($object);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected static function expect(string $value): array
     {
         return [

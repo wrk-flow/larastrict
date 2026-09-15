@@ -49,6 +49,9 @@ class HandlerTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<array-key, mixed> $expectedResult
+     */
     public function assert(Throwable $exception, array $expectedResult): void
     {
         /** @var Translator $translator */

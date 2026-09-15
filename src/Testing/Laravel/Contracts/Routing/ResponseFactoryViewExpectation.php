@@ -7,18 +7,19 @@ namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 use Closure;
 use Illuminate\Http\Response;
 
-final class ResponseFactoryViewExpectation
+final readonly class ResponseFactoryViewExpectation
 {
     /**
-     * @param Closure(mixed, mixed, mixed, array, self):void|null $hook
+     * @param Closure(mixed, mixed, mixed, array<array-key, mixed>, self):void|null $hook
+     * @param array<array-key, mixed> $headers
      */
     public function __construct(
-        public readonly Response $return,
-        public readonly mixed $view,
-        public readonly mixed $data = [],
-        public readonly mixed $status = 200,
-        public readonly array $headers = [],
-        public readonly ?Closure $hook = null,
+        public Response $return,
+        public mixed $view,
+        public mixed $data = [],
+        public mixed $status = 200,
+        public array $headers = [],
+        public ?Closure $hook = null,
     ) {
     }
 }

@@ -18,10 +18,10 @@ class AbstractUniqueJobTest extends TestCase
     {
         return [
             [
-                static fn (self $self) => $self->assertQueue(job: new NoQueueJob(), expectedQueue: 'default'),
+                static fn (self $self) => $self->assertQueue(new NoQueueJob(), 'default'),
             ],
             [
-                static fn (self $self) => $self->assertQueue(job: new CustomQueueJob(), expectedQueue: 'custom'),
+                static fn (self $self) => $self->assertQueue(new CustomQueueJob(), 'custom'),
             ],
         ];
     }
@@ -37,6 +37,6 @@ class AbstractUniqueJobTest extends TestCase
 
     public function assertQueue(AbstractUniqueJob $job, string $expectedQueue): void
     {
-        $this->assertEquals(expected: $expectedQueue, actual: $job->queue);
+        $this->assertEquals($expectedQueue, $job->queue);
     }
 }

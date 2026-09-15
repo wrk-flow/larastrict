@@ -9,7 +9,7 @@ use Tests\LaraStrict\Feature\Config\Valid\ValidConfigServiceProvider;
 
 class ValidConfig extends AbstractProviderConfig
 {
-    final public const KeyTest = 'test';
+    final public const string KeyTest = 'test';
 
     public function getTest(): string
     {

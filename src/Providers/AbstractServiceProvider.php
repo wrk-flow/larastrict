@@ -31,11 +31,12 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
 
         // TODO move to pipe
         if ($this->app->runningInConsole() && $this->canRegisterSchedule()) {
-            $this->app->booted(function (): void {
+            assert($this instanceof HasSchedule);
+            $provider = $this;
+            $this->app->booted(function () use ($provider): void {
                 $schedule = $this->app->make(ScheduleServiceContract::class);
 
-                /** @var HasSchedule $this */
-                $this->schedule($schedule);
+                $provider->schedule($schedule);
             });
         }
     }
@@ -94,7 +95,7 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
                 if ($service instanceof $class === false) {
                     throw new LogicException(sprintf(
                         'Tagged implementation for %s must be instance of %s',
-                        $service::class,
+                        get_debug_type($service),
                         $class,
                     ));
                 }
@@ -115,7 +116,6 @@ abstract class AbstractServiceProvider extends AbstractBaseServiceProvider
         }
 
         $service = $this->app->make(ContextEventsService::class);
-        assert($service instanceof ContextEventsService);
 
         foreach ($contextClasses as $context) {
             $context::boot($service);

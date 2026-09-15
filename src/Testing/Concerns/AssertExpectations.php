@@ -28,7 +28,7 @@ trait AssertExpectations
     public function testCallsWithSecondFails(AssertExpectationEntity $expectation): void
     {
         /** @var AbstractExpectationCallsMap $assert */
-        $assert = call_user_func($expectation->createAssert, $expectation->createAssert);
+        $assert = call_user_func($expectation->createAssert);
 
         $result = $this->callExpectation($expectation, $assert);
 
@@ -41,6 +41,9 @@ trait AssertExpectations
         $this->callExpectation($expectation, $assert);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function data(): array
     {
         $data = [];

@@ -8,18 +8,18 @@ use Closure;
 use Illuminate\Console\Command;
 use LaraStrict\Queue\Jobs\Job;
 
-final class RunOrQueueJobActionContractExpectation
+final readonly class RunOrQueueJobActionContractExpectation
 {
     /**
-     * @param Closure(Job, Command, Closure, bool, self):void|null $_hook
+     * @param Closure(Job, Command|null, Closure(Job):void|null, bool|null, self):void|null $_hook
      */
     public function __construct(
-        public readonly mixed $return,
-        public readonly Job $job,
-        public readonly ?Command $command = null,
-        public readonly ?Closure $setupBeforeRun = null,
-        public readonly ?bool $shouldQueue = null,
-        public readonly ?Closure $_hook = null,
+        public mixed $return,
+        public Job $job,
+        public ?Command $command = null,
+        public ?Closure $setupBeforeRun = null,
+        public ?bool $shouldQueue = null,
+        public ?Closure $_hook = null,
     ) {
     }
 }

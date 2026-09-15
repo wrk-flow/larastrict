@@ -24,7 +24,7 @@ abstract class AbstractBaseServiceProvider extends ServiceProvider
     /**
      * The event handler mappings for the application.
      *
-     * @var array<string, array<int, string>>
+     * @var array<class-string, list<class-string>>
      */
     protected array $listen = [];
 
@@ -33,13 +33,11 @@ abstract class AbstractBaseServiceProvider extends ServiceProvider
         parent::register();
 
         $runPipes = $this->app->make(RunAppServiceProviderPipesActionContract::class);
-        assert($runPipes instanceof RunAppServiceProviderPipesActionContract);
 
         $runPipes->execute($this->getAppServiceProvider(), $this->registerPipes());
 
         $this->booting(function () {
             $events = $this->app->make(Dispatcher::class);
-            assert($events instanceof Dispatcher);
 
             // Taken from vendor/laravel/framework/src/Illuminate/Foundation/Support/Providers/EventServiceProvider.php
             foreach ($this->listen as $event => $listeners) {
@@ -53,7 +51,6 @@ abstract class AbstractBaseServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $runPipes = $this->app->make(RunAppServiceProviderPipesActionContract::class);
-        assert($runPipes instanceof RunAppServiceProviderPipesActionContract);
 
         $runPipes->execute($this->getAppServiceProvider(), $this->bootPipes());
     }

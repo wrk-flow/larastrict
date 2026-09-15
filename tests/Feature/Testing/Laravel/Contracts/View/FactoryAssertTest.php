@@ -24,10 +24,10 @@ class FactoryAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    final public const Data = [
+    final public const array Data = [
         'data' => 1,
     ];
-    final public const MergeData = [
+    final public const array MergeData = [
         'data' => 2,
     ];
 
@@ -41,6 +41,8 @@ class FactoryAssertTest extends TestCase
                 createAssert: static fn () => new FactoryAssert(
                     exists: [new FactoryExistsExpectation(return: true, view: 'test')],
                 ),
+                // The generated double returns the configured sequence at runtime.
+                // @phpstan-ignore method.impossibleType
                 call: static fn (FactoryAssert $assert) => $assert->exists(view: 'test'),
                 checkResult: true,
                 expectedResult: true,
@@ -50,6 +52,7 @@ class FactoryAssertTest extends TestCase
                 createAssert: static fn () => new FactoryAssert(
                     exists: [new FactoryExistsExpectation(return: false, view: 'test')],
                 ),
+                // @phpstan-ignore method.impossibleType
                 call: static fn (FactoryAssert $assert) => $assert->exists(view: 'test'),
                 checkResult: true,
                 expectedResult: false,

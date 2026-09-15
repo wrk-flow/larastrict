@@ -16,6 +16,9 @@ use Tests\LaraStrict\Feature\TestCase;
 
 class TestServiceProviderTest extends TestCase
 {
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function makeExpectationCommandData(): array
     {
         return [
@@ -41,6 +44,8 @@ class TestServiceProviderTest extends TestCase
 
         $kernel = $this->app()
             ->make(Kernel::class);
+        // Keep the runtime guard for applications with an invalid container binding.
+        // @phpstan-ignore-next-line
         assert($kernel instanceof Kernel);
 
         $this->assertEquals($has, array_key_exists('make:expectation', $kernel->all()));
@@ -53,15 +58,15 @@ class TestServiceProviderTest extends TestCase
         // larastan will resolve this as NoSleepService - does not support dynamic env change.
         /** @phpstan-ignore-next-line  */
         self::assertInstanceOf(
-            expected: NoSleepService::class,
-            actual: $this->app()
+            NoSleepService::class,
+            $this->app()
                 ->make(SleepServiceContract::class),
         );
     }
 
     public function testSleepServiceInProduction(): void
     {
-        $this->setEnv(environment: EnvironmentType::Production);
+        $this->setEnv(EnvironmentType::Production);
 
         $this->app()
             ->register(LaraStrictServiceProvider::class);
@@ -69,6 +74,8 @@ class TestServiceProviderTest extends TestCase
         $service = $this->app()
             ->make(SleepServiceContract::class);
 
+        // The test changes the environment dynamically, which Larastan does not model.
+        // @phpstan-ignore-next-line
         $this->assertTrue($service instanceof SleepService);
     }
 
@@ -83,6 +90,8 @@ class TestServiceProviderTest extends TestCase
             ->app()
             ->get(Repository::class);
 
+        // Keep the runtime guard for applications with an invalid container binding.
+        // @phpstan-ignore-next-line
         assert($config instanceof Repository);
         $config->set('app.env', $environment);
     }

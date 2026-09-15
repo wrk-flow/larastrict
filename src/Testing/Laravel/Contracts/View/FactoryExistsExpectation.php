@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class FactoryExistsExpectation
+final readonly class FactoryExistsExpectation
 {
     public function __construct(
-        public readonly bool $return,
-        public readonly mixed $view,
+        public bool $return,
+        public mixed $view,
     ) {
     }
 }

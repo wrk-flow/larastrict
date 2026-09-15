@@ -6,13 +6,13 @@ namespace LaraStrict\Testing\Laravel\Contracts\View;
 
 use Illuminate\Contracts\View\View;
 
-final class FactoryMakeExpectation
+final readonly class FactoryMakeExpectation
 {
     public function __construct(
-        public readonly View $return,
-        public readonly mixed $view,
-        public readonly mixed $data = [],
-        public readonly mixed $mergeData = [],
+        public View $return,
+        public mixed $view,
+        public mixed $data = [],
+        public mixed $mergeData = [],
     ) {
     }
 }

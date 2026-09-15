@@ -24,11 +24,15 @@ abstract class AbstractTranslations
      */
     abstract public function getLocalizationKey(): string;
 
+    /**
+     * @param list<string> $key
+     * @param array<string, mixed> $replace
+     */
     protected function get(
         string|array $key,
         array $replace = [],
         ?string $locale = null,
-        string $defaultValue = null,
+        ?string $defaultValue = null,
     ): string {
         $result = $this->translator->get($this->getKey($key), $replace, $locale);
 
@@ -39,6 +43,10 @@ abstract class AbstractTranslations
         return $result;
     }
 
+    /**
+     * @param list<string> $key
+     * @param array<string, mixed> $replace
+     */
     protected function getOptional(string|array $key, array $replace = [], ?string $locale = null): ?string
     {
         $result = $this->translator->get($this->getKey($key), $replace, $locale);
@@ -50,11 +58,21 @@ abstract class AbstractTranslations
         return $result;
     }
 
+    /**
+     * @param list<string> $key
+     * @param array<string, mixed> $replace
+     * @return array<array-key, mixed>
+     */
     protected function getArray(string|array $key, array $replace = [], ?string $locale = null): array
     {
         return $this->translator->get($this->getKey($key), $replace, $locale);
     }
 
+    /**
+     * @param list<string> $key
+     * @param array<array-key, mixed> $number
+     * @param array<string, mixed> $replace
+     */
     protected function getChoice(
         string|array $key,
         int|array|Countable $number,
@@ -64,6 +82,9 @@ abstract class AbstractTranslations
         return $this->translator->choice($this->getKey($key), $number, $replace, $locale);
     }
 
+    /**
+     * @param list<string> $key
+     */
     protected function getKey(string|array $key): string
     {
         $keys = [$this->getLocalizationKey(), ...(is_array($key) ? $key : [$key])];

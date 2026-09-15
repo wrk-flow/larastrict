@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Database\Scopes;
 
+use BackedEnum;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use JetBrains\PhpStorm\Deprecated;
@@ -23,9 +24,10 @@ abstract class AbstractInScope extends AbstractScope
     /**
      * @param string|bool|null $booleanOrTableOrNot Pass false to set $not argument, pass string to set table or 'and'
      *                                              'or' value
+     * @param list<BackedEnum|bool|float|int|string|null> $values
      */
     public function __construct(
-        private array|int|float|string|bool|null $values,
+        private array|BackedEnum|int|float|string|bool|null $values,
         #[Deprecated(reason: 'Use right parameter instead of this magic.')]
         string|bool|null $booleanOrTableOrNot = null,
         string $table = '',
@@ -52,7 +54,8 @@ abstract class AbstractInScope extends AbstractScope
         $column = sprintf('%s.', $table) . $this->getColumn($model);
 
         if (is_array($this->values) && count($this->values) === 1) {
-            $this->values = reset($this->values);
+            $value = reset($this->values);
+            $this->values = $value;
         }
 
         if (is_array($this->values) === false) {

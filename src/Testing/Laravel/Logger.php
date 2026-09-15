@@ -9,14 +9,49 @@ use Stringable;
 
 class Logger implements LoggerInterface
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $emergency = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $alert = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $critical = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $error = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $warning = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $notice = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $info = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $debug = [];
+
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $log = [];
 
     public function emergency(Stringable|string $message, array $context = []): void

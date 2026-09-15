@@ -34,7 +34,9 @@ class ContextEventsService
     {
         $this->eventsDispatcher->listen(
             $events,
-            function ($event) use ($createContext, $getStateToStore): void {
+            function (mixed $event) use ($createContext, $getStateToStore): void {
+                assert(is_object($event));
+                /** @var TEvent $event */
                 $context = $createContext($event);
 
                 if ($context instanceof AbstractContext === false) {
@@ -63,7 +65,9 @@ class ContextEventsService
      */
     public function clearOn(string|array $events, callable $createContext): void
     {
-        $this->eventsDispatcher->listen($events, function ($event) use ($createContext): void {
+        $this->eventsDispatcher->listen($events, function (mixed $event) use ($createContext): void {
+            assert(is_object($event));
+            /** @var TEvent $event */
             $context = $createContext($event);
 
             if ($context instanceof AbstractContext === false) {
@@ -94,7 +98,9 @@ class ContextEventsService
     ): void {
         $this->eventsDispatcher->listen(
             $events,
-            function ($event) use ($createContext, $getModelFromEvent, $watchForAttributesChanges): void {
+            function (mixed $event) use ($createContext, $getModelFromEvent, $watchForAttributesChanges): void {
+                assert(is_object($event));
+                /** @var TEvent $event */
                 $model = $getModelFromEvent($event);
                 if ($model instanceof Model === false) {
                     return;

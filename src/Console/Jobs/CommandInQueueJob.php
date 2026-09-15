@@ -13,11 +13,16 @@ use Throwable;
 
 class CommandInQueueJob extends AbstractUniqueLongJob implements ShouldQueue
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     private array $parameters = [];
+
     private readonly string $parametersKey;
 
     /**
      * @param string $command Command signature or class
+     * @param array<array-key, mixed> $parameters
      */
     public function __construct(
         private readonly string $command,

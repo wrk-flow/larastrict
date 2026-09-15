@@ -40,17 +40,18 @@ abstract class JsonResource extends BaseJsonResource
     }
 
     /**
-     * @param array<TResource>|Collection<array-key, TResource>|SupportCollection<array-key, TResource>|Paginator<TResource>|AbstractPaginator<TResource> $resource
+     * @param array<TResource>|Collection<array-key, TResource>|SupportCollection<array-key, TResource>|Paginator<array-key, TResource>|AbstractPaginator<array-key, TResource> $resource
      */
     public static function collection($resource): JsonResourceCollection
     {
         return tap(
             new JsonResourceCollection($resource, static::class),
             static function (JsonResourceCollection $collection) {
-                // preserveKeys was added Laravel v9.45.0
-                if (property_exists($collection, 'preserveKeys')
-                    && property_exists(static::class, 'preserveKeys')) {
-                    $collection->preserveKeys = (new static(null))->preserveKeys === true;
+                // Laravel resource subclasses conventionally accept the resource as their sole constructor argument.
+                // @phpstan-ignore new.static
+                $properties = get_object_vars(new static(null));
+                if (array_key_exists('preserveKeys', $properties)) {
+                    $collection->preserveKeys = $properties['preserveKeys'] === true;
                 }
             },
         );
@@ -90,8 +91,11 @@ abstract class JsonResource extends BaseJsonResource
      */
     final protected function instance(string $class, array $parameters = []): object
     {
-        return $this
+        $instance = $this
             ->getContainer()
             ->make(abstract: $class, parameters: $parameters);
+        assert($instance instanceof $class);
+
+        return $instance;
     }
 }

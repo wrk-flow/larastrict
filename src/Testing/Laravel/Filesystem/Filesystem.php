@@ -43,6 +43,9 @@ class Filesystem implements FilesystemContract, Cloud
         return true;
     }
 
+    /**
+     * @param array<array-key, mixed> $options
+     */
     public function writeStream($path, $resource, array $options = [])
     {
         return true;
@@ -68,6 +71,9 @@ class Filesystem implements FilesystemContract, Cloud
         return true;
     }
 
+    /**
+     * @param array<array-key, mixed> $paths
+     */
     public function delete($paths)
     {
         return true;
@@ -146,7 +152,7 @@ class Filesystem implements FilesystemContract, Cloud
      * Store the uploaded file on the disk.
      *
      * @param File|UploadedFile|string $path
-     * @param File|UploadedFile|string|array|null $file
+     * @param File|UploadedFile|string|array<array-key, mixed>|null $file
      *
      * @return string|false
      */
@@ -160,8 +166,8 @@ class Filesystem implements FilesystemContract, Cloud
      * Store the uploaded file on the disk with a given name.
      *
      * @param File|UploadedFile|string $path
-     * @param File|UploadedFile|string|array|null $file
-     * @param  string|array|null  $name
+     * @param File|UploadedFile|string|array<array-key, mixed>|null $file
+     * @param  string|array<array-key, mixed>|null  $name
      * @return string|false
      */
     public function putFileAs($path, $file, $name = null, mixed $options = [])

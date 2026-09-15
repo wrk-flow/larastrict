@@ -16,6 +16,8 @@ class FlushCacheCommand extends Command
     {
         $tagOrKey = $this->argument('tagOrKey');
 
+        // Symfony declares a string, but a malformed command definition can still provide another value.
+        // @phpstan-ignore function.alreadyNarrowedType
         if (! is_string($tagOrKey)) {
             $this->info('Only string value is supported');
             return;

@@ -79,7 +79,7 @@ class DockerServiceProviderTest extends TestCase
     public function assertEnsureOutput(
         bool $isInDockerEnvironment,
         Closure $expectedDockerOutput,
-        Closure $setDockerOutput = null,
+        ?Closure $setDockerOutput = null,
     ): void {
         $app = $this->app();
 

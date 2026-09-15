@@ -274,11 +274,15 @@ class RepositoryAssertTest extends TestCase
             new AssertExpectationEntity(
                 methodName: 'getMultiple',
                 createAssert: static fn () => new RepositoryAssert(getMultiple: [
-                    new RepositoryGetMultipleExpectation(return: ['1'], keys: ['1234']),
+                    new RepositoryGetMultipleExpectation(return: [
+                        'test' => '1',
+                    ], keys: ['test']),
                 ]),
-                call: static fn (RepositoryAssert $assert) => $assert->getMultiple(keys: ['1234']),
+                call: static fn (RepositoryAssert $assert) => $assert->getMultiple(keys: ['test']),
                 checkResult: true,
-                expectedResult: ['1'],
+                expectedResult: [
+                    'test' => '1',
+                ],
             ),
             new AssertExpectationEntity(
                 methodName: 'setMultiple',

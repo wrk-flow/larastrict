@@ -21,7 +21,7 @@ class BootViewComposersPipeTest extends TestCase
 {
     use TestData;
 
-    final public const ServiceName = 'Test';
+    final public const string ServiceName = 'Test';
 
     public static function data(): array
     {
@@ -31,10 +31,7 @@ class BootViewComposersPipeTest extends TestCase
             'implements' => [
                 fn (self $self) => $self->assert(
                     app: $app,
-                    serviceProvider: new class(
-                        $app,
-                        $viewFactory,
-                    ) extends AbstractServiceProvider implements HasViewComposers {
+                    serviceProvider: new class($app, $viewFactory) extends AbstractServiceProvider implements HasViewComposers {
                         public function __construct(
                             TestingApplication $app,
                             private readonly Factory $viewFactory,

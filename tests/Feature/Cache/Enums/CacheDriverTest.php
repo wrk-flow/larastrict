@@ -45,6 +45,8 @@ class CacheDriverTest extends TestCase
         $factory = $this->app()
             ->get(Factory::class);
 
+        // Keep the runtime guard for applications with an invalid container binding.
+        // @phpstan-ignore-next-line
         if ($factory instanceof Factory === false) {
             throw new LogicException('Unable to resolve factory');
         }

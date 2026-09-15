@@ -94,7 +94,7 @@ abstract class AbstractExpectationCallsMap
         return $expectation;
     }
 
-    protected function getDebugMessage(int $callStep = null, string $reason = 'failed', int $debugLevel = 1): string
+    protected function getDebugMessage(?int $callStep = null, string $reason = 'failed', int $debugLevel = 1): string
     {
         $caller = debug_backtrace()[$debugLevel];
 

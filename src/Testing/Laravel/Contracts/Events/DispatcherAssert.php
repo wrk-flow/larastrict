@@ -44,6 +44,10 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         $this->setExpectations(DispatcherForgetPushedExpectation::class, $forgetPushed);
     }
 
+    /**
+     * @param array<array-key, mixed>|string $events
+     * @param array<array-key, mixed>|callable|string|null $listener
+     */
     public function listen($events, $listener = null)
     {
         $expectation = $this->getExpectation(DispatcherListenExpectation::class);
@@ -87,6 +91,9 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         return $expectation->return;
     }
 
+    /**
+     * @return array<array-key, mixed>|null
+     */
     public function dispatch($event, $payload = [], $halt = false)
     {
         $expectation = $this->getExpectation(DispatcherDispatchExpectation::class);
@@ -99,6 +106,9 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         return $expectation->return;
     }
 
+    /**
+     * @param array<array-key, mixed> $payload
+     */
     public function push($event, $payload = [])
     {
         $expectation = $this->getExpectation(DispatcherPushExpectation::class);

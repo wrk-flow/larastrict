@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Events;
 
-final class DispatcherFlushExpectation
+final readonly class DispatcherFlushExpectation
 {
     public function __construct(
-        public readonly mixed $event,
+        public mixed $event,
     ) {
     }
 }

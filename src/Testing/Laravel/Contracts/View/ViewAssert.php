@@ -40,7 +40,7 @@ class ViewAssert extends AbstractExpectationCallsMap implements View
     /**
      * Add a piece of data to the view.
      *
-     * @param  string|array  $key
+     * @param  string|array<array-key, mixed>  $key
      * @param  mixed  $value
      * @return $this
      */
@@ -56,9 +56,9 @@ class ViewAssert extends AbstractExpectationCallsMap implements View
     }
 
     /**
-     * Get the array of view data.
+     * Get the array<array-key, mixed> of view data.
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function getData()
     {

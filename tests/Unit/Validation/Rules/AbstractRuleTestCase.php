@@ -34,11 +34,15 @@ abstract class AbstractRuleTestCase extends TestCase
 
     abstract public function createRule(): ValidationRule;
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function passesData(): array
     {
         $data = [];
         foreach (static::data() as $index => $entity) {
-            $data[$index . ' with value: ' . $entity->value] = [$entity];
+            $value = json_encode($entity->value, JSON_THROW_ON_ERROR);
+            $data[$index . ' with value: ' . $value] = [$entity];
         }
 
         return $data;

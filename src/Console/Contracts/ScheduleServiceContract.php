@@ -9,6 +9,9 @@ use Illuminate\Console\Scheduling\Event;
 
 interface ScheduleServiceContract
 {
+    /**
+     * @param array<array-key, mixed> $parameters
+     */
     public function command(string $command, array $parameters = []): Event;
 
     /**

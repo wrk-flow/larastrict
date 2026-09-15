@@ -128,6 +128,7 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
      * Set the pipes commands should be piped through before dispatching.
      *
      * @return $this
+     * @param array<array-key, mixed> $pipes
      */
     public function pipeThrough(array $pipes)
     {
@@ -143,6 +144,7 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
      * Map a command to a handler.
      *
      * @return $this
+     * @param array<array-key, mixed> $map
      */
     public function map(array $map)
     {

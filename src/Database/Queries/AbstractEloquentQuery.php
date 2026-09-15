@@ -32,6 +32,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
     /**
      * @return TModel
+     * @param array<array-key, mixed> $attributes
      */
     public function make(array $attributes = []): Model
     {
@@ -72,6 +73,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
      * Inserts given items in batch with automatic chunking to prevent maximum placeholder error.
      *
      * @param int $columnsCount Maximum placeholders / number of columns. Uses count on first item.
+     * @param array<array-key, mixed> $items
      */
     protected function chunkWrite(array $items, int $columnsCount = 0): void
     {
@@ -128,7 +130,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
     /**
      * @param array<int, Scope|null> $scopes
      *
-     * @return LengthAwarePaginator<TModel>
+     * @return LengthAwarePaginator<int, TModel>
      */
     protected function paginate(array $scopes = [], ?int $perPage = null): LengthAwarePaginator
     {
@@ -157,7 +159,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
      *                                                          not exists. Receives $id argument.
      * @return TModel
      */
-    protected function findOrFail(string|int $key, array $scopes = [], Closure|Throwable $customException = null): Model
+    protected function findOrFail(string|int $key, array $scopes = [], Closure|Throwable|null $customException = null): Model
     {
         $scopes[] = new WhereIdsScope($key);
 
@@ -171,7 +173,7 @@ abstract class AbstractEloquentQuery extends AbstractQuery
      *                                                          not exists. Receives $id argument.
      * @return TModel
      */
-    protected function firstOrFail(array $scopes = [], Closure|Throwable $customException = null): Model
+    protected function firstOrFail(array $scopes = [], Closure|Throwable|null $customException = null): Model
     {
         try {
             /** @var TModel $model */
@@ -180,10 +182,11 @@ abstract class AbstractEloquentQuery extends AbstractQuery
 
             return $model;
         } catch (ModelNotFoundException $modelNotFoundException) {
+            if ($customException instanceof Throwable) {
+                throw $customException;
+            }
             if (! $customException instanceof Closure) {
                 throw $modelNotFoundException;
-            } elseif ($customException instanceof Throwable) {
-                throw $customException;
             }
 
             throw $customException($modelNotFoundException->getMessage());

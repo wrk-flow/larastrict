@@ -30,7 +30,7 @@ final class ChunkWriteServiceTest extends TestCase
                 static function (self $self) {
                     $self->assert(new ChunkWriteStateEntity(), static function () {
                         yield from [];
-                    },);
+                    }, );
                 },
             ],
             [

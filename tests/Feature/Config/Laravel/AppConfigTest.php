@@ -7,6 +7,7 @@ namespace Tests\LaraStrict\Feature\Config\Laravel;
 use LaraStrict\Config\Laravel\AppConfig;
 use LaraStrict\Enums\EnvironmentType;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Stringable;
 
 class AppConfigTest extends AbstractConfigTestCase
 {
@@ -23,7 +24,10 @@ class AppConfigTest extends AbstractConfigTestCase
 
     public function testVersion(): void
     {
-        $expectationDefault = static fn ($value) => preg_match('#^DEV\.[\d]+$#', (string) $value) === 1;
+        $expectationDefault = static function (mixed $value): bool {
+            assert(is_scalar($value) || $value instanceof Stringable);
+            return preg_match('#^DEV\.[\d]+$#', (string) $value) === 1;
+        };
         $this->assertConfigValue(
             expectedDefaultValue: $expectationDefault,
             keys: [AppConfig::KeyVersion],
@@ -130,11 +134,17 @@ class AppConfigTest extends AbstractConfigTestCase
         $this->assertEquals($expectedValue, $this->config->getEnvironment());
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function environmentDefaultData(): array
     {
         return [[''], [null], [0], [1]];
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public static function environmentTypeData(): array
     {
         return [

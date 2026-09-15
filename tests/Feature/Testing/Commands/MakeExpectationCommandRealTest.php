@@ -15,7 +15,7 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\SimpleActio
 
 class MakeExpectationCommandRealTest extends TestCase
 {
-    final public const Namespace = 'Tests\\LaraStrict\\Feature\\';
+    final public const string Namespace = 'Tests\\LaraStrict\\Feature\\';
 
     private string $originalPath = '';
 
@@ -77,6 +77,8 @@ class MakeExpectationCommandRealTest extends TestCase
         $this->assertFalse($hookCalled, 'Hook should not be called');
         $assert->execute('test2', 1, true);
 
+        // PHPStan does not model the mutation performed by the expectation hook.
+        // @phpstan-ignore method.impossibleType
         $this->assertTrue($hookCalled, 'Hook should be called');
 
         try {

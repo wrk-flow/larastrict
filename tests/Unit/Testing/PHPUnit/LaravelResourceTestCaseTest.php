@@ -21,21 +21,21 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
         return [
             [
                 static fn (self $testCase) => $testCase->assert(
-                    object: new TestEntity(value: 'test'),
-                    expected: self::expected(value: 'test'),
+                    new TestEntity('test'),
+                    self::expected('test'),
                 ),
             ],
             [
                 static fn (self $testCase) => $testCase->assert(
-                    object: new TestEntity(value: 'test22'),
-                    expected: self::expected(value: 'test22'),
+                    new TestEntity('test22'),
+                    self::expected('test22'),
                 ),
             ],
             'fail while setting container' => [
                 static fn (self $testCase) => $testCase->assert(
-                    object: new TestEntity(value: 'test'),
-                    expected: self::containerCannotBeSetException(),
-                    container: new TestingContainer(),
+                    new TestEntity('test'),
+                    self::containerCannotBeSetException(),
+                    new TestingContainer(),
                 ),
             ],
         ];
@@ -52,38 +52,38 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
 
     public function testResourceArray(): void
     {
-        $resource = $this->createResource(new TestEntity(value: 'test'));
+        $resource = $this->createResource(new TestEntity('test'));
 
         $this->assertEquals(
-            expected: self::expected(value: 'test'),
-            actual: $this->resourceArray(resource: $resource),
+            self::expected('test'),
+            $this->resourceArray($resource),
         );
     }
 
     public function testResourceArrayCollection(): void
     {
-        $resource = LaravelResource::collection([new TestEntity(value: 'test')]);
+        $resource = LaravelResource::collection([new TestEntity('test')]);
 
         $this->assertEquals(
-            expected: [self::expected(value: 'test')],
-            actual: $this->resourceArray(resource: $resource),
+            [self::expected('test')],
+            $this->resourceArray($resource),
         );
     }
 
     public function testResourceArrayFailOnContainer(): void
     {
-        $resource = $this->createResource(new TestEntity(value: 'test'));
+        $resource = $this->createResource(new TestEntity('test'));
 
         $this->expectExceptionObject(self::containerCannotBeSetException());
-        $this->resourceArray(resource: $resource, container: new TestingContainer());
+        $this->resourceArray($resource, new TestingContainer());
     }
 
     public function testResourceArrayCollectionFailOnContainer(): void
     {
-        $resource = $this->createResource(new TestEntity(value: 'test'));
+        $resource = $this->createResource(new TestEntity('test'));
 
         $this->expectExceptionObject(self::containerCannotBeSetException());
-        $this->resourceArray(resource: $resource, container: new TestingContainer());
+        $this->resourceArray($resource, new TestingContainer());
     }
 
     protected function createResource(mixed $object): JsonResource
@@ -91,6 +91,9 @@ class LaravelResourceTestCaseTest extends ResourceTestCase
         return new LaravelResource($object);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     protected static function expected(string $value): array
     {
         return [

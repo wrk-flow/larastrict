@@ -11,6 +11,7 @@ use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Level;
 use Monolog\LogRecord;
 use Psr\Log\LogLevel;
+use Stringable;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -97,6 +98,7 @@ final class ConsoleOutputHandler extends AbstractProcessingHandler
 
     protected function writeLine(OutputStyle $outputStyle, mixed $message, bool $hasContext): void
     {
+        assert(is_scalar($message) || $message instanceof Stringable);
         $outputStyle->newLine();
         $outputStyle->write(messages: '  <options=bold>' . $message . '</>');
         $outputStyle->newLine();

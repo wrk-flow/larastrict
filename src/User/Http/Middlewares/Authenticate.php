@@ -22,6 +22,9 @@ class Authenticate extends Middleware
         parent::__construct($auth);
     }
 
+    /**
+     * @param list<string> $guards
+     */
     protected function authenticate($request, array $guards): void
     {
         if ($guards === []) {
@@ -48,6 +51,9 @@ class Authenticate extends Middleware
         return null;
     }
 
+    /**
+     * @param list<string|null> $guards
+     */
     protected function autoLoginFirstUserOnLocalIfNeeded(Request $request, array $guards): void
     {
         $autoLogin = $request->header('Auto-Login');

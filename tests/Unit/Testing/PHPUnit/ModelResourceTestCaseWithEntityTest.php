@@ -47,6 +47,9 @@ class ModelResourceTestCaseWithEntityTest extends ModelResourceTestCase
         return new LaravelResource($object);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     private static function expect(int $value): array
     {
         return [

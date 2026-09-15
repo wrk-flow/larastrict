@@ -10,10 +10,10 @@ use Illuminate\Contracts\Validation\ValidationRule;
 /**
  * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
  */
-final class PerPageRule implements ValidationRule
+final readonly class PerPageRule implements ValidationRule
 {
     public function __construct(
-        private readonly int $max = 100,
+        private int $max = 100,
     ) {
     }
 

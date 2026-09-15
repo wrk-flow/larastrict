@@ -8,7 +8,6 @@ use Closure;
 use Illuminate\Container\ContextualBindingBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Foundation\Application;
 
 /**
  * A testing application class that helps you to not use mocks.
@@ -16,14 +15,14 @@ use Illuminate\Contracts\Foundation\Application;
 class TestingContainer implements Container
 {
     /**
-     * @param array<string, object|Closure(array $makeBindings, class-string $abstract):(object|null)|null> $makeBindings A map of closures that will create.
+     * @param array<string, object|Closure(array<array-key, mixed> $makeBindings, class-string $abstract):(object|null)|null> $makeBindings A map of closures that will create.
      *                                                                              Receives make $parameters and
      *                                                                              $abstract string
-     * @param Closure(array,string):(object|null)|object|null $makeAlwaysBinding If makeBindings has no entry, it
+     * @param Closure(array<array-key, mixed>,string):(object|null)|object|null $makeAlwaysBinding If makeBindings has no entry, it
      *                                                                              will call make on this closure or
      *                                                                              given object. Receives make
      *                                                                              $parameters and $abstract string
-     * @param Closure(Closure $call,array $makeBindings,?string $defaultMethod):mixed $call
+     * @param Closure|null $call Receives the callback, parameters, and optional default method.
      */
     public function __construct(
         private array $makeBindings = [],
@@ -41,10 +40,16 @@ class TestingContainer implements Container
     {
     }
 
+    /**
+     * @param list<string>|string $abstracts
+     */
     public function tag($abstracts, $tags)
     {
     }
 
+    /**
+     * @return iterable<mixed>
+     */
     public function tagged($tag)
     {
         return [];
@@ -80,12 +85,16 @@ class TestingContainer implements Container
 
     public function instance($abstract, $instance)
     {
+        return $instance;
     }
 
     public function addContextualBinding($concrete, $abstract, $implementation)
     {
     }
 
+    /**
+     * @param list<string>|string $concrete
+     */
     public function when($concrete)
     {
         return new ContextualBindingBuilder($this, $concrete);
@@ -101,6 +110,9 @@ class TestingContainer implements Container
     {
     }
 
+    /**
+     * @param array<array-key, mixed> $parameters
+     */
     public function make($abstract, array $parameters = [])
     {
         $make = $this->makeBindings[$abstract] ?? null;
@@ -149,6 +161,9 @@ class TestingContainer implements Container
         return $this;
     }
 
+    /**
+     * @param array<array-key, mixed> $parameters
+     */
     public function call($callback, array $parameters = [], $defaultMethod = null)
     {
         if (! $this->call instanceof Closure) {
@@ -163,15 +178,15 @@ class TestingContainer implements Container
         return false;
     }
 
-    public function beforeResolving($abstract, Closure $callback = null)
+    public function beforeResolving($abstract, ?Closure $callback = null)
     {
     }
 
-    public function resolving($abstract, Closure $callback = null)
+    public function resolving($abstract, ?Closure $callback = null)
     {
     }
 
-    public function afterResolving($abstract, Closure $callback = null)
+    public function afterResolving($abstract, ?Closure $callback = null)
     {
     }
 
@@ -185,6 +200,9 @@ class TestingContainer implements Container
         return false;
     }
 
+    /**
+     * @param array<array-key, mixed> $method
+     */
     public function bindMethod($method, $callback)
     {
 

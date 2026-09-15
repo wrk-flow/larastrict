@@ -37,7 +37,8 @@ class CreateAppServiceProviderAction implements CreateAppServiceProviderActionCo
     }
 
     /**
-     * @param ReflectionClass<ServiceProvider> $reflection
+     * @template T of ServiceProvider
+     * @param ReflectionClass<T> $reflection
      */
     protected function getRootDirectory(ReflectionClass $reflection): string
     {

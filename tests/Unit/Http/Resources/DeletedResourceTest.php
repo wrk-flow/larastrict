@@ -13,10 +13,10 @@ class DeletedResourceTest extends TestCase
     public function test(): void
     {
         $this->assertEquals(
-            expected: [
+            [
                 'message' => 'deleted',
             ],
-            actual: (new DeletedResource())->toArray(new Request()),
+            (new DeletedResource())->toArray(new Request()),
         );
     }
 }

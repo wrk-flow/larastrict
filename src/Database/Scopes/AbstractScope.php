@@ -19,7 +19,7 @@ abstract class AbstractScope implements Scope
 
     /**
      * @template TModel of Model
-     * @param Relation<TModel> $relation
+     * @param Relation<TModel, Model, mixed> $relation
      */
     public function applyOnRelation(Relation $relation): void
     {
@@ -51,12 +51,13 @@ abstract class AbstractScope implements Scope
      */
     protected function applyChildScope(Scope $scope, Builder $builder, Model $model): void
     {
+        /** @var Builder<Model> $builder */
         $scope->apply($builder, $model);
     }
 
     /**
      * @template TModel of Model
-     * @param Relation<TModel> $relation
+     * @param Relation<TModel, Model, mixed> $relation
      */
     protected function applyRelationScope(Scope $scope, Relation $relation): void
     {

@@ -18,10 +18,10 @@ use Tests\LaraStrict\Unit\Testing\PHPUnit\LaravelResource;
  */
 class JsonResourceTest extends ResourceTestCase
 {
-    private const Value = 'val123';
-    private const KeyRes = 'res';
-    private const KeyInstance = 'instance';
-    private const KeyTest = 'test';
+    private const string Value = 'val123';
+    private const string KeyRes = 'res';
+    private const string KeyInstance = 'instance';
+    private const string KeyTest = 'test';
 
     public static function data(): array
     {

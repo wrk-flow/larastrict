@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Bus;
 
-final class DispatcherMapExpectation
+final readonly class DispatcherMapExpectation
 {
+    /**
+     * @param array<array-key, mixed> $map
+     */
     public function __construct(
-        public readonly array $map,
+        public array $map,
     ) {
     }
 }
