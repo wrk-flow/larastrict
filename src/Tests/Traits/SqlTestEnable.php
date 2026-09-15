@@ -44,8 +44,16 @@ trait SqlTestEnable
             Assert::fail('Failed asserting that query was executed.');
         } catch (QueryException $queryException) {
             $expected = preg_replace('#\s+#', ' ', $sql);
+            $connection = Model::resolveConnection();
+            $actual = method_exists($queryException, 'getRawSql')
+                ? $queryException->getRawSql()
+                : $connection->getQueryGrammar()
+                    ->substituteBindingsIntoRawSql(
+                        $queryException->getSql(),
+                        $connection->prepareBindings($queryException->getBindings()),
+                    );
 
-            Assert::assertSame($expected, $queryException->getRawSql());
+            Assert::assertSame($expected, $actual);
         }
     }
 }

@@ -34,6 +34,7 @@ class FactoryAssertTest extends TestCase
     protected static function generateData(): array
     {
         $view = new ViewAssert();
+        $viewCallback = static fn () => '';
 
         return [
             new AssertExpectationEntity(
@@ -117,12 +118,12 @@ class FactoryAssertTest extends TestCase
                     composer: [new FactoryComposerExpectation(
                         return: self::Data,
                         views: ['view1', 'view2'],
-                        callback: static fn () => '',
+                        callback: $viewCallback,
                     )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->composer(
                     views: ['view1', 'view2'],
-                    callback: static fn () => '',
+                    callback: $viewCallback,
                 ),
                 checkResult: true,
                 expectedResult: self::Data,
@@ -149,12 +150,12 @@ class FactoryAssertTest extends TestCase
                     creator: [new FactoryCreatorExpectation(
                         return: self::Data,
                         views: ['view1', 'view2'],
-                        callback: static fn () => '',
+                        callback: $viewCallback,
                     )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->creator(
                     views: ['view1', 'view2'],
-                    callback: static fn () => '',
+                    callback: $viewCallback,
                 ),
                 checkResult: true,
                 expectedResult: self::Data,

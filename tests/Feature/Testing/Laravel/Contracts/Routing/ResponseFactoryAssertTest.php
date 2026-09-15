@@ -12,6 +12,7 @@ use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryAssert;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryDownloadExpectation;
+use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryEventStreamExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryFileExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryJsonExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryJsonpExpectation;
@@ -217,6 +218,28 @@ class ResponseFactoryAssertTest extends TestCase
                 ),
                 checkResult: true,
                 expectedResult: $jsonResponse,
+            ),
+            new AssertExpectationEntity(
+                methodName: 'eventStream',
+                createAssert: static fn () => new ResponseFactoryAssert(eventStream: [
+                    new ResponseFactoryEventStreamExpectation(
+                        return: $streamResponse,
+                        headers: [
+                            'header' => ['value'],
+                        ],
+                        endStreamWith: 'done',
+                        hook: $assertStreamCallback,
+                    ),
+                ]),
+                call: static fn (ResponseFactoryAssert $assert) => $assert->eventStream(
+                    callback: $streamCallback,
+                    headers: [
+                        'header' => ['value'],
+                    ],
+                    endStreamWith: 'done',
+                ),
+                checkResult: true,
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'stream',

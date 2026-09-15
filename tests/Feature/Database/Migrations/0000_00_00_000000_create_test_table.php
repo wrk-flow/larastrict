@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Database\Migrations;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Schema\Blueprint;
 use LaraStrict\Database\Migrations\AbstractCreateMigration;
@@ -26,12 +27,13 @@ return new class() extends AbstractCreateMigration {
     {
         parent::up();
 
-        TestModel::factory(10)
-            ->state(new Sequence([
-                TestModel::AttributeDeletedAt => null,
-            ], [
-                TestModel::AttributeDeletedAt => now(),
-            ], ))
+        /** @var Factory<TestModel> $factory */
+        $factory = TestModel::factory(10);
+        $factory->state(new Sequence([
+            TestModel::AttributeDeletedAt => null,
+        ], [
+            TestModel::AttributeDeletedAt => now(),
+        ], ))
             ->create();
     }
 };

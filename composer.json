@@ -20,7 +20,7 @@
     "require": {
         "php": ">=8.3",
         "h4kuna/serialize-polyfill": "^0.2.5",
-        "laravel/framework": "^v10.48.4 | ^v11.2.0 | ^v12.0",
+        "laravel/framework": "^v10.48.4 | ^v11.2.0 | ^v12.0 | ^v13.0",
         "psr/log": "^3",
         "psr/simple-cache": "^3.0"
     },
@@ -31,10 +31,10 @@
         "jetbrains/phpstorm-attributes": "^1.2",
         "mockery/mockery": "^1.6",
         "nette/php-generator": "^v4.1.4",
-        "orchestra/testbench": "^v8.22.2 | ^v9.0.3 | ^v10.0",
+        "orchestra/testbench": "^v8.22.2 | ^v9.0.3 | ^v10.0 | ^v11.0",
         "phpstan/phpstan-mockery": "^2.0",
         "phpstan/phpstan-phpunit": "^v2.0",
-        "phpunit/phpunit": "^11.5"
+        "phpunit/phpunit": "^10.1 | ^11.5 | ^12.0"
     },
     "scripts": {
         "post-autoload-dump": [

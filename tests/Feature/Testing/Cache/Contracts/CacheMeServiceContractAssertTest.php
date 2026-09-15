@@ -135,7 +135,7 @@ class CacheMeServiceContractAssertTest extends TestCase
                 methodName: 'observeAndFlush',
                 createAssert: static fn () => new CacheMeServiceContractAssert(
                     observeAndFlush: [new CacheMeServiceContractObserveAndFlushExpectation(
-                        tags: static fn () => 'test',
+                        tags: $closure,
                         modelClass: TestModel::class,
                     )],
                 ),

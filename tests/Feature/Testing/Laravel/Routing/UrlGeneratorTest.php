@@ -7,6 +7,11 @@ namespace Tests\LaraStrict\Feature\Testing\Laravel\Routing;
 use LaraStrict\Testing\Laravel\Routing\UrlGenerator;
 use PHPUnit\Framework\TestCase;
 
+enum RouteName: string
+{
+    case Home = 'home';
+}
+
 class UrlGeneratorTest extends TestCase
 {
     private UrlGenerator $urlGenerator;
@@ -107,6 +112,11 @@ class UrlGeneratorTest extends TestCase
     public function testRoute(): void
     {
         $this->assertEquals('http://localhost/route/name', $this->urlGenerator->route('name'));
+    }
+
+    public function testRouteWithStringBackedEnum(): void
+    {
+        $this->assertEquals('http://localhost/route/home', $this->urlGenerator->route(RouteName::Home));
     }
 
     // test route function with extra parameters

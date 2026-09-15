@@ -28,6 +28,7 @@ use LaraStrict\Testing\Laravel\Contracts\Cache\RepositoryRememberForeverExpectat
 use LaraStrict\Testing\Laravel\Contracts\Cache\RepositorySearExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Cache\RepositorySetExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Cache\RepositorySetMultipleExpectation;
+use LaraStrict\Testing\Laravel\Contracts\Cache\RepositoryTouchExpectation;
 use PHPUnit\Framework\TestCase;
 
 class RepositoryAssertTest extends TestCase
@@ -196,6 +197,15 @@ class RepositoryAssertTest extends TestCase
                     new RepositoryForgetExpectation(return: true, key: '123'),
                 ]),
                 call: static fn (RepositoryAssert $assert) => $assert->forget(key: '123'),
+                checkResult: true,
+                expectedResult: true,
+            ),
+            new AssertExpectationEntity(
+                methodName: 'touch',
+                createAssert: static fn () => new RepositoryAssert(touch: [
+                    new RepositoryTouchExpectation(return: true, key: '123', ttl: 300),
+                ]),
+                call: static fn (RepositoryAssert $assert) => $assert->touch(key: '123', ttl: 300),
                 checkResult: true,
                 expectedResult: true,
             ),

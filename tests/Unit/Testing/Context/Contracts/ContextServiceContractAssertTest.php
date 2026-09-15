@@ -33,6 +33,10 @@ class ContextServiceContractAssertTest extends TestCase
         $boolValue = new BoolContextValue(true);
 
         $isContext = new IsContext(1);
+        $isCallback = static function (string $string): bool {
+            self::assertEquals('test', $string);
+            return true;
+        };
         return [
             new AssertExpectationEntity(
                 'delete',
@@ -100,8 +104,7 @@ class ContextServiceContractAssertTest extends TestCase
                 new ContextServiceContractIsExpectation(
                     $boolValue,
                     $isContext,
-                    static function () {
-                    },
+                    $isCallback,
                     static function (
                         AbstractContext $context,
                         Closure $is,
@@ -113,10 +116,7 @@ class ContextServiceContractAssertTest extends TestCase
             ]), static fn(ContextServiceContractAssert $assert) => $assert->is(
                 $isContext,
                 // @phpstan-ignore argument.type
-                static function (string $string): bool {
-                    self::assertEquals('test', $string);
-                    return true;
-                },
+                $isCallback,
             ), true, false, $boolValue),
             new AssertExpectationEntity('getCacheKey', static fn () => new ContextServiceContractAssert([], [], [], [], [], [
                 new ContextServiceContractGetCacheKeyExpectation('key', $context),

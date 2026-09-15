@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 
+use Closure;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -23,6 +24,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param array<ResponseFactoryViewExpectation|null> $view
      * @param array<ResponseFactoryJsonExpectation|null> $json
      * @param array<ResponseFactoryJsonpExpectation|null> $jsonp
+     * @param array<ResponseFactoryEventStreamExpectation|null> $eventStream
      * @param array<ResponseFactoryStreamExpectation|null> $stream
      * @param array<ResponseFactoryStreamJsonExpectation|null> $streamJson
      * @param array<ResponseFactoryStreamDownloadExpectation|null> $streamDownload
@@ -40,6 +42,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
         array $view = [],
         array $json = [],
         array $jsonp = [],
+        array $eventStream = [],
         array $stream = [],
         array $streamJson = [],
         array $streamDownload = [],
@@ -57,6 +60,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
         $this->setExpectations(ResponseFactoryViewExpectation::class, $view);
         $this->setExpectations(ResponseFactoryJsonExpectation::class, $json);
         $this->setExpectations(ResponseFactoryJsonpExpectation::class, $jsonp);
+        $this->setExpectations(ResponseFactoryEventStreamExpectation::class, $eventStream);
         $this->setExpectations(ResponseFactoryStreamExpectation::class, $stream);
         $this->setExpectations(ResponseFactoryStreamJsonExpectation::class, $streamJson);
         $this->setExpectations(ResponseFactoryStreamDownloadExpectation::class, $streamDownload);
@@ -190,6 +194,29 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
 
         if (is_callable($expectation->hook)) {
             call_user_func($expectation->hook, $callback, $data, $status, $headers, $options, $expectation);
+        }
+
+        return $expectation->return;
+    }
+
+    /**
+     * Create an event stream response.
+     *
+     * @param array<array-key, mixed> $headers
+     */
+    public function eventStream(
+        Closure $callback,
+        array $headers = [],
+        mixed $endStreamWith = '</stream>',
+    ): StreamedResponse {
+        $expectation = $this->getExpectation(ResponseFactoryEventStreamExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->headers, $headers, $message);
+        Assert::assertEquals($expectation->endStreamWith, $endStreamWith, $message);
+
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, $callback, $headers, $endStreamWith, $expectation);
         }
 
         return $expectation->return;

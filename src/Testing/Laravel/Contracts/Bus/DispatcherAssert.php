@@ -14,6 +14,8 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
      * @param array<DispatcherDispatchExpectation|null> $dispatch
      * @param array<DispatcherDispatchSyncExpectation|null> $dispatchSync
      * @param array<DispatcherDispatchNowExpectation|null> $dispatchNow
+     * @param array<DispatcherDispatchAfterResponseExpectation|null> $dispatchAfterResponse
+     * @param array<DispatcherChainExpectation|null> $chain
      * @param array<DispatcherHasCommandHandlerExpectation|null> $hasCommandHandler
      * @param array<DispatcherGetCommandHandlerExpectation|null> $getCommandHandler
      * @param array<DispatcherPipeThroughExpectation|null> $pipeThrough
@@ -23,6 +25,8 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         array $dispatch = [],
         array $dispatchSync = [],
         array $dispatchNow = [],
+        array $dispatchAfterResponse = [],
+        array $chain = [],
         array $hasCommandHandler = [],
         array $getCommandHandler = [],
         array $pipeThrough = [],
@@ -32,6 +36,8 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
         $this->setExpectations(DispatcherDispatchExpectation::class, $dispatch);
         $this->setExpectations(DispatcherDispatchSyncExpectation::class, $dispatchSync);
         $this->setExpectations(DispatcherDispatchNowExpectation::class, $dispatchNow);
+        $this->setExpectations(DispatcherDispatchAfterResponseExpectation::class, $dispatchAfterResponse);
+        $this->setExpectations(DispatcherChainExpectation::class, $chain);
         $this->setExpectations(DispatcherHasCommandHandlerExpectation::class, $hasCommandHandler);
         $this->setExpectations(DispatcherGetCommandHandlerExpectation::class, $getCommandHandler);
         $this->setExpectations(DispatcherPipeThroughExpectation::class, $pipeThrough);
@@ -88,6 +94,36 @@ class DispatcherAssert extends AbstractExpectationCallsMap implements Dispatcher
 
         Assert::assertEquals($expectation->command, $command, $message);
         Assert::assertEquals($expectation->handler, $handler, $message);
+
+        return $expectation->return;
+    }
+
+    /**
+     * Dispatch a command after the current process.
+     *
+     * @param mixed $command
+     * @param mixed $handler
+     */
+    public function dispatchAfterResponse($command, $handler = null): void
+    {
+        $expectation = $this->getExpectation(DispatcherDispatchAfterResponseExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->command, $command, $message);
+        Assert::assertEquals($expectation->handler, $handler, $message);
+    }
+
+    /**
+     * Create a chain of queueable jobs.
+     *
+     * @param mixed $jobs
+     */
+    public function chain($jobs = null): mixed
+    {
+        $expectation = $this->getExpectation(DispatcherChainExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->jobs, $jobs, $message);
 
         return $expectation->return;
     }

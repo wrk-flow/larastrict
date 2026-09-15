@@ -31,6 +31,7 @@ class OrderByValuesScope extends AbstractScope
     {
         $placeholders = array_map(static fn () => '?', $this->values);
 
+        // The SQL uses validated direction and values as bindings. The column is the caller's identifier.
         $builder->orderByRaw(
             'FIELD(`' . $this->column . '`, ' . implode(', ', $placeholders) . ') ' . $this->direction,
             $this->values,

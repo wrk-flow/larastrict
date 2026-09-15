@@ -12,8 +12,7 @@ use Illuminate\Database\Eloquent\Scope;
 abstract class AbstractScope implements Scope
 {
     /**
-     * @template TModel of Model
-     * @param Builder<TModel> $builder
+     * @param Builder<covariant Model> $builder
      */
     abstract public function apply(Builder $builder, Model $model): void;
 
@@ -27,8 +26,7 @@ abstract class AbstractScope implements Scope
     }
 
     /**
-     * @template TModel of Model
-     * @param Builder<TModel> $builder
+     * @param Builder<covariant Model> $builder
      */
     public function applyOnBuilder(Builder $builder): void
     {

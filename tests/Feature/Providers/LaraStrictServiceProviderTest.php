@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Feature\Providers;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
 use LaraStrict\Console\Contracts\ScheduleServiceContract;
 use LaraStrict\Console\Services\ScheduleService;
 use LaraStrict\Core\Contracts\SleepServiceContract;
@@ -42,8 +43,10 @@ class LaraStrictServiceProviderTest extends TestCase
 
     public function testBootResolveFactory(): void
     {
-        /** @var TestModel|null $result */
-        $result = TestModel::factory(1)->make()->first();
+        /** @var Factory<TestModel> $factory */
+        $factory = TestModel::factory(1);
+        $result = $factory->make()
+            ->first();
 
         $this->assertNotNull($result);
         $this->assertEquals($result->test, 1);

@@ -8,6 +8,24 @@ parameters:
         - src
         - tests
 
+    ignoreErrors:
+        -
+            message: '#generic interface Illuminate\\Database\\Eloquent\\Scope#'
+            paths:
+                - src/Database/*
+                - tests/Feature/Database/*
+            reportUnmatched: false
+        -
+            identifier: argument.type
+            paths:
+                - src/Database/Scopes/OrderByValuesScope.php
+                - src/Database/Scopes/PrioritizeByIdScope.php
+            reportUnmatched: false
+        -
+            identifier: function.alreadyNarrowedType
+            path: src/Tests/Traits/SqlTestEnable.php
+            reportUnmatched: false
+
     configDirectories:
         - src/Docker/Config
         - tests/laravel_config

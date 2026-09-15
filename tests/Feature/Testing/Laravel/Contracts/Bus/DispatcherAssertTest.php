@@ -8,6 +8,8 @@ use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Bus\DispatcherAssert;
+use LaraStrict\Testing\Laravel\Contracts\Bus\DispatcherChainExpectation;
+use LaraStrict\Testing\Laravel\Contracts\Bus\DispatcherDispatchAfterResponseExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Bus\DispatcherDispatchExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Bus\DispatcherDispatchNowExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Bus\DispatcherDispatchSyncExpectation;
@@ -78,6 +80,22 @@ class DispatcherAssertTest extends TestCase
                 call: static fn (DispatcherAssert $assert) => $assert->dispatchNow(command: $testJob),
                 checkResult: true,
                 expectedResult: null,
+            ),
+            new AssertExpectationEntity(
+                methodName: 'dispatchAfterResponse',
+                createAssert: static fn () => new DispatcherAssert(
+                    dispatchAfterResponse: [new DispatcherDispatchAfterResponseExpectation(command: $testJob)],
+                ),
+                call: static fn (DispatcherAssert $assert) => $assert->dispatchAfterResponse(command: $testJob),
+            ),
+            new AssertExpectationEntity(
+                methodName: 'chain',
+                createAssert: static fn () => new DispatcherAssert(
+                    chain: [new DispatcherChainExpectation(return: 'chain', jobs: [$testJob])],
+                ),
+                call: static fn (DispatcherAssert $assert) => $assert->chain(jobs: [$testJob]),
+                checkResult: true,
+                expectedResult: 'chain',
             ),
             new AssertExpectationEntity(
                 methodName: 'hasCommandHandler',
