@@ -45,7 +45,7 @@ abstract class AbstractScope implements Scope
 
     /**
      * @template TModel of Model
-     * @param Builder<TModel> $builder
+     * @param Builder<covariant TModel> $builder
      */
     protected function applyChildScope(Scope $scope, Builder $builder, Model $model): void
     {
