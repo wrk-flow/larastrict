@@ -405,6 +405,7 @@ class MakeExpectationCommandTest extends TestCase
     private function assertMultiFunctionContractAssertEquals(string $expected, string $actual): void
     {
         $normalize = static function (string $contents): array {
+            // PHP versions format the generated self return type differently. Both forms describe the same contract.
             $contents = str_replace(
                 [
                     ': MultiFunctionContract',
@@ -414,10 +415,25 @@ class MakeExpectationCommandTest extends TestCase
                 $contents,
             );
 
-            return array_values(array_filter(
+            // Compare PHP tokens so that formatter-specific whitespace does not affect the generated-code assertion.
+            $tokens = array_values(array_filter(
                 token_get_all($contents),
                 static fn (array|string $token): bool => ! is_array($token) || $token[0] !== T_WHITESPACE,
             ));
+            // PHP versions differ on whether the generated multiline parameter list keeps its trailing comma.
+            $tokens = array_values(array_filter(
+                $tokens,
+                static fn (array|string $token, int $index): bool => $token !== ',' || ($tokens[$index + 1] ?? null) !== ')',
+                ARRAY_FILTER_USE_BOTH,
+            ));
+
+            // token_get_all() includes source line numbers, which change when PHP formats the same code differently.
+            return array_map(
+                static fn (array|string $token): array|string => is_array($token)
+                    ? [$token[0], $token[1]]
+                    : $token,
+                $tokens,
+            );
         };
 
         self::assertSame($normalize($expected), $normalize($actual));
