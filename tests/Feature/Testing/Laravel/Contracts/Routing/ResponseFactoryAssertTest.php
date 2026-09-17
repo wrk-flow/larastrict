@@ -12,6 +12,7 @@ use LaraStrict\Testing\Concerns\AssertExpectations;
 use LaraStrict\Testing\Entities\AssertExpectationEntity;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryAssert;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryDownloadExpectation;
+use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryEventStreamExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryFileExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryJsonExpectation;
 use LaraStrict\Testing\Laravel\Contracts\Routing\ResponseFactoryJsonpExpectation;
@@ -33,14 +34,15 @@ class ResponseFactoryAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $response = new Response();
         $redirectResponse = new RedirectResponse('https://larastrict.com');
         $binaryFileResponse = new BinaryFileResponse(__FILE__);
         $streamResponse = new StreamedResponse();
         $jsonResponse = new JsonResponse();
-        $assertStreamCallback = static function ($callback) {
+        $assertStreamCallback = static function (mixed $callback) {
+            assert(is_callable($callback));
             self::assertEquals('stream', $callback());
         };
         $streamCallback = static fn () => 'stream';
@@ -52,7 +54,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->make(),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'make',
@@ -61,7 +63,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->make(content: 'Content'),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'make',
@@ -70,7 +72,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->make(content: 'Content', status: 203),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'make',
@@ -84,10 +86,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'noContent',
@@ -96,7 +98,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->noContent(),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'noContent',
@@ -105,7 +107,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->noContent(status: 203),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'noContent',
@@ -118,7 +120,7 @@ class ResponseFactoryAssertTest extends TestCase
                     'header' => ['value'],
                 ]),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'view',
@@ -127,7 +129,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->view(view: 'test'),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'view',
@@ -136,7 +138,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->view(view: 'test', status: 203),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'view',
@@ -149,7 +151,7 @@ class ResponseFactoryAssertTest extends TestCase
                     'header' => ['value'],
                 ]),
                 checkResult: true,
-                expectedResult: $response
+                expectedResult: $response,
             ),
             new AssertExpectationEntity(
                 methodName: 'json',
@@ -158,7 +160,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->json(data: ['test']),
                 checkResult: true,
-                expectedResult: $jsonResponse
+                expectedResult: $jsonResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'json',
@@ -167,7 +169,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->json(data: ['test'], status: 203),
                 checkResult: true,
-                expectedResult: $jsonResponse
+                expectedResult: $jsonResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'json',
@@ -180,7 +182,7 @@ class ResponseFactoryAssertTest extends TestCase
                     'header' => ['value'],
                 ]),
                 checkResult: true,
-                expectedResult: $jsonResponse
+                expectedResult: $jsonResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'jsonp',
@@ -189,7 +191,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->jsonp(callback: 'test'),
                 checkResult: true,
-                expectedResult: $jsonResponse
+                expectedResult: $jsonResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'jsonp',
@@ -198,7 +200,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->jsonp(callback: 'test', status: 203),
                 checkResult: true,
-                expectedResult: $jsonResponse
+                expectedResult: $jsonResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'jsonp',
@@ -212,10 +214,32 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $jsonResponse
+                expectedResult: $jsonResponse,
+            ),
+            new AssertExpectationEntity(
+                methodName: 'eventStream',
+                createAssert: static fn () => new ResponseFactoryAssert(eventStream: [
+                    new ResponseFactoryEventStreamExpectation(
+                        return: $streamResponse,
+                        headers: [
+                            'header' => ['value'],
+                        ],
+                        endStreamWith: 'done',
+                        hook: $assertStreamCallback,
+                    ),
+                ]),
+                call: static fn (ResponseFactoryAssert $assert) => $assert->eventStream(
+                    callback: $streamCallback,
+                    headers: [
+                        'header' => ['value'],
+                    ],
+                    endStreamWith: 'done',
+                ),
+                checkResult: true,
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'stream',
@@ -224,7 +248,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->stream(callback: $streamCallback),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'stream',
@@ -232,15 +256,15 @@ class ResponseFactoryAssertTest extends TestCase
                     new ResponseFactoryStreamExpectation(
                         return: $streamResponse,
                         status: 203,
-                        hook: $assertStreamCallback
+                        hook: $assertStreamCallback,
                     ),
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->stream(
                     callback: $streamCallback,
-                    status: 203
+                    status: 203,
                 ),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'stream',
@@ -254,10 +278,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'streamDownload',
@@ -266,7 +290,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->streamDownload(callback: $streamCallback),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'streamDownload',
@@ -274,15 +298,15 @@ class ResponseFactoryAssertTest extends TestCase
                     new ResponseFactoryStreamDownloadExpectation(
                         return: $streamResponse,
                         name: 'test',
-                        hook: $assertStreamCallback
+                        hook: $assertStreamCallback,
                     ),
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->streamDownload(
                     callback: $streamCallback,
-                    name: 'test'
+                    name: 'test',
                 ),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'streamDownload',
@@ -296,10 +320,10 @@ class ResponseFactoryAssertTest extends TestCase
                     name: 'test',
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'streamDownload',
@@ -314,10 +338,10 @@ class ResponseFactoryAssertTest extends TestCase
                     headers: [
                         'header' => ['value'],
                     ],
-                    disposition: 'inline'
+                    disposition: 'inline',
                 ),
                 checkResult: true,
-                expectedResult: $streamResponse
+                expectedResult: $streamResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'download',
@@ -326,7 +350,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->download(file: 'file'),
                 checkResult: true,
-                expectedResult: $binaryFileResponse
+                expectedResult: $binaryFileResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'download',
@@ -335,7 +359,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->download(file: 'file', name: 'test'),
                 checkResult: true,
-                expectedResult: $binaryFileResponse
+                expectedResult: $binaryFileResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'download',
@@ -349,10 +373,10 @@ class ResponseFactoryAssertTest extends TestCase
                     name: 'test',
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $binaryFileResponse
+                expectedResult: $binaryFileResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'download',
@@ -367,10 +391,10 @@ class ResponseFactoryAssertTest extends TestCase
                     headers: [
                         'header' => ['value'],
                     ],
-                    disposition: 'inline'
+                    disposition: 'inline',
                 ),
                 checkResult: true,
-                expectedResult: $binaryFileResponse
+                expectedResult: $binaryFileResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'file',
@@ -379,7 +403,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->file(file: 'file'),
                 checkResult: true,
-                expectedResult: $binaryFileResponse
+                expectedResult: $binaryFileResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'file',
@@ -392,7 +416,7 @@ class ResponseFactoryAssertTest extends TestCase
                     'header' => ['value'],
                 ]),
                 checkResult: true,
-                expectedResult: $binaryFileResponse
+                expectedResult: $binaryFileResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectTo',
@@ -401,7 +425,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectTo(path: 'test'),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectTo',
@@ -410,7 +434,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectTo(path: 'test', status: 203),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectTo',
@@ -424,10 +448,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectTo',
@@ -442,10 +466,10 @@ class ResponseFactoryAssertTest extends TestCase
                     headers: [
                         'header' => ['value'],
                     ],
-                    secure: true
+                    secure: true,
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToRoute',
@@ -454,7 +478,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectToRoute(route: 'test'),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToRoute',
@@ -462,12 +486,12 @@ class ResponseFactoryAssertTest extends TestCase
                     new ResponseFactoryRedirectToRouteExpectation(
                         return: $redirectResponse,
                         route: 'test',
-                        status: 203
+                        status: 203,
                     ),
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectToRoute(route: 'test', status: 203),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToRoute',
@@ -481,10 +505,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToAction',
@@ -493,7 +517,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectToAction(action: 'test'),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToAction',
@@ -506,10 +530,10 @@ class ResponseFactoryAssertTest extends TestCase
                     action: 'test',
                     parameters: [
                         'param' => true,
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToAction',
@@ -523,10 +547,10 @@ class ResponseFactoryAssertTest extends TestCase
                     parameters: [
                         'param' => true,
                     ],
-                    status: 203
+                    status: 203,
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToAction',
@@ -545,10 +569,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectGuest',
@@ -557,7 +581,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectGuest(path: 'test'),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectGuest',
@@ -566,7 +590,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectGuest(path: 'test', status: 203),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectGuest',
@@ -580,10 +604,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectGuest',
@@ -598,10 +622,10 @@ class ResponseFactoryAssertTest extends TestCase
                     headers: [
                         'header' => ['value'],
                     ],
-                    secure: true
+                    secure: true,
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToIntended',
@@ -610,7 +634,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectToIntended(),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToIntended',
@@ -619,7 +643,7 @@ class ResponseFactoryAssertTest extends TestCase
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectToIntended(default: 'test'),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToIntended',
@@ -627,15 +651,15 @@ class ResponseFactoryAssertTest extends TestCase
                     new ResponseFactoryRedirectToIntendedExpectation(
                         return: $redirectResponse,
                         default: 'test',
-                        status: 203
+                        status: 203,
                     ),
                 ]),
                 call: static fn (ResponseFactoryAssert $assert) => $assert->redirectToIntended(
                     default: 'test',
-                    status: 203
+                    status: 203,
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToIntended',
@@ -649,10 +673,10 @@ class ResponseFactoryAssertTest extends TestCase
                     status: 203,
                     headers: [
                         'header' => ['value'],
-                    ]
+                    ],
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
             new AssertExpectationEntity(
                 methodName: 'redirectToIntended',
@@ -667,10 +691,10 @@ class ResponseFactoryAssertTest extends TestCase
                     headers: [
                         'header' => ['value'],
                     ],
-                    secure: true
+                    secure: true,
                 ),
                 checkResult: true,
-                expectedResult: $redirectResponse
+                expectedResult: $redirectResponse,
             ),
         ];
     }

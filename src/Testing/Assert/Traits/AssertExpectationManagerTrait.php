@@ -14,7 +14,7 @@ trait AssertExpectationManagerTrait
      * @before
      */
     #[Before]
-    protected function beforeStartAssertExpectationManager()
+    protected function beforeStartAssertExpectationManager(): void
     {
         AssertExpectationManager::getInstance()->reset();
     }

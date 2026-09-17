@@ -18,18 +18,18 @@ class TranslatorAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         return [
             new AssertExpectationEntity(
                 methodName: 'get',
                 createAssert: static fn () => new TranslatorAssert(get: [new TranslatorGetExpectation(
                     return: 'Test',
-                    key: 'test'
+                    key: 'test',
                 )]),
                 call: static fn (TranslatorAssert $assert) => $assert->get(key: 'test'),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: 'Test',
             ),
             new AssertExpectationEntity(
                 methodName: 'get',
@@ -37,15 +37,15 @@ class TranslatorAssertTest extends TestCase
                     return: 'Test',
                     key: 'test',
                     replace: ['test'],
-                    locale: 'cs'
+                    locale: 'cs',
                 )]),
                 call: static fn (TranslatorAssert $assert) => $assert->get(
                     key: 'test',
                     replace: ['test'],
-                    locale: 'cs'
+                    locale: 'cs',
                 ),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: 'Test',
             ),
             new AssertExpectationEntity(
                 methodName: 'choice',
@@ -56,7 +56,7 @@ class TranslatorAssertTest extends TestCase
                 )]),
                 call: static fn (TranslatorAssert $assert) => $assert->choice(key: 'test', number: 1),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: 'Test',
             ),
             new AssertExpectationEntity(
                 methodName: 'choice',
@@ -65,34 +65,34 @@ class TranslatorAssertTest extends TestCase
                     key: 'test',
                     number: 1,
                     replace: ['test'],
-                    locale: 'cs'
+                    locale: 'cs',
                 )]),
                 call: static fn (TranslatorAssert $assert) => $assert->choice(
                     key: 'test',
                     number: 1,
                     replace: ['test'],
-                    locale: 'cs'
+                    locale: 'cs',
                 ),
                 checkResult: true,
-                expectedResult: 'Test'
+                expectedResult: 'Test',
             ),
             new AssertExpectationEntity(
                 methodName: 'getLocale',
                 createAssert: static fn () => new TranslatorAssert(getLocale: [new TranslatorGetLocaleExpectation(
-                    return: 'en'
+                    return: 'en',
                 )]),
                 call: static fn (TranslatorAssert $assert) => $assert->getLocale(),
                 checkResult: true,
-                expectedResult: 'en'
+                expectedResult: 'en',
             ),
             new AssertExpectationEntity(
                 methodName: 'setLocale',
                 createAssert: static fn () => new TranslatorAssert(setLocale: [new TranslatorSetLocaleExpectation(
-                    locale: 'cs'
+                    locale: 'cs',
                 )]),
                 call: static fn (TranslatorAssert $assert) => $assert->setLocale(locale: 'cs'),
                 checkResult: true,
-                expectedResult: null
+                expectedResult: null,
             ),
         ];
     }

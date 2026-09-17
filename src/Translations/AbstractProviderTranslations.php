@@ -14,7 +14,7 @@ abstract class AbstractProviderTranslations extends AbstractTranslations
 
     public function __construct(
         Translator $translator,
-        GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction
+        GetAppServiceProviderForClassAction $getAppServiceProviderForClassAction,
     ) {
         parent::__construct($translator);
 
@@ -28,6 +28,9 @@ abstract class AbstractProviderTranslations extends AbstractTranslations
      */
     abstract protected function getProviderClass(): string;
 
+    /**
+     * @param list<string> $key
+     */
     protected function getKey(string|array $key): string
     {
         return $this->providerKey . '::' . parent::getKey($key);

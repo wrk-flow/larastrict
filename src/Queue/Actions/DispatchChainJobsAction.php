@@ -10,7 +10,7 @@ use LaraStrict\Queue\Contracts\DispatchJobActionContract;
 class DispatchChainJobsAction implements DispatchChainJobsActionContract
 {
     public function __construct(
-        private readonly DispatchJobActionContract $dispatchJobAction
+        private readonly DispatchJobActionContract $dispatchJobAction,
     ) {
     }
 

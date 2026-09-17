@@ -13,7 +13,7 @@ class CacheTagsNotSupportedException extends Exception
     {
         $reason = 'You are trying to use cache with tags but your driver does not support it. Do not use tags or you driver that supports tags. Otherwise this would cause bugs like deleting queue.' . ($message === '' ? '' : sprintf(
             '. %s',
-            $message
+            $message,
         ));
 
         parent::__construct($reason, $code, $previous);

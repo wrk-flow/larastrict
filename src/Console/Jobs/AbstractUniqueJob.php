@@ -10,15 +10,14 @@ use LaraStrict\Queue\Jobs\Job;
 abstract class AbstractUniqueJob extends Job implements ShouldBeUnique
 {
     public int $tries = 30;
-
     public int $uniqueFor = 10;
-
     public int $maxExceptions = 1;
 
     abstract public function uniqueId(): string;
 
     /**
      * Calculate the number of seconds to wait before retrying the job.
+     * @return array<array-key, mixed>
      */
     public function backoff(): array
     {

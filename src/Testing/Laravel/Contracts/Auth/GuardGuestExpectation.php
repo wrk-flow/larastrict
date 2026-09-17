@@ -6,14 +6,14 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth;
 
 use Closure;
 
-final class GuardGuestExpectation
+final readonly class GuardGuestExpectation
 {
     /**
      * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly mixed $return,
-        public readonly ?Closure $hook = null,
+        public bool $return,
+        public ?Closure $hook = null,
     ) {
     }
 }

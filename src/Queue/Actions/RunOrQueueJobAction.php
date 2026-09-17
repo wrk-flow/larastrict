@@ -15,7 +15,7 @@ class RunOrQueueJobAction implements RunOrQueueJobActionContract
 {
     public function __construct(
         private readonly RunJobActionContract $runJobAction,
-        private readonly DispatchJobActionContract $dispatchJobAction
+        private readonly DispatchJobActionContract $dispatchJobAction,
     ) {
     }
 
@@ -34,13 +34,13 @@ class RunOrQueueJobAction implements RunOrQueueJobActionContract
         ?bool $shouldQueue = null,
     ): mixed {
         if ($shouldQueue === true
-            || $shouldQueue === null && ($command === null || $command->option('queue') === true)) {
+            || $shouldQueue === null && (! $command instanceof Command || $command->option('queue') === true)) {
             $this->dispatchJobAction->execute($job);
 
             return null;
         }
 
-        if ($setupBeforeRun !== null) {
+        if ($setupBeforeRun instanceof Closure) {
             $setupBeforeRun($job);
         }
 

@@ -6,11 +6,11 @@ namespace Tests\LaraStrict\Unit\Contracts;
 
 use Illuminate\Contracts\View\Factory;
 
-final class HasViewComposersExpectation
+final readonly class HasViewComposersExpectation
 {
     public function __construct(
-        public readonly string $serviceName,
-        public readonly Factory $viewFactory,
+        public string $serviceName,
+        public Factory $viewFactory,
     ) {
     }
 }

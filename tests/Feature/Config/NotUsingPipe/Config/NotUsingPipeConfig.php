@@ -11,7 +11,9 @@ class NotUsingPipeConfig extends AbstractProviderConfig
 {
     public function getTest(): string
     {
-        return $this->get(keyOrPath: ['test', 'sub-key'], default: 'missing file, this is a default');
+        $value = $this->get(keyOrPath: ['test', 'sub-key'], default: 'missing file, this is a default');
+        assert(is_string($value));
+        return $value;
     }
 
     protected function getServiceProvider(): string

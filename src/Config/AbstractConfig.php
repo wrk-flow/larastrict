@@ -11,7 +11,7 @@ abstract class AbstractConfig
     private readonly string $configFileName;
 
     public function __construct(
-        private readonly Repository $config
+        private readonly Repository $config,
     ) {
         $this->configFileName = $this->getConfigFileName();
     }
@@ -41,6 +41,9 @@ abstract class AbstractConfig
         $this->config->set($this->getPath($keyOrPath), $value);
     }
 
+    /**
+     * @param array<array-key, string> $keyOrPath
+     */
     protected function getPath(array|string $keyOrPath): string
     {
         if (is_array($keyOrPath)) {

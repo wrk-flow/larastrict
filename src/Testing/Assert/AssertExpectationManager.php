@@ -44,6 +44,7 @@ final class AssertExpectationManager
 
         // We must some assert due the assertion count
         if ($errors === []) {
+            // @phpstan-ignore staticMethod.alreadyNarrowedType
             Assert::assertEmpty($errors);
             return;
         }

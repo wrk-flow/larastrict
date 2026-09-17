@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class FactoryAddNamespaceExpectation
+final readonly class FactoryAddNamespaceExpectation
 {
     public function __construct(
-        public readonly mixed $namespace,
-        public readonly mixed $hints,
+        public mixed $namespace,
+        public mixed $hints,
     ) {
     }
 }

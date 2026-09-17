@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class FactoryComposerExpectation
+final readonly class FactoryComposerExpectation
 {
+    /**
+     * @param array<array-key, mixed> $return
+     */
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $views,
-        public readonly mixed $callback,
+        public array $return,
+        public mixed $views,
+        public mixed $callback,
     ) {
     }
 }

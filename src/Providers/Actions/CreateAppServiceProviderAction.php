@@ -32,12 +32,13 @@ class CreateAppServiceProviderAction implements CreateAppServiceProviderActionCo
             serviceName: $serviceName,
             serviceFileName: $this->getServiceFileName($serviceName, $provider),
             serviceRootDir: $dir,
-            namespace: $namespace
+            namespace: $namespace,
         );
     }
 
     /**
-     * @param ReflectionClass<ServiceProvider> $reflection
+     * @template T of ServiceProvider
+     * @param ReflectionClass<T> $reflection
      */
     protected function getRootDirectory(ReflectionClass $reflection): string
     {

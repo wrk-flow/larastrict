@@ -12,7 +12,7 @@ final class CacheExpirations
     /**
      * minute in seconds
      */
-    public const Minute = 60;
+    public const int Minute = 60;
 
     /**
      * hour in seconds
@@ -32,19 +32,19 @@ final class CacheExpirations
     /**
      * average month in seconds
      */
-    public const Month = 2_629_800;
+    public const int Month = 2_629_800;
 
     /**
      * average year in seconds
      */
-    public const Year = 31_557_600;
+    public const int Year = 31_557_600;
 
     /**
      * Fixed value
      *
      * @deprecated
      */
-    public const Long = self::Month;
+    public const int Long = self::Month;
 
     /**
      * @deprecated

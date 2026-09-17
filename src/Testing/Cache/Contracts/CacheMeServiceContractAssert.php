@@ -41,6 +41,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
      * value does not exist, creates it via callback. If repository supports tags it will use tagged store.
      *
      * @param Closure $getValue method is called with dependency injection
+     * @param array<array-key, mixed> $tags
      */
     public function get(
         string $key,
@@ -66,6 +67,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
 
     /**
      * Stores given value to cache.
+     * @param array<array-key, mixed> $tags
      */
     public function set(
         string $key,
@@ -88,6 +90,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
 
     /**
      * Flush cache for given tags (optional).
+     * @param array<array-key, mixed> $tags
      */
     public function flush(
         array $tags = [],
@@ -102,6 +105,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
 
     /**
      * Deletes exact key within the tags.
+     * @param array<array-key, mixed> $tags
      */
     public function delete(
         string $key,
@@ -119,7 +123,7 @@ class CacheMeServiceContractAssert extends AbstractExpectationCallsMap implement
     /**
      * Adds a observe functions for created/deleted/updated and flushes the cache.
      *
-     * @param array|Closure       $tags       If closure, model is passed to the closure. Closure should return an array
+     * @param array<array-key, mixed>|Closure       $tags       If closure, model is passed to the closure. Closure should return an array<array-key, mixed>
      * of tags to use. If empty, no flush will be done.
      * @param class-string<Model> $modelClass
      */

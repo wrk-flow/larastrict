@@ -11,11 +11,15 @@ use LaraStrict\Core\LaraStrictServiceProvider;
 use LaraStrict\Core\Services\SleepService;
 use LaraStrict\Enums\EnvironmentType;
 use LaraStrict\Testing\Core\Services\NoSleepService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 
 class TestServiceProviderTest extends TestCase
 {
-    public function makeExpectationCommandData(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function makeExpectationCommandData(): array
     {
         return [
             'production value' => [EnvironmentType::Production->value, false],
@@ -30,9 +34,7 @@ class TestServiceProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider makeExpectationCommandData
-     */
+    #[DataProvider('makeExpectationCommandData')]
     public function testMakeExpectationCommand(string|EnvironmentType $environment, bool $has): void
     {
         $this->setEnv($environment);
@@ -42,6 +44,8 @@ class TestServiceProviderTest extends TestCase
 
         $kernel = $this->app()
             ->make(Kernel::class);
+        // Keep the runtime guard for applications with an invalid container binding.
+        // @phpstan-ignore-next-line
         assert($kernel instanceof Kernel);
 
         $this->assertEquals($has, array_key_exists('make:expectation', $kernel->all()));
@@ -51,26 +55,26 @@ class TestServiceProviderTest extends TestCase
     {
         $this->app()
             ->register(LaraStrictServiceProvider::class);
+        $service = $this->app()
+            ->get(SleepServiceContract::class);
 
-        $this->assertInstanceOf(
-            expected: NoSleepService::class,
-            actual: $this->app()
-                ->make(SleepServiceContract::class)
+        self::assertInstanceOf(
+            NoSleepService::class,
+            $service,
         );
     }
 
     public function testSleepServiceInProduction(): void
     {
-        $this->setEnv(environment: EnvironmentType::Production);
+        $this->setEnv(EnvironmentType::Production);
 
         $this->app()
             ->register(LaraStrictServiceProvider::class);
 
-        $this->assertInstanceOf(
-            expected: SleepService::class,
-            actual: $this->app()
-                ->make(SleepServiceContract::class)
-        );
+        $service = $this->app()
+            ->get(SleepServiceContract::class);
+
+        self::assertInstanceOf(SleepService::class, $service);
     }
 
     protected function getPackageProviders($app)
@@ -80,8 +84,12 @@ class TestServiceProviderTest extends TestCase
 
     protected function setEnv(string|EnvironmentType $environment): void
     {
-        $config = $this->app()
+        $config = $this
+            ->app()
             ->get(Repository::class);
+
+        // Keep the runtime guard for applications with an invalid container binding.
+        // @phpstan-ignore-next-line
         assert($config instanceof Repository);
         $config->set('app.env', $environment);
     }

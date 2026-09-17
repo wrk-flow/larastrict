@@ -24,9 +24,9 @@ class RunOrQueueJobActionContractAssert extends AbstractExpectationCallsMap impl
 
     public function execute(
         Job $job,
-        Command $command = null,
+        ?Command $command = null,
         ?Closure $setupBeforeRun = null,
-        bool $shouldQueue = null,
+        ?bool $shouldQueue = null,
     ): mixed {
         $_expectation = $this->getExpectation(RunOrQueueJobActionContractExpectation::class);
         $_message = $this->getDebugMessage();

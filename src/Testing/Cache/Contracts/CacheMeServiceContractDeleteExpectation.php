@@ -6,12 +6,15 @@ namespace LaraStrict\Testing\Cache\Contracts;
 
 use LaraStrict\Cache\Enums\CacheMeStrategy;
 
-final class CacheMeServiceContractDeleteExpectation
+final readonly class CacheMeServiceContractDeleteExpectation
 {
+    /**
+     * @param array<array-key, mixed> $tags
+     */
     public function __construct(
-        public readonly string $key,
-        public readonly array $tags = [],
-        public readonly CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
+        public string $key,
+        public array $tags = [],
+        public CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ) {
     }
 }

@@ -20,8 +20,6 @@ class TestNoDependencyContext extends AbstractContext
         $value = $contextService->get(context: $this, createState: fn (): TestValue => new TestValue($this->value));
 
         Assert::assertEquals($this->value, $value->value);
-        Assert::assertInstanceOf(TestValue::class, $value);
-
         return $value;
     }
 

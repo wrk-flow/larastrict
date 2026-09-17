@@ -9,7 +9,7 @@ use LaraStrict\Context\Contracts\ContextValueContract;
 class BoolContextValue implements ContextValueContract
 {
     public function __construct(
-        private readonly bool $is
+        private readonly bool $is,
     ) {
     }
 

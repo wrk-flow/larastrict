@@ -10,6 +10,7 @@ class PhpDocEntity
 {
     public function __construct(
         public readonly PhpType $returnType = PhpType::Unknown,
+        public readonly ?string $returnTypeName = null,
     ) {
     }
 }

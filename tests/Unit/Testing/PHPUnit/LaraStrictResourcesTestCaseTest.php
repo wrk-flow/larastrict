@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
 use LaraStrict\Testing\PHPUnit\ResourceTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\Http\Resources\LaraStrictResource;
 use Tests\LaraStrict\Feature\Http\Resources\TestAction;
 use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
@@ -17,7 +18,7 @@ use Tests\LaraStrict\Feature\Http\Resources\TestEntity;
  */
 class LaraStrictResourcesTestCaseTest extends ResourceTestCase
 {
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
@@ -31,8 +32,8 @@ class LaraStrictResourcesTestCaseTest extends ResourceTestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -49,7 +50,7 @@ class LaraStrictResourcesTestCaseTest extends ResourceTestCase
                 ],
             ],
             container: new TestingContainer(
-                makeAlwaysBinding: static fn () => new TestAction($instance)
+                makeAlwaysBinding: static fn () => new TestAction($instance),
             ),
         );
     }
@@ -62,7 +63,7 @@ class LaraStrictResourcesTestCaseTest extends ResourceTestCase
     protected static function createContainer(string $value): TestingContainer
     {
         return new TestingContainer(
-            makeAlwaysBinding: static fn () => new TestAction($value)
+            makeAlwaysBinding: static fn () => new TestAction($value),
         );
     }
 }

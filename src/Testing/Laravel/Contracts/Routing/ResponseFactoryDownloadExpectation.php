@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 
 use Closure;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
-final class ResponseFactoryDownloadExpectation
+final readonly class ResponseFactoryDownloadExpectation
 {
     /**
-     * @param Closure(mixed, mixed, array, mixed, self):void|null $hook
+     * @param Closure(mixed, mixed, array<array-key, mixed>, mixed, self):void|null $hook
+     * @param array<array-key, mixed> $headers
      */
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $file,
-        public readonly mixed $name = null,
-        public readonly array $headers = [],
-        public readonly mixed $disposition = 'attachment',
-        public readonly ?Closure $hook = null,
+        public BinaryFileResponse $return,
+        public mixed $file,
+        public mixed $name = null,
+        public array $headers = [],
+        public mixed $disposition = 'attachment',
+        public ?Closure $hook = null,
     ) {
     }
 }
