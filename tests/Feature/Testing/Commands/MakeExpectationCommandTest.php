@@ -213,6 +213,8 @@ class MakeExpectationCommandTest extends TestCase
                 'MultiFunctionContractSelfExpectation',
                 'MultiFunctionContractSelfViaClassExpectation',
                 'MultiFunctionContractNoParamsExpectation',
+                'MultiFunctionContractInterfaceTypeExpectation',
+                'MultiFunctionContractConstantRangeExpectation',
             ]],
         ];
     }

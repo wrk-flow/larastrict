@@ -21,6 +21,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
      * @param array<MultiFunctionContractNoReturnExpectation|null> $noReturn
      * @param array<MultiFunctionContractMixedExpectation|null> $mixed
      * @param array<MultiFunctionContractNoParamsExpectation|null> $noParams
+     * @param array<MultiFunctionContractInterfaceTypeExpectation|null> $interfaceType
+     * @param array<MultiFunctionContractConstantRangeExpectation|null> $constantRange
      */
     function __construct(
         array $self = [],
@@ -35,6 +37,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         array $noReturn = [],
         array $mixed = [],
         array $noParams = [],
+        array $interfaceType = [],
+        array $constantRange = [],
     ) {
         parent::__construct();
         $this->setExpectations(MultiFunctionContractSelfExpectation::class, $self);
@@ -49,6 +53,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         $this->setExpectations(MultiFunctionContractNoReturnExpectation::class, $noReturn);
         $this->setExpectations(MultiFunctionContractMixedExpectation::class, $mixed);
         $this->setExpectations(MultiFunctionContractNoParamsExpectation::class, $noParams);
+        $this->setExpectations(MultiFunctionContractInterfaceTypeExpectation::class, $interfaceType);
+        $this->setExpectations(MultiFunctionContractConstantRangeExpectation::class, $constantRange);
     }
 
     function self(string $first, int $second, bool $third): MultiFunctionContract
@@ -82,6 +88,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $this;
     }
 
     /**
@@ -103,6 +111,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $this;
     }
 
     /**
@@ -120,6 +130,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $_expectation->return;
     }
 
     /**
@@ -137,6 +149,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $_expectation->return;
     }
 
     /**
@@ -154,6 +168,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $_expectation->return;
     }
 
     /**
@@ -171,6 +187,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $_expectation->return;
     }
 
     /**
@@ -188,6 +206,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $this;
     }
 
     /**
@@ -205,6 +225,8 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $first, $second, $third, $_expectation);
         }
+
+        return $_expectation->return;
     }
 
     function noReturn($first, $second, $third)
@@ -240,6 +262,34 @@ class MultiFunctionContractAssert extends \LaraStrict\Testing\Assert\AbstractExp
     function noParams(): string
     {
         $_expectation = $this->getExpectation(MultiFunctionContractNoParamsExpectation::class);
+
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $_expectation);
+        }
+
+        return $_expectation->return;
+    }
+
+    function interfaceType(\Traversable $values): \Traversable
+    {
+        $_expectation = $this->getExpectation(MultiFunctionContractInterfaceTypeExpectation::class);
+        $_message = $this->getDebugMessage();
+
+        Assert::assertEquals($_expectation->values, $values, $_message);
+
+        if (is_callable($_expectation->_hook)) {
+            call_user_func($_expectation->_hook, $values, $_expectation);
+        }
+
+        return $_expectation->return;
+    }
+
+    /**
+     * @return self::LEVEL_*
+     */
+    function constantRange(): int
+    {
+        $_expectation = $this->getExpectation(MultiFunctionContractConstantRangeExpectation::class);
 
         if (is_callable($_expectation->_hook)) {
             call_user_func($_expectation->_hook, $_expectation);

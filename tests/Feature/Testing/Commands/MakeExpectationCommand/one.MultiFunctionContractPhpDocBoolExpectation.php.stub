@@ -7,9 +7,11 @@ namespace App\Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 final class MultiFunctionContractPhpDocBoolExpectation
 {
     /**
+     * @param bool $return
      * @param \Closure(mixed,mixed,\Closure,self):void|null $_hook
      */
     public function __construct(
+        public readonly mixed $return,
         public readonly mixed $first,
         public readonly mixed $second,
         public readonly \Closure $third,

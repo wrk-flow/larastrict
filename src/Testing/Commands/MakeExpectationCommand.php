@@ -301,6 +301,13 @@ class MakeExpectationCommand extends Command
                 ->setReadOnly();
 
             $this->setParameterType($returnType, $constructorParameter);
+
+            if ($phpDoc->returnTypeName !== null) {
+                $constructor->addComment(sprintf(
+                    '@param %s $return',
+                    $this->resolvePhpDocReturnType($method, $phpDoc->returnTypeName),
+                ));
+            }
         }
 
         $parameterTypes = [];
@@ -344,7 +351,7 @@ class MakeExpectationCommand extends Command
                 }
 
                 // Fix global namespace
-                if (class_exists($name)) {
+                if (class_exists($name) || interface_exists($name)) {
                     return '\\' . $name;
                 }
 
@@ -359,7 +366,7 @@ class MakeExpectationCommand extends Command
             $allowNull = $type->allowsNull();
             $proposedType = $type->getName();
 
-            if (class_exists($proposedType)) {
+            if (class_exists($proposedType) || interface_exists($proposedType)) {
                 // Fix global namespace
                 $proposedType = '\\' . $proposedType;
             }
@@ -389,6 +396,13 @@ class MakeExpectationCommand extends Command
         $constructorParameter->setType($proposedType);
 
         return $proposedType;
+    }
+
+    protected function resolvePhpDocReturnType(ReflectionMethod $method, string $returnType): string
+    {
+        $declaringClass = '\\' . $method->getDeclaringClass()->getName() . '::';
+
+        return str_replace(['self::', 'static::'], $declaringClass, $returnType);
     }
 
     protected function setParameterDefaultValue(
