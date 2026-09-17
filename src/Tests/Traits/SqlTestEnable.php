@@ -9,6 +9,7 @@ use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\SQLiteConnection;
+use Illuminate\Support\Facades\DB;
 use PDO;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\BeforeClass;
@@ -23,6 +24,7 @@ trait SqlTestEnable
         ]);
         $resolver->setDefaultConnection('default');
         Model::setConnectionResolver($resolver);
+        DB::swap(Model::getConnectionResolver());
     }
 
     /**
