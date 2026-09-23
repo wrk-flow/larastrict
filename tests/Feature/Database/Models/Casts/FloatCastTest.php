@@ -33,6 +33,15 @@ class FloatCastTest extends TestCase
             'no decimals' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned('7', 7.0),
             ],
+            'native integer' => [
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(7, 7.0),
+            ],
+            'native float' => [
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(123.5, 123.5),
+            ],
+            'native float, non null' => [
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(123.5, 123.5, true),
+            ],
             'null' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(null, null),
             ],
@@ -80,7 +89,7 @@ class FloatCastTest extends TestCase
     }
 
     public function assertEnsureThatFloatIsReturned(
-        ?string $value,
+        int|float|string|null $value,
         ?float $expected,
         bool $nonNull = false,
     ): void {
