@@ -1,4 +1,4 @@
-# Upgrade to 1.x version
+# Upgrade to 0.1.x version
 
 Due to the test bench package we have dropped Laravel 9 and PHPUnit 9.
 
