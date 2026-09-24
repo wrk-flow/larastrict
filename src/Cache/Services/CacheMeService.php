@@ -17,6 +17,7 @@ use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheDriver;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
 use LaraStrict\Cache\Exceptions\CacheTagsNotSupportedException;
+use LaraStrict\Log\Config\LoggingConfig;
 use Psr\Log\LoggerInterface;
 
 class CacheMeService implements CacheMeServiceContract
@@ -25,6 +26,7 @@ class CacheMeService implements CacheMeServiceContract
         private readonly Factory $cacheFactory,
         private readonly LoggerInterface $logger,
         private readonly Container $container,
+        private readonly LoggingConfig $loggingConfig,
     ) {
     }
 
@@ -139,10 +141,12 @@ class CacheMeService implements CacheMeServiceContract
         array $tags = [],
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void {
-        $this->logger->debug('Flushing cache', [
-            'tags' => $tags,
-            'strategy' => $strategy->value,
-        ]);
+        if ($this->loggingConfig->isCacheLoggingEnabled()) {
+            $this->logger->debug('Flushing cache', [
+                'tags' => $tags,
+                'strategy' => $strategy->value,
+            ]);
+        }
 
         foreach ($this->repositories(tags: $tags, strategy: $strategy) as $repository) {
             if ($repository instanceof TaggedCache) {
@@ -162,11 +166,13 @@ class CacheMeService implements CacheMeServiceContract
         array $tags = [],
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void {
-        $this->logger->debug('Deleting cache', [
-            'tags' => $tags,
-            'key' => $key,
-            'strategy' => $strategy,
-        ]);
+        if ($this->loggingConfig->isCacheLoggingEnabled()) {
+            $this->logger->debug('Deleting cache', [
+                'tags' => $tags,
+                'key' => $key,
+                'strategy' => $strategy,
+            ]);
+        }
 
         foreach ($this->repositories($tags, $strategy) as $store) {
             $store->delete($key);
@@ -266,7 +272,7 @@ class CacheMeService implements CacheMeServiceContract
             return;
         }
 
-        if ($log) {
+        if ($log && $this->loggingConfig->isCacheLoggingEnabled()) {
             $this->logger->debug('Storing cache', [
                 'key' => $key,
                 'seconds' => $seconds,
