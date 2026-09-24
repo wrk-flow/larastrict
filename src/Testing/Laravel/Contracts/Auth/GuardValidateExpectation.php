@@ -6,15 +6,16 @@ namespace LaraStrict\Testing\Laravel\Contracts\Auth;
 
 use Closure;
 
-final class GuardValidateExpectation
+final readonly class GuardValidateExpectation
 {
     /**
-     * @param Closure(array, self):void|null $hook
+     * @param Closure(array<array-key, mixed>, self):void|null $hook
+     * @param array<array-key, mixed> $credentials
      */
     public function __construct(
-        public readonly mixed $return,
-        public readonly array $credentials = [],
-        public readonly ?Closure $hook = null,
+        public bool $return,
+        public array $credentials = [],
+        public ?Closure $hook = null,
     ) {
     }
 }

@@ -10,6 +10,10 @@ use Nette\PhpGenerator\PhpFile;
 
 class AssertFileStateEntity
 {
+    /**
+     * @param list<string> $constructorBodies
+     * @param list<string> $constructorComments
+     */
     public function __construct(
         public readonly PhpFile $file,
         public readonly ClassType $class,

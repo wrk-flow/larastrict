@@ -36,7 +36,7 @@ abstract class AbstractExpectationCallsMap
     }
 
     /**
-     * @template TExpectation
+     * @template TExpectation of object
      *
      * @param class-string<TExpectation> $class
      * @param array<TExpectation|null>        $expectations
@@ -94,7 +94,7 @@ abstract class AbstractExpectationCallsMap
         return $expectation;
     }
 
-    protected function getDebugMessage(int $callStep = null, string $reason = 'failed', int $debugLevel = 1): string
+    protected function getDebugMessage(?int $callStep = null, string $reason = 'failed', int $debugLevel = 1): string
     {
         $caller = debug_backtrace()[$debugLevel];
 
@@ -103,7 +103,7 @@ abstract class AbstractExpectationCallsMap
             $caller['class'] ?? static::class,
             $caller['function'],
             $reason,
-            $callStep ?? $this->_currentDebugStep
+            $callStep ?? $this->_currentDebugStep,
         );
     }
 }

@@ -17,10 +17,9 @@ trait AssertProviderPolicies
     protected function assertPolicies(Application $application, array $policyMap): void
     {
         $gate = $application->get(Gate::class);
-        assert($gate instanceof Gate);
 
         foreach ($policyMap as $key => $expectedClass) {
-            $this->getPolicy(gate: $gate, policy: $key, expectedPolicyClass: $expectedClass);
+            $this->getPolicy($gate, $key, $expectedClass);
         }
     }
 
@@ -34,10 +33,9 @@ trait AssertProviderPolicies
         Application $application,
         string $policy,
         string $expectedPolicyClass,
-        string|bool|null $expectToExtendClass = false
+        string|bool|null $expectToExtendClass = false,
     ): object {
         $gate = $application->get(Gate::class);
-        assert($gate instanceof Gate);
 
         $policyInstance = $this->getPolicy($gate, $policy, $expectedPolicyClass);
 
@@ -50,17 +48,17 @@ trait AssertProviderPolicies
 
         if ($expectToExtendClass === null) {
             Assert::assertTrue(
-                condition: $parentClass === false,
-                message: sprintf('Policy (%s) does should not extend any class', $policy)
+                $parentClass === false,
+                sprintf('Policy (%s) does should not extend any class', $policy),
             );
             return $policyInstance;
         }
 
-        Assert::assertTrue(condition: $parentClass !== false, message: 'Policy does not extend any class');
+        Assert::assertTrue($parentClass !== false, 'Policy does not extend any class');
         Assert::assertEquals(
-            expected: $expectToExtendClass,
-            actual: $parentClass->getName(),
-            message: sprintf('Policy (%s)does not extend expected class', $policy)
+            $expectToExtendClass,
+            $parentClass->getName(),
+            sprintf('Policy (%s)does not extend expected class', $policy),
         );
 
         return $policyInstance;
@@ -76,9 +74,9 @@ trait AssertProviderPolicies
     {
         $policy = $gate->getPolicyFor($policy);
         Assert::assertInstanceOf(
-            expected: $expectedPolicyClass,
-            actual: $policy,
-            message: 'Policy does not match expected class'
+            $expectedPolicyClass,
+            $policy,
+            'Policy does not match expected class',
         );
 
         return $policy;

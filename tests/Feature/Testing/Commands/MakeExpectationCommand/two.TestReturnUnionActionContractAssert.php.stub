@@ -26,7 +26,7 @@ class TestReturnUnionActionContractAssert extends \LaraStrict\Testing\Assert\Abs
         string|int $multi,
         string|int|null $multiNull,
         string|int|null $multiNullDefault = 'test',
-        string $optional = null,
+        ?string $optional = null,
         string $optionalString = 'test',
         string $constant = DIRECTORY_SEPARATOR,
         int $constantClass = \LaraStrict\Cache\Constants\CacheExpirations::Day,

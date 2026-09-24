@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Events;
 
-final class DispatcherListenExpectation
+final readonly class DispatcherListenExpectation
 {
     public function __construct(
-        public readonly mixed $events,
-        public readonly mixed $listener = null,
+        public mixed $events,
+        public mixed $listener = null,
     ) {
     }
 }

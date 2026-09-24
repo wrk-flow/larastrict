@@ -11,10 +11,10 @@ use LaraStrict\Http\Enums\HttpMessage;
  */
 class MessageResource extends JsonResource
 {
-    public static $wrap = null;
+    public static $wrap;
 
     /**
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function toArray($request)
     {

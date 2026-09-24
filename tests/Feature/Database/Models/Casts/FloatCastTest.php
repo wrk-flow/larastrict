@@ -6,64 +6,74 @@ namespace Tests\LaraStrict\Feature\Database\Models\Casts;
 
 use Closure;
 use LaraStrict\Database\Models\Casts\FloatCast;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 class FloatCastTest extends TestCase
 {
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataEnsureThatFloatIsReturned(): array
+    public static function dataEnsureThatFloatIsReturned(): array
     {
         return [
             'decimals' => [
-                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(value: '123.00', expected: 123.0),
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned('123.00', 123.0),
             ],
             'decimals - long' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
-                    value: '123.0002',
-                    expected: 123.0002,
+                    '123.0002',
+                    123.0002,
                 ),
             ],
             'decimals - short' => [
-                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(value: '123.5', expected: 123.5),
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned('123.5', 123.5),
             ],
             'no decimals' => [
-                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(value: '7', expected: 7.0),
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned('7', 7.0),
+            ],
+            'native integer' => [
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(7, 7.0),
+            ],
+            'native float' => [
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(123.5, 123.5),
+            ],
+            'native float, non null' => [
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(123.5, 123.5, true),
             ],
             'null' => [
-                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(value: null, expected: null),
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(null, null),
             ],
             'empty string' => [
-                static fn (self $self) => $self->assertEnsureThatFloatIsReturned(value: '', expected: null),
+                static fn (self $self) => $self->assertEnsureThatFloatIsReturned('', null),
             ],
             'non null set to true, null' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
-                    value: null,
-                    expected: 0.0,
-                    nonNull: true
+                    null,
+                    0.0,
+                    true,
                 ),
             ],
             'non null set to true, empty string' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
-                    value: '',
-                    expected: 0.0,
-                    nonNull: true
+                    '',
+                    0.0,
+                    true,
                 ),
             ],
             'non null set to true, decimals' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
-                    value: '123.00',
-                    expected: 123.0,
-                    nonNull: true,
+                    '123.00',
+                    123.0,
+                    true,
                 ),
             ],
             'non null set to true, decimals - long' => [
                 static fn (self $self) => $self->assertEnsureThatFloatIsReturned(
-                    value: '123.0002',
-                    expected: 123.0002,
-                    nonNull: true,
+                    '123.0002',
+                    123.0002,
+                    true,
                 ),
             ],
         ];
@@ -71,142 +81,141 @@ class FloatCastTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataEnsureThatFloatIsReturned
      */
+    #[DataProvider('dataEnsureThatFloatIsReturned')]
     public function testEnsureThatFloatIsReturned(Closure $assert): void
     {
         $assert($this);
     }
 
     public function assertEnsureThatFloatIsReturned(
-        ?string $value,
+        int|float|string|null $value,
         ?float $expected,
-        bool $nonNull = false
+        bool $nonNull = false,
     ): void {
-        $cast = $nonNull === false ? new FloatCast() : new FloatCast(nonNull: $nonNull);
+        $cast = $nonNull === false ? new FloatCast() : new FloatCast(2, $nonNull);
         $this->assertSame(
-            expected: $expected,
-            actual: $cast->get(model: new Test(), key: '', value: $value, attributes: []),
+            $expected,
+            $cast->get(new TestModel(), '', $value, []),
         );
     }
 
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataConvertFloatToModelDecimalValue(): array
+    public static function dataConvertFloatToModelDecimalValue(): array
     {
         return [
             '4 decimals - 1' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123.0000',
-                    cast: new FloatCast(4),
+                    123.0,
+                    '123.0000',
+                    new FloatCast(4),
                 ),
             ],
             '4 decimals - 2' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.005,
-                    expected: '123.0050',
-                    cast: new FloatCast(4),
+                    123.005,
+                    '123.0050',
+                    new FloatCast(4),
                 ),
             ],
             '4 decimals - cut' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.00005,
-                    expected: '123.0001',
-                    cast: new FloatCast(4),
+                    123.00005,
+                    '123.0001',
+                    new FloatCast(4),
                 ),
             ],
             '2 decimals' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123.00',
-                    cast: new FloatCast(),
+                    123.0,
+                    '123.00',
+                    new FloatCast(),
                 ),
             ],
             '1 decimal' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123.0',
-                    cast: new FloatCast(1),
+                    123.0,
+                    '123.0',
+                    new FloatCast(1),
                 ),
             ],
             '0 decimals' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123',
-                    cast: new FloatCast(0),
+                    123.0,
+                    '123',
+                    new FloatCast(0),
                 ),
             ],
             'null' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: null,
-                    expected: null,
-                    cast: new FloatCast(),
+                    null,
+                    null,
+                    new FloatCast(),
                 ),
             ],
             'empty string' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: '',
-                    expected: null,
-                    cast: new FloatCast(),
+                    '',
+                    null,
+                    new FloatCast(),
                 ),
             ],
             'non null, value' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.23,
-                    expected: '123.23',
-                    cast: new FloatCast(nonNull: true),
+                    123.23,
+                    '123.23',
+                    new FloatCast(2, true),
                 ),
             ],
             'non null, null' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: null,
-                    expected: '0.00',
-                    cast: new FloatCast(nonNull: true),
+                    null,
+                    '0.00',
+                    new FloatCast(2, true),
                 ),
             ],
             'non null, empty string' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: '',
-                    expected: '0.00',
-                    cast: new FloatCast(nonNull: true),
+                    '',
+                    '0.00',
+                    new FloatCast(2, true),
                 ),
             ],
             'non null, 4 decimals - 1' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123.0000',
-                    cast: new FloatCast(decimals: 4, nonNull: true),
+                    123.0,
+                    '123.0000',
+                    new FloatCast(4, true),
                 ),
             ],
             'non null, 4 decimals - 2' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.005,
-                    expected: '123.0050',
-                    cast: new FloatCast(decimals: 4, nonNull: true),
+                    123.005,
+                    '123.0050',
+                    new FloatCast(4, true),
                 ),
             ],
             'non null, 4 decimals - cut' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.00005,
-                    expected: '123.0001',
-                    cast: new FloatCast(decimals: 4, nonNull: true),
+                    123.00005,
+                    '123.0001',
+                    new FloatCast(4, true),
                 ),
             ],
             'non null, 2 decimals' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123.00',
-                    cast: new FloatCast(decimals: 2, nonNull: true),
+                    123.0,
+                    '123.00',
+                    new FloatCast(2, true),
                 ),
             ],
             'non null, 1 decimal' => [
                 static fn (self $self) => $self->assertConvertFloatToModelDecimalValue(
-                    value: 123.0,
-                    expected: '123.0',
-                    cast: new FloatCast(decimals: 1, nonNull: true),
+                    123.0,
+                    '123.0',
+                    new FloatCast(1, true),
                 ),
             ],
         ];
@@ -214,8 +223,8 @@ class FloatCastTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider dataConvertFloatToModelDecimalValue
      */
+    #[DataProvider('dataConvertFloatToModelDecimalValue')]
     public function testConvertFloatToModelDecimalValue(Closure $assert): void
     {
         $assert($this);
@@ -224,11 +233,11 @@ class FloatCastTest extends TestCase
     public function assertConvertFloatToModelDecimalValue(
         float|string|null $value,
         ?string $expected,
-        FloatCast $cast
+        FloatCast $cast,
     ): void {
         $this->assertSame(
-            expected: $expected,
-            actual: $cast->set(model: new Test(), key: '', value: $value, attributes: []),
+            $expected,
+            $cast->set(new TestModel(), '', $value, []),
         );
     }
 }

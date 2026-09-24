@@ -11,6 +11,9 @@ use LaraStrict\Http\Resources\JsonResource;
  */
 class LaraStrictResource extends JsonResource
 {
+    /**
+     * @return array<array-key, mixed>
+     */
     public function toArray($request): array
     {
         return [

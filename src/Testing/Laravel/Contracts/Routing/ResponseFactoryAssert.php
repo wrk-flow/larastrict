@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 
+use Closure;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +13,7 @@ use LaraStrict\Testing\Assert\AbstractExpectationCallsMap;
 use PHPUnit\Framework\Assert;
 use SplFileInfo;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedJsonResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ResponseFactoryAssert extends AbstractExpectationCallsMap implements ResponseFactory
@@ -22,7 +24,9 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param array<ResponseFactoryViewExpectation|null> $view
      * @param array<ResponseFactoryJsonExpectation|null> $json
      * @param array<ResponseFactoryJsonpExpectation|null> $jsonp
+     * @param array<ResponseFactoryEventStreamExpectation|null> $eventStream
      * @param array<ResponseFactoryStreamExpectation|null> $stream
+     * @param array<ResponseFactoryStreamJsonExpectation|null> $streamJson
      * @param array<ResponseFactoryStreamDownloadExpectation|null> $streamDownload
      * @param array<ResponseFactoryDownloadExpectation|null> $download
      * @param array<ResponseFactoryFileExpectation|null> $file
@@ -38,7 +42,9 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
         array $view = [],
         array $json = [],
         array $jsonp = [],
+        array $eventStream = [],
         array $stream = [],
+        array $streamJson = [],
         array $streamDownload = [],
         array $download = [],
         array $file = [],
@@ -54,7 +60,9 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
         $this->setExpectations(ResponseFactoryViewExpectation::class, $view);
         $this->setExpectations(ResponseFactoryJsonExpectation::class, $json);
         $this->setExpectations(ResponseFactoryJsonpExpectation::class, $jsonp);
+        $this->setExpectations(ResponseFactoryEventStreamExpectation::class, $eventStream);
         $this->setExpectations(ResponseFactoryStreamExpectation::class, $stream);
+        $this->setExpectations(ResponseFactoryStreamJsonExpectation::class, $streamJson);
         $this->setExpectations(ResponseFactoryStreamDownloadExpectation::class, $streamDownload);
         $this->setExpectations(ResponseFactoryDownloadExpectation::class, $download);
         $this->setExpectations(ResponseFactoryFileExpectation::class, $file);
@@ -68,9 +76,10 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
     /**
      * Create a new response instance.
      *
-     * @param  array|string  $content
+     * @param  array<array-key, mixed>|string  $content
      * @param  int  $status
      * @return Response
+     * @param array<array-key, mixed> $headers
      */
     public function make($content = '', $status = 200, array $headers = [])
     {
@@ -93,6 +102,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      *
      * @param  int  $status
      * @return Response
+     * @param array<array-key, mixed> $headers
      */
     public function noContent($status = 204, array $headers = [])
     {
@@ -112,10 +122,11 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
     /**
      * Create a new response for a given view.
      *
-     * @param  string|array  $view
-     * @param  array  $data
+     * @param  string|array<array-key, mixed>  $view
+     * @param  array<array-key, mixed>  $data
      * @param  int  $status
      * @return Response
+     * @param array<array-key, mixed> $headers
      */
     public function view($view, $data = [], $status = 200, array $headers = [])
     {
@@ -141,6 +152,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param  int  $status
      * @param  int  $options
      * @return JsonResponse
+     * @param array<array-key, mixed> $headers
      */
     public function json($data = [], $status = 200, array $headers = [], $options = 0)
     {
@@ -167,6 +179,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param  int  $status
      * @param  int  $options
      * @return JsonResponse
+     * @param array<array-key, mixed> $headers
      */
     public function jsonp($callback, $data = [], $status = 200, array $headers = [], $options = 0)
     {
@@ -187,11 +200,35 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
     }
 
     /**
+     * Create an event stream response.
+     *
+     * @param array<array-key, mixed> $headers
+     */
+    public function eventStream(
+        Closure $callback,
+        array $headers = [],
+        mixed $endStreamWith = '</stream>',
+    ): StreamedResponse {
+        $expectation = $this->getExpectation(ResponseFactoryEventStreamExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->headers, $headers, $message);
+        Assert::assertEquals($expectation->endStreamWith, $endStreamWith, $message);
+
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, $callback, $headers, $endStreamWith, $expectation);
+        }
+
+        return $expectation->return;
+    }
+
+    /**
      * Create a new streamed response instance.
      *
      * @param  callable  $callback
      * @param  int  $status
      * @return StreamedResponse
+     * @param array<array-key, mixed> $headers
      */
     public function stream($callback, $status = 200, array $headers = [])
     {
@@ -209,12 +246,38 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
     }
 
     /**
+     * Create a new streamed JSON response instance.
+     *
+     * @param array<array-key, mixed> $data
+     * @param int $status
+     * @param array<array-key, mixed> $headers
+     * @param int $encodingOptions
+     */
+    public function streamJson($data, $status = 200, $headers = [], $encodingOptions = 15): StreamedJsonResponse
+    {
+        $expectation = $this->getExpectation(ResponseFactoryStreamJsonExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->data, $data, $message);
+        Assert::assertEquals($expectation->status, $status, $message);
+        Assert::assertEquals($expectation->headers, $headers, $message);
+        Assert::assertEquals($expectation->encodingOptions, $encodingOptions, $message);
+
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, $data, $status, $headers, $encodingOptions, $expectation);
+        }
+
+        return $expectation->return;
+    }
+
+    /**
      * Create a new streamed response instance as a file download.
      *
      * @param  callable  $callback
      * @param  string|null  $name
      * @param  string|null  $disposition
      * @return StreamedResponse
+     * @param array<array-key, mixed> $headers
      */
     public function streamDownload($callback, $name = null, array $headers = [], $disposition = 'attachment')
     {
@@ -239,6 +302,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param  string|null  $name
      * @param  string|null  $disposition
      * @return BinaryFileResponse
+     * @param array<array-key, mixed> $headers
      */
     public function download($file, $name = null, array $headers = [], $disposition = 'attachment')
     {
@@ -262,6 +326,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      *
      * @param SplFileInfo|string $file
      * @return BinaryFileResponse
+     * @param array<array-key, mixed> $headers
      */
     public function file($file, array $headers = [])
     {
@@ -283,7 +348,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      *
      * @param  string  $path
      * @param  int  $status
-     * @param  array  $headers
+     * @param  array<array-key, mixed>  $headers
      * @param  bool|null  $secure
      * @return RedirectResponse
      */
@@ -310,7 +375,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param  string  $route
      * @param  mixed  $parameters
      * @param  int  $status
-     * @param  array  $headers
+     * @param  array<array-key, mixed>  $headers
      * @return RedirectResponse
      */
     public function redirectToRoute($route, $parameters = [], $status = 302, $headers = [])
@@ -336,7 +401,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      * @param  string  $action
      * @param  mixed  $parameters
      * @param  int  $status
-     * @param  array  $headers
+     * @param  array<array-key, mixed>  $headers
      * @return RedirectResponse
      */
     public function redirectToAction($action, $parameters = [], $status = 302, $headers = [])
@@ -361,7 +426,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      *
      * @param  string  $path
      * @param  int  $status
-     * @param  array  $headers
+     * @param  array<array-key, mixed>  $headers
      * @param  bool|null  $secure
      * @return RedirectResponse
      */
@@ -387,7 +452,7 @@ class ResponseFactoryAssert extends AbstractExpectationCallsMap implements Respo
      *
      * @param  string  $default
      * @param  int  $status
-     * @param  array  $headers
+     * @param  array<array-key, mixed>  $headers
      * @param  bool|null  $secure
      * @return RedirectResponse
      */

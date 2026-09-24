@@ -17,14 +17,14 @@ abstract class AbstractModelChangedEvent
     /**
      * Contains model changes the new values.
      *
-     * @var array<string, array>
+     * @var array<string, mixed>
      */
     public readonly array $changes;
 
     /**
      * Contains model changes the old values.
      *
-     * @var array<string, array>
+     * @var array<string, mixed>
      */
     public readonly array $changesOriginalValues;
 

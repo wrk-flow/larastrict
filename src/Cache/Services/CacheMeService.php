@@ -17,6 +17,7 @@ use LaraStrict\Cache\Contracts\CacheMeServiceContract;
 use LaraStrict\Cache\Enums\CacheDriver;
 use LaraStrict\Cache\Enums\CacheMeStrategy;
 use LaraStrict\Cache\Exceptions\CacheTagsNotSupportedException;
+use LaraStrict\Log\Config\LoggingConfig;
 use Psr\Log\LoggerInterface;
 
 class CacheMeService implements CacheMeServiceContract
@@ -24,7 +25,8 @@ class CacheMeService implements CacheMeServiceContract
     public function __construct(
         private readonly Factory $cacheFactory,
         private readonly LoggerInterface $logger,
-        private readonly Container $container
+        private readonly Container $container,
+        private readonly LoggingConfig $loggingConfig,
     ) {
     }
 
@@ -32,6 +34,7 @@ class CacheMeService implements CacheMeServiceContract
      * Stores in memory and uses the default cache.
      *
      * @param ?int $minutes - deprecated use $seconds
+     * @param list<string> $tags
      */
     public function get(
         string $key,
@@ -40,7 +43,7 @@ class CacheMeService implements CacheMeServiceContract
         int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
         bool $log = true,
-        ?int $minutes = null
+        ?int $minutes = null,
     ): mixed {
         if ($strategy === CacheMeStrategy::None) {
             return $this->container->call($getValue);
@@ -79,7 +82,7 @@ class CacheMeService implements CacheMeServiceContract
                     value: $value,
                     tags: $tags,
                     seconds: $seconds,
-                    log: false
+                    log: false,
                 );
             }
 
@@ -98,7 +101,7 @@ class CacheMeService implements CacheMeServiceContract
                     value: $value,
                     tags: $tags,
                     seconds: $seconds,
-                    log: $log
+                    log: $log,
                 );
             }
         }
@@ -108,6 +111,7 @@ class CacheMeService implements CacheMeServiceContract
 
     /**
      * Stores given value to cache stores with given strategy.
+     * @param list<string> $tags
      */
     public function set(
         string $key,
@@ -115,7 +119,7 @@ class CacheMeService implements CacheMeServiceContract
         array $tags = [],
         int $seconds = CacheExpirations::Day,
         CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
-        bool $log = true
+        bool $log = true,
     ): void {
         $this->store(
             repositories: $this->repositories($tags, $strategy),
@@ -123,7 +127,7 @@ class CacheMeService implements CacheMeServiceContract
             value: $value,
             tags: $tags,
             seconds: $seconds,
-            log: $log
+            log: $log,
         );
     }
 
@@ -131,15 +135,18 @@ class CacheMeService implements CacheMeServiceContract
      * Flush cache for given tags (optional).
      *
      * Beware that this will cause queue flush too if using redis!
+     * @param list<string> $tags
      */
     public function flush(
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void {
-        $this->logger->debug('Flushing cache', [
-            'tags' => $tags,
-            'strategy' => $strategy->value,
-        ]);
+        if ($this->loggingConfig->isCacheLoggingEnabled()) {
+            $this->logger->debug('Flushing cache', [
+                'tags' => $tags,
+                'strategy' => $strategy->value,
+            ]);
+        }
 
         foreach ($this->repositories(tags: $tags, strategy: $strategy) as $repository) {
             if ($repository instanceof TaggedCache) {
@@ -152,17 +159,20 @@ class CacheMeService implements CacheMeServiceContract
 
     /**
      * Deletes exact key within the tags.
+     * @param list<string> $tags
      */
     public function delete(
         string $key,
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): void {
-        $this->logger->debug('Deleting cache', [
-            'tags' => $tags,
-            'key' => $key,
-            'strategy' => $strategy,
-        ]);
+        if ($this->loggingConfig->isCacheLoggingEnabled()) {
+            $this->logger->debug('Deleting cache', [
+                'tags' => $tags,
+                'key' => $key,
+                'strategy' => $strategy,
+            ]);
+        }
 
         foreach ($this->repositories($tags, $strategy) as $store) {
             $store->delete($key);
@@ -174,27 +184,30 @@ class CacheMeService implements CacheMeServiceContract
      *
      * @template T of Model
      *
-     * @param array|Closure(T):void $tags If closure, model is passed to the closure. Closure should return an array
+     * @param list<string>|Closure(T):list<string> $tags If closure, model is passed to the closure. Closure should return a list
      * of tags to use. If empty, no flush will be done.
      * @param class-string<T>       $modelClass
      */
     public function observeAndFlush(array|Closure $tags, string $modelClass): void
     {
-        $modelClass::created(function ($model) use ($tags): void {
+        $modelClass::created(function (mixed $model) use ($tags, $modelClass): void {
+            assert($model instanceof $modelClass);
             $this->tryToFlushWithModel($model, $tags);
         });
-        $modelClass::deleted(function ($model) use ($tags): void {
+        $modelClass::deleted(function (mixed $model) use ($tags, $modelClass): void {
+            assert($model instanceof $modelClass);
             $this->tryToFlushWithModel($model, $tags);
         });
-        $modelClass::updated(function ($model) use ($tags): void {
+        $modelClass::updated(function (mixed $model) use ($tags, $modelClass): void {
+            assert($model instanceof $modelClass);
             $this->tryToFlushWithModel($model, $tags);
         });
 
         $uses = class_uses($modelClass);
         if (is_array($uses) && array_key_exists(SoftDeletes::class, $uses)) {
-            /** @var SoftDeletes $modelClass */
             /* @phpstan-ignore-next-line */
-            $modelClass::restored(function ($model) use ($tags): void {
+            $modelClass::restored(function (mixed $model) use ($tags, $modelClass): void {
+                assert($model instanceof $modelClass);
                 $this->tryToFlushWithModel($model, $tags);
             });
         }
@@ -203,11 +216,12 @@ class CacheMeService implements CacheMeServiceContract
     /**
      * Returns store for accessing data. Key-ed by CacheDriver.
      *
-     * @return array<CacheContract>
+     * @return list<CacheContract>
+     * @param list<string> $tags
      */
     protected function repositories(
         array $tags = [],
-        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository
+        CacheMeStrategy $strategy = CacheMeStrategy::MemoryAndRepository,
     ): array {
         $stores = [];
 
@@ -243,7 +257,8 @@ class CacheMeService implements CacheMeServiceContract
     }
 
     /**
-     * @param array<int,CacheContract> $repositories
+     * @param list<CacheContract> $repositories
+     * @param list<string> $tags
      */
     protected function store(
         array $repositories,
@@ -251,13 +266,13 @@ class CacheMeService implements CacheMeServiceContract
         mixed $value,
         array $tags = [],
         int $seconds = CacheExpirations::Day,
-        bool $log = true
+        bool $log = true,
     ): void {
         if ($repositories === []) {
             return;
         }
 
-        if ($log) {
+        if ($log && $this->loggingConfig->isCacheLoggingEnabled()) {
             $this->logger->debug('Storing cache', [
                 'key' => $key,
                 'seconds' => $seconds,
@@ -272,14 +287,17 @@ class CacheMeService implements CacheMeServiceContract
     }
 
     /**
+     * @template T of Model
+     *
      * Flushes the cache with given model and tags.
      *
-     * @param array|Closure $tags If closure, model is passed to the closure. Closure should return an array
+     * @param T $model
+     * @param list<string>|Closure(T):list<string> $tags If closure, model is passed to the closure. Closure should return a list
      * of tags to use. If empty, no flush will be done.
      */
     protected function tryToFlushWithModel(Model $model, array|Closure $tags): void
     {
-        if (is_callable($tags)) {
+        if ($tags instanceof Closure) {
             $tags = $tags($model);
         }
 

@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace LaraStrict\Testing\Laravel\Contracts\Routing;
 
 use Closure;
+use Illuminate\Http\Response;
 
-final class ResponseFactoryNoContentExpectation
+final readonly class ResponseFactoryNoContentExpectation
 {
     /**
-     * @param Closure(mixed, array, self):void|null $hook
+     * @param Closure(mixed, array<array-key, mixed>, self):void|null $hook
+     * @param array<array-key, mixed> $headers
      */
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $status = 204,
-        public readonly array $headers = [],
-        public readonly ?Closure $hook = null,
+        public Response $return,
+        public mixed $status = 204,
+        public array $headers = [],
+        public ?Closure $hook = null,
     ) {
     }
 }

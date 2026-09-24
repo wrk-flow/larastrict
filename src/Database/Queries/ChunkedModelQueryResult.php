@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace LaraStrict\Database\Queries;
 
 use Closure;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
  * @template TModel of \Illuminate\Database\Eloquent\Model
+ * @todo deprecate in favor of Generator
  */
 class ChunkedModelQueryResult
 {
@@ -25,8 +26,11 @@ class ChunkedModelQueryResult
      */
     public function __construct(
         public readonly string $modelClass,
+        /**
+         * @var Builder<TModel>
+         */
         public readonly Builder $query,
-        public readonly bool $chunkById = true
+        public readonly bool $chunkById = true,
     ) {
     }
 
@@ -49,7 +53,7 @@ class ChunkedModelQueryResult
     /**
      * Loads a chunk of models using closure.
      *
-     * @param Closure(Collection<int,TModel>):void $closure closure that will receive a collection of models
+     * @param Closure(collection-of<TModel>):void $closure closure that will receive a collection of models
      */
     public function onChunk(Closure $closure, ?int $count = null): bool
     {
@@ -57,17 +61,20 @@ class ChunkedModelQueryResult
 
         $this->query->applyScopes();
 
-        if ($this->chunkById) {
-            return $this->query->chunkById($count, $closure);
-        }
+        $callback = static function (Collection $models, int $_page) use ($closure): void {
+            /** @var collection-of<TModel> $models */
+            $closure($models);
+        };
 
-        return $this->query->chunk($count, $closure);
+        return $this->chunkById
+            ? $this->query->chunkById($count, $callback)
+            : $this->query->chunk($count, $callback);
     }
 
     /**
      * Loads a chunk of models and calls $closure with only ids. Ideal to combine with SelectScope.
      *
-     * @param Closure(array<int|string>):void $closure
+     * @param Closure(list<int|string>):void $closure
      */
     public function onKeys(Closure $closure, ?int $count = null): bool
     {
@@ -76,19 +83,21 @@ class ChunkedModelQueryResult
                 $keys = [];
                 /** @var Model $model */
                 foreach ($collection as $model) {
-                    $keys[] = $model->getKey();
+                    $key = $model->getKey();
+                    assert(is_int($key) || is_string($key));
+                    $keys[] = $key;
                 }
 
                 $closure($keys);
             },
-            count: $count
+            count: $count,
         );
     }
 
     /**
      * Loads a chunk of models and with closure that will receive each model from the chunks.
      *
-     * @param Closure(TModel): void $closure closure that will receive a model from all the chunks
+     * @param Closure(mixed): void $closure closure that will receive a model or transformed entry from all chunks
      *
      * @return int number of processed entries
      */
@@ -98,15 +107,16 @@ class ChunkedModelQueryResult
         $this->onChunk(
             function (Collection $collection) use ($closure, &$processed): void {
                 foreach ($collection as $entry) {
-                    $wrappedEntry = $this->onEntryTransform === null
-                        ? $entry
-                        : call_user_func($this->onEntryTransform, $entry);
+                    /** @var TModel $entry */
+                    $wrappedEntry = $this->onEntryTransform instanceof Closure
+                        ? call_user_func($this->onEntryTransform, $entry)
+                        : $entry;
 
                     $closure($wrappedEntry);
                     ++$processed;
                 }
             },
-            $count
+            $count,
         );
 
         return $processed;

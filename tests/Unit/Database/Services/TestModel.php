@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 final class TestModel extends Model
 {
+    /**
+     * @param array<array-key, mixed> $data
+     */
     public static function insertOrIgnore(array $data): int
     {
         return count($data);

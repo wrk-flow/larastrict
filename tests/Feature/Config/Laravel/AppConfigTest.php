@@ -6,6 +6,8 @@ namespace Tests\LaraStrict\Feature\Config\Laravel;
 
 use LaraStrict\Config\Laravel\AppConfig;
 use LaraStrict\Enums\EnvironmentType;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Stringable;
 
 class AppConfigTest extends AbstractConfigTestCase
 {
@@ -22,7 +24,10 @@ class AppConfigTest extends AbstractConfigTestCase
 
     public function testVersion(): void
     {
-        $expectationDefault = static fn ($value) => preg_match('#^DEV\.[\d]+$#', (string) $value) === 1;
+        $expectationDefault = static function (mixed $value): bool {
+            assert(is_scalar($value) || $value instanceof Stringable);
+            return preg_match('#^DEV\.[\d]+$#', (string) $value) === 1;
+        };
         $this->assertConfigValue(
             expectedDefaultValue: $expectationDefault,
             keys: [AppConfig::KeyVersion],
@@ -34,7 +39,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 0 => $expectationDefault,
                 1 => '1',
             ],
-            getValue: fn () => $this->config->getVersion()
+            getValue: fn () => $this->config->getVersion(),
         );
     }
 
@@ -47,7 +52,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 'base64:test' => 'base64:test',
                 '' => '',
             ],
-            getValue: fn () => $this->config->getKey()
+            getValue: fn () => $this->config->getKey(),
         );
     }
 
@@ -61,7 +66,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 '' => '',
                 'null' => '',
             ],
-            getValue: fn () => $this->config->getName()
+            getValue: fn () => $this->config->getName(),
         );
     }
 
@@ -75,7 +80,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 '' => '',
                 'null' => '',
             ],
-            getValue: fn () => $this->config->getUrl()
+            getValue: fn () => $this->config->getUrl(),
         );
     }
 
@@ -89,7 +94,7 @@ class AppConfigTest extends AbstractConfigTestCase
                 '' => null,
                 'null' => null,
             ],
-            getValue: fn () => $this->config->getAssetUrl()
+            getValue: fn () => $this->config->getAssetUrl(),
         );
     }
 
@@ -104,13 +109,11 @@ class AppConfigTest extends AbstractConfigTestCase
                 'null' => false,
                 '' => false,
             ],
-            getValue: fn () => $this->config->isInDebugMode()
+            getValue: fn () => $this->config->isInDebugMode(),
         );
     }
 
-    /**
-     * @dataProvider environmentDefaultData
-     */
+    #[DataProvider('environmentDefaultData')]
     public function testGetEnvironmentDefaultInvalidValues(mixed $value): void
     {
         $this->setEnv($value);
@@ -123,9 +126,7 @@ class AppConfigTest extends AbstractConfigTestCase
         $this->assertEquals(EnvironmentType::Testing, $this->config->getEnvironment());
     }
 
-    /**
-     * @dataProvider environmentTypeData
-     */
+    #[DataProvider('environmentTypeData')]
     public function testGetEnvironmentType(string|EnvironmentType $value, string|EnvironmentType $expectedValue): void
     {
         $this->setEnv($value);
@@ -133,12 +134,18 @@ class AppConfigTest extends AbstractConfigTestCase
         $this->assertEquals($expectedValue, $this->config->getEnvironment());
     }
 
-    protected function environmentDefaultData(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function environmentDefaultData(): array
     {
         return [[''], [null], [0], [1]];
     }
 
-    protected function environmentTypeData(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function environmentTypeData(): array
     {
         return [
             ['production', EnvironmentType::Production],

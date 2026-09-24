@@ -6,11 +6,11 @@ namespace LaraStrict\Testing\Laravel\Contracts\Debug;
 
 use Throwable;
 
-final class ExceptionHandlerShouldReportExpectation
+final readonly class ExceptionHandlerShouldReportExpectation
 {
     public function __construct(
-        public readonly mixed $return,
-        public readonly Throwable $e,
+        public bool $return,
+        public Throwable $e,
     ) {
     }
 }

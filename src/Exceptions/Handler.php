@@ -10,6 +10,9 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
+    /**
+     * @return array<array-key, mixed>
+     */
     protected function convertExceptionToArray(Throwable $e)
     {
         $array = parent::convertExceptionToArray($e);

@@ -7,7 +7,7 @@ namespace Tests\LaraStrict\Feature\Http\Resources;
 class TestAction
 {
     public function __construct(
-        private readonly string $value = 'injected'
+        private readonly string $value = 'injected',
     ) {
     }
 

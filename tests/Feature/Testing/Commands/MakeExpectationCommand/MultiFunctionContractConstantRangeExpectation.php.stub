@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
+
+final class MultiFunctionContractConstantRangeExpectation
+{
+    /**
+     * @param \Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\MultiFunctionContract::LEVEL_* $return
+     * @param \Closure(self):void|null $_hook
+     */
+    public function __construct(
+        public readonly int $return,
+        public readonly ?\Closure $_hook = null,
+    ) {
+    }
+}

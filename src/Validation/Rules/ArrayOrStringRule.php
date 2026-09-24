@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace LaraStrict\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class ArrayOrStringRule implements Rule
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
+final class ArrayOrStringRule implements ValidationRule
 {
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        return is_array($value) || is_string($value);
+        if (self::passes($value) === false) {
+            $fail('Given :attribute must by array or string');
+        }
     }
 
-    public function message(): string
+    public static function passes(mixed $value): bool
     {
-        return 'Given :attribute must by array or string';
+        return is_array($value) || is_string($value);
     }
 }

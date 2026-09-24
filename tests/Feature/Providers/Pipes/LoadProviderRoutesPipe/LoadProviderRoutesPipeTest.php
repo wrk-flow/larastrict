@@ -53,9 +53,10 @@ class LoadProviderRoutesPipeTest extends TestCase
                 $this->assertEquals('No routes have been loaded for <load_provider_routes_pipe> service', $message);
                 $this->assertArrayHasKey('dir', $context);
                 $this->assertArrayHasKey('service', $context);
+                assert(is_string($context['dir']));
                 $this->assertStringContainsString(
                     'tests/Feature/Providers/Pipes/LoadProviderRoutesPipe',
-                    $context['dir']
+                    $context['dir'],
                 );
                 $this->assertEquals(RoutableWithNoFilesServiceProvider::class, $context['service']);
 

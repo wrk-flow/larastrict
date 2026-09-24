@@ -6,8 +6,9 @@ namespace LaraStrict\Log;
 
 use LaraStrict\Log\Managers\ConsoleOutputManager;
 use LaraStrict\Providers\AbstractServiceProvider;
+use LaraStrict\Providers\Contracts\HasConfig;
 
-class LogServiceProvider extends AbstractServiceProvider
+class LogServiceProvider extends AbstractServiceProvider implements HasConfig
 {
     public function register(): void
     {

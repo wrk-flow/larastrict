@@ -16,7 +16,7 @@ class LoadProviderConfig implements AppServiceProviderPipeContract
         if ($appServiceProvider->serviceProvider instanceof HasConfig) {
             $appServiceProvider->serviceProvider->laraLoadProviderConfigFrom(
                 path: $appServiceProvider->serviceRootDir,
-                namespace: $appServiceProvider->serviceFileName
+                namespace: $appServiceProvider->serviceFileName,
             );
         }
 

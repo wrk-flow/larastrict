@@ -4,11 +4,22 @@ declare(strict_types=1);
 
 namespace LaraStrict\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class RemoteUrlRule implements Rule
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
+final class RemoteUrlRule implements ValidationRule
 {
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        if (self::passes($value) === false) {
+            $fail('Given :attribute is not a valid url (public IP or domain on http/s protocol)');
+        }
+    }
+
+    public static function passes(mixed $value): bool
     {
         if (is_string($value) === false) {
             return false;
@@ -36,10 +47,5 @@ class RemoteUrlRule implements Rule
 
         // Must contain top level domain
         return preg_match('#^[\w\d\-.]{1,63}\.[a-z]{2,6}$#', $host) !== 0;
-    }
-
-    public function message(): string
-    {
-        return 'Given :attribute is not a valid url (public IP or domain on http/s protocol)';
     }
 }

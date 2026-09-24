@@ -9,36 +9,36 @@ use LaraStrict\Queue\Actions\DispatchChainJobsAction;
 use LaraStrict\Testing\Queue\Contracts\DispatchJobActionContractAssert;
 use LaraStrict\Testing\Queue\Contracts\DispatchJobActionContractExpectation;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class DispatchChainJobsActionTest extends TestCase
 {
     public function testEmptyJobs(): void
     {
-        $action = $this->makeAction(expectation: null);
+        $action = $this->makeAction(null);
         $this->assertFalse($action->execute([]));
     }
 
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataOneJob(): array
+    public static function dataOneJob(): array
     {
         return [
             'returns true on dispatch' => [
-                static fn (self $self) => $self->assertOneJob(expected: true),
+                static fn (self $self) => $self->assertOneJob(true),
             ],
             'returns false on dispatch' => [
-                static fn (self $self) => $self->assertOneJob(expected: false),
+                static fn (self $self) => $self->assertOneJob(false),
             ],
         ];
     }
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataOneJob
      */
+    #[DataProvider('dataOneJob')]
     public function testOneJob(Closure $assert): void
     {
         $assert($this);
@@ -46,33 +46,32 @@ final class DispatchChainJobsActionTest extends TestCase
 
     public function assertOneJob(bool $expected): void
     {
-        $job = new WithoutCommandJob(name: 'Hello');
+        $job = new WithoutCommandJob('Hello');
 
-        $action = $this->makeAction(new DispatchJobActionContractExpectation(return: $expected, job: $job));
+        $action = $this->makeAction(new DispatchJobActionContractExpectation($expected, $job));
 
-        Assert::assertEquals(expected: $expected, actual: $action->execute([$job]));
+        Assert::assertEquals($expected, $action->execute([$job]));
     }
 
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataChainJob(): array
+    public static function dataChainJob(): array
     {
         return [
             'returns true on dispatch' => [
-                static fn (self $self) => $self->assertChainJob(expected: true),
+                static fn (self $self) => $self->assertChainJob(true),
             ],
             'returns false on dispatch' => [
-                static fn (self $self) => $self->assertChainJob(expected: false),
+                static fn (self $self) => $self->assertChainJob(false),
             ],
         ];
     }
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataChainJob
      */
+    #[DataProvider('dataChainJob')]
     public function testChainJob(Closure $assert): void
     {
         $assert($this);
@@ -80,12 +79,12 @@ final class DispatchChainJobsActionTest extends TestCase
 
     public function assertChainJob(bool $expected): void
     {
-        $job = new WithoutCommandJob(name: 'Hello');
-        $job2 = new WithoutCommandJob(name: 'Hello2');
+        $job = new WithoutCommandJob('Hello');
+        $job2 = new WithoutCommandJob('Hello2');
 
-        $action = $this->makeAction(new DispatchJobActionContractExpectation(return: $expected, job: $job));
+        $action = $this->makeAction(new DispatchJobActionContractExpectation($expected, $job));
 
-        Assert::assertEquals(expected: $expected, actual: $action->execute([$job, $job2]));
+        Assert::assertEquals($expected, $action->execute([$job, $job2]));
 
         Assert::assertEquals([serialize($job2)], $job->chained, 'Job should be changed');
         Assert::assertEquals('default', $job->chainQueue, 'Job should be changed');

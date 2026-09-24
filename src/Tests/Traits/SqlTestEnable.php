@@ -9,15 +9,13 @@ use Illuminate\Database\ConnectionResolver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\SQLiteConnection;
+use Illuminate\Support\Facades\DB;
 use PDO;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\BeforeClass;
 
 trait SqlTestEnable
 {
-    /**
-     * @beforeClass
-     */
     #[BeforeClass]
     final public static function beforeClassSqlTestEnable(): void
     {
@@ -26,8 +24,12 @@ trait SqlTestEnable
         ]);
         $resolver->setDefaultConnection('default');
         Model::setConnectionResolver($resolver);
+        DB::swap(Model::getConnectionResolver());
     }
 
+    /**
+     * @param array<array-key, mixed> $expectedBindings
+     */
     final protected static function assertQuerySql(
         string $expectedSql,
         array $expectedBindings,
@@ -44,9 +46,7 @@ trait SqlTestEnable
             Assert::fail('Failed asserting that query was executed.');
         } catch (QueryException $queryException) {
             $expected = preg_replace('#\s+#', ' ', $sql);
-            preg_match('#\(SQL: (?<sql>.*)\)$#', $queryException->getMessage(), $matches);
-
-            Assert::assertSame($expected, $matches['sql']);
+            Assert::assertSame($expected, $queryException->getRawSql());
         }
     }
 }

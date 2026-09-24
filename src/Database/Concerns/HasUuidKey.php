@@ -25,10 +25,8 @@ trait HasUuidKey
         static::creating(static function (Model $model): void {
             /** @var HasUuidKey|Model $model */
             /** @phpstan-ignore-next-line */
-            if ($model->id === null) {
-                /** @phpstan-ignore-next-line */
-                $model->id = (string) Str::uuid();
-            }
+            /** @phpstan-ignore-next-line */
+            $model->id ??= (string) Str::uuid();
         });
     }
 }

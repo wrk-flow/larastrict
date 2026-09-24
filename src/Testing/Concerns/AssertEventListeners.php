@@ -15,14 +15,14 @@ trait AssertEventListeners
      * @template T of AbstractExpectationCallsMap
      * @param array<class-string, T> $contractMap
      * @param bool $disableWildcard You can receive un-wanted listener responses (like laravel-ray). By default, we will remove any wildcard event.
-     * @param array|null $expectedListenerResults By default, assert returns nothing, we will auto populate nulls based on
+     * @param array<array-key, mixed>|null $expectedListenerResults By default, assert returns nothing, we will auto populate nulls based on
      */
     public function assertEventListeners(
         Application $app,
         object $event,
         array $contractMap,
         ?array $expectedListenerResults = null,
-        bool $disableWildcard = true
+        bool $disableWildcard = true,
     ): void {
         $shouldBuildResults = $expectedListenerResults === null;
 
@@ -38,9 +38,9 @@ trait AssertEventListeners
          * event again to validate the results.
          */
         $events = $app->make(Dispatcher::class);
-        assert($events instanceof Dispatcher);
 
         $rawListeners = $events->getRawListeners()[$event::class] ?? [];
+        assert(is_iterable($rawListeners));
 
         // Closures are not support, we cant use array_flip
         $currentListenersMap = [];
@@ -61,7 +61,7 @@ trait AssertEventListeners
             Assert::assertArrayHasKey(
                 $contract,
                 $currentListenersMap,
-                sprintf('Listener not %s registered for event: %s', $contract, $event::class)
+                sprintf('Listener not %s registered for event: %s', $contract, $event::class),
             );
 
             $asserts[] = $assert;

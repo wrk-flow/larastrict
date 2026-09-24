@@ -22,7 +22,7 @@ class GetDevNamespaceForStubsAction implements GetNamespaceForStubsActionContrac
                 'LaraStrict',
                 'Testing',
                 $subFolder,
-            ])) . StubConstants::NameSpaceSeparator
+            ])) . StubConstants::NameSpaceSeparator,
         );
     }
 }

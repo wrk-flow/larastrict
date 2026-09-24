@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class MessageJsonResource extends JsonResource
 {
-    public static $wrap = null;
+    public static $wrap;
 
     public function __construct(string|null $resource)
     {
@@ -19,7 +19,7 @@ class MessageJsonResource extends JsonResource
     }
 
     /**
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function toArray($request)
     {

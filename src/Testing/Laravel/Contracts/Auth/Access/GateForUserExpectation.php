@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Auth\Access;
 
-final class GateForUserExpectation
+final readonly class GateForUserExpectation
 {
     public function __construct(
-        public readonly mixed $user
+        public mixed $user,
     ) {
     }
 }

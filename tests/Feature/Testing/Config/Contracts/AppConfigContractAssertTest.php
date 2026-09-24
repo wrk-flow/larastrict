@@ -22,7 +22,7 @@ class AppConfigContractAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    public function generateData(): array
+    public static function generateData(): array
     {
         return [
             new AssertExpectationEntity(

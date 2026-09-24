@@ -8,8 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TestContainerRequest extends FormRequest
 {
-    final public const KeyTest = 'test';
+    final public const string KeyTest = 'test';
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function rules(): array
     {
         return [
@@ -20,9 +23,12 @@ class TestContainerRequest extends FormRequest
     protected function passedValidation()
     {
         $autoAction = $this->container->make(AutoAction::class, ['test']);
+        // TestingContainer can be configured with an invalid binding at runtime.
+        // @phpstan-ignore-next-line
         assert($autoAction instanceof AutoAction);
 
         $customAction = $this->container->make(CustomAction::class);
+        // @phpstan-ignore-next-line
         assert($customAction instanceof CustomAction);
 
         $customAction->autoAction = $autoAction;

@@ -14,7 +14,7 @@ class PrioritizeByIdScope extends AbstractScope
      */
     public function __construct(
         private readonly array $ids,
-        private readonly ?string $idColumn = null
+        private readonly ?string $idColumn = null,
     ) {
     }
 
@@ -24,6 +24,7 @@ class PrioritizeByIdScope extends AbstractScope
 
         $idColumn = $this->idColumn ?? $model->getKeyName();
 
+        // Values use bindings. The model or caller provides the identifier.
         $builder->orderByRaw('FIELD(' . $idColumn . ', ' . implode(', ', $placeholders) . ') DESC', $this->ids);
     }
 }

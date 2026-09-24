@@ -12,6 +12,9 @@ use LaraStrict\Database\Contracts\SafeUniqueSaveActionContract;
 
 class DatabaseServiceProvider extends ServiceProvider
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $bindings = [
         RunInTransactionActionContract::class => RunInTransactionAction::class,
         SafeUniqueSaveActionContract::class => SafeUniqueSaveAction::class,
