@@ -75,10 +75,10 @@ class SafeUniqueSaveActionContractAssertTest extends TestCase
         $assert = new SafeUniqueSaveActionContractAssert($expectations);
 
         $calls = 0;
-        $result = $assert->execute($model, function (TestModel|TestNoDates $model, int $tries) use (&$calls) {
+        $result = $assert->execute($model, function (TestModel|TestNoDates $model, int $tries) use (&$calls): string {
             ++$calls;
             $this->assertEquals($calls, $tries);
-            return 'test' . $calls;
+            return strtolower('test' . $calls);
         });
 
         $this->assertEquals($expectedResult, $result);
