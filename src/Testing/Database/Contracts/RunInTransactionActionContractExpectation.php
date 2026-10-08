@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Database\Contracts;
 
-final class RunInTransactionActionContractExpectation
+final readonly class RunInTransactionActionContractExpectation
 {
     public function __construct(
-        public readonly bool $fail,
-        public readonly int $attempts = 1,
+        public bool $fail,
+        public int $attempts = 1,
     ) {
     }
 }

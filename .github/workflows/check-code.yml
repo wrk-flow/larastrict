@@ -20,20 +20,51 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  code:
-    name: "Code check"
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@7562253bdc3769847417e3476b501e7126f5d2c0
-    secrets: inherit
 
-  tests:
-    name: "Run tests"
+  code_l12:
+    name: "Code check - Laravel 12"
     strategy:
       matrix:
-        phpVersion: [ "8.1", "8.2" ]
-    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@7562253bdc3769847417e3476b501e7126f5d2c0
+        phpVersion: [ "8.3", "8.4", "8.5" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
     with:
-      gistID: ${{ vars.GIST_ID }}
-      gistOnPhpVersion: "8.2"
+      composerRequireDev: "laravel/framework:^12"
       phpVersion: "${{ matrix.phpVersion }}"
     secrets: inherit
 
+  code_l13:
+    name: "Code check - Laravel 13"
+    strategy:
+      matrix:
+        phpVersion: [ "8.3", "8.4", "8.5" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-check.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
+    with:
+      composerRequireDev: "laravel/framework:^13"
+      phpVersion: "${{ matrix.phpVersion }}"
+    secrets: inherit
+
+  tests_l12:
+    name: "Tests - Laravel 12"
+    strategy:
+      matrix:
+        phpVersion: [ "8.3", "8.4", "8.5" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
+    with:
+      composerRequireDev: "laravel/framework:^12"
+      phpVersion: "${{ matrix.phpVersion }}"
+      gistID: ${{ vars.GIST_ID }}
+      gistOnPhpVersion: "8.5"
+    secrets: inherit
+
+  tests_l13:
+    name: "Tests - Laravel 13"
+    strategy:
+      matrix:
+        phpVersion: [ "8.3", "8.4", "8.5" ]
+    uses: wrk-flow/reusable-workflows/.github/workflows/php-tests.yml@c6b6e93c92bb9a2be67e5f6f3c3ca8dcb3bec433
+    with:
+      composerRequireDev: "laravel/framework:^13"
+      phpVersion: "${{ matrix.phpVersion }}"
+      gistID: ${{ vars.GIST_ID }}
+      gistOnPhpVersion: "8.5"
+    secrets: inherit

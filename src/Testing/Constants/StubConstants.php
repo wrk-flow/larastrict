@@ -6,5 +6,5 @@ namespace LaraStrict\Testing\Constants;
 
 class StubConstants
 {
-    final public const NameSpaceSeparator = '\\';
+    final public const string NameSpaceSeparator = '\\';
 }

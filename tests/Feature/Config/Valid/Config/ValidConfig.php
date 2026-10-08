@@ -9,11 +9,13 @@ use Tests\LaraStrict\Feature\Config\Valid\ValidConfigServiceProvider;
 
 class ValidConfig extends AbstractProviderConfig
 {
-    final public const KeyTest = 'test';
+    final public const string KeyTest = 'test';
 
     public function getTest(): string
     {
-        return $this->get(self::KeyTest);
+        $value = $this->get(self::KeyTest);
+        assert(is_string($value));
+        return $value;
     }
 
     protected function getServiceProvider(): string

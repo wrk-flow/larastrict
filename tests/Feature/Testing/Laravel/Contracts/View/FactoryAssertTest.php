@@ -23,35 +23,40 @@ use Tests\LaraStrict\Unit\Testing\Laravel\Composer;
 class FactoryAssertTest extends TestCase
 {
     use AssertExpectations;
-    final public const Data = [
+
+    final public const array Data = [
         'data' => 1,
     ];
-    final public const MergeData = [
+    final public const array MergeData = [
         'data' => 2,
     ];
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         $view = new ViewAssert();
+        $viewCallback = static fn () => '';
 
         return [
             new AssertExpectationEntity(
                 methodName: 'exists',
                 createAssert: static fn () => new FactoryAssert(
-                    exists: [new FactoryExistsExpectation(return: true, view: 'test')]
+                    exists: [new FactoryExistsExpectation(return: true, view: 'test')],
                 ),
+                // The generated double returns the configured sequence at runtime.
+                // @phpstan-ignore method.impossibleType
                 call: static fn (FactoryAssert $assert) => $assert->exists(view: 'test'),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'exists',
                 createAssert: static fn () => new FactoryAssert(
-                    exists: [new FactoryExistsExpectation(return: false, view: 'test')]
+                    exists: [new FactoryExistsExpectation(return: false, view: 'test')],
                 ),
+                // @phpstan-ignore method.impossibleType
                 call: static fn (FactoryAssert $assert) => $assert->exists(view: 'test'),
                 checkResult: true,
-                expectedResult: false
+                expectedResult: false,
             ),
             new AssertExpectationEntity(
                 methodName: 'file',
@@ -61,7 +66,7 @@ class FactoryAssertTest extends TestCase
                         path: 'test',
                         data: self::Data,
                         mergeData: self::MergeData,
-                    )]
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->file(
                     path: 'test',
@@ -69,7 +74,7 @@ class FactoryAssertTest extends TestCase
                     mergeData: self::MergeData,
                 ),
                 checkResult: true,
-                expectedResult: $view
+                expectedResult: $view,
             ),
             new AssertExpectationEntity(
                 methodName: 'make',
@@ -79,7 +84,7 @@ class FactoryAssertTest extends TestCase
                         view: 'test',
                         data: self::Data,
                         mergeData: self::MergeData,
-                    )]
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->make(
                     view: 'test',
@@ -87,25 +92,25 @@ class FactoryAssertTest extends TestCase
                     mergeData: self::MergeData,
                 ),
                 checkResult: true,
-                expectedResult: $view
+                expectedResult: $view,
             ),
             new AssertExpectationEntity(
                 methodName: 'share',
                 createAssert: static fn () => new FactoryAssert(
-                    share: [new FactoryShareExpectation(return: self::Data, key: 'test', value: self::Data)]
+                    share: [new FactoryShareExpectation(return: self::Data, key: 'test', value: self::Data)],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->share(key: 'test', value: self::Data),
                 checkResult: true,
-                expectedResult: self::Data
+                expectedResult: self::Data,
             ),
             new AssertExpectationEntity(
                 methodName: 'share',
                 createAssert: static fn () => new FactoryAssert(
-                    share: [new FactoryShareExpectation(return: null, key: 'test')]
+                    share: [new FactoryShareExpectation(return: null, key: 'test')],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->share(key: 'test'),
                 checkResult: true,
-                expectedResult: null
+                expectedResult: null,
             ),
             new AssertExpectationEntity(
                 methodName: 'composer',
@@ -113,15 +118,15 @@ class FactoryAssertTest extends TestCase
                     composer: [new FactoryComposerExpectation(
                         return: self::Data,
                         views: ['view1', 'view2'],
-                        callback: static fn () => ''
-                    )]
+                        callback: $viewCallback,
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->composer(
                     views: ['view1', 'view2'],
-                    callback: static fn () => ''
+                    callback: $viewCallback,
                 ),
                 checkResult: true,
-                expectedResult: self::Data
+                expectedResult: self::Data,
             ),
             new AssertExpectationEntity(
                 methodName: 'composer',
@@ -129,15 +134,15 @@ class FactoryAssertTest extends TestCase
                     composer: [new FactoryComposerExpectation(
                         return: self::Data,
                         views: ['view1', 'view2'],
-                        callback: Composer::class
-                    )]
+                        callback: Composer::class,
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->composer(
                     views: ['view1', 'view2'],
-                    callback: Composer::class
+                    callback: Composer::class,
                 ),
                 checkResult: true,
-                expectedResult: self::Data
+                expectedResult: self::Data,
             ),
             new AssertExpectationEntity(
                 methodName: 'creator',
@@ -145,15 +150,15 @@ class FactoryAssertTest extends TestCase
                     creator: [new FactoryCreatorExpectation(
                         return: self::Data,
                         views: ['view1', 'view2'],
-                        callback: static fn () => ''
-                    )]
+                        callback: $viewCallback,
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->creator(
                     views: ['view1', 'view2'],
-                    callback: static fn () => ''
+                    callback: $viewCallback,
                 ),
                 checkResult: true,
-                expectedResult: self::Data
+                expectedResult: self::Data,
             ),
             new AssertExpectationEntity(
                 methodName: 'creator',
@@ -161,42 +166,42 @@ class FactoryAssertTest extends TestCase
                     creator: [new FactoryCreatorExpectation(
                         return: self::Data,
                         views: ['view1', 'view2'],
-                        callback: Composer::class
-                    )]
+                        callback: Composer::class,
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->creator(
                     views: ['view1', 'view2'],
-                    callback: Composer::class
+                    callback: Composer::class,
                 ),
                 checkResult: true,
-                expectedResult: self::Data
+                expectedResult: self::Data,
             ),
             new AssertExpectationEntity(
                 methodName: 'addNamespace',
                 createAssert: static fn () => new FactoryAssert(
-                    addNamespace: [new FactoryAddNamespaceExpectation(namespace: __NAMESPACE__, hints: ['test'])]
+                    addNamespace: [new FactoryAddNamespaceExpectation(namespace: __NAMESPACE__, hints: ['test'])],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->addNamespace(
                     namespace: __NAMESPACE__,
-                    hints: ['test']
+                    hints: ['test'],
                 ),
                 checkResult: true,
-                checkResultIsSelf: true
+                checkResultIsSelf: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'replaceNamespace',
                 createAssert: static fn () => new FactoryAssert(
                     replaceNamespace: [new FactoryReplaceNamespaceExpectation(
                         namespace: __NAMESPACE__,
-                        hints: ['test']
-                    )]
+                        hints: ['test'],
+                    )],
                 ),
                 call: static fn (FactoryAssert $assert) => $assert->replaceNamespace(
                     namespace: __NAMESPACE__,
-                    hints: ['test']
+                    hints: ['test'],
                 ),
                 checkResult: true,
-                checkResultIsSelf: true
+                checkResultIsSelf: true,
             ),
         ];
     }

@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use LaraStrict\Http\Resources\JsonResourceCollection;
 use LaraStrict\Http\Resources\MessageResource;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class JsonResourceCollectionTest extends TestCase
@@ -25,7 +26,7 @@ class JsonResourceCollectionTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function data(): array
+    public static function data(): array
     {
         // Preserve keys changes keys using mergeData, not input/output array
         $input = [
@@ -44,36 +45,36 @@ class JsonResourceCollectionTest extends TestCase
         return [
             'preserve keys false by default' => [
                 static fn (self $self) => $self->assert(
-                    laravelCollection: MessageJsonResource::collection($input),
-                    laraStrictCollection: MessageResource::collection($input),
-                    expectedPreserveKeys: false,
-                    expectedOutput: $output
+                    MessageJsonResource::collection($input),
+                    MessageResource::collection($input),
+                    false,
+                    $output,
                 ),
             ],
             'preserve keys true' => [
                 static fn (self $self) => $self->assert(
-                    laravelCollection: PreserveKeysJsonResource::collection($input),
-                    laraStrictCollection: PreserveKeysLaraStrictResource::collection($input),
-                    expectedPreserveKeys: true,
-                    expectedOutput: $output
+                    PreserveKeysJsonResource::collection($input),
+                    PreserveKeysLaraStrictResource::collection($input),
+                    true,
+                    $output,
                 ),
             ],
             'preserve keys false by default - no container' => [
                 static fn (self $self) => $self->assert(
-                    laravelCollection: MessageJsonResource::collection($input),
-                    laraStrictCollection: MessageResource::collection($input),
-                    expectedPreserveKeys: false,
-                    expectedOutput: $output,
-                    setContainer: false
+                    MessageJsonResource::collection($input),
+                    MessageResource::collection($input),
+                    false,
+                    $output,
+                    false,
                 ),
             ],
             'preserve keys true - no container' => [
                 static fn (self $self) => $self->assert(
-                    laravelCollection: PreserveKeysJsonResource::collection($input),
-                    laraStrictCollection: PreserveKeysLaraStrictResource::collection($input),
-                    expectedPreserveKeys: true,
-                    expectedOutput: $output,
-                    setContainer: false
+                    PreserveKeysJsonResource::collection($input),
+                    PreserveKeysLaraStrictResource::collection($input),
+                    true,
+                    $output,
+                    false,
                 ),
             ],
         ];
@@ -81,50 +82,38 @@ class JsonResourceCollectionTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
     }
 
+    /**
+     * @param array<array-key, mixed> $expectedOutput
+     */
     public function assert(
         AnonymousResourceCollection $laravelCollection,
         JsonResourceCollection $laraStrictCollection,
         bool $expectedPreserveKeys,
         array $expectedOutput,
-        bool $setContainer = true
+        bool $setContainer = true,
     ): void {
-        // preserveKeys was added Laravel v9.45.0
-        if (property_exists($laravelCollection, 'preserveKeys')) {
-            $this->assertEquals(
-                expected: $expectedPreserveKeys,
-                actual: $laravelCollection->preserveKeys,
-                message: 'Laravel preserve keys'
-            );
-        }
-
-        if (property_exists($laraStrictCollection, 'preserveKeys')) {
-            $this->assertEquals(
-                expected: $expectedPreserveKeys,
-                actual: $laraStrictCollection->preserveKeys,
-                message: 'LaraStrict preserve keys'
-            );
-        }
+        $this->assertEquals($expectedPreserveKeys, $laravelCollection->preserveKeys, 'Laravel preserve keys');
+        $this->assertEquals($expectedPreserveKeys, $laraStrictCollection->preserveKeys, 'LaraStrict preserve keys');
 
         $this->assertEquals(
-            expected: $expectedOutput,
-            actual: $laravelCollection->toArray($this->request),
-            message: 'Laravel toArray'
+            $expectedOutput,
+            $laravelCollection->toArray($this->request),
+            'Laravel toArray',
         );
 
         $this->assertEquals(
-            expected: $expectedOutput,
-            actual: $laraStrictCollection
+            $expectedOutput,
+            $laraStrictCollection
                 ->setContainer($setContainer ? new TestingContainer() : null)
                 ->toArray($this->request),
-            message: 'LaraStrict toArray'
+            'LaraStrict toArray',
         );
     }
 }

@@ -6,14 +6,14 @@ namespace LaraStrict\Testing\Database\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
-final class SafeUniqueSaveActionContractExpectation
+final readonly class SafeUniqueSaveActionContractExpectation
 {
     public function __construct(
-        public readonly Model $model,
-        public readonly bool $fail = false,
-        public readonly int $maxTries = 20,
-        public readonly int $tries = 1,
-        public readonly string|int|null $setId = null,
+        public Model $model,
+        public bool $fail = false,
+        public int $maxTries = 20,
+        public int $tries = 1,
+        public string|int|null $setId = null,
     ) {
     }
 }

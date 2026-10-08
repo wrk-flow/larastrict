@@ -17,8 +17,6 @@ abstract class Job implements ShouldQueue
     {
         // When queueing a job with schedule then the queue is not set by Laravel, this will
         // fix it.
-        if ($this->queue === null) {
-            $this->queue = 'default';
-        }
+        $this->queue ??= 'default';
     }
 }

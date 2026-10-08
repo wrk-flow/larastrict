@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Cache;
 
 use LaraStrict\Cache\CacheServiceProvider;
+use LaraStrict\Log\Config\LoggingConfig;
 use Tests\LaraStrict\Feature\TestCase;
 
 class CacheServiceProviderTest extends TestCase
@@ -12,5 +13,6 @@ class CacheServiceProviderTest extends TestCase
     public function testBooted(): void
     {
         $this->assertTrue($this->app()->providerIsLoaded(CacheServiceProvider::class));
+        $this->assertFalse($this->app()->make(LoggingConfig::class)->isCacheLoggingEnabled());
     }
 }

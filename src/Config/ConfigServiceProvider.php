@@ -10,6 +10,9 @@ use LaraStrict\Providers\AbstractServiceProvider;
 
 class ConfigServiceProvider extends AbstractServiceProvider
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $bindings = [
         AppConfigContract::class => AppConfig::class,
     ];

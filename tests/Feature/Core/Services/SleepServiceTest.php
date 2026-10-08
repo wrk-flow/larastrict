@@ -11,12 +11,12 @@ use PHPUnit\Framework\TestCase;
 
 final class SleepServiceTest extends TestCase
 {
-    private const MinMilliseconds = 100;
+    private const int MinMilliseconds = 100;
 
     public function testSleep(): void
     {
         $this->assertIsInRange(
-            static fn (SleepServiceContract $service) => $service->sleep(milliSeconds: self::MinMilliseconds)
+            static fn (SleepServiceContract $service) => $service->sleep(milliSeconds: self::MinMilliseconds),
         );
     }
 
@@ -25,8 +25,8 @@ final class SleepServiceTest extends TestCase
         $this->assertIsInRange(
             static fn (SleepServiceContract $service) => $service->sleepRandom(
                 fromMilliSeconds: self::MinMilliseconds,
-                toMilliSeconds: self::MinMilliseconds + 10
-            )
+                toMilliSeconds: self::MinMilliseconds + 10,
+            ),
         );
     }
 

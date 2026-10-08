@@ -17,7 +17,7 @@ final class MethodInJobIsNotDefinedException extends RuntimeException
         parent::__construct(sprintf(
             'Given job <%s> does not contain desired method <%s>',
             $jobClass,
-            $method
+            $method,
         ), $code, $previous);
     }
 }

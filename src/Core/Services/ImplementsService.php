@@ -7,6 +7,9 @@ namespace LaraStrict\Core\Services;
 class ImplementsService
 {
     // Cache only on injection at this moment. We could make it as singleton and use CacheMe (memory or even cache)
+    /**
+     * @var array<class-string, array<string, class-string>>
+     */
     private array $classImplementsCache = [];
 
     /**
@@ -20,8 +23,8 @@ class ImplementsService
         $className = $object::class;
 
         if (array_key_exists($className, $this->classImplementsCache) === false) {
-            $classImplements = class_implements($object);
-            $this->classImplementsCache[$className] = is_array($classImplements) ? $classImplements : [];
+            $classImplements = class_implements($object) ?: [];
+            $this->classImplementsCache[$className] = $classImplements;
         }
 
         return $this->classImplementsCache[$className];

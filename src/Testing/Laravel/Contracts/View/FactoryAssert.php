@@ -64,8 +64,8 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
      * Get the evaluated view contents for the given path.
      *
      * @param  string  $path
-     * @param Arrayable<string, mixed>|array $data
-     * @param  array  $mergeData
+     * @param Arrayable<string, mixed>|array<array-key, mixed> $data
+     * @param  array<array-key, mixed>  $mergeData
      * @return View
      */
     public function file($path, $data = [], $mergeData = [])
@@ -84,8 +84,8 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
      * Get the evaluated view contents for the given view.
      *
      * @param  string  $view
-     * @param Arrayable<string, mixed>|array $data
-     * @param  array  $mergeData
+     * @param Arrayable<string, mixed>|array<array-key, mixed> $data
+     * @param  array<array-key, mixed>  $mergeData
      * @return View
      */
     public function make($view, $data = [], $mergeData = [])
@@ -103,7 +103,7 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
     /**
      * Add a piece of shared data to the environment.
      *
-     * @param  array|string  $key
+     * @param  array<array-key, mixed>|string  $key
      * @param  mixed  $value
      * @return mixed
      */
@@ -121,9 +121,9 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
     /**
      * Register a view composer event.
      *
-     * @param  array|string  $views
+     * @param  array<array-key, mixed>|string  $views
      * @param Closure|string $callback
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function composer($views, $callback)
     {
@@ -139,9 +139,9 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
     /**
      * Register a view creator event.
      *
-     * @param  array|string  $views
+     * @param  array<array-key, mixed>|string  $views
      * @param Closure|string $callback
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function creator($views, $callback)
     {
@@ -158,7 +158,7 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
      * Add a new namespace to the loader.
      *
      * @param  string  $namespace
-     * @param  string|array  $hints
+     * @param  string|array<array-key, mixed>  $hints
      * @return $this
      */
     public function addNamespace($namespace, $hints)
@@ -176,7 +176,7 @@ class FactoryAssert extends AbstractExpectationCallsMap implements Factory
      * Replace the namespace hints for the given namespace.
      *
      * @param  string  $namespace
-     * @param  string|array  $hints
+     * @param  string|array<array-key, mixed>  $hints
      * @return $this
      */
     public function replaceNamespace($namespace, $hints)

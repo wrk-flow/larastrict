@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Events;
 
-final class DispatcherPushExpectation
+final readonly class DispatcherPushExpectation
 {
     public function __construct(
-        public readonly mixed $event,
-        public readonly mixed $payload = [],
+        public mixed $event,
+        public mixed $payload = [],
     ) {
     }
 }

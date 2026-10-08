@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Debug;
 
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-final class ExceptionHandlerRenderExpectation
+final readonly class ExceptionHandlerRenderExpectation
 {
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $request,
-        public readonly Throwable $e,
+        public Response $return,
+        public mixed $request,
+        public Throwable $e,
     ) {
     }
 }

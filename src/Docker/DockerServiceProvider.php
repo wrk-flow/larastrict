@@ -42,7 +42,7 @@ class DockerServiceProvider extends AbstractServiceProvider implements HasConfig
                 }
 
                 $event->task->appendOutputTo($config->getDockerOutputProcess());
-            }
+            },
         );
     }
 }

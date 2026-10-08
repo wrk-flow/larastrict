@@ -14,6 +14,9 @@ class PublicException extends Exception implements MessageHttpExceptionInterface
         return 401;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getHeaders(): array
     {
         return [];

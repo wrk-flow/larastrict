@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Tests\LaraStrict\Feature\Testing\Commands;
 
 use Closure;
-use Exception;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Testing\PendingCommand;
 use LogicException;
 use Mockery\MockInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\LaraStrict\Feature\TestCase;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\MultiFunctionContract;
 use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods;
@@ -24,10 +24,9 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestReturnU
 
 class MakeExpectationCommandTest extends TestCase
 {
-    final public const TestFileName = 'app/TestAction.php';
+    final public const string TestFileName = 'app/TestAction.php';
 
     private MockInterface $fileSystem;
-
     private static ?bool $stubsGenerated = null;
 
     protected function setUp(): void
@@ -39,9 +38,7 @@ class MakeExpectationCommandTest extends TestCase
 
     public function generateStubsIfNeeded(string $stubFile, string $contents): void
     {
-        if (self::$stubsGenerated === null) {
-            self::$stubsGenerated = (bool) getenv('STUBS_GENERATE');
-        }
+        self::$stubsGenerated ??= (bool) getenv('STUBS_GENERATE');
 
         if (self::$stubsGenerated) {
             file_put_contents($stubFile, $contents);
@@ -59,8 +56,9 @@ class MakeExpectationCommandTest extends TestCase
     }
 
     /**
-     * @dataProvider data
+     * @param list<string> $expectationVariants
      */
+    #[DataProvider('data')]
     public function testWithoutAutoloadDev(
         string $classOrFilePath,
         bool $useClass,
@@ -71,19 +69,21 @@ class MakeExpectationCommandTest extends TestCase
         $this->expectClass($useClass, $fileName);
 
         $expectedPath = ['tests'];
-        $this->expectResultFile(
+        $assertGeneratedFiles = $this->expectResultFile(
             $expectedPath,
             $fileName,
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath);
+        $assertGeneratedFiles();
     }
 
     /**
-     * @dataProvider data
+     * @param list<string> $expectationVariants
      */
+    #[DataProvider('data')]
     public function testWithAutoloadDevButOnlyOneEntry(
         string $classOrFilePath,
         bool $useClass,
@@ -95,20 +95,22 @@ class MakeExpectationCommandTest extends TestCase
 
         $expectedPath = ['app', 'tests'];
 
-        $this->expectResultFile(
+        $assertGeneratedFiles = $this->expectResultFile(
             $expectedPath,
             $fileName,
             'one',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'one');
+        $assertGeneratedFiles();
     }
 
     /**
-     * @dataProvider data
+     * @param list<string> $expectationVariants
      */
+    #[DataProvider('data')]
     public function testWithAutoloadDevTwoEntrySelectionSecond(
         string $classOrFilePath,
         bool $useClass,
@@ -120,15 +122,16 @@ class MakeExpectationCommandTest extends TestCase
 
         $expectedPath = ['src', 'tests', 'Integration'];
 
-        $this->expectResultFile(
+        $assertGeneratedFiles = $this->expectResultFile(
             $expectedPath,
             $fileName,
             'two',
             checkAssert: $checkAssert,
-            expectationVariants: $expectationVariants
+            expectationVariants: $expectationVariants,
         );
 
         $this->assertCommand(0, $classOrFilePath, 'two', true);
+        $assertGeneratedFiles();
     }
 
     public function testMissingClass(): void
@@ -143,14 +146,14 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: 'Test',
             expectedMessage: 'Provided class does not exists [Test]',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
     public function testMethodDoesNotExistsDefaultValue(): void
     {
         $this->expectExceptionMessage(
-            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public'
+            'Class Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\NoMethods does not contain any public',
         );
         $this->assertCommand(expectedResult: 1, class: NoMethods::class, expectComposerJson: false);
     }
@@ -163,11 +166,14 @@ class MakeExpectationCommandTest extends TestCase
             expectedResult: 1,
             class: self::TestFileName,
             expectedMessage: 'File does not exists at [' . self::TestFileName . ']',
-            expectComposerJson: false
+            expectComposerJson: false,
         );
     }
 
-    public function data(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function data(): array
     {
         return [
             'with class 1' => [TestAction::class, true, 'TestAction'],
@@ -207,6 +213,8 @@ class MakeExpectationCommandTest extends TestCase
                 'MultiFunctionContractSelfExpectation',
                 'MultiFunctionContractSelfViaClassExpectation',
                 'MultiFunctionContractNoParamsExpectation',
+                'MultiFunctionContractInterfaceTypeExpectation',
+                'MultiFunctionContractConstantRangeExpectation',
             ]],
         ];
     }
@@ -223,7 +231,7 @@ class MakeExpectationCommandTest extends TestCase
     {
         return static fn (string $path) => str_contains(
             $path,
-            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName
+            '/vendor/orchestra/testbench-core/laravel/' . self::TestFileName,
         );
     }
 
@@ -259,8 +267,8 @@ class MakeExpectationCommandTest extends TestCase
                 ->withArgs(
                     static fn (string $path): bool => str_contains(
                         $path,
-                        '/vendor/orchestra/testbench-core/laravel/composer.json'
-                    )
+                        '/vendor/orchestra/testbench-core/laravel/composer.json',
+                    ),
                 )
                 ->andReturnUsing(static function (string $path) use ($variantPrefix): string {
                     if ($variantPrefix !== null) {
@@ -303,13 +311,17 @@ class MakeExpectationCommandTest extends TestCase
             ->assertExitCode($expectedResult);
     }
 
+    /**
+     * @param list<string> $expectationVariants
+     * @param list<string> $expectedBasePathParts
+     */
     protected function expectResultFile(
         array $expectedBasePathParts,
         string $expectedFileName,
         ?string $variantPrefix = null,
         bool $checkAssert = false,
         array $expectationVariants = [],
-    ): void {
+    ): Closure {
         if ($expectationVariants === []) {
             $expectationVariants = [$expectedFileName . 'Expectation'];
         }
@@ -331,57 +343,101 @@ class MakeExpectationCommandTest extends TestCase
             ->once()
             ->withArgs(static fn (string $path): bool => str_contains($path, $expectedPath));
 
+        /** @var array<string, string> $writtenFiles */
+        $writtenFiles = [];
+
         $this->fileSystem->shouldReceive('put')
             ->times(count($expectationVariants))
-            ->withArgs(function (string $path, string $contents) use (
-                $expectedPath,
-                $variantPrefix,
-                $expectationVariants
-            ): bool {
-                $expectedExpectationFileName = null;
-                foreach ($expectationVariants as $expectationVariant) {
-                    $expectedExpectationFileName = $expectationVariant;
-                    $filePath = $this->getExpectedPath($expectedPath, $expectedExpectationFileName);
-
-                    if (str_contains($path, $filePath)) {
-                        break;
-                    }
-
-                    $expectedExpectationFileName = null;
-                }
-
-                if ($expectedExpectationFileName === null) {
-                    throw new Exception('Unknown variant');
-                }
-
-                $stubFile = $this->getStubFilePath($variantPrefix, $expectedExpectationFileName);
-
-                $this->generateStubsIfNeeded($stubFile, $contents);
-
-                $expectedResult = file_get_contents($stubFile);
-                $this->assertEquals($expectedResult, $contents);
+            ->withArgs(static function (string $path, string $contents) use (&$writtenFiles): bool {
+                $writtenFiles[$path] = $contents;
                 return true;
             });
 
         if ($checkAssert) {
             $this->fileSystem->shouldReceive('put')
                 ->once()
-                ->withArgs(function (string $path, string $contents) use (
-                    $expectedPath,
-                    $expectedFileName,
-                    $variantPrefix
-                ): bool {
-                    $filePath = $this->getExpectedPath($expectedPath, $expectedFileName . 'Assert');
-                    $this->assertStringContainsString($filePath, $path);
-
-                    $stubFile = $this->getStubFilePath($variantPrefix, $expectedFileName . 'Assert');
-
-                    $this->generateStubsIfNeeded($stubFile, $contents);
-
-                    $expectedResult = file_get_contents($stubFile);
-                    $this->assertEquals($expectedResult, $contents);
+                ->withArgs(static function (string $path, string $contents) use (&$writtenFiles): bool {
+                    $writtenFiles[$path] = $contents;
                     return true;
                 });
         }
+
+        return function () use (
+            &$writtenFiles,
+            $checkAssert,
+            $expectedFileName,
+            $expectedPath,
+            $expectationVariants,
+            $variantPrefix,
+        ): void {
+            $expectedFiles = $expectationVariants;
+            if ($checkAssert) {
+                $expectedFiles[] = $expectedFileName . 'Assert';
+            }
+
+            foreach ($expectedFiles as $expectedFile) {
+                $expectedPathAndFile = $this->getExpectedPath($expectedPath, $expectedFile);
+                $matchingPaths = array_filter(
+                    array_keys($writtenFiles),
+                    static fn (string $path): bool => str_contains($path, $expectedPathAndFile),
+                );
+                self::assertCount(1, $matchingPaths, 'Generated file not found: ' . $expectedPathAndFile);
+
+                $matchingPath = array_values($matchingPaths)[0];
+                $contents = $writtenFiles[$matchingPath];
+                $stubFile = $this->getStubFilePath($variantPrefix, $expectedFile);
+                $this->generateStubsIfNeeded($stubFile, $contents);
+
+                $expectedResult = file_get_contents($stubFile);
+                self::assertIsString($expectedResult);
+
+                if ($expectedFile === 'MultiFunctionContractAssert') {
+                    $this->assertMultiFunctionContractAssertEquals($expectedResult, $contents);
+                } else {
+                    self::assertSame($expectedResult, $contents);
+                }
+
+                unset($writtenFiles[$matchingPath]);
+            }
+
+            self::assertSame([], $writtenFiles, 'Unexpected generated files remain.');
+        };
+    }
+
+    private function assertMultiFunctionContractAssertEquals(string $expected, string $actual): void
+    {
+        $normalize = static function (string $contents): array {
+            // PHP versions format the generated self return type differently. Both forms describe the same contract.
+            $contents = str_replace(
+                [
+                    ': MultiFunctionContract',
+                    ': \\Tests\\LaraStrict\\Feature\\Testing\\Commands\\MakeExpectationCommand\\MultiFunctionContract',
+                ],
+                ': self',
+                $contents,
+            );
+
+            // Compare PHP tokens so that formatter-specific whitespace does not affect the generated-code assertion.
+            $tokens = array_values(array_filter(
+                token_get_all($contents),
+                static fn (array|string $token): bool => ! is_array($token) || $token[0] !== T_WHITESPACE,
+            ));
+            // PHP versions differ on whether the generated multiline parameter list keeps its trailing comma.
+            $tokens = array_values(array_filter(
+                $tokens,
+                static fn (array|string $token, int $index): bool => $token !== ',' || ($tokens[$index + 1] ?? null) !== ')',
+                ARRAY_FILTER_USE_BOTH,
+            ));
+
+            // token_get_all() includes source line numbers, which change when PHP formats the same code differently.
+            return array_map(
+                static fn (array|string $token): array|string => is_array($token)
+                    ? [$token[0], $token[1]]
+                    : $token,
+                $tokens,
+            );
+        };
+
+        self::assertSame($normalize($expected), $normalize($actual));
     }
 }

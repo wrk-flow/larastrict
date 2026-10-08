@@ -13,6 +13,11 @@ class TestRunAppServiceProviderAction implements RunAppServiceProviderPipesActio
 {
     public bool $executed = false;
 
+    /**
+     * @param non-empty-string $expectedServiceName
+     * @param non-empty-string $expectServiceRootDirToEndWith
+     * @param array<array-key, mixed> $expectedPipes
+     */
     public function __construct(
         public readonly array $expectedPipes,
         public readonly string $expectedServiceName,
@@ -33,7 +38,7 @@ class TestRunAppServiceProviderAction implements RunAppServiceProviderPipesActio
             Assert::assertArrayHasKey(
                 AppServiceProviderPipeContract::class,
                 $implements,
-                'Pipe <' . $pipeClass . '> must implement ' . AppServiceProviderPipeContract::class
+                'Pipe <' . $pipeClass . '> must implement ' . AppServiceProviderPipeContract::class,
             );
         }
 

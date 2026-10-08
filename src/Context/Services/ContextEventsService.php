@@ -17,7 +17,7 @@ class ContextEventsService
     public function __construct(
         private readonly Dispatcher $eventsDispatcher,
         private readonly ContextServiceContract $contextService,
-        private readonly Container $container
+        private readonly Container $container,
     ) {
     }
 
@@ -34,7 +34,9 @@ class ContextEventsService
     {
         $this->eventsDispatcher->listen(
             $events,
-            function ($event) use ($createContext, $getStateToStore): void {
+            function (mixed $event) use ($createContext, $getStateToStore): void {
+                assert(is_object($event));
+                /** @var TEvent $event */
                 $context = $createContext($event);
 
                 if ($context instanceof AbstractContext === false) {
@@ -45,12 +47,12 @@ class ContextEventsService
                     'event' => $event,
                 ]);
 
-                if ($value === null) {
+                if (($value instanceof ContextValueContract) === false) {
                     return;
                 }
 
                 $this->contextService->set($context, $value);
-            }
+            },
         );
     }
 
@@ -63,7 +65,9 @@ class ContextEventsService
      */
     public function clearOn(string|array $events, callable $createContext): void
     {
-        $this->eventsDispatcher->listen($events, function ($event) use ($createContext): void {
+        $this->eventsDispatcher->listen($events, function (mixed $event) use ($createContext): void {
+            assert(is_object($event));
+            /** @var TEvent $event */
             $context = $createContext($event);
 
             if ($context instanceof AbstractContext === false) {
@@ -90,11 +94,13 @@ class ContextEventsService
         Closure|string|array $events,
         array $watchForAttributesChanges,
         Closure $getModelFromEvent,
-        callable $createContext
+        callable $createContext,
     ): void {
         $this->eventsDispatcher->listen(
             $events,
-            function ($event) use ($createContext, $getModelFromEvent, $watchForAttributesChanges): void {
+            function (mixed $event) use ($createContext, $getModelFromEvent, $watchForAttributesChanges): void {
+                assert(is_object($event));
+                /** @var TEvent $event */
                 $model = $getModelFromEvent($event);
                 if ($model instanceof Model === false) {
                     return;
@@ -111,7 +117,7 @@ class ContextEventsService
                 }
 
                 $this->contextService->delete($context);
-            }
+            },
         );
     }
 }

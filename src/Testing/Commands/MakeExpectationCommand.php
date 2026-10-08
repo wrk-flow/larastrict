@@ -37,7 +37,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 #[AsCommand(name: 'make:expectation', description: 'Make expectation class for given class')]
 class MakeExpectationCommand extends Command
 {
-    private const HookProperty = '_hook';
+    private const string HookProperty = '_hook';
 
     protected $signature = 'make:expectation
         {class : Class name of path to class using PSR-4 specs}
@@ -96,7 +96,7 @@ class MakeExpectationCommand extends Command
         $directory = $basePath . DIRECTORY_SEPARATOR . $namespace->folder . strtr(
             $fileNamespace,
             StubConstants::NameSpaceSeparator,
-            DIRECTORY_SEPARATOR
+            DIRECTORY_SEPARATOR,
         );
         $fullNamespace = $namespace->baseNamespace . $fileNamespace;
 
@@ -133,18 +133,18 @@ class MakeExpectationCommand extends Command
                 ),
             );
 
-            if ($assertFileState !== null) {
+            if ($assertFileState instanceof AssertFileStateEntity) {
                 $methodName = $method->getName();
 
                 $assertFileState->constructorComments[] = sprintf(
                     '@param array<%s|null> $%s',
                     $expectationClassName,
-                    $methodName
+                    $methodName,
                 );
                 $assertFileState->constructorBodies[] = sprintf(
                     '$this->setExpectations(%s::class, $%s);',
                     $expectationClassName,
-                    $methodName
+                    $methodName,
                 );
 
                 $assertFileState
@@ -162,17 +162,15 @@ class MakeExpectationCommand extends Command
             }
         }
 
-        if ($assertFileState !== null) {
-            if ($assertFileState->constructor !== null) {
-                $assertFileState->constructor->addComment(implode(PHP_EOL, $assertFileState->constructorComments));
-                $assertFileState->constructor->addBody(implode(PHP_EOL, $assertFileState->constructorBodies));
-            }
+        if ($assertFileState instanceof AssertFileStateEntity) {
+            $assertFileState->constructor->addComment(implode(PHP_EOL, $assertFileState->constructorComments));
+            $assertFileState->constructor->addBody(implode(PHP_EOL, $assertFileState->constructorBodies));
 
             $this->writeFile(
                 directory: $directory,
                 className: $assertClassName,
                 filesystem: $filesystem,
-                fileContents: $printer->printFile($assertFileState->file)
+                fileContents: $printer->printFile($assertFileState->file),
             );
         }
 
@@ -196,7 +194,7 @@ class MakeExpectationCommand extends Command
 
         $assertMethod->addBody(sprintf(
             '$_expectation = $this->getExpectation(%s);',
-            $expectationClassName . '::class'
+            $expectationClassName . '::class',
         ));
 
         $hookParameters = [];
@@ -210,7 +208,7 @@ class MakeExpectationCommand extends Command
                 $assertMethod->addBody(sprintf(
                     'Assert::assertEquals($_expectation->%s, $%s, $_message);',
                     $parameter->name,
-                    $parameter->name
+                    $parameter->name,
                 ));
             }
         }
@@ -227,25 +225,20 @@ class MakeExpectationCommand extends Command
         ));
         $assertMethod->addBody('}');
 
-        $returnType = $method->getReturnType();
-
-        if ($returnType instanceof ReflectionNamedType) {
-            $enumReturnType = PhpType::tryFrom($returnType->getName()) ?? PhpType::Mixed;
-        } elseif ($returnType instanceof ReflectionUnionType) {
-            $enumReturnType = PhpType::Mixed;
-        } else {
-            $enumReturnType = $phpDoc->returnType;
-        }
+        $enumReturnType = $this->getReturnType($method, $phpDoc);
 
         switch ($enumReturnType) {
-            case PhpType::Mixed:
-                $assertMethod->addBody('');
-                $assertMethod->addBody('return $_expectation->return;');
-                break;
             case PhpType::Self:
             case PhpType::Static:
                 $assertMethod->addBody('');
                 $assertMethod->addBody('return $this;');
+                break;
+            case PhpType::Unknown:
+            case PhpType::Void:
+                break;
+            default:
+                $assertMethod->addBody('');
+                $assertMethod->addBody('return $_expectation->return;');
                 break;
         }
     }
@@ -301,14 +294,20 @@ class MakeExpectationCommand extends Command
             ->addMethod('__construct');
 
         $returnType = $method->getReturnType();
-        if ($returnType !== null &&
-            ($returnType instanceof ReflectionNamedType === false || $this->canReturnExpectation($returnType)) ||
-            $phpDoc->returnType === PhpType::Mixed) {
+        $enumReturnType = $this->getReturnType($method, $phpDoc);
+        if (! in_array($enumReturnType, [PhpType::Unknown, PhpType::Void, PhpType::Self, PhpType::Static], true)) {
             $constructorParameter = $constructor
                 ->addPromotedParameter('return')
                 ->setReadOnly();
 
             $this->setParameterType($returnType, $constructorParameter);
+
+            if ($phpDoc->returnTypeName !== null) {
+                $constructor->addComment(sprintf(
+                    '@param %s $return',
+                    $this->resolvePhpDocReturnType($method, $phpDoc->returnTypeName),
+                ));
+            }
         }
 
         $parameterTypes = [];
@@ -331,7 +330,7 @@ class MakeExpectationCommand extends Command
         $parameterTypes[] = 'self';
 
         $constructor->addComment(
-            sprintf('@param \Closure(%s):void|null $%s', implode(',', $parameterTypes), self::HookProperty)
+            sprintf('@param \Closure(%s):void|null $%s', implode(',', $parameterTypes), self::HookProperty),
         );
 
         return $printer->printFile($file);
@@ -339,7 +338,7 @@ class MakeExpectationCommand extends Command
 
     protected function setParameterType(
         ReflectionType|ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
-        PromotedParameter $constructorParameter
+        PromotedParameter $constructorParameter,
     ): string {
         $proposedType = '';
 
@@ -352,7 +351,7 @@ class MakeExpectationCommand extends Command
                 }
 
                 // Fix global namespace
-                if (class_exists($name)) {
+                if (class_exists($name) || interface_exists($name)) {
                     return '\\' . $name;
                 }
 
@@ -367,7 +366,7 @@ class MakeExpectationCommand extends Command
             $allowNull = $type->allowsNull();
             $proposedType = $type->getName();
 
-            if (class_exists($proposedType)) {
+            if (class_exists($proposedType) || interface_exists($proposedType)) {
                 // Fix global namespace
                 $proposedType = '\\' . $proposedType;
             }
@@ -399,9 +398,16 @@ class MakeExpectationCommand extends Command
         return $proposedType;
     }
 
+    protected function resolvePhpDocReturnType(ReflectionMethod $method, string $returnType): string
+    {
+        $declaringClass = '\\' . $method->getDeclaringClass()->getName() . '::';
+
+        return str_replace(['self::', 'static::'], $declaringClass, $returnType);
+    }
+
     protected function setParameterDefaultValue(
         ReflectionParameter $parameter,
-        PromotedParameter $constructorParameter
+        PromotedParameter $constructorParameter,
     ): void {
         if ($parameter->isDefaultValueAvailable() === false) {
             return;
@@ -420,7 +426,7 @@ class MakeExpectationCommand extends Command
 
         if (is_object($defaultValue)) {
             $objectLiteral = new Literal(
-                'new ' . StubConstants::NameSpaceSeparator . $defaultValue::class . '(/* unknown */)'
+                'new ' . StubConstants::NameSpaceSeparator . $defaultValue::class . '(/* unknown */)',
             );
             $constructorParameter->setDefaultValue($objectLiteral);
         } else {
@@ -430,29 +436,20 @@ class MakeExpectationCommand extends Command
 
     protected function writeError(string $message): void
     {
-        if (property_exists($this, 'components')) {
-            $this->components->error($message);
-        } else {
-            $this->error('ERROR:');
-            $this->line($message);
-        }
+        $this->components->error($message);
     }
 
     protected function writeFile(
         string $directory,
         string $className,
         Filesystem $filesystem,
-        string $fileContents
+        string $fileContents,
     ): void {
         $filePath = $directory . DIRECTORY_SEPARATOR . $className . '.php';
         $filesystem->put($filePath, $fileContents);
 
         $successMessage = 'File generated [' . $className . ']';
-        if (property_exists($this, 'components')) {
-            $this->components->info($successMessage);
-        } else {
-            $this->info($successMessage);
-        }
+        $this->components->info($successMessage);
 
         $this->line(sprintf('  <fg=gray>File written to [%s]</>', $filePath));
         $this->newLine();
@@ -466,14 +463,24 @@ class MakeExpectationCommand extends Command
         return $class->getShortName() . $methodSuffix . 'Expectation';
     }
 
-    protected function canReturnExpectation(ReflectionNamedType $returnType): bool
+    protected function getReturnType(ReflectionMethod $method, PhpDocEntity $phpDoc): PhpType
     {
-        return $returnType->getName() !== PhpType::Void
-            ->value
-            && $returnType->getName() !== PhpType::Self
-                ->value
-            && $returnType->getName() !== PhpType::Static
-                ->value;
+        $returnType = $method->getReturnType();
+
+        if ($returnType instanceof ReflectionNamedType) {
+            // PHP 8.5 resolves `self` to the declaring class name through reflection.
+            if ($returnType->getName() === $method->getDeclaringClass()->getName()) {
+                return PhpType::Self;
+            }
+
+            return PhpType::tryFrom($returnType->getName()) ?? PhpType::Mixed;
+        }
+
+        if ($returnType instanceof ReflectionUnionType) {
+            return PhpType::Mixed;
+        }
+
+        return $phpDoc->returnType;
     }
 
     /**
@@ -481,9 +488,10 @@ class MakeExpectationCommand extends Command
      */
     private function getInputClass(string $basePath, Filesystem $filesystem): ?string
     {
-        /** @phpstan-var class-string|string $class */
-        $class = (string) $this->input->getArgument('class');
+        $class = $this->input->getArgument('class');
+        assert(is_string($class), 'Class must be a string');
 
+        /** @phpstan-var class-string|string $class */
         if (str_ends_with($class, '.php')) {
             $fullPath = $basePath . '/' . $class;
 

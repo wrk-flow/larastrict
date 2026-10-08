@@ -17,6 +17,9 @@ class LaravelResource extends JsonResource
         parent::__construct($resource);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function toArray($request): array
     {
         return [

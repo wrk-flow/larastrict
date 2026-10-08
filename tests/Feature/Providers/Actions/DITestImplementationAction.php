@@ -6,13 +6,13 @@ namespace Tests\LaraStrict\Feature\Providers\Actions;
 
 use Tests\LaraStrict\Feature\Providers\Interfaces\TestImplementationInterface;
 
-final class DITestImplementationAction
+final readonly class DITestImplementationAction
 {
     /**
      * @param array<TestImplementationInterface> $implementations
      */
     public function __construct(
-        private readonly array $implementations,
+        private array $implementations,
     ) {
     }
 

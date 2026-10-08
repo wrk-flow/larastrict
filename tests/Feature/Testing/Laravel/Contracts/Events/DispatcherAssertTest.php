@@ -23,78 +23,80 @@ class DispatcherAssertTest extends TestCase
 {
     use AssertExpectations;
 
-    protected function generateData(): array
+    protected static function generateData(): array
     {
         return [
             new AssertExpectationEntity(
                 methodName: 'listen',
                 createAssert: static fn () => new DispatcherAssert(
-                    listen: [new DispatcherListenExpectation(events: [TestEvent::class], listener: TestListener::class)]
+                    listen: [
+                        new DispatcherListenExpectation(events: [TestEvent::class], listener: TestListener::class),
+                    ],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->listen(
                     events: [TestEvent::class],
-                    listener: TestListener::class
+                    listener: TestListener::class,
                 ),
             ),
             new AssertExpectationEntity(
                 methodName: 'listen',
                 createAssert: static fn () => new DispatcherAssert(
-                    listen: [new DispatcherListenExpectation(events: [], listener: null)]
+                    listen: [new DispatcherListenExpectation(events: [], listener: null)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->listen(events: []),
             ),
             new AssertExpectationEntity(
                 methodName: 'listen',
                 createAssert: static fn () => new DispatcherAssert(
-                    listen: [new DispatcherListenExpectation(events: [TestEvent::class], listener: null)]
+                    listen: [new DispatcherListenExpectation(events: [TestEvent::class], listener: null)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->listen(events: [TestEvent::class]),
             ),
             new AssertExpectationEntity(
                 methodName: 'hasListeners',
                 createAssert: static fn () => new DispatcherAssert(
-                    hasListeners: [new DispatcherHasListenersExpectation(return: true, eventName: 'test')]
+                    hasListeners: [new DispatcherHasListenersExpectation(return: true, eventName: 'test')],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->hasListeners(eventName: 'test'),
                 checkResult: true,
-                expectedResult: true
+                expectedResult: true,
             ),
             new AssertExpectationEntity(
                 methodName: 'hasListeners',
                 createAssert: static fn () => new DispatcherAssert(
-                    hasListeners: [new DispatcherHasListenersExpectation(return: false, eventName: TestEvent::class)]
+                    hasListeners: [new DispatcherHasListenersExpectation(return: false, eventName: TestEvent::class)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->hasListeners(eventName: TestEvent::class),
                 checkResult: true,
-                expectedResult: false
+                expectedResult: false,
             ),
             new AssertExpectationEntity(
                 methodName: 'subscribe',
                 createAssert: static fn () => new DispatcherAssert(
-                    subscribe: [new DispatcherSubscribeExpectation(subscriber: TestListener::class)]
+                    subscribe: [new DispatcherSubscribeExpectation(subscriber: TestListener::class)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->subscribe(subscriber: TestListener::class),
             ),
             new AssertExpectationEntity(
                 methodName: 'until',
                 createAssert: static fn () => new DispatcherAssert(
-                    until: [new DispatcherUntilExpectation(return: null, event: TestEvent::class, payload: ['test'])]
+                    until: [new DispatcherUntilExpectation(return: null, event: TestEvent::class, payload: ['test'])],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->until(
                     event: TestEvent::class,
-                    payload: ['test']
+                    payload: ['test'],
                 ),
                 checkResult: true,
-                expectedResult: null
+                expectedResult: null,
             ),
             new AssertExpectationEntity(
                 methodName: 'until',
                 createAssert: static fn () => new DispatcherAssert(
-                    until: [new DispatcherUntilExpectation(return: [], event: TestEvent::class)]
+                    until: [new DispatcherUntilExpectation(return: [], event: TestEvent::class)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->until(event: TestEvent::class),
                 checkResult: true,
-                expectedResult: []
+                expectedResult: [],
             ),
             new AssertExpectationEntity(
                 methodName: 'dispatch',
@@ -103,62 +105,62 @@ class DispatcherAssertTest extends TestCase
                         new DispatcherDispatchExpectation(return: [], event: TestEvent::class, payload: [
                             'test',
                         ], halt: true),
-                    ]
+                    ],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->dispatch(
                     event: TestEvent::class,
                     payload: ['test'],
-                    halt: true
+                    halt: true,
                 ),
                 checkResult: true,
-                expectedResult: []
+                expectedResult: [],
             ),
             new AssertExpectationEntity(
                 methodName: 'dispatch',
                 createAssert: static fn () => new DispatcherAssert(
                     dispatch: [
                         new DispatcherDispatchExpectation(return: null, event: TestEvent::class, payload: ['test']),
-                    ]
+                    ],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->dispatch(
                     event: TestEvent::class,
-                    payload: ['test']
+                    payload: ['test'],
                 ),
                 checkResult: true,
-                expectedResult: null
+                expectedResult: null,
             ),
             new AssertExpectationEntity(
                 methodName: 'push',
                 createAssert: static fn () => new DispatcherAssert(
-                    push: [new DispatcherPushExpectation(event: TestEvent::class, payload: ['test'])]
+                    push: [new DispatcherPushExpectation(event: TestEvent::class, payload: ['test'])],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->push(event: TestEvent::class, payload: ['test']),
             ),
             new AssertExpectationEntity(
                 methodName: 'push',
                 createAssert: static fn () => new DispatcherAssert(
-                    push: [new DispatcherPushExpectation(event: TestEvent::class)]
+                    push: [new DispatcherPushExpectation(event: TestEvent::class)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->push(event: TestEvent::class),
             ),
             new AssertExpectationEntity(
                 methodName: 'flush',
                 createAssert: static fn () => new DispatcherAssert(
-                    flush: [new DispatcherFlushExpectation(event: TestEvent::class)]
+                    flush: [new DispatcherFlushExpectation(event: TestEvent::class)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->flush(event: TestEvent::class),
             ),
             new AssertExpectationEntity(
                 methodName: 'forget',
                 createAssert: static fn () => new DispatcherAssert(
-                    forget: [new DispatcherForgetExpectation(event: TestEvent::class)]
+                    forget: [new DispatcherForgetExpectation(event: TestEvent::class)],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->forget(event: TestEvent::class),
             ),
             new AssertExpectationEntity(
                 methodName: 'forgetPushed',
                 createAssert: static fn () => new DispatcherAssert(
-                    forgetPushed: [new DispatcherForgetPushedExpectation()]
+                    forgetPushed: [new DispatcherForgetPushedExpectation()],
                 ),
                 call: static fn (DispatcherAssert $assert) => $assert->forgetPushed(),
             ),

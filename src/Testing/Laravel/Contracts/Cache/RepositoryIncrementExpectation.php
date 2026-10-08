@@ -6,16 +6,16 @@ namespace LaraStrict\Testing\Laravel\Contracts\Cache;
 
 use Closure;
 
-final class RepositoryIncrementExpectation
+final readonly class RepositoryIncrementExpectation
 {
     /**
      * @param Closure(mixed, mixed, self):void|null $hook
      */
     public function __construct(
-        public readonly int|bool $return,
-        public readonly mixed $key,
-        public readonly mixed $value = 1,
-        public readonly ?Closure $hook = null,
+        public int|bool $return,
+        public mixed $key,
+        public mixed $value = 1,
+        public ?Closure $hook = null,
     ) {
     }
 }

@@ -7,7 +7,8 @@ namespace Tests\LaraStrict\Feature\Database\Scopes;
 use Closure;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use LaraStrict\Database\Scopes\OrderByValuesScope;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 use Tests\LaraStrict\Feature\TestCase;
 
 class OrderByValuesScopeTest extends TestCase
@@ -15,32 +16,31 @@ class OrderByValuesScopeTest extends TestCase
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
-                static fn (self $self) => $self->assert(direction: 'ASC', expectedDirection: 'ASC'),
+                static fn (self $self) => $self->assert('ASC', 'ASC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: 'DESC', expectedDirection: 'DESC'),
+                static fn (self $self) => $self->assert('DESC', 'DESC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: 'desc', expectedDirection: 'DESC'),
+                static fn (self $self) => $self->assert('desc', 'DESC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: 'asc', expectedDirection: 'ASC'),
+                static fn (self $self) => $self->assert('asc', 'ASC'),
             ],
             [
-                static fn (self $self) => $self->assert(direction: null, expectedDirection: 'ASC'),
+                static fn (self $self) => $self->assert(null, 'ASC'),
             ],
         ];
     }
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -50,45 +50,44 @@ class OrderByValuesScopeTest extends TestCase
     {
         $values = ['1', 2, 's33'];
         $scope = $direction === null
-            ? new OrderByValuesScope($values, Test::AttributeTest)
-            : new OrderByValuesScope($values, Test::AttributeTest, $direction);
+            ? new OrderByValuesScope($values, TestModel::AttributeTest)
+            : new OrderByValuesScope($values, TestModel::AttributeTest, $direction);
 
-        $query = Test::query()
+        $query = TestModel::query()
             ->withoutGlobalScope(new SoftDeletingScope())
             ->withGlobalScope('test', $scope);
 
         $this->assertEquals(
-            expected: 'select * from "tests" order by FIELD(`test`, ?, ?, ?) ' . $expectedDirection,
-            actual: $query->toSql()
+            'select * from "tests" order by FIELD(`test`, ?, ?, ?) ' . $expectedDirection,
+            $query->toSql(),
         );
 
-        $this->assertEquals(expected: $values, actual: $query->getBindings());
+        $this->assertEquals($values, $query->getBindings());
     }
 
     /**
      * @return array<string|int, array{0: Closure(static):void}>
      */
-    public function dataInvalid(): array
+    public static function dataInvalid(): array
     {
         return [
             [
-                static fn (self $self) => $self->assertInvalid(direction: 'invalid'),
+                static fn (self $self) => $self->assertInvalid('invalid'),
             ],
             [
-                static fn (self $self) => $self->assertInvalid(direction: 'asio'),
+                static fn (self $self) => $self->assertInvalid('asio'),
             ],
 
             [
-                static fn (self $self) => $self->assertInvalid(direction: 'descio'),
+                static fn (self $self) => $self->assertInvalid('descio'),
             ],
         ];
     }
 
     /**
      * @param Closure(static):void $assert
-     *
-     * @dataProvider dataInvalid
      */
+    #[DataProvider('dataInvalid')]
     public function testInvalid(Closure $assert): void
     {
         $assert($this);
@@ -97,6 +96,6 @@ class OrderByValuesScopeTest extends TestCase
     public function assertInvalid(string $direction): void
     {
         $this->expectExceptionMessage('Direction must be ASC or DESC');
-        new OrderByValuesScope([], Test::AttributeTest, $direction);
+        new OrderByValuesScope([], TestModel::AttributeTest, $direction);
     }
 }

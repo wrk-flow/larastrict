@@ -6,6 +6,9 @@ namespace Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand;
 
 interface MultiFunctionContract
 {
+    public const int LEVEL_LOW = 1;
+    public const int LEVEL_HIGH = 2;
+
     public function self(string $first, int $second, bool $third): self;
 
     /**
@@ -58,4 +61,11 @@ interface MultiFunctionContract
     public function mixed($first, $second, $third): mixed;
 
     public function noParams(): string;
+
+    public function interfaceType(\Traversable $values): \Traversable;
+
+    /**
+     * @return self::LEVEL_*
+     */
+    public function constantRange(): int;
 }

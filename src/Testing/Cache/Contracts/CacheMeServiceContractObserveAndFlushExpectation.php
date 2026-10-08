@@ -6,11 +6,14 @@ namespace LaraStrict\Testing\Cache\Contracts;
 
 use Closure;
 
-final class CacheMeServiceContractObserveAndFlushExpectation
+final readonly class CacheMeServiceContractObserveAndFlushExpectation
 {
+    /**
+     * @param array<array-key, mixed> $tags
+     */
     public function __construct(
-        public readonly Closure|array $tags,
-        public readonly string $modelClass,
+        public Closure|array $tags,
+        public string $modelClass,
     ) {
     }
 }

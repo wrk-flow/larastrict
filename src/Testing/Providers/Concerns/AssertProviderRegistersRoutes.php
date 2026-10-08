@@ -26,7 +26,7 @@ trait AssertProviderRegistersRoutes
         Application $application,
         array $expectUrlsByMethod,
         ?string $registerServiceProvider = null,
-        bool $onlyGiven = false
+        bool $onlyGiven = false,
     ): void {
         if ($registerServiceProvider !== null) {
             $application->register($registerServiceProvider, true);
@@ -37,12 +37,21 @@ trait AssertProviderRegistersRoutes
 
         $routes = $router->getRoutes();
         if ($expectUrlsByMethod === []) {
-            Assert::assertTrue(true);
+            $registeredRoutes = array_filter(
+                $routes->getRoutes(),
+                static fn (Route $route): bool => ! str_starts_with((string) $route->getName(), 'storage.local'),
+            );
+            Assert::assertSame([], $registeredRoutes);
             return;
         }
 
         foreach ($expectUrlsByMethod as $method => $urls) {
             $registeredUrls = $routes->get($method);
+
+            // Laravel 12 registers this framework route when local storage serving is enabled.
+            if (($registeredUrls['storage/{path}'] ?? null)?->getName() === 'storage.local') {
+                unset($registeredUrls['storage/{path}']);
+            }
 
             $expectedUrls = [];
             foreach ($urls as $index => $value) {

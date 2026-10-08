@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Auth\Access;
 
-final class GateResourceExpectation
+final readonly class GateResourceExpectation
 {
+    /**
+     * @param array<array-key, mixed> $abilities
+     */
     public function __construct(
-        public readonly mixed $name,
-        public readonly mixed $class,
-        public readonly ?array $abilities = null,
+        public mixed $name,
+        public mixed $class,
+        public ?array $abilities = null,
     ) {
     }
 }

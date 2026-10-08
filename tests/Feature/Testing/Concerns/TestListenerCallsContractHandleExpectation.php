@@ -6,14 +6,14 @@ namespace Tests\LaraStrict\Feature\Testing\Concerns;
 
 use Closure;
 
-final class TestListenerCallsContractHandleExpectation
+final readonly class TestListenerCallsContractHandleExpectation
 {
     /**
      * @param Closure(TestEvent,self):void|null $hook
      */
     public function __construct(
-        public readonly TestEvent $event,
-        public readonly ?Closure $hook = null,
+        public TestEvent $event,
+        public ?Closure $hook = null,
     ) {
     }
 }

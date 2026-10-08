@@ -6,14 +6,14 @@ namespace LaraStrict\Testing\Config\Contracts;
 
 use Closure;
 
-final class AppConfigContractGetVersionExpectation
+final readonly class AppConfigContractGetVersionExpectation
 {
     /**
      * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly string $return,
-        public readonly ?Closure $hook = null,
+        public string $return,
+        public ?Closure $hook = null,
     ) {
     }
 }

@@ -19,9 +19,5 @@ abstract class AbstractIsContext extends AbstractContext
         return $contextService->is($this, $this->is());
     }
 
-    /**
-     * @return Closure(mixed...):bool
-     * @phpstan-return Closure(mixed,mixed,mixed,mixed,mixed):bool
-     */
     abstract public function is(): Closure;
 }

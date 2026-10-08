@@ -9,11 +9,14 @@ use LaraStrict\Http\Enums\HttpMessage;
 class CreatedResource extends MessageResource
 {
     public function __construct(
-        public readonly int|string|null $id
+        public readonly int|string|null $id,
     ) {
         parent::__construct(HttpMessage::Created);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function toArray($request)
     {
         return array_merge(parent::toArray($request), [

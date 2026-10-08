@@ -18,7 +18,7 @@ class OrderByValuesScope extends AbstractScope
     public function __construct(
         private readonly array $values,
         private readonly string $column,
-        string $direction = 'ASC'
+        string $direction = 'ASC',
     ) {
         $this->direction = strtoupper((string) $direction);
 
@@ -31,9 +31,10 @@ class OrderByValuesScope extends AbstractScope
     {
         $placeholders = array_map(static fn () => '?', $this->values);
 
+        // The SQL uses validated direction and values as bindings. The column is the caller's identifier.
         $builder->orderByRaw(
             'FIELD(`' . $this->column . '`, ' . implode(', ', $placeholders) . ') ' . $this->direction,
-            $this->values
+            $this->values,
         );
     }
 }

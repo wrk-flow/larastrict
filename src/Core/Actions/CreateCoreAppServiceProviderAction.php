@@ -19,7 +19,7 @@ class CreateCoreAppServiceProviderAction implements CreateAppServiceProviderActi
             serviceName: 'LaraStrict',
             serviceFileName: 'lara_strict',
             serviceRootDir: 'src/Core',
-            namespace: 'LaraStrict\\Core'
+            namespace: 'LaraStrict\\Core',
         );
     }
 }

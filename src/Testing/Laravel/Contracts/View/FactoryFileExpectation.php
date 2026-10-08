@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class FactoryFileExpectation
+use Illuminate\Contracts\View\View;
+
+final readonly class FactoryFileExpectation
 {
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $path,
-        public readonly mixed $data = [],
-        public readonly mixed $mergeData = [],
+        public View $return,
+        public mixed $path,
+        public mixed $data = [],
+        public mixed $mergeData = [],
     ) {
     }
 }

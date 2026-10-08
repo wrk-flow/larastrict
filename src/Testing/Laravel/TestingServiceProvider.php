@@ -12,7 +12,7 @@ class TestingServiceProvider extends AbstractServiceProvider
 {
     public function __construct(
         Application $app,
-        public readonly ServiceProvider|string|null $wrappedProvider = null
+        public readonly ServiceProvider|string|null $wrappedProvider = null,
     ) {
         parent::__construct($app);
     }

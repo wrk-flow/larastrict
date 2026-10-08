@@ -8,8 +8,11 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class TestRequest extends FormRequest
 {
-    final public const KeyTest = 'test';
+    final public const string KeyTest = 'test';
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function rules(): array
     {
         return [

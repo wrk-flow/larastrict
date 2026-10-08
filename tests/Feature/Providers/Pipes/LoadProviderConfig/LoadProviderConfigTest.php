@@ -14,22 +14,22 @@ class LoadProviderConfigTest extends TestCase
     public function testInvalidDoesNothing(): void
     {
         $provider = $this->app()
-            ->register(provider: InvalidConfigServiceProvider::class);
-        $this->assertInstanceOf(expected: InvalidConfigServiceProvider::class, actual: $provider);
+            ->register(InvalidConfigServiceProvider::class);
+        $this->assertInstanceOf(InvalidConfigServiceProvider::class, $provider);
     }
 
     public function testMissingConfigFile(): void
     {
-        $this->expectExceptionMessage(message: 'tests/Feature/Config/NoConfig/Config/no_config.php');
-        $this->expectExceptionMessage(message: 'Failed to load config at');
+        $this->expectExceptionMessage('tests/Feature/Config/NoConfig/Config/no_config.php');
+        $this->expectExceptionMessage('Failed to load config at');
         $this->app()
-            ->register(provider: NoConfigServiceProvider::class);
+            ->register(NoConfigServiceProvider::class);
     }
 
     public function testValid(): void
     {
         $provider = $this->app()
-            ->register(provider: ValidConfigServiceProvider::class);
-        $this->assertInstanceOf(expected: ValidConfigServiceProvider::class, actual: $provider);
+            ->register(ValidConfigServiceProvider::class);
+        $this->assertInstanceOf(ValidConfigServiceProvider::class, $provider);
     }
 }

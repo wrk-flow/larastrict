@@ -11,7 +11,8 @@ use Tests\LaraStrict\Feature\Testing\Commands\MakeExpectationCommand\TestAction;
 class AssertProviderSingletonsTest extends TestCase
 {
     use AssertProviderSingletons;
-    final public const KeyBinding = 'test-action';
+
+    final public const string KeyBinding = 'test-action';
 
     public function test(): void
     {

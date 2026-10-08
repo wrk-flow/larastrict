@@ -9,6 +9,9 @@ class PreserveKeysJsonResource extends MessageJsonResource
     public bool $preserveKeys = true;
 
     // TODO: Remove array when Laravel fixes its own implementation.
+    /**
+     * @param array<array-key, mixed> $resource
+     */
     public function __construct(string|null|array $resource)
     {
         parent::__construct(is_array($resource) ? null : $resource);

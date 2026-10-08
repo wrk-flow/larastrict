@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\Events;
 
-final class DispatcherUntilExpectation
+final readonly class DispatcherUntilExpectation
 {
+    /**
+     * @param array<mixed>|null    $return
+     */
     public function __construct(
-        public readonly mixed $return,
-        public readonly mixed $event,
-        public readonly mixed $payload = [],
+        public array|null $return,
+        public string|object $event,
+        public mixed $payload = [],
     ) {
     }
 }

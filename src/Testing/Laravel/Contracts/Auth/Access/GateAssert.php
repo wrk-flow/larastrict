@@ -107,8 +107,9 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
      * @param  string  $name
      * @param  string  $class
      * @return $this
+     * @param array<array-key, mixed> $abilities
      */
-    public function resource($name, $class, array $abilities = null)
+    public function resource($name, $class, ?array $abilities = null)
     {
         $expectation = $this->getExpectation(GateResourceExpectation::class);
         $message = $this->getDebugMessage();
@@ -207,8 +208,8 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
     /**
      * Determine if all of the given abilities should be granted for the current user.
      *
-     * @param  iterable|string  $abilities
-     * @param  array|mixed  $arguments
+     * @param  iterable<mixed>|string  $abilities
+     * @param  array<array-key, mixed>|mixed  $arguments
      * @return bool
      */
     public function check($abilities, $arguments = [])
@@ -225,8 +226,8 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
     /**
      * Determine if any one of the given abilities should be granted for the current user.
      *
-     * @param  iterable|string  $abilities
-     * @param  array|mixed  $arguments
+     * @param  iterable<mixed>|string  $abilities
+     * @param  array<array-key, mixed>|mixed  $arguments
      * @return bool
      */
     public function any($abilities, $arguments = [])
@@ -338,7 +339,7 @@ class GateAssert extends AbstractExpectationCallsMap implements Gate
     /**
      * Get all of the defined abilities.
      *
-     * @return array
+     * @return array<array-key, mixed>
      */
     public function abilities()
     {

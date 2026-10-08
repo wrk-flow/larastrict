@@ -8,26 +8,27 @@ use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LaraStrict\Testing\PHPUnit\ModelResourceTestCase;
-use Tests\LaraStrict\Feature\Database\Models\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Tests\LaraStrict\Feature\Database\Models\TestModel;
 
 /**
- * @extends ModelResourceTestCase<Test>
+ * @extends ModelResourceTestCase<TestModel>
  */
 class ModelResourceTestCaseTest extends ModelResourceTestCase
 {
-    public function data(): array
+    public static function data(): array
     {
         return [
             [
                 static fn (self $self) => $self->assert(
                     object: self::create(value: 1),
-                    expected: self::expect(value: 1)
+                    expected: self::expect(value: 1),
                 ),
             ],
             [
                 static fn (self $self) => $self->assert(
                     object: self::create(value: 2),
-                    expected: self::expect(value: 2)
+                    expected: self::expect(value: 2),
                 ),
             ],
         ];
@@ -35,8 +36,8 @@ class ModelResourceTestCaseTest extends ModelResourceTestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);
@@ -47,6 +48,9 @@ class ModelResourceTestCaseTest extends ModelResourceTestCase
         return new ModelResource($object);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     private static function expect(int $value): array
     {
         return [
@@ -54,9 +58,9 @@ class ModelResourceTestCaseTest extends ModelResourceTestCase
         ];
     }
 
-    private static function create(int $value): Test
+    private static function create(int $value): TestModel
     {
-        $test = new Test();
+        $test = new TestModel();
         $test->test = $value;
         // Should trigger mock models
         $test->deleted_at = Carbon::now();

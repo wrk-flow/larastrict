@@ -15,12 +15,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class TestNoDates extends Model
 {
+    /** @use HasFactory<TestModelFactory> */
     use HasFactory;
+
     use SoftDeletes;
+
     final public const CREATED_AT = null;
     final public const UPDATED_AT = null;
-    final public const AttributeTest = 'test';
-    final public const AttributeDeletedAt = 'deleted_at';
+    final public const string AttributeTest = 'test';
+    final public const string AttributeDeletedAt = 'deleted_at';
 
     protected $fillable = [self::AttributeTest];
 }

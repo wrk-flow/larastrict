@@ -8,8 +8,14 @@ use Closure;
 use LaraStrict\Database\Scopes\WhereIdsScope;
 use LaraStrict\Tests\Traits\SqlTestEnable;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Tests\LaraStrict\Unit\Database\Services\TestModel;
+
+enum TestId: int
+{
+    case FIRST = 1;
+}
 
 class WhereIdsScopeTest extends TestCase
 {
@@ -34,6 +40,14 @@ class WhereIdsScopeTest extends TestCase
             [
                 static function (self $self) {
                     $self->assert(
+                        new WhereIdsScope([TestId::FIRST]),
+                        'select * from "test_models" where "test_models"."id" = ?',
+                    );
+                },
+            ],
+            [
+                static function (self $self) {
+                    $self->assert(
                         new WhereIdsScope([1], not: true),
                         'select * from "test_models" where "test_models"."id" != ?',
                     );
@@ -43,7 +57,7 @@ class WhereIdsScopeTest extends TestCase
                 static function (self $self) {
                     $self->assert(
                         new WhereIdsScope([1, 2]),
-                        'select * from "test_models" where "test_models"."id" in (?, ?)'
+                        'select * from "test_models" where "test_models"."id" in (?, ?)',
                     );
                 },
             ],
@@ -76,8 +90,8 @@ class WhereIdsScopeTest extends TestCase
 
     /**
      * @param Closure(static):void $assert
-     * @dataProvider data
      */
+    #[DataProvider('data')]
     public function test(Closure $assert): void
     {
         $assert($this);

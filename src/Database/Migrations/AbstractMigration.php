@@ -16,9 +16,7 @@ use LaraStrict\Database\Actions\RunInTransactionAction;
 abstract class AbstractMigration extends Migration
 {
     protected Builder $schema;
-
     protected RunInTransactionAction $runInTransaction;
-
     protected DatabaseManager $databaseManager;
 
     public function __construct()
@@ -123,7 +121,7 @@ abstract class AbstractMigration extends Migration
         array $values,
         string|null $default = null,
         ?string $after = null,
-        string $alterType = 'MODIFY COLUMN'
+        string $alterType = 'MODIFY COLUMN',
     ): void {
         // setup the default
         $defaultString = '';
@@ -157,8 +155,8 @@ abstract class AbstractMigration extends Migration
                     $alterType,
                     $column,
                     $enum,
-                    $defaultString
-                )
+                    $defaultString,
+                ),
             );
     }
 

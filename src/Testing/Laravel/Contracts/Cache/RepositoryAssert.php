@@ -24,6 +24,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
      * @param array<RepositoryRememberExpectation|null> $remember
      * @param array<RepositorySearExpectation|null> $sear
      * @param array<RepositoryRememberForeverExpectation|null> $rememberForever
+     * @param array<RepositoryTouchExpectation|null> $touch
      * @param array<RepositoryForgetExpectation|null> $forget
      * @param array<RepositoryGetStoreExpectation|null> $getStore
      * @param array<RepositoryGetExpectation|null> $get
@@ -45,6 +46,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
         array $remember = [],
         array $sear = [],
         array $rememberForever = [],
+        array $touch = [],
         array $forget = [],
         array $getStore = [],
         array $get = [],
@@ -66,6 +68,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
         $this->setExpectations(RepositoryRememberExpectation::class, $remember);
         $this->setExpectations(RepositorySearExpectation::class, $sear);
         $this->setExpectations(RepositoryRememberForeverExpectation::class, $rememberForever);
+        $this->setExpectations(RepositoryTouchExpectation::class, $touch);
         $this->setExpectations(RepositoryForgetExpectation::class, $forget);
         $this->setExpectations(RepositoryGetStoreExpectation::class, $getStore);
         $this->setExpectations(RepositoryGetExpectation::class, $get);
@@ -83,7 +86,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
      *
      * @template TCacheValue
      *
-     * @param  array|string  $key
+     * @param  array<array-key, mixed>|string  $key
      * @param TCacheValue|Closure():TCacheValue $default
      * @return (TCacheValue is null ? mixed : TCacheValue)
      */
@@ -286,6 +289,27 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
     }
 
     /**
+     * Set the expiration of a cached item.
+     *
+     * @param mixed $key
+     * @param DateTimeInterface|DateInterval|int $ttl
+     */
+    public function touch($key, $ttl): bool
+    {
+        $expectation = $this->getExpectation(RepositoryTouchExpectation::class);
+        $message = $this->getDebugMessage();
+
+        Assert::assertEquals($expectation->key, $key, $message);
+        Assert::assertEquals($expectation->ttl, $ttl, $message);
+
+        if (is_callable($expectation->hook)) {
+            call_user_func($expectation->hook, $key, $ttl, $expectation);
+        }
+
+        return $expectation->return;
+    }
+
+    /**
      * Remove an item from the cache.
      *
      * @param  string  $key
@@ -434,7 +458,7 @@ class RepositoryAssert extends AbstractExpectationCallsMap implements Repository
     /**
      * Persists a set of key => value pairs in the cache, with an optional TTL.
      *
-     * @param iterable               $values A list of key => value pairs for a multiple-set operation.
+     * @param iterable<mixed>               $values A list of key => value pairs for a multiple-set operation.
      * @param null|int|DateInterval $ttl Optional. The TTL value of this item. If no value is sent and
      * the driver supports TTL then the library may set a default value
      * for it or let the driver take care of that.

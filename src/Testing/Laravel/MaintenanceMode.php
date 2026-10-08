@@ -6,6 +6,9 @@ namespace LaraStrict\Testing\Laravel;
 
 class MaintenanceMode implements \Illuminate\Contracts\Foundation\MaintenanceMode
 {
+    /**
+     * @param array<array-key, mixed> $payload
+     */
     public function activate(array $payload): void
     {
     }
@@ -19,6 +22,9 @@ class MaintenanceMode implements \Illuminate\Contracts\Foundation\MaintenanceMod
         return true;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function data(): array
     {
         return [];

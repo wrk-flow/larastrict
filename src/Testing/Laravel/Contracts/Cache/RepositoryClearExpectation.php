@@ -6,14 +6,14 @@ namespace LaraStrict\Testing\Laravel\Contracts\Cache;
 
 use Closure;
 
-final class RepositoryClearExpectation
+final readonly class RepositoryClearExpectation
 {
     /**
      * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly bool $return,
-        public readonly ?Closure $hook = null,
+        public bool $return,
+        public ?Closure $hook = null,
     ) {
     }
 }

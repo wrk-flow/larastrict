@@ -15,7 +15,6 @@ use Illuminate\Log\LogManager;
 use Illuminate\Support\Env;
 use LaraStrict\Docker\Config\DockerConfig;
 use LaraStrict\Log\Channels\ConsoleOutputChannel;
-use RuntimeException;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -31,16 +30,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ConsoleOutputManager
 {
-    private const KeyDriver = 'larastrict_console_output_driver';
-    private const KeyLoggingConsoleOutput = 'larastrict_console_output';
-    private const KeyLoggingOutputStack = 'larastrict_console_output_stack';
+    private const string KeyDriver = 'larastrict_console_output_driver';
+    private const string KeyLoggingConsoleOutput = 'larastrict_console_output';
+    private const string KeyLoggingOutputStack = 'larastrict_console_output_stack';
 
     private ?string $previousDefaultDriver = null;
-
     private ?OutputStyle $outputStyle = null;
-
     private ?Factory $outputFactory = null;
-
     private ?OutputInterface $currentOutput = null;
 
     public function __construct(
@@ -55,9 +51,9 @@ class ConsoleOutputManager
     {
         $this->currentOutput = $currentOutput;
 
-        $this->outputStyle = $currentOutput === null
-            ? null
-            : new OutputStyle(new StringInput(''), $currentOutput);
+        $this->outputStyle = $currentOutput instanceof OutputInterface
+            ? new OutputStyle(new StringInput(''), $currentOutput)
+            : null;
         $this->outputFactory = $this->outputStyle instanceof OutputStyle === false
             ? null
             : new Factory($this->outputStyle);
@@ -94,10 +90,15 @@ class ConsoleOutputManager
         // Add our driver that will output logs to the console when our manager (singleton) contains
         // current command output.
         // Callback can't be static because laravel binds callback to $this
+        $channelFactory = function (Application $app, array $config) {
+            /** @var array<string, mixed> $config */
+            return (new ConsoleOutputChannel($app))($config);
+        };
+
         $this->getLogManager()
             ->extend(
                 driver: self::KeyDriver,
-                callback: fn (Application $app, array $config) => (new ConsoleOutputChannel($app))($config)
+                callback: $channelFactory,
             );
 
         // First we need to define our custom console logging channel with custom driver
@@ -107,7 +108,7 @@ class ConsoleOutputManager
             config: [
                 'driver' => self::KeyDriver,
                 'level' => 'debug',
-            ]
+            ],
         );
 
         $isRunningInDocker = $this->dockerConfig->isInDockerEnvironment();
@@ -133,12 +134,12 @@ class ConsoleOutputManager
                         config: [
                             'driver' => 'stack',
                             'channels' => [self::KeyLoggingConsoleOutput, $this->previousDefaultDriver],
-                        ]
+                        ],
                     );
 
                     $logManager->setDefaultDriver(name: self::KeyLoggingOutputStack);
                 }
-            }
+            },
         );
 
         // We are able to detect
@@ -151,7 +152,7 @@ class ConsoleOutputManager
                     $this->getLogManager()
                         ->setDefaultDriver(name: $this->previousDefaultDriver);
                 }
-            }
+            },
         );
     }
 
@@ -160,13 +161,7 @@ class ConsoleOutputManager
      */
     protected function getLogManager(): LogManager
     {
-        $logManager = $this->container->make('log');
-
-        if ($logManager instanceof LogManager === false) {
-            throw new RuntimeException('Log manager must be instance of ' . LogManager::class);
-        }
-
-        return $logManager;
+        return $this->container->make('log');
     }
 
     /**

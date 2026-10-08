@@ -7,16 +7,17 @@ namespace LaraStrict\Testing\Laravel\Contracts\Cache;
 use Closure;
 use DateInterval;
 
-final class RepositorySetMultipleExpectation
+final readonly class RepositorySetMultipleExpectation
 {
     /**
-     * @param Closure(iterable, (DateInterval | int | null), self):void|null $hook
+     * @param Closure(iterable<mixed>, (DateInterval|int|null), self):void|null $hook
+     * @param iterable<mixed> $values
      */
     public function __construct(
-        public readonly bool $return,
-        public readonly iterable $values,
-        public readonly DateInterval|int|null $ttl = null,
-        public readonly ?Closure $hook = null,
+        public bool $return,
+        public iterable $values,
+        public DateInterval|int|null $ttl = null,
+        public ?Closure $hook = null,
     ) {
     }
 }

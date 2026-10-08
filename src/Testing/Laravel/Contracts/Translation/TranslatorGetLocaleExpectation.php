@@ -6,14 +6,14 @@ namespace LaraStrict\Testing\Laravel\Contracts\Translation;
 
 use Closure;
 
-final class TranslatorGetLocaleExpectation
+final readonly class TranslatorGetLocaleExpectation
 {
     /**
      * @param Closure(self):void|null $hook
      */
     public function __construct(
-        public readonly mixed $return,
-        public readonly ?Closure $hook = null,
+        public string $return,
+        public ?Closure $hook = null,
     ) {
     }
 }

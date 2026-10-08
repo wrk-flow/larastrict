@@ -1,7 +1,9 @@
 /composer.lock
 /vendor
 .phpunit.result.cache
+.phpunit.cache
 /docs/.nuxt
 /docs/dist
 /docs/node_modules
 /docs/static/sw.js
+/.idea

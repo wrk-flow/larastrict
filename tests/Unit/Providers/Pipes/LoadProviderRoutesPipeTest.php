@@ -4,41 +4,44 @@ declare(strict_types=1);
 
 namespace Tests\LaraStrict\Unit\Providers\Pipes;
 
+use Closure;
+use Illuminate\Routing\RouteRegistrar;
 use LaraStrict\Contracts\HasCustomRoutes;
 use LaraStrict\Contracts\HasRoutes;
 use LaraStrict\Contracts\RegisterCustomRouteActionContract;
 use LaraStrict\Contracts\RegisterNamedCustomRouteActionContract;
 use LaraStrict\Providers\AbstractServiceProvider;
 use LaraStrict\Providers\Entities\AppServiceProviderEntity;
+use LaraStrict\Providers\Entities\CustomRouteEntity;
 use LaraStrict\Providers\Pipes\BootProviderRoutesPipe;
 use LaraStrict\Testing\Laravel\TestingApplication;
 use LaraStrict\Testing\Laravel\TestingApplicationRoutes;
 use LaraStrict\Testing\Laravel\TestingContainer;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use stdClass;
 
 final class LoadProviderRoutesPipeTest extends TestCase
 {
-    public function invalidNumericRoutes(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function invalidNumericRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
-    /**
-     * @dataProvider invalidNumericRoutes
-     */
+    #[DataProvider('invalidNumericRoutes')]
     public function testNumericIndexMustHaveStringValue(mixed $customRoute): void
     {
         $this->assertInvalidRoutes(
             [$customRoute],
-            'Custom route with numeric key expects file suffix name (value as string)'
+            'Custom route with numeric key expects file suffix name (value as string)',
         );
     }
 
-    /**
-     * @dataProvider invalidStringRoutes
-     */
+    #[DataProvider('invalidStringRoutes')]
     public function testStringIndexMustHaveClosureOrString(mixed $customRoute): void
     {
         $this->assertInvalidRoutes([
@@ -46,12 +49,18 @@ final class LoadProviderRoutesPipeTest extends TestCase
         ], 'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class);
     }
 
-    public function invalidStringRoutes(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function invalidStringRoutes(): array
     {
         return [[1], [[]], [new stdClass()]];
     }
 
-    public function invalidRoutesClasses(): array
+    /**
+     * @return array<array-key, mixed>
+     */
+    public static function invalidRoutesClasses(): array
     {
         return [
             [[InvalidCustomRouteAction::class],
@@ -64,19 +73,20 @@ final class LoadProviderRoutesPipeTest extends TestCase
     }
 
     /**
-     * @dataProvider invalidRoutesClasses
+     * @param array<array-key, mixed> $customRoutes
      */
+    #[DataProvider('invalidRoutesClasses')]
     public function testInvalidRoutesClasses(array $customRoutes, string $expectedMessage): void
     {
         $container = new TestingContainer(
             [
                 InvalidCustomRouteAction::class => new InvalidCustomRouteAction(),
-            ]
+            ],
         );
         $this->assertInvalidRoutes(
             customRoutes: $customRoutes,
             expectedExceptionMessage: $expectedMessage,
-            container: $container
+            container: $container,
         );
     }
 
@@ -85,7 +95,7 @@ final class LoadProviderRoutesPipeTest extends TestCase
         $this->assertInvalidRoutes(
             customRoutes: [InvalidCustomRouteAction::class],
             app: (new TestingApplicationRoutes())
-                ->setRoutesAreCached()
+                ->setRoutesAreCached(),
         );
     }
 
@@ -94,28 +104,33 @@ final class LoadProviderRoutesPipeTest extends TestCase
         $this->assertInvalidRoutes(
             customRoutes: [InvalidCustomRouteAction::class],
             expectedExceptionMessage: 'Binding not set ' . InvalidCustomRouteAction::class,
-            app: (new TestingApplicationRoutes())
+            app: (new TestingApplicationRoutes()),
         );
     }
 
+    /**
+     * @param array<array-key, mixed> $customRoutes
+     */
     protected function assertInvalidRoutes(
         array $customRoutes,
         ?string $expectedExceptionMessage = null,
         TestingContainer $container = new TestingContainer(),
-        TestingApplication $app = new TestingApplication()
+        TestingApplication $app = new TestingApplication(),
     ): bool {
         if ($expectedExceptionMessage !== null) {
             $this->expectExceptionMessage($expectedExceptionMessage);
         }
 
         $pipe = new BootProviderRoutesPipe($container, new NullLogger());
-        $serviceProvider = new class(
-            $app,
-            $customRoutes
-        ) extends AbstractServiceProvider implements HasCustomRoutes, HasRoutes {
+        // Invalid route values are passed deliberately to verify the runtime exception.
+        // @phpstan-ignore argument.type
+        $serviceProvider = new class($app, $customRoutes) extends AbstractServiceProvider implements HasCustomRoutes, HasRoutes {
+            /**
+             * @param array<int|string, class-string<RegisterCustomRouteActionContract>|string|Closure(CustomRouteEntity, RouteRegistrar):bool> $customRoutes
+             */
             public function __construct(
                 TestingApplication $app,
-                private readonly array $customRoutes
+                private readonly array $customRoutes,
             ) {
                 parent::__construct($app);
             }

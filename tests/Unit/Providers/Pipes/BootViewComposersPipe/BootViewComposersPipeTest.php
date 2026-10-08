@@ -20,9 +20,10 @@ use Tests\LaraStrict\Unit\Testing\Laravel\Composer;
 class BootViewComposersPipeTest extends TestCase
 {
     use TestData;
-    final public const ServiceName = 'Test';
 
-    public function data(): array
+    final public const string ServiceName = 'Test';
+
+    public static function data(): array
     {
         $app = new TestingApplication();
         $viewFactory = new FactoryAssert();
@@ -30,10 +31,7 @@ class BootViewComposersPipeTest extends TestCase
             'implements' => [
                 fn (self $self) => $self->assert(
                     app: $app,
-                    serviceProvider: new class(
-                        $app,
-                        $viewFactory
-                    ) extends AbstractServiceProvider implements HasViewComposers {
+                    serviceProvider: new class($app, $viewFactory) extends AbstractServiceProvider implements HasViewComposers {
                         public function __construct(
                             TestingApplication $app,
                             private readonly Factory $viewFactory,
@@ -51,7 +49,7 @@ class BootViewComposersPipeTest extends TestCase
                     },
                     viewFactory: $viewFactory,
                     factoryComposerExpectation: new FactoryComposerExpectation(
-                        return: null,
+                        return: [],
                         views: ['test'],
                         callback: Composer::class,
                     ),
@@ -77,7 +75,7 @@ class BootViewComposersPipeTest extends TestCase
     ): void {
         $pipe = new BootViewComposersPipe(viewFactory: $viewFactory);
 
-        if ($factoryComposerExpectation !== null) {
+        if ($factoryComposerExpectation instanceof FactoryComposerExpectation) {
             $viewFactory->addExpectation($factoryComposerExpectation);
         }
 

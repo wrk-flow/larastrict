@@ -25,6 +25,9 @@ class MyTranslations extends AbstractTranslations
         ]);
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getWays(): array
     {
         return $this->getArray(key: 'ways');

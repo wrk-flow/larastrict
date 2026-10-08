@@ -24,3 +24,21 @@ Want more tools or want to help? Check [wrk-flow.com](https://wrk-flow.com) or [
 - Make caching more reusable and testable -> `CacheMeService`
 - Move business logic to `Actions` or `Services`
 - Setup Laravel for great docker experience.
+
+## Acknowledgement
+
+This project owes its existence to the generous support of several other impactful projects:
+
+- **[Canvastera](https://canvastera.com)** - Empowering users to craft multimedia posters and share them worldwide. (EDU/Hobby)
+- **[Azzurro Travel Agency](https://azzurro.cz)** - Specializing in holidays in Italy.
+- **[Redtag Studio](https://redtag.studio)** - Crafting digital products for your enjoyment.
+
+Explore more of our open-source initiatives:
+
+- **[Larastrict](https://larastrict.com)** - Enhancing the Laravel Framework with a suite of convenient tools and packages.
+- **[StrictPHP](https://strictphp.com)** - Enabling strictness in PHP projects through a curated set of packages and conventions, fostering the development of robust production-grade applications.
+- **[WrkFlow](https://wrk-flow.com)** - Streamlining development workflows with a comprehensive set of tools designed to boost efficiency.
+
+## License
+
+Open-source software licensed under the [MIT License](LICENSE.md). Feel free to use and modify it according to your needs.

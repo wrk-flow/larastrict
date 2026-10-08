@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\RelationNotFoundException;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 abstract class AbstractNestedRelationScope extends AbstractScope
 {
+    /**
+     * @param list<Scope> $relationScopes
+     */
     public function __construct(
         private readonly array $relationScopes = [],
         private readonly bool $useHas = false,
@@ -31,13 +35,14 @@ abstract class AbstractNestedRelationScope extends AbstractScope
                     throw RelationNotFoundException::make($model, $relationName);
                 }
 
-                /** @var Relation<Model> $relation */
                 $relation = $model->{$relationName}();
+                assert($relation instanceof Relation);
                 $relationModel = $relation->getRelated();
                 $baseQuery = $query;
             }
 
             foreach ($this->relationScopes as $relationScope) {
+                /** @var Builder<Model> $baseQuery */
                 $relationScope->apply($baseQuery, $relationModel);
             }
         };

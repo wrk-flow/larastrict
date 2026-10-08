@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class ViewWithExpectation
+final readonly class ViewWithExpectation
 {
     public function __construct(
-        public readonly mixed $key,
-        public readonly mixed $value = null,
+        public mixed $key,
+        public mixed $value = null,
     ) {
     }
 }

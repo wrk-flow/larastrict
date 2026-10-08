@@ -22,6 +22,9 @@ abstract class AbstractConfigTestCase extends TestCase
 
     abstract protected function getConfigName(): string;
 
+    /**
+     * @param list<string> $keys
+     */
     protected function setRepositoryValue(array $keys, mixed $value): void
     {
         $path = implode('.', [$this->getConfigName(), ...$keys]);
@@ -41,12 +44,13 @@ abstract class AbstractConfigTestCase extends TestCase
      * @param mixed|Closure(mixed):bool $expectedDefaultValue You can provide closure with "match"
      * @param array<string|int, mixed|Closure(mixed):bool> $overridesExpectationMap A map of expectations. Key is a value that will be set, value is an
      *                                       expectation.
+     * @param list<string> $keys
      */
     protected function assertConfigValue(
         mixed $expectedDefaultValue,
         array $keys,
         array $overridesExpectationMap,
-        Closure $getValue
+        Closure $getValue,
     ): void {
         $this->assertGetValue($expectedDefaultValue, $getValue, '');
 

@@ -13,7 +13,7 @@ use LaraStrict\Http\Resources\JsonResource;
 class ResourceArrayResource extends JsonResource
 {
     /**
-     * @return array<string, array<array<string, mixed>>>
+     * @return array<string, array<int|string, mixed>>
      */
     public function toArray($request)
     {

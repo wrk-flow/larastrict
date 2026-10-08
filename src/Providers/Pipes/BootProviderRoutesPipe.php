@@ -21,11 +21,11 @@ use LaraStrict\Providers\Entities\CustomRouteEntity;
 use LogicException;
 use Psr\Log\LoggerInterface;
 
-final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
+final readonly class BootProviderRoutesPipe implements AppServiceProviderPipeContract
 {
     public function __construct(
-        private readonly Container $container,
-        private readonly LoggerInterface $logger,
+        private Container $container,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -75,7 +75,7 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
             'api' . $versionFileSuffix,
             $serviceFileName,
             sprintf('api/%s%s', $versionRoutePrefix, $urlPrefix),
-            'api'
+            'api',
         );
     }
 
@@ -84,7 +84,7 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         string $fileSuffix,
         string $serviceFileName,
         string $urlPrefix,
-        ?string $middleware = null
+        ?string $middleware = null,
     ): bool {
         $path = $this->getRouteFilePath($dir, $serviceFileName, $fileSuffix);
 
@@ -121,7 +121,7 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
             if (is_numeric($key)) {
                 if (is_string($value) === false) {
                     throw new LogicException(
-                        'Custom route with numeric key expects file suffix name (value as string)'
+                        'Custom route with numeric key expects file suffix name (value as string)',
                     );
                 }
 
@@ -129,14 +129,14 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
                     $class = $this->container->make($value);
                     if ($class instanceof RegisterNamedCustomRouteActionContract === false) {
                         throw new LogicException(
-                            'To build custom route with class you need to implement ' . RegisterNamedCustomRouteActionContract::class
+                            'To build custom route with class you need to implement ' . RegisterNamedCustomRouteActionContract::class,
                         );
                     }
 
                     $routeEntity = new CustomRouteEntity(
                         path: $this->getRouteFilePath($dir, $serviceFileName, $class->getFileSuffix()),
                         serviceName: $serviceFileName,
-                        urlPrefix: $urlPrefix
+                        urlPrefix: $urlPrefix,
                     );
 
                     if ($class->execute($routeEntity, $this->makeRoute())) {
@@ -152,23 +152,25 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
             $routeEntity = new CustomRouteEntity(
                 path: $this->getRouteFilePath($dir, $serviceFileName, $key),
                 serviceName: $serviceFileName,
-                urlPrefix: $urlPrefix
+                urlPrefix: $urlPrefix,
             );
 
             if (is_callable($value)) {
                 $result = $value($routeEntity, $this->makeRoute());
+            // Invalid values are covered by runtime tests although the public PHPDoc narrows this union.
+            // @phpstan-ignore function.alreadyNarrowedType
             } elseif (is_string($value) && class_exists($value)) {
                 $class = $this->container->make($value);
                 if ($class instanceof RegisterCustomRouteActionContract === false) {
                     throw new LogicException(
-                        'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class
+                        'To build custom route with class you need to implement ' . RegisterCustomRouteActionContract::class,
                     );
                 }
 
                 $result = $class->execute($routeEntity, $this->makeRoute());
             } else {
                 throw new LogicException(
-                    'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class
+                    'To build the custom route with file suffix name as key expects closure or class that implements ' . RegisterCustomRouteActionContract::class,
                 );
             }
 
@@ -184,7 +186,7 @@ final class BootProviderRoutesPipe implements AppServiceProviderPipeContract
         AppServiceProviderEntity $appServiceProvider,
         string $dir,
         string $serviceFileName,
-        string $urlPrefix
+        string $urlPrefix,
     ): bool {
         // Support using old non-versioned apis with versioned apis
         $didLoadRoutes = $this->loadApiRoute($dir, $serviceFileName, $urlPrefix);

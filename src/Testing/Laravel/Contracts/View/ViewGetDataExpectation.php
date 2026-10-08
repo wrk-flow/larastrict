@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace LaraStrict\Testing\Laravel\Contracts\View;
 
-final class ViewGetDataExpectation
+final readonly class ViewGetDataExpectation
 {
+    /**
+     * @param array<array-key, mixed> $return
+     */
     public function __construct(
-        public readonly mixed $return
+        public array $return,
     ) {
     }
 }

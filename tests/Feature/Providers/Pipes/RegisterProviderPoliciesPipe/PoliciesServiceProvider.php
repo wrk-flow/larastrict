@@ -12,7 +12,7 @@ class PoliciesServiceProvider extends AbstractServiceProvider implements HasPoli
     public function policies(): array
     {
         return [
-            Test::class => TestPolicy::class,
+            TestEntity::class => TestPolicy::class,
         ];
     }
 }

@@ -11,7 +11,7 @@ use LaraStrict\Database\Contracts\RunInTransactionActionContract;
 class RunInTransactionAction implements RunInTransactionActionContract
 {
     public function __construct(
-        private readonly Connection $connection
+        private readonly Connection $connection,
     ) {
     }
 

@@ -15,6 +15,8 @@ class InvalidServiceProviderTranslations extends AbstractProviderTranslations
 
     protected function getProviderClass(): string
     {
+        // This fixture intentionally returns the wrong provider type.
+        // @phpstan-ignore return.type
         return TranslationServiceProvider::class;
     }
 }

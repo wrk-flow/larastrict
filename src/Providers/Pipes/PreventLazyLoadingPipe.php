@@ -13,7 +13,7 @@ class PreventLazyLoadingPipe implements AppServiceProviderPipeContract
     public function handle(AppServiceProviderEntity $appServiceProvider, Closure $next): void
     {
         // TODO CONFIG
-        //Model::preventLazyLoading(true);
+        // Model::preventLazyLoading(true);
 
         $next($appServiceProvider);
     }

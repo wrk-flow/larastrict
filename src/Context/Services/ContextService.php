@@ -21,7 +21,7 @@ class ContextService implements ContextServiceContract
 {
     public function __construct(
         private readonly CacheMeServiceContract $cacheMeManager,
-        private readonly ImplementsService $implementsService
+        private readonly ImplementsService $implementsService,
     ) {
     }
 
@@ -32,7 +32,7 @@ class ContextService implements ContextServiceContract
         $this->cacheMeManager->delete(
             key: $fullCacheKey,
             tags: $this->getTags($context),
-            strategy: $this->cacheStrategy($context)
+            strategy: $this->cacheStrategy($context),
         );
     }
 
@@ -73,7 +73,7 @@ class ContextService implements ContextServiceContract
             getValue: $createState,
             tags: $this->getTags($context),
             seconds: $context->getCacheTtl(),
-            strategy: $this->cacheStrategy($context)
+            strategy: $this->cacheStrategy($context),
         );
     }
 
@@ -81,9 +81,11 @@ class ContextService implements ContextServiceContract
     {
         return $this->get(
             context: $context,
+            // Laravel's container resolves the declared callback parameter.
+            // @phpstan-ignore argument.type
             createState: static fn (Container $container): BoolContextValue => new BoolContextValue(
-                (bool) $container->call($is)
-            )
+                (bool) $container->call($is),
+            ),
         );
     }
 
@@ -99,6 +101,9 @@ class ContextService implements ContextServiceContract
             : CacheMeStrategy::Memory;
     }
 
+    /**
+     * @return list<string>
+     */
     protected function getTags(AbstractContext $context): array
     {
         $tags = [];
@@ -107,7 +112,7 @@ class ContextService implements ContextServiceContract
             return $tags;
         }
 
-        /** @var UseCacheWithTags $context */
-        return array_merge($context->tags(), $tags);
+        /** @var AbstractContext&UseCacheWithTags $context */
+        return array_values(array_merge($context->tags(), $tags));
     }
 }

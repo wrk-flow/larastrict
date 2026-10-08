@@ -18,6 +18,9 @@ final class DispatchJobActionTest extends TestCase
         $action = new DispatchJobAction();
         $action->execute(new WithoutCommandJob('test'));
 
-        Queue::assertPushed(WithoutCommandJob::class, static fn ($job) => $job->getName() === 'test');
+        Queue::assertPushed(WithoutCommandJob::class, static function (mixed $job): bool {
+            assert($job instanceof WithoutCommandJob);
+            return $job->getName() === 'test';
+        });
     }
 }

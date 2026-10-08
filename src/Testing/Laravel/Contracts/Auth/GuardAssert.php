@@ -107,6 +107,7 @@ class GuardAssert extends AbstractExpectationCallsMap implements Guard
      * Validate a user's credentials.
      *
      * @return bool
+     * @param array<array-key, mixed> $credentials
      */
     public function validate(array $credentials = [])
     {
@@ -140,6 +141,9 @@ class GuardAssert extends AbstractExpectationCallsMap implements Guard
 
     /**
      * Set the current user.
+     *
+     * @todo remove typehint (Remove when dropping support for Laravel 10)
+     * @return self
      */
     public function setUser(Authenticatable $user)
     {
@@ -151,5 +155,7 @@ class GuardAssert extends AbstractExpectationCallsMap implements Guard
         if (is_callable($expectation->hook)) {
             call_user_func($expectation->hook, $user, $expectation);
         }
+
+        return $this;
     }
 }

@@ -13,10 +13,10 @@ use Illuminate\Contracts\Foundation\Application;
 class TestingApplication extends TestingContainer implements Application
 {
     /**
-     * @param array<string, object|Closure(array):(object|null)> $makeBindings      A map of closures that will create.
+     * @param array<string, object|Closure(array<array-key, mixed>):(object|null)> $makeBindings      A map of closures that will create.
      *                                                                       Receives make $parameters and $abstract
      *                                                                       string
-     * @param Closure(array,string):(object|null)|null    $makeAlwaysBinding If makeBindings has no entry, it will call
+     * @param Closure(array<array-key, mixed>,string):(object|null)|null    $makeAlwaysBinding If makeBindings has no entry, it will call
      *                                                                       make on this closure. Receives make
      *                                                                       $parameters and $abstract string
      */
@@ -27,7 +27,7 @@ class TestingApplication extends TestingContainer implements Application
         public MaintenanceMode $maintenanceMode = new MaintenanceMode(),
         array $makeBindings = [],
         Closure|null $makeAlwaysBinding = null,
-        public string $basePath = 'base'
+        public string $basePath = 'base',
     ) {
         parent::__construct($makeBindings, $makeAlwaysBinding);
     }
@@ -67,8 +67,15 @@ class TestingApplication extends TestingContainer implements Application
         return 'storage' . $this->addPath($path);
     }
 
+    /**
+     * @param list<string>|string ...$environments
+     */
     public function environment(...$environments)
     {
+        if (isset($environments[0]) && is_array($environments[0])) {
+            $environments = $environments[0];
+        }
+
         return in_array($this->currentEnvironment, $environments, true);
     }
 
@@ -122,6 +129,9 @@ class TestingApplication extends TestingContainer implements Application
     {
     }
 
+    /**
+     * @param array<array-key, mixed> $bootstrappers
+     */
     public function bootstrapWith(array $bootstrappers)
     {
     }
@@ -136,6 +146,9 @@ class TestingApplication extends TestingContainer implements Application
         return __NAMESPACE__;
     }
 
+    /**
+     * @return array<array-key, mixed>
+     */
     public function getProviders($provider)
     {
         return [];
@@ -168,7 +181,22 @@ class TestingApplication extends TestingContainer implements Application
     {
     }
 
-    protected function addPath(mixed $path): string
+    public function langPath($path = '')
+    {
+        return 'lang/' . $this->addPath($path);
+    }
+
+    public function publicPath($path = '')
+    {
+        return 'public/' . $this->addPath($path);
+    }
+
+    public function hasDebugModeEnabled()
+    {
+        return false;
+    }
+
+    protected function addPath(string $path): string
     {
         return $path !== '' ? DIRECTORY_SEPARATOR . $path : '';
     }

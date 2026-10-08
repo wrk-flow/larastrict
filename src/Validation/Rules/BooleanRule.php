@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace LaraStrict\Validation\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class BooleanRule implements Rule
+/**
+ * Rule that is usable in Laravel (validate method) or in your business logic (passes method).
+ */
+final class BooleanRule implements ValidationRule
 {
-    public function passes($attribute, $value): bool
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        return in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true);
+        if (self::passes($value) === false) {
+            $fail('Given :attribute is not a valid boolean: true, false, 0, 1 (can be string or numeric value).');
+        }
     }
 
-    public function message(): string
+    public static function passes(mixed $value): bool
     {
-        return 'Given :attribute is not a valid boolean: true, false, 0, 1 (can be string or numeric value).';
+        return in_array($value, [true, false, 'true', 'false', 0, 1, '0', '1'], true);
     }
 }

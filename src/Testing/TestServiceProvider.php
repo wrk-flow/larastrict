@@ -17,6 +17,9 @@ use LaraStrict\Testing\Core\Services\NoSleepService;
 
 class TestServiceProvider extends ServiceProvider
 {
+    /**
+     * @var array<array-key, mixed>
+     */
     public array $bindings = [
         GetBasePathForStubsActionContract::class => GetBasePathForStubsAction::class,
         GetNamespaceForStubsActionContract::class => GetNamespaceForStubsAction::class,
